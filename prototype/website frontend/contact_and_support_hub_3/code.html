@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Artisan Template Discovery - Luxury Weddings</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#d41121",
+                        "primary-dark": "#b00c19",
+                        "cream": "#fdfbf7",
+                        "gold": "#D4AF37",
+                        "background-light": "#fdfbf7",
+                        "background-dark": "#1a0d0e",
+                        "surface-dark": "#2a1517",
+                        "surface-light": "#ffffff",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<script>
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+        }
+    </script>
+<style type="text/tailwindcss">
+        .glass-panel {
+            @apply bg-white/70 dark:bg-[#2a1517]/60 backdrop-blur-xl border border-white/20 dark:border-white/5;
+        }
+        .masonry-grid {
+            column-count: 1;
+            column-gap: 1.5rem;
+        }
+        @media (min-width: 768px) { .masonry-grid { column-count: 2; } }
+        @media (min-width: 1280px) { .masonry-grid { column-count: 3; } }
+        .template-card {
+            break-inside: avoid;
+            margin-bottom: 1.5rem;
+        }
+        .smart-hover-preview {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+            opacity: 0;
+        }
+        .template-card:hover .smart-hover-preview {
+            max-height: 400px;
+            opacity: 1;
+        }
+        .gold-leaf-accent {
+            background: linear-gradient(135deg, #D4AF37 0%, #F5E090 50%, #D4AF37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display min-h-screen flex flex-col text-gray-900 dark:text-white transition-colors duration-300">
+<header class="sticky top-0 z-50 w-full bg-cream/90 dark:bg-[#1a0d0e]/95 backdrop-blur-md border-b border-gold/20 transition-colors duration-300">
+<div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 h-20 flex items-center justify-between">
+<a class="flex items-center gap-3 text-gray-900 dark:text-white group" href="index.html">
+<div class="size-10 text-primary">
+<svg class="w-full h-full" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-xl font-bold tracking-tight gold-leaf-accent">ARTISAN STUDIO</h2>
+</a>
+<nav class="hidden md:flex items-center gap-9">
+<a class="text-gray-600 dark:text-white/80 hover:text-primary transition-colors text-sm font-semibold" href="index.html">Home</a>
+<a class="text-primary text-sm font-bold border-b-2 border-primary pb-1" href="templates.html">Templates</a>
+<a class="text-gray-600 dark:text-white/80 hover:text-primary transition-colors text-sm font-semibold" href="custom.html">Custom Design</a>
+<a class="text-gray-600 dark:text-white/80 hover:text-primary transition-colors text-sm font-semibold" href="contact.html">Contact Us</a>
+</nav>
+<div class="flex gap-4 items-center">
+<button class="flex items-center justify-center size-10 rounded-full bg-white/50 dark:bg-white/10 text-gray-700 dark:text-white hover:bg-primary hover:text-white transition-all shadow-sm" onclick="toggleTheme()" title="Toggle Theme">
+<span class="material-symbols-outlined dark:hidden">dark_mode</span>
+<span class="hidden material-symbols-outlined dark:block">light_mode</span>
+</button>
+<button class="flex md:hidden items-center justify-center size-10 rounded-full bg-white/50 dark:bg-white/10">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex-grow flex flex-col lg:flex-row max-w-[1440px] mx-auto w-full relative">
+<aside class="hidden lg:block w-72 h-[calc(100vh-80px)] sticky top-20 p-8 border-r border-gold/10 overflow-y-auto">
+<div class="space-y-10">
+<div>
+<h3 class="text-xs font-bold uppercase tracking-[0.2em] text-gold mb-6">Collections</h3>
+<div class="flex flex-col gap-4">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="rounded border-gold/30 text-primary focus:ring-primary bg-transparent" type="checkbox"/>
+<span class="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-primary transition-colors">Royal Heritage</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="rounded border-gold/30 text-primary focus:ring-primary bg-transparent" type="checkbox"/>
+<span class="text-sm font-medium text-gray-600 dark:text-gray-400 group-hover:text-primary transition-colors">Minimalist Modern</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="rounded border-gold/30 text-primary focus:ring-primary bg-transparent" type="checkbox"/>
+<span class="text-sm font-medium text-gray-600 dark:text-gray-400 group-hover:text-primary transition-colors">Botanical Dream</span>
+</label>
+</div>
+</div>
+<div>
+<h3 class="text-xs font-bold uppercase tracking-[0.2em] text-gold mb-6">Ceremony Type</h3>
+<div class="flex flex-wrap gap-2">
+<button class="px-4 py-2 rounded-full border border-gold/20 text-xs font-bold bg-primary text-white">All</button>
+<button class="px-4 py-2 rounded-full border border-gold/20 text-xs font-bold hover:bg-gold/10 transition-colors">Mehendi</button>
+<button class="px-4 py-2 rounded-full border border-gold/20 text-xs font-bold hover:bg-gold/10 transition-colors">Sangeet</button>
+<button class="px-4 py-2 rounded-full border border-gold/20 text-xs font-bold hover:bg-gold/10 transition-colors">Nikah</button>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-2xl border-gold/30">
+<h4 class="text-sm font-bold mb-3 text-primary">Need something unique?</h4>
+<p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed mb-4">Our artisans can create a bespoke design from scratch for your special day.</p>
+<a class="text-xs font-bold text-gold border-b border-gold pb-0.5 hover:text-primary hover:border-primary transition-all" href="contact.html">Inquire Now</a>
+</div>
+</div>
+</aside>
+<div class="flex-1 p-4 sm:p-6 lg:p-10">
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-10">
+<div>
+<h1 class="text-3xl font-bold dark:text-white">Curated Gallery</h1>
+<p class="text-sm text-gray-500 dark:text-gray-400 mt-1">48 Exquisite Designs Found</p>
+</div>
+<div class="flex items-center gap-3 w-full sm:w-auto">
+<div class="relative flex-1 sm:w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg">search</span>
+<input class="w-full pl-10 pr-4 py-2.5 rounded-xl border-none bg-white dark:bg-white/5 focus:ring-1 focus:ring-gold/50 shadow-sm text-sm" placeholder="Search templates..." type="text"/>
+</div>
+<button class="lg:hidden p-2.5 rounded-xl bg-white dark:bg-white/5 border border-gold/10">
+<span class="material-symbols-outlined">tune</span>
+</button>
+</div>
+</div>
+<div class="masonry-grid pb-24 lg:pb-0">
+<div class="template-card group cursor-pointer">
+<div class="relative rounded-2xl overflow-hidden bg-gray-100 dark:bg-surface-dark border border-gold/10 hover:border-primary/30 transition-all shadow-md group-hover:shadow-2xl">
+<img alt="The Maharaja Suite" class="w-full h-auto object-cover aspect-[4/5] group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBz84Gv8XL6IK1XnVP8EsjzFuREEgyau9-Sjx-0qONM3D4TLsxnypxifPalEsuxBNssd9yc_dC-kAt6CVHRDDU4bDsE0GcNcjg8b6l288sBWskMZxCNn1zccMkuGllwaxzSZDpHPWsxfKfnhtou9ZqrEcdFxqzn-2Nk0fz9Sa-sm2GXIiZHmxmXUmOGr43s06dvo8JVDBtilTqm4O-52wVk7S67Gf3H-qUhQ6HTbhJi3_RExOEb47gYPLV804LOfMQ-WPBrZSDbpbvS"/>
+<div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-6 text-white">
+<p class="text-[10px] uppercase tracking-[0.2em] text-gold font-bold mb-1">Heritage Collection</p>
+<h3 class="text-xl font-bold">The Maharaja Suite</h3>
+</div>
+<div class="smart-hover-preview absolute inset-0 bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center p-8 text-center">
+<div class="w-32 h-64 rounded-3xl border-4 border-gold/40 overflow-hidden relative mb-6 shadow-2xl bg-white">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgrjNziooYOYYRghTZcBZAOW5opopWBSGvsY99ItW5zedDOQ2fNvZOIPzykPh3MAL3xGhAmPNV5Z684lIZvbw1mMbS5HKTtLg6wpWVnMswxgdAA-nbenUPEQrXKlp6oz2d-DNyTFQ-Qoj1hEaqf2StoPHMs_qlYjzMw1AxhgWumx77wtHXoSRgodVbEsfCThOpv0-xwnpu1Xp7Jk0a7omjdoh2VA_xqkrFZXM54vVGGW6SZcM9RIBp3I3QKYDpmEl_gah-pLbpODq7"/>
+<div class="absolute inset-0 bg-black/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-4xl opacity-50">play_circle</span>
+</div>
+</div>
+<p class="text-white text-sm font-medium mb-4">Optimized for all mobile guests</p>
+<button class="bg-primary text-white px-6 py-2 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-primary-dark transition-colors">Personalize</button>
+</div>
+</div>
+</div>
+<div class="template-card group cursor-pointer">
+<div class="relative rounded-2xl overflow-hidden bg-gray-100 dark:bg-surface-dark border border-gold/10 shadow-md">
+<img alt="Lotus Minimalist" class="w-full h-auto object-cover aspect-[1/1] group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlqoyvWDF_NwrzP3iRGePpx4ijW9CVGArG4qkBe-gAuDXat2N84TvmqpUSVYixbzrZdQSNUJ97vHfFLoW5-BkQx-HMClw9vyyfA9ken2XXIz1OA8QRwoOFYPm076XxP3WO2937weVx9e8jTfH3r--JrypB0-lxVGg_UnGab3zywCyH2qC7rSzCEhM1ep7YNk4qhIunBANKLVp1RK2DT2kf_N3ZbHAgT5XNGVvdFEm_0Bi2eGF4seZDwdZI0eRakRhtQ7h5MvMo2hTI"/>
+<div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-6 text-white">
+<p class="text-[10px] uppercase tracking-[0.2em] text-gold font-bold mb-1">Contemporary</p>
+<h3 class="text-xl font-bold">Lotus Minimalist</h3>
+</div>
+<div class="smart-hover-preview absolute inset-0 bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center p-8">
+<div class="w-32 h-64 rounded-3xl border-4 border-gold/40 overflow-hidden bg-white mb-6">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcHLEiEHXwYH7NqVx33gGnSRqtfhsNKJURW1P5uKcAaaRqgk2_Oc3ffLyTkzTyoML-Jo8iNxukCXmCepWAEDscXUBBc-Gqj0j3ctLM_NjhzIKCvHCfNO0Sra5MGuy6MfFsGdjcwWPsQ7XRT3dtMDfV2VOm4n9m5eKwpg_2EajEO273RR4fgxYq0JkCXSTIwKZ3QiDxpsA-D6_o2sn4e-V3WSKedEO-67ubAiHcbNtQzh_2q1d28qmH7HYSs2T0EzEiAfaGhBQy55PI"/>
+</div>
+<button class="bg-primary text-white px-6 py-2 rounded-full font-bold text-xs">Personalize</button>
+</div>
+</div>
+</div>
+<div class="template-card group cursor-pointer">
+<div class="relative rounded-2xl overflow-hidden bg-gray-100 dark:bg-surface-dark border border-gold/10 shadow-md">
+<img alt="Floral Symphony" class="w-full h-auto object-cover aspect-[3/4] group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRYPopArhhwaC10ME8PDpZLMgqaIzlLLRZiT4LB_XS5VR5ldzNyiEHkjzJwQAqbGHehh8hyB_44icFftHQ3hC4F-D1wecMdky31zb7mZOGfOFbjPDkgXZu9TBBE8ZAvoCyRDhBrKWPSkBQVaeZR19lWeXl63blqlsTYE0PKSwtssI3KlhFZiIbM9_LtkiU0E1gVhJhCLJ7tnj4YUw1r9eKUtKQvkbxKyTnSzXN2gpUgUSxEo_jOf0D1UR_VKYsEBxl8I4GkUksW0LY"/>
+<div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-6 text-white">
+<p class="text-[10px] uppercase tracking-[0.2em] text-gold font-bold mb-1">Botanical</p>
+<h3 class="text-xl font-bold">Floral Symphony</h3>
+</div>
+<div class="smart-hover-preview absolute inset-0 bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center p-8">
+<div class="w-32 h-64 rounded-3xl border-4 border-gold/40 overflow-hidden bg-white mb-6">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDskHcnL43aosJpqjXXN-rbR1MgzNBPqfZjzMAeiZB174ThhFNywC3NAilAM1gTk6rJegPTM4SL88GVO7q60e2XbumHU3kE3boTXJL9BzvMC_6b4AKHsUK6jYjWIeYQUcTWOyzynOuKOSZCRazzT62lqYx5mXq1INS0zFB87EI2KavVbawfhY2M2KVy6klxEOUK1pbiYG75xMyvT_R-tcNaclI6hBsU_8iuAqKXgmZENd3oCezxm0gx2Kcf2VmVYAVjFK5bbwk2Bvm6"/>
+</div>
+<button class="bg-primary text-white px-6 py-2 rounded-full font-bold text-xs">Personalize</button>
+</div>
+</div>
+</div>
+<div class="template-card group cursor-pointer">
+<div class="relative rounded-2xl overflow-hidden bg-gray-100 dark:bg-surface-dark border border-gold/10 shadow-md">
+<img alt="Golden Arabesque" class="w-full h-auto object-cover aspect-[4/5] group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0uiied95-Wpa23r4zxm3F28crFXa2RYhVgkVuw4O0fOC8QWALXNnMsMJd53KDN2-aSHCRo2nvIlOpvpH6a7ai0PpmSl6IayMxFHtJaU-kWh2zXybqDFqFJpMcN5YolfqyJRHVgAxp4hfPrniC0-6lfV4f_dWlHr7Q8HPI0vYERmySM8WJyK0OsnoqanUUqMSxLUfK_ZrcC2b0nYE1p2PY7vEd7Bfe3d-oEUGc-OsX6DKMVBY5HJULe4hc3CTqvvZkH0xjbcnTJfic"/>
+<div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-6 text-white">
+<p class="text-[10px] uppercase tracking-[0.2em] text-gold font-bold mb-1">Luxury Gold</p>
+<h3 class="text-xl font-bold">Golden Arabesque</h3>
+</div>
+<div class="smart-hover-preview absolute inset-0 bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center p-8">
+<div class="w-32 h-64 rounded-3xl border-4 border-gold/40 overflow-hidden bg-white mb-6">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVaKi-PpW3lC5ZXzxwK8diaqWjPYuX2dlU_zKv47wWUWAas6c8D5TOZjKgDIO6yNPY8Tl5taQwr3TEQpiCU_MhoPtbI7mWk_t-TTIxHijPhByMZ8j3lFMDbgEq0NCEoP34evtpOQEKTk22CRdgjo8KeZuBeQuIVPKyVOr7V-zX1SJ3Kq6OTUHQVJrBIvq1OQkFriUq_VGYYRlY-8uNs48Ljkv8CBiR4sERiR-R8H48_E28Aq5abnTa1DdSaiqo7IGiwvWHLwxRoWwU"/>
+</div>
+<button class="bg-primary text-white px-6 py-2 rounded-full font-bold text-xs">Personalize</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<div class="md:hidden fixed bottom-6 inset-x-4 h-16 glass-panel rounded-full flex items-center justify-around px-2 z-[60] shadow-2xl border-gold/40">
+<button class="flex flex-col items-center justify-center size-12 text-gray-500 dark:text-gray-400">
+<span class="material-symbols-outlined">home</span>
+</button>
+<button class="flex flex-col items-center justify-center size-12 text-primary font-bold">
+<span class="material-symbols-outlined">grid_view</span>
+</button>
+<button class="flex items-center justify-center size-14 rounded-full bg-primary text-white shadow-lg shadow-primary/40 -mt-10 border-4 border-cream dark:border-background-dark">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+<button class="flex flex-col items-center justify-center size-12 text-gray-500 dark:text-gray-400">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+<button class="flex flex-col items-center justify-center size-12 text-gray-500 dark:text-gray-400">
+<span class="material-symbols-outlined">person</span>
+</button>
+</div>
+<footer class="bg-cream dark:bg-[#150a0b] text-gray-800 dark:text-white py-12 border-t border-gold/10 transition-colors duration-300 hidden md:block">
+<div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
+<div class="flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="text-center md:text-left">
+<div class="flex items-center justify-center md:justify-start gap-2 mb-2">
+<div class="size-6 text-primary">
+<svg class="w-full h-full" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z" fill="currentColor"></path></svg>
+</div>
+<span class="font-bold tracking-tight gold-leaf-accent uppercase">Artisan Studio</span>
+</div>
+<p class="text-gray-500 dark:text-white/40 text-xs">Curating elegance for your digital celebration since 2024.</p>
+</div>
+<div class="flex gap-8 text-xs font-bold text-gray-500 dark:text-white/60">
+<a class="hover:text-primary transition-colors" href="faq.html">FAQ</a>
+<a class="hover:text-primary transition-colors" href="terms.html">Legal</a>
+<a class="hover:text-primary transition-colors" href="privacy.html">Privacy</a>
+<a class="hover:text-primary transition-colors" href="shipping.html">Contact</a>
+</div>
+</div>
+</div>
+</footer>
+
+</body></html>

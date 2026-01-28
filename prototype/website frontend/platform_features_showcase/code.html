@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vivah - Features</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&amp;family=Noto+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f2b90d",
+                        "background-light": "#fff5f5",
+                        "background-dark": "#36080d",
+                        "background-darker": "#1f0305",
+                        "border-theme": "#5e141c",
+                        "glass": "rgba(255, 255, 255, 0.05)",
+                    },
+                    fontFamily: {
+                        "display": ["Noto Serif", "serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-body antialiased selection:bg-primary/30 selection:text-primary">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-border-theme bg-background-dark/90 backdrop-blur-md px-10 py-4 transition-colors duration-300">
+<div class="flex items-center gap-4 text-white">
+<div class="size-8 text-primary">
+<svg class="w-full h-full" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 4H42V17.3333V30.6667H24V44H6V30.6667V17.3333H24V4Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-white text-2xl font-display font-bold leading-tight tracking-wider">VIVAH</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8 hidden lg:flex items-center">
+<div class="flex items-center gap-9">
+<a class="text-white hover:text-primary transition-colors text-sm font-medium leading-normal" href="index.html">Home</a>
+<a class="text-primary text-sm font-medium leading-normal" href="features.html">Features</a>
+<a class="text-white hover:text-primary transition-colors text-sm font-medium leading-normal" href="themes.html">Themes</a>
+<a class="text-white hover:text-primary transition-colors text-sm font-medium leading-normal" href="pricing.html">Pricing</a>
+<a class="text-white hover:text-primary transition-colors text-sm font-medium leading-normal" href="contact.html">Contact</a>
+</div>
+<button aria-label="Toggle Theme" class="text-white/70 hover:text-primary transition-colors p-2 rounded-full hover:bg-white/5">
+<span class="material-symbols-outlined text-[20px]">palette</span>
+</button>
+<div class="flex gap-2">
+<a class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-6 bg-primary text-background-dark text-sm font-bold leading-normal tracking-wide hover:bg-white transition-colors" href="signup.html">
+<span class="truncate">Get Started</span>
+</a>
+<a class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-6 bg-border-theme text-white text-sm font-bold leading-normal tracking-wide hover:bg-[#731a24] transition-colors" href="login.html">
+<span class="truncate">Login</span>
+</a>
+</div>
+</div>
+<button class="lg:hidden text-white">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</header>
+<section class="relative flex flex-col items-center justify-center min-h-[60vh] w-full bg-background-darker">
+<div class="absolute inset-0 w-full h-full bg-cover bg-center opacity-40" data-alt="Luxurious Indian wedding mandap with flowers and gold decor at night" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBebsd4DIcGBqlMMeowOOoarxEcrCSChez25Dw-49mSHLAqqF5Da1qyXuFWEy8YFCwooRRvP9sONeQoZDgiF2pACWYxiNTpv2s4jpysVwzFgYMyAyn5LSMkhA2svXsh9reWFjIM3dfryco4pUOWiYEZ4qtZWitESApo67TLrEWd8TLVkksYP9WdXT8Znh96esUjoQke9LlaWzmlrehlLLQ2YTsS-0TtYrs5lBr64XOdUBdQuWQDVFaP-obp-KFS4wuixVPzkSHexB2S");'>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/80 to-transparent"></div>
+<div class="relative z-10 container mx-auto px-4 flex flex-col items-center text-center gap-6 max-w-4xl pt-20">
+<div class="px-4 py-1.5 rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm">
+<span class="text-primary text-xs font-bold uppercase tracking-widest">Premium Platform</span>
+</div>
+<h1 class="font-display text-white text-5xl md:text-7xl font-bold leading-tight tracking-tight">
+                    Features for the <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-yellow-200 to-primary">Modern Royal</span>
+</h1>
+<p class="text-white/80 text-lg md:text-xl font-light leading-relaxed max-w-2xl">
+                    Experience the perfect blend of tradition and technology. Our comprehensive suite of tools ensures your celebration is seamless, elegant, and unforgettable.
+                </p>
+<div class="flex flex-col sm:flex-row gap-4 mt-4">
+<a class="flex items-center justify-center rounded-xl h-12 px-8 bg-primary text-background-dark text-base font-bold hover:bg-white transition-all shadow-[0_0_20px_rgba(242,185,13,0.3)]" href="demo.html">
+                        View Demo
+                    </a>
+<button class="flex items-center justify-center rounded-xl h-12 px-8 bg-white/10 text-white border border-white/20 text-base font-bold hover:bg-white/20 backdrop-blur-sm transition-all">
+                        Explore Features
+                    </button>
+</div>
+</div>
+</section>
+<section class="w-full py-20 px-4 md:px-10 bg-background-dark relative overflow-hidden transition-colors duration-300">
+<div class="absolute top-0 right-0 w-[500px] h-[500px] opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(#f2b90d 1px, transparent 1px); background-size: 24px 24px;"></div>
+<div class="container mx-auto max-w-6xl">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+<div class="relative group">
+<div class="absolute -inset-4 bg-primary/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+<div class="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-black aspect-[4/3]" data-alt="Dashboard showing RSVP statistics and guest list on a tablet device">
+<div class="w-full h-full bg-cover bg-center transform group-hover:scale-105 transition-transform duration-700" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBRPXbUka6GJTip2uxXGW0xUXDlS04n0nTrwb1QbxhSGg128JPDAzCTs9-vziP453oraH0xGpDCvIEY_0daEWsHlOihrQwtOkK_Utv028YzrAA0UFGhgM9GHvvG1WK-YiujDwWMbWjGuKJWLQQ--hilmfFKeeIkT0oVPjgMixpeS14k8sfVawjoM9a0V2jdE6B9AYxSyv_SfexP4bPMgsd7_ty-8fnAy9vlGUm0V6VTtEgk0c5eaEkBRQ_LT-tqoSEfJgEq6y_dcPsa');">
+</div>
+<div class="absolute bottom-4 left-4 right-4 p-4 bg-black/60 backdrop-blur-md rounded-xl border border-white/10 flex items-center justify-between">
+<div>
+<div class="text-white font-bold text-sm">Confirmed Guests</div>
+<div class="text-primary text-xs">450 / 500 Attending</div>
+</div>
+<div class="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-background-dark">
+<span class="material-symbols-outlined text-sm">check</span>
+</div>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-6">
+<div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20 text-primary">
+<span class="material-symbols-outlined">checklist</span>
+</div>
+<h2 class="font-display text-4xl font-bold text-white leading-tight">
+                            Real-time RSVP <br/>Tracking
+                        </h2>
+<p class="text-white/70 text-lg leading-relaxed">
+                            Manage your guest list with unprecedented ease. Track dietary preferences, headcount, and plus-ones in real-time through an elegant dashboard designed for high-volume Indian weddings.
+                        </p>
+<ul class="flex flex-col gap-3 mt-2">
+<li class="flex items-center gap-3 text-white/80">
+<span class="material-symbols-outlined text-primary text-sm">radio_button_checked</span>
+<span>Instant WhatsApp confirmations</span>
+</li>
+<li class="flex items-center gap-3 text-white/80">
+<span class="material-symbols-outlined text-primary text-sm">radio_button_checked</span>
+<span>Detailed dietary requirements log</span>
+</li>
+<li class="flex items-center gap-3 text-white/80">
+<span class="material-symbols-outlined text-primary text-sm">radio_button_checked</span>
+<span>Side-by-side bride &amp; groom lists</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section class="w-full py-20 px-4 md:px-10 bg-background-darker relative transition-colors duration-300">
+<div class="container mx-auto max-w-6xl">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+<div class="flex flex-col gap-6 order-2 lg:order-1">
+<div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20 text-primary">
+<span class="material-symbols-outlined">map</span>
+</div>
+<h2 class="font-display text-4xl font-bold text-white leading-tight">
+                            Interactive Event <br/>Navigation
+                        </h2>
+<p class="text-white/70 text-lg leading-relaxed">
+                            Guide your guests seamlessly from the Sangeet to the Reception. Our integrated Google Maps experience ensures no one gets lost, providing turn-by-turn directions to every venue.
+                        </p>
+<div class="mt-4 p-4 rounded-lg bg-white/5 border border-white/10 flex gap-4 items-start">
+<span class="material-symbols-outlined text-primary mt-1">info</span>
+<div class="flex flex-col gap-1">
+<span class="text-white font-medium text-sm">Multi-Venue Support</span>
+<span class="text-white/60 text-xs">Add distinct locations for Haldi, Mehndi, Wedding, and Reception events.</span>
+</div>
+</div>
+</div>
+<div class="relative group order-1 lg:order-2">
+<div class="absolute -inset-4 bg-primary/5 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+<div class="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-black aspect-[4/3]" data-alt="Mobile map interface showing route to The Oberoi Udaivilas" data-location="Udaipur" style="https://lh3.googleusercontent.com/aida-public/AB6AXuAsS-Jv3i1jG4G4E8lnv2DAnvZV7RpHaWg89D6yGd-G4ZDbjErXCZ1HZaYk7vjyD89k7ZyFapXBrW3eCG7FEgY4zFbtmfeG8NeyydWIbA_GYhslekcTiYM1UIEdcGeuR5m2YOF4qx_SxTodIZIT6xlTTw3KxT_pVj07NtaeBheyk5BJiv6Dldq_x-j43Q2vwVh6c3Ls383ZRgcmNwrfo_gyS56ORG-Kva2RBYI2NSmv9jOkrohIQaIf-p3Ts7KZmE8qdm46GPHVVurZ">
+<div class="w-full h-full bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAC22YZSoIoCSr4A-UvyfccBFs47mJNnqwNOmtzKaSz_ckYK00s_xjLsuIk8cFz14EduhnyhMgRkNSUV1_Vd3Qua3mxg6BI7IXPJ7UYCAGwwNuPoI1byddvNyCviXUvekxqDCdPODSMcuMdjXIZtw8qC0840ktVavHolLknJL0wZyptieZuG_O2A7nObkEYT8Q9CeDw-3PskwiL5ilvGeBp3q3Dw6edrc-6XE-ayMAxYL9A1v8in6T_WQ4RvGfldd-8tTc29fX9WI5S');">
+</div>
+<div class="absolute bottom-8 right-8 w-48 bg-white p-3 rounded-lg shadow-xl">
+<div class="flex items-center gap-2 mb-2">
+<div class="w-8 h-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">directions_car</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] font-bold text-gray-800">Wedding Venue</span>
+<span class="text-[8px] text-gray-500">20 mins away</span>
+</div>
+</div>
+<div class="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+<div class="h-full w-2/3 bg-green-500 rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="w-full py-20 px-4 md:px-10 bg-background-dark relative overflow-hidden transition-colors duration-300">
+<div class="absolute bottom-0 left-0 w-[500px] h-[500px] opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(#f2b90d 1px, transparent 1px); background-size: 24px 24px;"></div>
+<div class="container mx-auto max-w-6xl">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+<div class="relative group">
+<div class="grid grid-cols-2 gap-3" data-alt="Collage of wedding photos including couple portrait and details">
+<div class="rounded-xl overflow-hidden h-64 bg-gray-800 border border-white/10 translate-y-8">
+<img alt="Couple portrait" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-ymd8zLTTNnS9j1e4rnhF5wuiSC7_t6cdB8X9zeyUcGgx3YJox9D-GXRo-ecP-aKmEnypMafPEmJznMKpPTyeT8lJZreOUhAnXAXvrP1cKVoy_dB3othlunB3lBPdMcG6LTM9hnLIp1GWvaHBIyF7LhrewKeeDyAMIqctHhWZLkHYxItzA2GnM8T-k2WITQSOeOk_DMwgOfB9159zguyods_EoRNqmBTIJUZYaNVghwoRAIYGT0-jHbhCJJcjqVasGU4VLYRFVkCu"/>
+</div>
+<div class="rounded-xl overflow-hidden h-48 bg-gray-800 border border-white/10">
+<img alt="Jewelry details" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfVeNGgeyKpsyc4KzDAHqzUhSw7eIU5-4-zJDk895Lhd_aoBeOBrDhwTCguSmpUhh3XW5D4-49LwCXqeYzHGnfEqFd1WQvCODPnrmH-fTBpVG_SkyYXokotc2Jyr3aor3ryLzjtLVKBpUdY8l8z3xQAJxhASaDwgE2JWNMpo0HyscrH360LVai5s-vQ74UgW3c1W7rMRV32sXAKCiK-g2ceYg6bAWb_zqJvahgAzq4bi_esCaiIoOB2c_AXzmUkc2PXf4PJhPNZLF_"/>
+</div>
+<div class="rounded-xl overflow-hidden h-48 bg-gray-800 border border-white/10 translate-y-8">
+<img alt="Ceremony fire" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvG0Py_OPMqm8nk2eVi7YFVQhgfMcf1x7-HgPE0iiubDrieNsFB0YXES_bHdVH_AyBhZO4uZholhBzJ92Jx6BfquJzkUDUonQaqWqh93757jO_CS230DFU0aMfvnJLYyf7kBPIm42KlBd567VrslT7Sh4BLy7TnAUCjEAh33AwMXvm7dcDioCs65Jg4-rt6bWJZ-gHKqEMmniRtR_f9ITUOiEFAxzxKx-8UGSXgYmpzdvH1T9H2B1K3h4l0vt6j21s6cwpJhi68v2M"/>
+</div>
+<div class="rounded-xl overflow-hidden h-64 bg-gray-800 border border-white/10">
+<img alt="Henna hands" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzGmCSkwAcSAI_u8rrF_3WuHFRY9G_Rdg7jFEoOed159edgPJsyQKZr1lDosjdFonaG4MP-_fFfMMHPI3AHoNbTxthiq1p8soHCrvaNCvvkwC271eFuSQQwmceJKraPHNTi1e8Oqu9N_AyWyHuxZbE4s1dBYzNSv0YBdGZa97JOFqR3GUqvicpn5YpBFJldLrsOVEgisOj8c12xDKBTMVQHTH5VYU6N03ZIBgBarxM1skQdZBGHdLraixDF0HwYvAGRplqG-IzXQqh"/>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-6">
+<div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20 text-primary">
+<span class="material-symbols-outlined">photo_library</span>
+</div>
+<h2 class="font-display text-4xl font-bold text-white leading-tight">
+                            Cinematic Photo <br/>Galleries
+                        </h2>
+<p class="text-white/70 text-lg leading-relaxed">
+                            Share your pre-wedding shoot and engagement highlights in a stunning 4K gallery. Let your guests relive the moments before the big day with an immersive slideshow experience.
+                        </p>
+<div class="flex gap-4 mt-2">
+<div class="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white/80 text-sm font-medium">Auto-Slideshow</div>
+<div class="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white/80 text-sm font-medium">Downloadable</div>
+<div class="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white/80 text-sm font-medium">Privacy Locked</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="w-full py-20 px-4 md:px-10 bg-background-darker border-b border-border-theme transition-colors duration-300">
+<div class="container mx-auto max-w-6xl">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+<div class="flex flex-col gap-6 order-2 lg:order-1">
+<div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20 text-primary">
+<span class="material-symbols-outlined">music_note</span>
+</div>
+<h2 class="font-display text-4xl font-bold text-white leading-tight">
+                            Custom Music <br/>Integration
+                        </h2>
+<p class="text-white/70 text-lg leading-relaxed">
+                            Set the mood instantly. Choose from our curated library of Shenai, Sitar, or Bollywood hits, or upload your own track to play softly as guests open your digital invitation.
+                        </p>
+<button class="flex items-center gap-2 text-primary font-bold hover:text-white transition-colors w-fit">
+<span>Listen to samples</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<div class="relative group order-1 lg:order-2 flex justify-center">
+<div class="relative w-80 h-96 bg-gradient-to-br from-gray-900 to-black rounded-3xl border border-white/20 shadow-2xl p-6 flex flex-col items-center justify-between" data-alt="Music player interface displaying a song track with equalizer visualizer">
+<div class="w-full flex justify-between text-white/50">
+<span class="material-symbols-outlined">expand_more</span>
+<span class="text-xs uppercase tracking-widest">Now Playing</span>
+<span class="material-symbols-outlined">more_horiz</span>
+</div>
+<div class="w-48 h-48 rounded-full bg-cover bg-center shadow-[0_0_30px_rgba(242,185,13,0.2)] animate-[spin_10s_linear_infinite]" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBTCnEgML5c1OFXRUtSy-htO9jaXslwdbtjmlcAH_l_FstyVDj1STUjrE3N_6X8TR7cqFHlas2H508nzIhq8Ol_M4OvGcoQ1a78NdYGCV7n6sFMDiltTVTtvGK6_JrkaVLyk9far8Xgh-dM0s08cFRc4V8zXDdLxskZLNypLTwlstLP27buYv2gI2MQuZasHReDH9o5kG-KiGtSEp_8QrvpbirOZWIbwvK1KokORgmuumBBIT39qKqVbcGlbTJnvLDhN1QY9QO3IMHn')">
+<div class="w-16 h-16 bg-black absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/20"></div>
+</div>
+<div class="text-center">
+<h3 class="text-white font-display font-bold text-lg">Din Shagna Da</h3>
+<p class="text-primary text-sm">Jasleen Royal</p>
+</div>
+<div class="w-full flex items-center justify-center gap-6 text-white">
+<span class="material-symbols-outlined text-2xl opacity-60">skip_previous</span>
+<div class="w-12 h-12 rounded-full bg-primary text-background-dark flex items-center justify-center shadow-lg shadow-primary/30">
+<span class="material-symbols-outlined text-2xl fill-current">pause</span>
+</div>
+<span class="material-symbols-outlined text-2xl opacity-60">skip_next</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-24 px-4 bg-background-dark relative transition-colors duration-300">
+<div class="container mx-auto max-w-6xl">
+<div class="text-center mb-16 max-w-2xl mx-auto">
+<span class="text-primary text-sm font-bold tracking-widest uppercase mb-2 block">Comprehensive Suite</span>
+<h2 class="text-white font-display text-3xl md:text-4xl font-bold">Everything You Need for a Seamless Experience</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="p-8 rounded-xl bg-glass border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-colors group">
+<div class="mb-4 text-green-400 p-3 bg-green-400/10 w-fit rounded-lg group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">chat</span>
+</div>
+<h3 class="text-white font-display text-xl font-bold mb-2">WhatsApp Integration</h3>
+<p class="text-white/60 text-sm leading-relaxed">Send invites directly via WhatsApp with personalized messages for each guest.</p>
+</div>
+<div class="p-8 rounded-xl bg-glass border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-colors group">
+<div class="mb-4 text-blue-400 p-3 bg-blue-400/10 w-fit rounded-lg group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">translate</span>
+</div>
+<h3 class="text-white font-display text-xl font-bold mb-2">Multi-language</h3>
+<p class="text-white/60 text-sm leading-relaxed">Support for Hindi, English, Gujarati, Punjabi and more for diverse family members.</p>
+</div>
+<div class="p-8 rounded-xl bg-glass border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-colors group">
+<div class="mb-4 text-pink-400 p-3 bg-pink-400/10 w-fit rounded-lg group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">card_giftcard</span>
+</div>
+<h3 class="text-white font-display text-xl font-bold mb-2">Cash Registry</h3>
+<p class="text-white/60 text-sm leading-relaxed">Discreetly share bank details or UPI links for guests wishing to give shagun.</p>
+</div>
+<div class="p-8 rounded-xl bg-glass border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-colors group">
+<div class="mb-4 text-purple-400 p-3 bg-purple-400/10 w-fit rounded-lg group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">lock</span>
+</div>
+<h3 class="text-white font-display text-xl font-bold mb-2">Privacy Controls</h3>
+<p class="text-white/60 text-sm leading-relaxed">Password protect your invitation or restrict access to specific guest lists.</p>
+</div>
+<div class="p-8 rounded-xl bg-glass border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-colors group">
+<div class="mb-4 text-primary p-3 bg-primary/10 w-fit rounded-lg group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">palette</span>
+</div>
+<h3 class="text-white font-display text-xl font-bold mb-2">50+ Premium Themes</h3>
+<p class="text-white/60 text-sm leading-relaxed">From Royal Rajasthani to Modern Minimalist, find a design that fits your vibe.</p>
+</div>
+<div class="p-8 rounded-xl bg-glass border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-colors group">
+<div class="mb-4 text-orange-400 p-3 bg-orange-400/10 w-fit rounded-lg group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">support_agent</span>
+</div>
+<h3 class="text-white font-display text-xl font-bold mb-2">Design Concierge</h3>
+<p class="text-white/60 text-sm leading-relaxed">Get dedicated support from a design expert to customize every detail.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="py-16 bg-primary/5 border-y border-border-theme text-center px-4 transition-colors duration-300">
+<div class="container mx-auto max-w-4xl flex flex-col items-center gap-6">
+<span class="material-symbols-outlined text-4xl text-primary">format_quote</span>
+<p class="font-display text-2xl md:text-3xl text-white italic leading-relaxed">
+                    "Vivah transformed our chaotic guest list into a seamless experience. The RSVP tracking was a lifesaver, and our relatives loved the map integration!"
+                </p>
+<div class="flex items-center gap-4 mt-2">
+<img alt="Couple portrait" class="w-12 h-12 rounded-full object-cover border border-primary" data-alt="Portrait of Rahul and Anjali" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7Zto13ilw7VpsGq0A11qtGqA0r2EKEIhDsGwJ01T07SrG2WgWB6o47qZ7pRQEUGj7CYYyxw7RG77JnvuiAGFoR-c8hch_pKZhcLaRaOjRDAiiVYTsyUWJo-CLAoMimRJ8rlwuwPDLrq2OqzwcLnklghTa8rsmS1XCxNwILWuxvIjFE9knwa2WqBanhEgvGMga4iuaPGFGd1U02cht2kB8t0778PAjm4Yd9yTyLm0lbRwra8N-yWsSepZFZ2UzVJDMfkCMHShrkeQS"/>
+<div class="text-left">
+<div class="text-white font-bold text-sm">Rahul &amp; Anjali</div>
+<div class="text-white/50 text-xs">Married in Jaipur, 2023</div>
+</div>
+</div>
+</div>
+</section>
+<footer class="bg-background-darker pt-20 pb-10 px-10 border-t border-border-theme transition-colors duration-300">
+<div class="container mx-auto max-w-6xl">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+<div class="flex flex-col gap-6">
+<div class="flex items-center gap-3 text-white">
+<svg class="w-8 h-8 text-primary" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 4H42V17.3333V30.6667H24V44H6V30.6667V17.3333H24V4Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+<h2 class="text-xl font-display font-bold tracking-wider">VIVAH</h2>
+</div>
+<p class="text-white/50 text-sm leading-relaxed">
+                            Crafting digital legacies for the modern Indian wedding. Elegant, efficient, and tailored to your traditions.
+                        </p>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-primary hover:text-background-dark transition-colors" href="#">
+<span class="font-bold">Ig</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-primary hover:text-background-dark transition-colors" href="#">
+<span class="font-bold">Fb</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-primary hover:text-background-dark transition-colors" href="#">
+<span class="font-bold">Pi</span>
+</a>
+</div>
+</div>
+<div>
+<h4 class="text-white font-display font-bold mb-6">Platform</h4>
+<ul class="flex flex-col gap-4 text-white/60 text-sm">
+<li><a class="hover:text-primary transition-colors" href="features.html">Features</a></li>
+<li><a class="hover:text-primary transition-colors" href="themes.html">Themes Gallery</a></li>
+<li><a class="hover:text-primary transition-colors" href="pricing.html">Pricing Plans</a></li>
+<li><a class="hover:text-primary transition-colors" href="website.html">Wedding Website</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-white font-display font-bold mb-6">Company</h4>
+<ul class="flex flex-col gap-4 text-white/60 text-sm">
+<li><a class="hover:text-primary transition-colors" href="about.html">About Us</a></li>
+<li><a class="hover:text-primary transition-colors" href="testimonials.html">Testimonials</a></li>
+<li><a class="hover:text-primary transition-colors" href="careers.html">Careers</a></li>
+<li><a class="hover:text-primary transition-colors" href="support.html">Contact Support</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-white font-display font-bold mb-6">Stay Updated</h4>
+<p class="text-white/50 text-sm mb-4">Get the latest wedding trends and platform updates.</p>
+<div class="flex flex-col gap-3">
+<input class="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-primary w-full placeholder:text-white/20" placeholder="Enter your email" type="email"/>
+<button class="bg-primary text-background-dark font-bold text-sm py-3 rounded-lg hover:bg-white transition-colors w-full">Subscribe</button>
+</div>
+</div>
+</div>
+<div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-white/40">
+<p>© 2024 Vivah Platform. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="hover:text-white" href="privacy.html">Privacy Policy</a>
+<a class="hover:text-white" href="terms.html">Terms of Service</a>
+<a class="hover:text-white" href="cookies.html">Cookie Settings</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+
+</body></html>

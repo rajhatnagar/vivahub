@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Contact Hub - Luxury Weddings</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#d41121",
+                        "primary-dark": "#b00c19",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221012",
+                        "gold": "#D4AF37",
+                        "surface-dark": "#1a0d0e",
+                        "surface-light": "#ffffff",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<script>
+        // Inline script to handle theme toggle logic immediately to prevent FOUC
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+        }
+    </script>
+<style>
+        .glass-panel {background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .dark .glass-panel {
+            background: rgba(30, 15, 17, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }.floating-input:focus ~ label,
+        .floating-input:not(:placeholder-shown) ~ label {
+            transform: translateY(-1.5rem) scale(0.85);
+            color: #d41121; 
+        }.floating-input:not(:placeholder-shown) ~ label {
+             color: #6b7280;}
+        .dark .floating-input:not(:placeholder-shown) ~ label {
+             color: #9ca3af;}
+        .floating-input:focus ~ label {
+             color: #d41121;}
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display min-h-screen flex flex-col text-gray-900 dark:text-white transition-colors duration-300">
+<header class="sticky top-0 z-50 w-full bg-white/90 dark:bg-[#221112]/95 backdrop-blur-sm border-b border-gray-200 dark:border-[#482326] transition-colors duration-300">
+<div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 h-20 flex items-center justify-between">
+<a class="flex items-center gap-4 text-gray-900 dark:text-white group" href="index.html">
+<div class="size-8 text-primary group-hover:scale-105 transition-transform duration-300">
+<svg class="w-full h-full" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-xl font-bold leading-tight tracking-[-0.015em]">Luxury Weddings</h2>
+</a>
+<nav class="hidden md:flex items-center gap-9">
+<a class="text-gray-600 dark:text-white/80 hover:text-primary dark:hover:text-primary transition-colors text-sm font-medium" href="index.html">Home</a>
+<a class="text-gray-600 dark:text-white/80 hover:text-primary dark:hover:text-primary transition-colors text-sm font-medium" href="collections.html">Collections</a>
+<a class="text-gray-600 dark:text-white/80 hover:text-primary dark:hover:text-primary transition-colors text-sm font-medium" href="custom-design.html">Custom Design</a>
+<a class="text-primary text-sm font-bold border-b-2 border-primary pb-1" href="contact.html">Contact Us</a>
+</nav>
+<div class="flex gap-3 items-center">
+<button class="flex items-center justify-center size-10 rounded-xl bg-gray-100 dark:bg-[#482326] text-gray-700 dark:text-white hover:bg-primary hover:text-white dark:hover:bg-primary transition-colors" onclick="toggleTheme()" title="Toggle Theme">
+<span class="material-symbols-outlined dark:hidden">dark_mode</span>
+<span class="hidden material-symbols-outlined dark:block">light_mode</span>
+</button>
+<button class="flex items-center justify-center size-10 rounded-xl bg-gray-100 dark:bg-[#482326] text-gray-700 dark:text-white hover:bg-primary hover:text-white dark:hover:bg-primary transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+<button class="flex items-center justify-center size-10 rounded-xl bg-gray-100 dark:bg-[#482326] text-gray-700 dark:text-white hover:bg-primary hover:text-white dark:hover:bg-primary transition-colors">
+<span class="material-symbols-outlined">shopping_bag</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex-grow flex flex-col lg:flex-row min-h-[calc(100vh-80px)]">
+<div class="relative w-full lg:w-[40%] bg-surface-light dark:bg-surface-dark flex flex-col justify-center px-8 sm:px-12 lg:px-20 py-16 overflow-hidden transition-colors duration-300">
+<div class="absolute inset-0 opacity-[0.05] dark:opacity-[0.03] pointer-events-none mix-blend-multiply dark:mix-blend-normal" data-alt="Abstract intricate mandala floral pattern texture background" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB-XQL4bxFKtLZ9MAt7uDEuxdslEaBNQcI4ly2OdzP4pEaocLZe8Tx0r5NDAeRj66axQ0yoyvtBRjzbQ_NC8NyLODGR9MVHOyYwIJmRqVktzCSDTz42u78q7DlblUjMYJ6YIvsmwHAt0OoNYvI-uIPoyWVq8EzDpLgPkWfIusABTIgrdAZwzL2k4I6BnWalOdi-5nj9BFQ87Cp40_r_fa7hHGxkagBGAsIl3EVCcMWjMI3Y9JdfE6NW8pF73Ax0xp5irp0S6z6zsmJT'); background-size: cover; background-position: center;">
+</div>
+<div class="relative z-10 max-w-lg">
+<div class="mb-10">
+<h5 class="text-primary font-bold tracking-widest uppercase text-xs mb-3">Get in Touch</h5>
+<h1 class="text-gray-900 dark:text-white text-4xl lg:text-5xl font-bold leading-tight mb-4 transition-colors">We are here to help.</h1>
+<p class="text-gray-600 dark:text-gray-400 text-lg font-light leading-relaxed transition-colors">
+                        Planning a wedding can be stressful. Let us handle the details of your invitations so you can focus on the celebration.
+                    </p>
+</div>
+<div class="space-y-6 mb-12">
+<div class="flex items-center gap-5 group cursor-pointer">
+<div class="flex items-center justify-center rounded-xl bg-gray-100 dark:bg-[#482326] group-hover:bg-primary transition-colors shrink-0 size-12 text-gray-700 dark:text-white group-hover:text-white">
+<span class="material-symbols-outlined">mail</span>
+</div>
+<div>
+<p class="text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider mb-0.5">Email Support</p>
+<p class="text-gray-900 dark:text-white text-lg font-medium">support@luxuryweddings.in</p>
+</div>
+</div>
+<div class="flex items-center gap-5 group cursor-pointer">
+<div class="flex items-center justify-center rounded-xl bg-gray-100 dark:bg-[#482326] group-hover:bg-primary transition-colors shrink-0 size-12 text-gray-700 dark:text-white group-hover:text-white">
+<span class="material-symbols-outlined">call</span>
+</div>
+<div>
+<p class="text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider mb-0.5">Call Us (Mon-Fri)</p>
+<p class="text-gray-900 dark:text-white text-lg font-medium">+91 98765 43210</p>
+</div>
+</div>
+<div class="flex items-center gap-5 group cursor-pointer">
+<div class="flex items-center justify-center rounded-xl bg-gray-100 dark:bg-[#482326] group-hover:bg-primary transition-colors shrink-0 size-12 text-gray-700 dark:text-white group-hover:text-white">
+<span class="material-symbols-outlined">chat</span>
+</div>
+<div>
+<p class="text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider mb-0.5">WhatsApp</p>
+<p class="text-gray-900 dark:text-white text-lg font-medium">Chat with an Expert</p>
+</div>
+</div>
+</div>
+<div class="pt-8 border-t border-gray-200 dark:border-white/10 transition-colors">
+<p class="text-gray-900 dark:text-white font-medium mb-4">Follow our journey</p>
+<div class="flex gap-4">
+<a class="size-10 rounded-full bg-gray-200 dark:bg-white/5 hover:bg-primary dark:hover:bg-primary flex items-center justify-center text-gray-700 dark:text-white hover:text-white transition-all" href="#">
+<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+</a>
+<a class="size-10 rounded-full bg-gray-200 dark:bg-white/5 hover:bg-primary dark:hover:bg-primary flex items-center justify-center text-gray-700 dark:text-white hover:text-white transition-all" href="#">
+<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg>
+</a>
+<a class="size-10 rounded-full bg-gray-200 dark:bg-white/5 hover:bg-primary dark:hover:bg-primary flex items-center justify-center text-gray-700 dark:text-white hover:text-white transition-all" href="#">
+<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.214 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.399.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.951-7.252 4.173 0 7.41 2.967 7.41 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.367 18.62 0 12.017 0z"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-full lg:w-[60%] flex items-center justify-center p-4 sm:p-8 lg:p-20 bg-gray-50 dark:bg-background-dark transition-colors duration-300">
+<div class="absolute inset-0 z-0 overflow-hidden">
+<img alt="Close up of red luxury fabric with golden bokeh lights" class="w-full h-full object-cover opacity-60 transition-opacity duration-300 dark:opacity-60 opacity-0" data-alt="Red fabric background with soft bokeh" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPVjF478irnFRy3MNTK-x9FC2Q1hA_gcNHC5n14e4p72awEf3vyHbXL-kEqr8Z8srl5t5kGm4ctjcXkjRr8rie3-p6yVM1_sZKOeoJo-N_h4TPsxEYTG19rQlEdE8NRnkVLo38OEdUo-8ptHez5D6u4mpotAbzD1BzEo-zz7elu1k67w7T9XBowYVyHcvDeepm8jxVlbZZSIvFc_AQN07v6kLLVW45HYPuuEjVi-je9EoKnt_C4HWSec4v4DIqLLwuP_RQyB6Rt8V9"/>
+<div class="absolute inset-0 bg-gradient-to-l from-transparent to-gray-50 dark:to-background-dark/90 transition-colors duration-300"></div>
+<div class="absolute inset-0 bg-white/60 dark:bg-black/40 transition-colors duration-300"></div>
+</div>
+<div class="glass-panel w-full max-w-2xl rounded-xl p-8 md:p-12 relative z-10 shadow-2xl transition-all duration-300">
+<div class="flex justify-between items-start mb-10">
+<div>
+<h2 class="text-gray-900 dark:text-white text-3xl font-bold mb-2 transition-colors">Send us a Message</h2>
+<p class="text-gray-600 dark:text-gray-300 font-light text-sm transition-colors">We typically reply within 24 hours.</p>
+</div>
+<div class="hidden items-center gap-2 text-gold bg-gold/10 px-3 py-1 rounded-full border border-gold/20">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+<span class="text-xs font-bold uppercase tracking-wider">Online</span>
+</div>
+</div>
+<form class="space-y-8" onsubmit="event.preventDefault();">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="relative z-0 w-full group">
+<input class="floating-input block py-2.5 px-0 w-full text-base text-gray-900 dark:text-white bg-transparent border-0 border-b border-gray-400 dark:border-gray-500 appearance-none focus:outline-none focus:ring-0 focus:border-primary peer transition-colors" id="name" name="name" placeholder=" " required="" type="text"/>
+<label class="absolute text-base text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-85 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-85 peer-focus:-translate-y-6" for="name">Full Name</label>
+</div>
+<div class="relative z-0 w-full group">
+<input class="floating-input block py-2.5 px-0 w-full text-base text-gray-900 dark:text-white bg-transparent border-0 border-b border-gray-400 dark:border-gray-500 appearance-none focus:outline-none focus:ring-0 focus:border-primary peer transition-colors" id="email" name="email" placeholder=" " required="" type="email"/>
+<label class="absolute text-base text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-85 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-85 peer-focus:-translate-y-6" for="email">Email Address</label>
+</div>
+</div>
+<div class="relative z-0 w-full group">
+<input class="floating-input block py-2.5 px-0 w-full text-base text-gray-900 dark:text-white bg-transparent border-0 border-b border-gray-400 dark:border-gray-500 appearance-none focus:outline-none focus:ring-0 focus:border-primary peer transition-colors" id="subject" name="subject" placeholder=" " type="text"/>
+<label class="absolute text-base text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-85 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-85 peer-focus:-translate-y-6" for="subject">Order Reference (Optional)</label>
+</div>
+<div class="relative z-0 w-full group">
+<textarea class="floating-input block py-2.5 px-0 w-full text-base text-gray-900 dark:text-white bg-transparent border-0 border-b border-gray-400 dark:border-gray-500 appearance-none focus:outline-none focus:ring-0 focus:border-primary peer resize-none transition-colors" id="message" name="message" placeholder=" " required="" rows="4"></textarea>
+<label class="absolute text-base text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-85 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-85 peer-focus:-translate-y-6" for="message">How can we help you?</label>
+</div>
+<div class="pt-4 flex items-center justify-between">
+<div class="flex items-center gap-2 text-primary/80 dark:text-gold/80 text-xs font-medium">
+<span class="material-symbols-outlined text-base">lock</span>
+<span>Your details are secure</span>
+</div>
+<button class="bg-primary hover:bg-primary-dark text-white font-bold py-3 px-8 rounded-lg shadow-lg shadow-primary/30 dark:shadow-red-900/30 transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2" type="submit">
+<span>Submit Inquiry</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</form>
+</div>
+</div>
+</main>
+<footer class="bg-gray-100 dark:bg-[#150a0b] text-gray-800 dark:text-white py-12 border-t border-gray-200 dark:border-[#482326] transition-colors duration-300">
+<div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
+<div class="flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="text-center md:text-left">
+<div class="flex items-center justify-center md:justify-start gap-2 mb-2">
+<div class="size-5 text-primary">
+<svg class="w-full h-full" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z" fill="currentColor"></path></svg>
+</div>
+<span class="font-bold tracking-tight">Luxury Weddings</span>
+</div>
+<p class="text-gray-500 dark:text-white/40 text-sm">© 2024 Luxury Weddings. All rights reserved.</p>
+</div>
+<div class="flex gap-8 text-sm text-gray-500 dark:text-white/60">
+<a class="hover:text-primary transition-colors" href="faq.html">FAQ</a>
+<a class="hover:text-primary transition-colors" href="terms.html">Terms of Service</a>
+<a class="hover:text-primary transition-colors" href="privacy.html">Privacy Policy</a>
+<a class="hover:text-primary transition-colors" href="shipping.html">Shipping</a>
+</div>
+</div>
+</div>
+</footer>
+
+</body></html>

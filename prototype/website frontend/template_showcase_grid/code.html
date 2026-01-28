@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ForeverUs - Template Showcase</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#D4AF37","primary-dark": "#B5952F",
+              "background-light": "#FFFCF6","background-dark": "#2D0A12","text-main": "#26080D","text-secondary": "#8C7145","border-light": "#E8DCC5",
+            },
+            fontFamily: {
+              "display": ["Manrope", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display min-h-screen flex flex-col text-text-main dark:text-white transition-colors duration-200">
+<header class="sticky top-0 z-50 w-full border-b border-border-light bg-background-light/90 backdrop-blur-md dark:bg-background-dark/90 dark:border-white/10">
+<div class="mx-auto flex h-16 max-w-[1440px] items-center justify-between px-4 sm:px-6 lg:px-8">
+<div class="flex items-center gap-4">
+<div class="flex size-8 items-center justify-center rounded-full bg-primary/20 text-primary">
+<span class="material-symbols-outlined">diamond</span>
+</div>
+<h1 class="text-lg font-extrabold tracking-tight text-text-main dark:text-white">ForeverUs</h1>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Home</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Templates</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Pricing</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">About</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="hidden sm:flex text-text-main dark:text-white hover:text-primary material-symbols-outlined">
+                    search
+                </button>
+<button class="hidden sm:flex text-text-main dark:text-white hover:text-primary material-symbols-outlined">
+                    favorite
+                </button>
+<button aria-label="Toggle Dark Mode" class="flex items-center justify-center text-text-main dark:text-white hover:text-primary transition-colors" id="theme-toggle">
+<span class="material-symbols-outlined dark:hidden">dark_mode</span>
+<span class="material-symbols-outlined hidden dark:block">light_mode</span>
+</button>
+<a class="flex items-center justify-center rounded-full bg-primary px-5 py-2 text-sm font-bold text-text-main transition-transform hover:scale-105 active:scale-95 shadow-md hover:shadow-lg hover:bg-white" href="auth.html">
+                    Get Started
+                </a>
+</div>
+</div>
+</header>
+<main class="flex-1 w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-border-light pb-6 dark:border-white/10">
+<div class="flex flex-col gap-2">
+<h2 class="text-3xl md:text-4xl font-black leading-tight tracking-tight text-text-main dark:text-white">Exquisite Wedding Templates</h2>
+<p class="text-text-secondary dark:text-gray-400 text-lg">Discover your perfect invitation from our premium collection.</p>
+</div>
+<button class="lg:hidden flex items-center gap-2 rounded-lg border border-border-light px-4 py-2 text-sm font-bold text-text-main hover:bg-primary/10 dark:text-white dark:border-white/20">
+<span class="material-symbols-outlined text-lg">tune</span>
+                Filters
+            </button>
+</div>
+<div class="flex flex-col lg:flex-row gap-8">
+<aside class="hidden lg:flex w-64 shrink-0 flex-col gap-6">
+<div class="flex items-center justify-between">
+<h3 class="font-bold text-lg">Filters</h3>
+<button class="text-xs font-medium text-text-secondary hover:text-primary uppercase tracking-wider">Reset</button>
+</div>
+<div class="flex flex-col gap-4">
+<details class="group" open="">
+<summary class="flex cursor-pointer items-center justify-between py-2 list-none">
+<span class="text-sm font-bold text-text-main dark:text-white">Color Theme</span>
+<span class="material-symbols-outlined text-text-secondary transition-transform group-open:rotate-180">expand_more</span>
+</summary>
+<div class="pt-2 pb-4">
+<div class="flex flex-wrap gap-3">
+<label class="cursor-pointer group/color relative size-8 rounded-full border border-border-light shadow-sm" style="background-color: #ef4444;"> 
+<input class="peer sr-only" name="color" type="radio"/>
+<span class="absolute inset-0 hidden peer-checked:flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</span>
+</label>
+<label class="cursor-pointer group/color relative size-8 rounded-full border border-border-light shadow-sm" style="background-color: #D4AF37;"> 
+<input checked="" class="peer sr-only" name="color" type="radio"/>
+<span class="absolute inset-0 hidden peer-checked:flex items-center justify-center text-black">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</span>
+</label>
+<label class="cursor-pointer group/color relative size-8 rounded-full border border-border-light shadow-sm" style="background-color: #fce7f3;"> 
+<input class="peer sr-only" name="color" type="radio"/>
+<span class="absolute inset-0 hidden peer-checked:flex items-center justify-center text-black">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</span>
+</label>
+<label class="cursor-pointer group/color relative size-8 rounded-full border border-border-light shadow-sm" style="background-color: #15803d;"> 
+<input class="peer sr-only" name="color" type="radio"/>
+<span class="absolute inset-0 hidden peer-checked:flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</span>
+</label>
+<label class="cursor-pointer group/color relative size-8 rounded-full border border-border-light shadow-sm" style="background-color: #1e3a8a;"> 
+<input class="peer sr-only" name="color" type="radio"/>
+<span class="absolute inset-0 hidden peer-checked:flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</span>
+</label>
+</div>
+</div>
+</details>
+<div class="h-px w-full bg-border-light dark:bg-white/10"></div>
+<details class="group" open="">
+<summary class="flex cursor-pointer items-center justify-between py-2 list-none">
+<span class="text-sm font-bold text-text-main dark:text-white">Format</span>
+<span class="material-symbols-outlined text-text-secondary transition-transform group-open:rotate-180">expand_more</span>
+</summary>
+<div class="pt-2 pb-4 flex flex-col gap-2">
+<label class="flex items-center gap-3 cursor-pointer group/item">
+<div class="relative flex items-center">
+<input class="peer size-4 appearance-none rounded border border-text-secondary/50 checked:bg-primary checked:border-primary focus:ring-1 focus:ring-primary/50 transition-all" type="checkbox"/>
+<span class="material-symbols-outlined absolute left-0 top-0 text-black text-sm pointer-events-none opacity-0 peer-checked:opacity-100">check</span>
+</div>
+<span class="text-sm text-text-secondary group-hover:text-text-main transition-colors dark:text-gray-400 dark:group-hover:text-white">Video Invite</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group/item">
+<div class="relative flex items-center">
+<input checked="" class="peer size-4 appearance-none rounded border border-text-secondary/50 checked:bg-primary checked:border-primary focus:ring-1 focus:ring-primary/50 transition-all" type="checkbox"/>
+<span class="material-symbols-outlined absolute left-0 top-0 text-black text-sm pointer-events-none opacity-0 peer-checked:opacity-100">check</span>
+</div>
+<span class="text-sm text-text-secondary group-hover:text-text-main transition-colors dark:text-gray-400 dark:group-hover:text-white">E-Card (Image)</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group/item">
+<div class="relative flex items-center">
+<input class="peer size-4 appearance-none rounded border border-text-secondary/50 checked:bg-primary checked:border-primary focus:ring-1 focus:ring-primary/50 transition-all" type="checkbox"/>
+<span class="material-symbols-outlined absolute left-0 top-0 text-black text-sm pointer-events-none opacity-0 peer-checked:opacity-100">check</span>
+</div>
+<span class="text-sm text-text-secondary group-hover:text-text-main transition-colors dark:text-gray-400 dark:group-hover:text-white">Multi-page PDF</span>
+</label>
+</div>
+</details>
+<div class="h-px w-full bg-border-light dark:bg-white/10"></div>
+<details class="group">
+<summary class="flex cursor-pointer items-center justify-between py-2 list-none">
+<span class="text-sm font-bold text-text-main dark:text-white">Price Range</span>
+<span class="material-symbols-outlined text-text-secondary transition-transform group-open:rotate-180">expand_more</span>
+</summary>
+<div class="pt-2 pb-4">
+<input class="w-full accent-primary h-1 bg-border-light rounded-lg appearance-none cursor-pointer" type="range"/>
+<div class="flex justify-between mt-2 text-xs text-text-secondary">
+<span>$0</span>
+<span>$500+</span>
+</div>
+</div>
+</details>
+</div>
+<div class="mt-8 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 p-5 border border-primary/20">
+<div class="mb-3 text-primary">
+<span class="material-symbols-outlined text-3xl">workspace_premium</span>
+</div>
+<h4 class="font-bold text-text-main dark:text-white mb-1">Custom Design</h4>
+<p class="text-xs text-text-secondary mb-3 leading-relaxed">Need something truly unique? Work with our designers.</p>
+<a class="text-xs font-bold text-primary hover:underline" href="#">Learn more →</a>
+</div>
+</aside>
+<div class="flex-1 flex flex-col gap-6">
+<div class="hide-scrollbar flex gap-3 overflow-x-auto pb-2">
+<button class="shrink-0 rounded-full bg-text-main px-6 py-2 text-sm font-medium text-white shadow-md hover:bg-black transition-colors dark:bg-white dark:text-black">
+                        All
+                    </button>
+<button class="shrink-0 rounded-full bg-white border border-border-light px-6 py-2 text-sm font-medium text-text-main hover:bg-primary/10 hover:border-primary/30 transition-colors dark:bg-white/5 dark:border-white/10 dark:text-gray-200 dark:hover:bg-white/10">
+                        Traditional
+                    </button>
+<button class="shrink-0 rounded-full bg-white border border-border-light px-6 py-2 text-sm font-medium text-text-main hover:bg-primary/10 hover:border-primary/30 transition-colors dark:bg-white/5 dark:border-white/10 dark:text-gray-200 dark:hover:bg-white/10">
+                        Modern
+                    </button>
+<button class="shrink-0 rounded-full bg-white border border-border-light px-6 py-2 text-sm font-medium text-text-main hover:bg-primary/10 hover:border-primary/30 transition-colors dark:bg-white/5 dark:border-white/10 dark:text-gray-200 dark:hover:bg-white/10">
+                        Regal
+                    </button>
+<button class="shrink-0 rounded-full bg-white border border-border-light px-6 py-2 text-sm font-medium text-text-main hover:bg-primary/10 hover:border-primary/30 transition-colors dark:bg-white/5 dark:border-white/10 dark:text-gray-200 dark:hover:bg-white/10">
+                        Minimal
+                    </button>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-max">
+<div class="group flex flex-col gap-3">
+<div class="relative aspect-[9/16] w-full overflow-hidden rounded-[1.5rem] border-[6px] border-text-main/10 bg-gray-100 shadow-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 dark:border-white/10 dark:bg-gray-800">
+<img alt="data-alt: Ornate traditional Indian mandala pattern in deep reds and golds" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3yU6obH772n0HrlXy8f8DfubTQpsi03-LVdjD4DUKiHhMvOjuzDeqAnB2tXqE6q5tA_vzpvoNdmziv7sArrLbQd__j4pi3E9ZMN8VsLCTbuI7aQP-HVQW7WLFRze0kMR-5TxTUhwjLPh7Zz06tzbohyWN5v-7gO9Ovuudx147TdNcrv9EIXiVRXj_EyyAxJeHcdysVzUE6EUCmKT-xvb6gAyVriUwsOcNUztLhkcxvxMN0QC9w6Yshu4X6MoSwX0jK1CrPVa8Ztb0"/>
+<div class="absolute inset-0 flex flex-col items-center justify-center bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100 backdrop-blur-[2px]">
+<button class="rounded-full bg-primary px-8 py-3 text-sm font-bold text-text-main shadow-lg hover:bg-white hover:text-black transition-colors transform hover:scale-105">
+                                    Preview
+                                </button>
+</div>
+<div class="absolute top-4 right-4 rounded-full bg-black/50 px-3 py-1 text-[10px] font-bold text-white backdrop-blur-sm">
+                                VIDEO
+                            </div>
+</div>
+<div class="flex justify-between items-start px-1">
+<div>
+<h3 class="font-bold text-text-main dark:text-white leading-tight">The Maharaja's Scroll</h3>
+<p class="text-xs font-medium text-text-secondary mt-1">Traditional</p>
+</div>
+<button class="text-text-secondary hover:text-red-500 transition-colors material-symbols-outlined">favorite</button>
+</div>
+</div>
+<div class="group flex flex-col gap-3">
+<div class="relative aspect-[9/16] w-full overflow-hidden rounded-[1.5rem] border-[6px] border-text-main/10 bg-gray-100 shadow-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 dark:border-white/10 dark:bg-gray-800">
+<img alt="data-alt: Minimalist pastel pink background with soft white floral accents" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7FvM5AY9983-UU4SIrrL10HXdOAHBeZENGR_szHAzKwpOi9XPIjda0I4SqAeSs5-RtbmEtav6-SMWVTiY15jXBOmQIN-fKOcbBoP9gOLVNjA6Hn8ePzwyQ0WTY1v0tMWhP2b_ZC-172gdAS9dJBaZq1iO67T4-0eDSdw88zDUMjxt4OQYRlUYTGr6U7M2IVZr6ZtSJcpxZKfSCzeLDSqx2cOBuke7AtH4jamb7BNv19u5CZGomowWun1bbAo_LKOv_TFNc5jizKAl"/>
+<div class="absolute inset-0 flex flex-col items-center justify-center bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100 backdrop-blur-[2px]">
+<button class="rounded-full bg-primary px-8 py-3 text-sm font-bold text-text-main shadow-lg hover:bg-white hover:text-black transition-colors transform hover:scale-105">
+                                    Preview
+                                </button>
+</div>
+</div>
+<div class="flex justify-between items-start px-1">
+<div>
+<h3 class="font-bold text-text-main dark:text-white leading-tight">Lotus Bloom</h3>
+<p class="text-xs font-medium text-text-secondary mt-1">Minimal • Pastel</p>
+</div>
+<button class="text-text-secondary hover:text-red-500 transition-colors material-symbols-outlined">favorite</button>
+</div>
+</div>
+<div class="group flex flex-col gap-3">
+<div class="relative aspect-[9/16] w-full overflow-hidden rounded-[1.5rem] border-[6px] border-text-main/10 bg-gray-100 shadow-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 dark:border-white/10 dark:bg-gray-800">
+<img alt="data-alt: Luxurious gold foil texture on dark paper background" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkXecOj7dXiv36wT5oijfr-UnXtLWaaKf0w8ymQTHrQCW_J8lzIVKtQetHB1Dq9e2VzqP7t9FFTPkRM6yvFKZMXf9OFpR_xXu7yc4gMFWA76BJ5c_Dvl8lnnfI0s96ABUXrcqbJ-UG1oDhxJEeaBoHh92YqnsHIkDZqgzaipgxfz3eEvLZoukl1Lub6aBDG141y4crLXw_VJh5fzZgMl_cB119WmIvAM7M4txLypmPnb2l2uy7m5tEQHbKQf_1rbet6aUPiYSxXnjF"/>
+<div class="absolute inset-0 flex flex-col items-center justify-center bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100 backdrop-blur-[2px]">
+<button class="rounded-full bg-primary px-8 py-3 text-sm font-bold text-text-main shadow-lg hover:bg-white hover:text-black transition-colors transform hover:scale-105">
+                                    Preview
+                                </button>
+</div>
+<div class="absolute top-4 left-4 rounded-full bg-primary px-3 py-1 text-[10px] font-bold text-text-main shadow-md">
+                                BESTSELLER
+                            </div>
+</div>
+<div class="flex justify-between items-start px-1">
+<div>
+<h3 class="font-bold text-text-main dark:text-white leading-tight">Golden Hour</h3>
+<p class="text-xs font-medium text-text-secondary mt-1">Regal • Luxury</p>
+</div>
+<button class="text-red-500 hover:text-red-600 transition-colors material-symbols-outlined font-filled">favorite</button>
+</div>
+</div>
+<div class="group flex flex-col gap-3">
+<div class="relative aspect-[9/16] w-full overflow-hidden rounded-[1.5rem] border-[6px] border-text-main/10 bg-gray-100 shadow-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 dark:border-white/10 dark:bg-gray-800">
+<img alt="data-alt: Contemporary typography with abstract floral watercolor elements" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0D3ywsKJRz3iIbX5Eon_OS82IQYwV_HdBtWQ-CSSBeFEly2v0LHKesGWp99NcIwqfH35SJXiNjv2Ib53wJ4UVTep7TceYI5L4yTIrYJUMW5v7o4YY9PGEG2P5ntouX6vsC0HL8wBdyacmdIHYdYrnA_wrQLMCY7pDkR_BrX60aDbl0c2LMzaaZPCAXV8T8Efcdi3z9ucmi3d3y4eWD1olBIp2EoNAS-9MEd9e3mL8IZcE2hnzLB_guptWViQeX-2M9GehfHxfyTkv"/>
+<div class="absolute inset-0 flex flex-col items-center justify-center bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100 backdrop-blur-[2px]">
+<button class="rounded-full bg-primary px-8 py-3 text-sm font-bold text-text-main shadow-lg hover:bg-white hover:text-black transition-colors transform hover:scale-105">
+                                    Preview
+                                </button>
+</div>
+</div>
+<div class="flex justify-between items-start px-1">
+<div>
+<h3 class="font-bold text-text-main dark:text-white leading-tight">Modern Floral</h3>
+<p class="text-xs font-medium text-text-secondary mt-1">Modern</p>
+</div>
+<button class="text-text-secondary hover:text-red-500 transition-colors material-symbols-outlined">favorite</button>
+</div>
+</div>
+<div class="group flex flex-col gap-3">
+<div class="relative aspect-[9/16] w-full overflow-hidden rounded-[1.5rem] border-[6px] border-text-main/10 bg-gray-100 shadow-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 dark:border-white/10 dark:bg-gray-800">
+<img alt="data-alt: Deep emerald green invitation with ornate gold border details" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOIoM51ip6cnXAlQv379-G7JIiMPCGmBV-56swz3OJ5QFiW2ekTxxsZDPh0sF8we-38cTSZedBq-0qqNUdZlPmHjjqMpscEwPBmFN3lCb1pzVI5Li-AuLu6HxBU65eED9ndh93ygTdtmpxlK31Bq_opx6_nVtTr7cpoZay0a8LjymwNvNBPNGpPTzOE50GfqlUBq2IfEhUmynD3TCEPi-nYHJxCC6IBAqLZMbJ4lP2XMgUQM4Qxu7fCOR8-_F_oCMEmeZmcHRB0sXg"/>
+<div class="absolute inset-0 flex flex-col items-center justify-center bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100 backdrop-blur-[2px]">
+<button class="rounded-full bg-primary px-8 py-3 text-sm font-bold text-text-main shadow-lg hover:bg-white hover:text-black transition-colors transform hover:scale-105">
+                                    Preview
+                                </button>
+</div>
+</div>
+<div class="flex justify-between items-start px-1">
+<div>
+<h3 class="font-bold text-text-main dark:text-white leading-tight">Emerald Elegance</h3>
+<p class="text-xs font-medium text-text-secondary mt-1">Regal • Green</p>
+</div>
+<button class="text-text-secondary hover:text-red-500 transition-colors material-symbols-outlined">favorite</button>
+</div>
+</div>
+<div class="group flex flex-col gap-3">
+<div class="relative aspect-[9/16] w-full overflow-hidden rounded-[1.5rem] border-[6px] border-text-main/10 bg-gray-100 shadow-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 dark:border-white/10 dark:bg-gray-800">
+<img alt="data-alt: Soft blush pink paper texture with calligraphy text" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPf8EG2XIQhSIo1V5ncMe7VKnPgjstE1tEMgit6WGUWcvbSXhIjMxPr2uT2gH8BwVfU8hlhhzA4RhwUg6SAhJOVQNZfcIM9X9xJKLIM2uX1m8OBcO4lfhtkdZ4dioIRiqHkRNw_Xj10d5I0ow9jzn9QHO5-FwO-rl2A31u87anUXWqcaGim5W6-nlCYjlWirQdBM4eRXTTWy-cS7sbqMFj_Pyz-R1bYwJhbAAWLxtFtRnvcwcD5y99zKr7HtWQq-fwyGrmWCOtoZ6r"/>
+<div class="absolute inset-0 flex flex-col items-center justify-center bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100 backdrop-blur-[2px]">
+<button class="rounded-full bg-primary px-8 py-3 text-sm font-bold text-text-main shadow-lg hover:bg-white hover:text-black transition-colors transform hover:scale-105">
+                                    Preview
+                                </button>
+</div>
+<div class="absolute top-4 right-4 rounded-full bg-black/50 px-3 py-1 text-[10px] font-bold text-white backdrop-blur-sm">
+                                NEW
+                            </div>
+</div>
+<div class="flex justify-between items-start px-1">
+<div>
+<h3 class="font-bold text-text-main dark:text-white leading-tight">Blush Romance</h3>
+<p class="text-xs font-medium text-text-secondary mt-1">Minimal • Pastel</p>
+</div>
+<button class="text-text-secondary hover:text-red-500 transition-colors material-symbols-outlined">favorite</button>
+</div>
+</div>
+</div>
+<div class="mt-8 flex justify-center">
+<button class="flex items-center gap-2 rounded-lg border border-border-light bg-white px-8 py-3 text-sm font-bold text-text-main transition-all hover:bg-primary/10 hover:border-primary/30 dark:bg-white/5 dark:border-white/10 dark:text-white dark:hover:bg-white/10">
+                        Load More Templates
+                        <span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<footer class="mt-10 border-t border-border-light bg-background-light py-10 dark:bg-background-dark dark:border-white/10">
+<div class="mx-auto flex max-w-[1440px] flex-col items-center justify-between gap-6 px-4 text-center md:flex-row md:text-left sm:px-6 lg:px-8">
+<p class="text-sm text-text-secondary">© 2024 ForeverUs. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="text-sm text-text-secondary hover:text-text-main dark:hover:text-white" href="#">Privacy</a>
+<a class="text-sm text-text-secondary hover:text-text-main dark:hover:text-white" href="#">Terms</a>
+<a class="text-sm text-text-secondary hover:text-text-main dark:hover:text-white" href="#">Contact</a>
+</div>
+</div>
+</footer>
+<script>
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const htmlElement = document.documentElement;
+    themeToggleBtn.addEventListener('click', () => {
+        if (htmlElement.classList.contains('dark')) {
+            htmlElement.classList.remove('dark');
+            htmlElement.classList.add('light');
+            localStorage.setItem('theme', 'light');
+        } else {
+            htmlElement.classList.remove('light');
+            htmlElement.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+        }
+    });
+    // Check local storage or system preference on load
+    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        htmlElement.classList.add('dark');
+        htmlElement.classList.remove('light');
+    } else {
+        htmlElement.classList.add('light');
+        htmlElement.classList.remove('dark');
+    }
+</script>
+
+</body></html>

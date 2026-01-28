@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ForeverUs - Luxury Indian Wedding Invitations</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&amp;family=Noto+Sans:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    "maroon": {
+                        DEFAULT: "#4a040e", 
+                        light: "#700B19",
+                        dark: "#2b0207"
+                    },
+                    "gold": {
+                        DEFAULT: "#D4AF37",
+                        light: "#F3E5AB",
+                        dim: "#8a7020",
+                        glow: "#ffe57f"
+                    },
+                    "champagne": "#F3E5AB",
+                    "obsidian": "#0a0405",     // Deepest dark
+                    "charcoal": "#1a0d0f",     // Slightly lighter dark
+                    "ivory": "#FDFBF7",        // Day background
+                    "blush": "#F9F0F0",        // Day secondary
+                    "primary": "#4a040e",      // Mapping to Maroon for semantic use
+                },
+                fontFamily: {
+                    "display": ["Noto Serif", "serif"],
+                    "sans": ["Noto Sans", "sans-serif"],
+                },
+                borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "2xl": "2rem", "full": "9999px"},
+                animation: {
+                    'float': 'float 6s ease-in-out infinite',
+                    'float-delayed': 'float 8s ease-in-out infinite 2s',
+                    'float-slow': 'float 10s ease-in-out infinite 1s',
+                    'scroll-bob': 'scrollBob 2s ease-in-out infinite',
+                    'shimmer': 'shimmer 2s linear infinite',
+                },
+                keyframes: {
+                    float: {
+                        '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
+                        '50%': { transform: 'translateY(-20px) rotate(10deg)' },
+                    },
+                    scrollBob: {
+                        '0%, 100%': { transform: 'translateY(0)' },
+                        '50%': { transform: 'translateY(10px)' },
+                    },
+                    shimmer: {
+                        '0%': { transform: 'translateX(-100%)' },
+                        '100%': { transform: 'translateX(100%)' }
+                    }
+                }
+            },
+        },
+    }
+</script>
+<style>
+    .glass-card {
+        background: rgba(26, 13, 15, 0.45);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(212, 175, 55, 0.2);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }html:not(.dark) .glass-card {
+        background: rgba(255, 255, 255, 0.6);
+        border: 1px solid rgba(74, 4, 14, 0.1);
+        box-shadow: 0 20px 40px -10px rgba(74, 4, 14, 0.1);
+    }
+    .glass-card-light {
+        background: rgba(26, 13, 15, 0.4);backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(212, 175, 55, 0.1);
+        box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.3);
+        transition: all 0.4s ease;
+    }html:not(.dark) .glass-card-light {
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid rgba(74, 4, 14, 0.05);
+        box-shadow: 0 10px 30px -5px rgba(74, 4, 14, 0.05);
+    }
+    .glass-card-light:hover {
+        transform: translateY(-5px);
+    }
+    html.dark .glass-card-light:hover {
+        background: rgba(26, 13, 15, 0.6);
+        border-color: rgba(212, 175, 55, 0.4);
+    }
+    html:not(.dark) .glass-card-light:hover {
+        background: rgba(255, 255, 255, 0.9);
+        border-color: rgba(74, 4, 14, 0.2);
+    }
+    .glass-nav {
+        background: rgba(10, 4, 5, 0.85);backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+    }
+    html:not(.dark) .glass-nav {
+        background: rgba(253, 251, 247, 0.85);border-bottom: 1px solid rgba(74, 4, 14, 0.05);
+    }
+    .text-shadow-gold {
+        text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+    html:not(.dark) .text-shadow-gold {
+        text-shadow: none;
+    }
+    .mouse-scroll {
+        width: 26px;
+        height: 42px;
+        border: 2px solid rgba(212, 175, 55, 0.6);
+        border-radius: 20px;
+        display: flex;
+        justify-content: center;
+        padding-top: 6px;
+    }
+    html:not(.dark) .mouse-scroll {
+        border-color: rgba(74, 4, 14, 0.4);
+    }
+    .mouse-scroll-dot {
+        width: 4px;
+        height: 8px;
+        background-color: #D4AF37;
+        border-radius: 2px;
+        animation: scroll-bob 1.5s infinite;
+    }
+    html:not(.dark) .mouse-scroll-dot {
+        background-color: #4a040e;
+    }
+</style>
+</head>
+<body class="bg-ivory dark:bg-obsidian font-display text-maroon dark:text-champagne overflow-x-hidden antialiased selection:bg-maroon selection:text-white transition-colors duration-500">
+<nav class="fixed top-0 left-0 right-0 z-50 w-full glass-nav transition-all duration-300">
+<div class="max-w-7xl mx-auto px-6 py-4">
+<div class="flex items-center justify-between">
+<a class="flex items-center gap-2 cursor-pointer group" href="#">
+<span class="material-symbols-outlined text-gold group-hover:text-maroon dark:group-hover:text-gold-light transition-colors text-3xl">diamond</span>
+<h2 class="text-maroon dark:text-white text-xl md:text-2xl font-bold tracking-tight">ForeverUs</h2>
+</a>
+<div class="hidden md:flex items-center gap-6 lg:gap-8">
+<a class="text-sm font-medium text-maroon/80 dark:text-champagne/80 hover:text-maroon dark:hover:text-gold transition-colors" href="#">Home</a>
+<a class="text-sm font-medium text-maroon/80 dark:text-champagne/80 hover:text-maroon dark:hover:text-gold transition-colors" href="#">Features</a>
+<a class="text-sm font-medium text-maroon/80 dark:text-champagne/80 hover:text-maroon dark:hover:text-gold transition-colors" href="#">Templates</a>
+<a class="text-sm font-medium text-maroon/80 dark:text-champagne/80 hover:text-maroon dark:hover:text-gold transition-colors" href="#">Pricing</a>
+<a class="text-sm font-medium text-maroon/80 dark:text-champagne/80 hover:text-maroon dark:hover:text-gold transition-colors" href="#">About</a>
+<a class="text-sm font-medium text-maroon/80 dark:text-champagne/80 hover:text-maroon dark:hover:text-gold transition-colors" href="#">Contact</a>
+<div class="h-4 w-px bg-maroon/20 dark:bg-champagne/20"></div>
+<button class="p-2 rounded-full hover:bg-maroon/5 dark:hover:bg-champagne/10 transition-colors text-maroon dark:text-gold group" id="theme-toggle">
+<span class="material-symbols-outlined dark:hidden group-hover:rotate-12 transition-transform">dark_mode</span>
+<span class="material-symbols-outlined hidden dark:block group-hover:-rotate-12 transition-transform shadow-gold-glow">light_mode</span>
+</button>
+<button class="bg-maroon hover:bg-maroon-light text-white text-sm font-bold py-2 px-5 rounded-lg transition-all duration-300 shadow-lg shadow-maroon/20 border border-transparent dark:border-gold/30">
+                    Get Started
+                </button>
+</div>
+<div class="flex items-center gap-4 md:hidden">
+<button class="text-maroon dark:text-gold" id="theme-toggle-mobile">
+<span class="material-symbols-outlined dark:hidden">dark_mode</span>
+<span class="material-symbols-outlined hidden dark:block">light_mode</span>
+</button>
+<button class="text-maroon dark:text-white hover:text-gold transition-colors">
+<span class="material-symbols-outlined text-3xl">menu</span>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<main class="relative min-h-screen w-full flex items-center justify-center">
+<div class="absolute inset-0 z-0">
+<img alt="Luxury Indian Wedding Background" class="w-full h-full object-cover object-center" data-alt="Cinematic shot of Indian couple in traditional gold and maroon wedding attire looking lovingly at each other" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0v-FDSBzePmm7rckMVd-K5C7-gaLMg-gxyicEZFK_4IhP4QqkJPn2cRkPmXz1lPiiV6VQKXp7lB9wtzjgU_IB-8MEtbtP23L9wYA3L1GVS5D3jJtqOsJohNl512JhfPhw4yhh_anLeMknXtOkeoPaCtsuRfxk4vHp9qskGoYuDVGeSVQtrtx6MQQMj_TxjaqMK_N_2a26O5yFheZuAxOSEmiAyNbIDQQ-GWVIVlPSUjNLJ0LzkKnta9OMunKiLvt6lGWNP8FjIfin"/>
+<div class="absolute inset-0 bg-gradient-to-b from-maroon/20 via-maroon/10 to-maroon/40 dark:from-obsidian/60 dark:via-obsidian/40 dark:to-obsidian/80 mix-blend-multiply transition-colors duration-500"></div>
+<div class="absolute inset-0 bg-ivory/20 dark:bg-black/40 transition-colors duration-500"></div>
+</div>
+<div class="absolute inset-0 z-10 overflow-hidden pointer-events-none opacity-60">
+<div class="absolute top-[20%] left-[15%] text-maroon/20 dark:text-gold/40 animate-float transform scale-150 transition-colors duration-500">
+<span class="material-symbols-outlined text-4xl">eco</span>
+</div>
+<div class="absolute top-[60%] right-[20%] text-maroon/10 dark:text-gold/30 animate-float-delayed transform rotate-45 scale-100 transition-colors duration-500">
+<span class="material-symbols-outlined text-3xl">eco</span>
+</div>
+<div class="absolute bottom-[20%] left-[30%] text-maroon/10 dark:text-gold/20 animate-float-slow transform -rotate-12 scale-125 transition-colors duration-500">
+<span class="material-symbols-outlined text-5xl">eco</span>
+</div>
+<div class="absolute top-[30%] right-[10%] text-maroon/10 dark:text-gold/30 animate-float transform rotate-90 scale-75 transition-colors duration-500">
+<span class="material-symbols-outlined text-2xl">eco</span>
+</div>
+</div>
+<div class="relative z-20 w-full px-4 md:px-10 flex flex-col items-center justify-center pt-20">
+<div class="glass-card w-full max-w-[800px] rounded-2xl p-8 md:p-14 text-center transform transition-all hover:scale-[1.01] duration-700">
+<div class="mb-6 inline-flex items-center justify-center w-12 h-12 rounded-full border border-maroon/20 dark:border-gold/30 bg-maroon/5 dark:bg-gold/5 text-maroon dark:text-gold transition-colors duration-500">
+<span class="material-symbols-outlined">favorite</span>
+</div>
+<h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-maroon dark:text-gold mb-6 leading-tight tracking-tight text-shadow-gold transition-colors duration-500">
+                Craft Your Forever, <br/>
+<span class="text-maroon/80 dark:text-white italic font-display">Digitally</span>
+</h1>
+<p class="text-base md:text-lg text-maroon/70 dark:text-champagne mb-10 max-w-2xl mx-auto font-sans font-light leading-relaxed transition-colors duration-500">
+                The premium platform for designing exquisite digital invitations that honor your traditions. Share your joy with elegance, style, and a touch of modern luxury.
+            </p>
+<div class="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 w-full">
+<button class="group relative w-full sm:w-auto min-w-[180px] h-14 overflow-hidden rounded-xl bg-maroon text-white shadow-lg shadow-maroon/30 transition-all hover:shadow-maroon/50 hover:-translate-y-0.5">
+<div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
+<span class="relative flex items-center justify-center gap-2 text-base font-bold tracking-wide">
+                        Get Started
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</span>
+</button>
+<button class="group w-full sm:w-auto min-w-[180px] h-14 rounded-xl border border-maroon dark:border-gold bg-transparent text-maroon dark:text-gold hover:bg-maroon dark:hover:bg-gold hover:text-white dark:hover:text-obsidian transition-all duration-300">
+<span class="flex items-center justify-center gap-2 text-base font-bold tracking-wide">
+                        View Templates
+                        <span class="material-symbols-outlined text-sm transition-transform group-hover:rotate-45">style</span>
+</span>
+</button>
+</div>
+<div class="mt-10 pt-8 border-t border-maroon/10 dark:border-white/10 flex flex-col items-center justify-center gap-3 transition-colors duration-500">
+<p class="text-xs uppercase tracking-widest text-maroon/60 dark:text-gold/70 font-sans">Trusted by over 10,000 couples</p>
+<div class="flex -space-x-3">
+<img alt="User" class="w-8 h-8 rounded-full border-2 border-ivory dark:border-obsidian" data-alt="Avatar of user 1" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWW3igZm1iZ6XVhFa3e8v1zCgN9ecEI7vJtJ-La9rskxVphlhQV6WIPidRsCAA2uJupbbZih8K0pLFmBc_2jyD-p5SkUizAnHApFjxNZWzXXyJqBPDbYv7PLsF_My-t0bp5xqrwWeq8Ajp6vI3twXvVNatp1bgEdHNe9SRkUM5j2Xh5rceMvRSS0PomnObnN2kcbkxxzRusAzA6ah65f43JAgi-ks3U6r8n4vVyeIeJ0dHqeqf4VOl2NDJkm0CSXWIY4BNSC4h-xan"/>
+<img alt="User" class="w-8 h-8 rounded-full border-2 border-ivory dark:border-obsidian" data-alt="Avatar of user 2" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzrME6RSXc_EdrkNle7-wgGs7OuWR6fRpkCS5z9JSwjm9KN76XcsdUAZateA96UrdjaTilnh_Jo-K8-6o9EKAp-kIK8ddi1OX54RcP47gxhutQer_yL4oMEq5e8Y7FIL422Ez7bd4xgwz5xq8SwBBn6j0GOtlaT9K9vsuE9_bOZ-fxf-z7oaYmxTu0uTq7BfHAL94oVlnuqxrtmv87hCXKYlIAIyoGAjJadogIJqD2n05fbaO6z3XFC-EFxGUE15lvTQn3C7GF5PWu"/>
+<img alt="User" class="w-8 h-8 rounded-full border-2 border-ivory dark:border-obsidian" data-alt="Avatar of user 3" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuWAt44rUAbAIiFl0nJ01A4qxfPAugp4VoIF3XbTCrB2CJC9q1lm2mf--fSlodrGPyFN_OU1yURmCLc8SN-sOzarCNyBI6vTma0Sfl-1DU4jeS-17M8lTa6iha1M_txR8_eb0Vz6bNxJujCaY24hq-rr6Pta0v5h8bXBuYLevgYYaZOzEOlJh0xSkdzjdXOM6meBpJKubR33Qa1W-ny854EYmjfFpkeCJacz2uOcduA5u7m2EwC1kpBmbzgNVn2VZQjxLTW0rnRWIv"/>
+<div class="w-8 h-8 rounded-full border-2 border-ivory dark:border-obsidian bg-maroon dark:bg-gold flex items-center justify-center text-[10px] font-bold text-white dark:text-obsidian font-sans transition-colors duration-500">+2k</div>
+</div>
+</div>
+</div>
+</div>
+<div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-3 cursor-pointer opacity-80 hover:opacity-100 transition-opacity">
+<div class="mouse-scroll backdrop-blur-sm bg-maroon/5 dark:bg-black/20">
+<div class="mouse-scroll-dot"></div>
+</div>
+<span class="text-[10px] uppercase tracking-[0.2em] text-maroon dark:text-gold font-sans font-medium">Scroll</span>
+</div>
+</main>
+<section class="relative bg-blush dark:bg-charcoal py-20 lg:py-28 overflow-hidden transition-colors duration-500">
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-1/2 bg-maroon/5 dark:bg-gold/5 blur-[100px] rounded-full pointer-events-none transition-colors duration-500"></div>
+<div class="max-w-7xl mx-auto px-6 relative z-10">
+<div class="mb-24 text-center">
+<p class="text-xs md:text-sm uppercase tracking-[0.2em] text-maroon/40 dark:text-white/40 font-sans mb-10 transition-colors">Featured In Luxury Publications</p>
+<div class="flex flex-wrap justify-center items-center gap-x-12 gap-y-8 md:gap-x-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-700">
+<h3 class="font-display text-2xl md:text-3xl lg:text-4xl italic text-maroon/80 dark:text-white/90">Vogue Weddings</h3>
+<div class="h-1 w-1 rounded-full bg-maroon/30 dark:bg-gold/30 hidden md:block"></div>
+<h3 class="font-display text-2xl md:text-3xl lg:text-4xl font-light tracking-wide text-maroon/80 dark:text-white/90">Brides <span class="text-maroon dark:text-gold font-normal">India</span></h3>
+<div class="h-1 w-1 rounded-full bg-maroon/30 dark:bg-gold/30 hidden md:block"></div>
+<h3 class="font-display text-2xl md:text-3xl lg:text-4xl font-bold tracking-tighter text-maroon/80 dark:text-white/90 uppercase text-lg">WeddingSutra</h3>
+<div class="h-1 w-1 rounded-full bg-maroon/30 dark:bg-gold/30 hidden md:block"></div>
+<h3 class="font-display text-xl md:text-2xl lg:text-3xl font-serif text-maroon/80 dark:text-white/90 tracking-widest">BAZAAR</h3>
+</div>
+</div>
+<div class="text-center mb-16 max-w-3xl mx-auto">
+<h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-maroon dark:text-gold mb-6 transition-colors">Redefining The Wedding Experience</h2>
+<div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-maroon/50 dark:via-gold/50 to-transparent mx-auto mb-6 transition-colors"></div>
+<p class="text-maroon/60 dark:text-gray-400 font-sans font-light text-lg transition-colors">Blending centuries of tradition with the convenience of modern technology.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="glass-card-light p-8 lg:p-10 rounded-2xl flex flex-col items-start group">
+<div class="w-14 h-14 rounded-full bg-maroon/5 dark:bg-gold/10 border border-maroon/10 dark:border-gold/20 flex items-center justify-center mb-6 group-hover:bg-maroon/10 dark:group-hover:bg-gold/20 transition-colors">
+<span class="material-symbols-outlined text-maroon dark:text-gold text-2xl">history_edu</span>
+</div>
+<h3 class="text-xl font-display font-bold text-maroon dark:text-white mb-3">Modernizing Tradition</h3>
+<p class="text-maroon/60 dark:text-champagne/70 font-sans text-sm leading-relaxed mb-6">
+                    We bridge the gap between timeless customs and the digital age. Honor your heritage with designs that feel authentic, yet function flawlessly for the modern guest.
+                </p>
+<a class="mt-auto text-maroon dark:text-gold text-sm font-bold tracking-wide flex items-center gap-2 group-hover:gap-3 transition-all" href="#">
+                    Our Philosophy <span class="material-symbols-outlined text-base">arrow_right_alt</span>
+</a>
+</div>
+<div class="glass-card-light p-8 lg:p-10 rounded-2xl flex flex-col items-start group">
+<div class="w-14 h-14 rounded-full bg-maroon/5 dark:bg-gold/10 border border-maroon/10 dark:border-gold/20 flex items-center justify-center mb-6 group-hover:bg-maroon/10 dark:group-hover:bg-gold/20 transition-colors">
+<span class="material-symbols-outlined text-maroon dark:text-gold text-2xl">dashboard_customize</span>
+</div>
+<h3 class="text-xl font-display font-bold text-maroon dark:text-white mb-3">Effortless Logistics</h3>
+<p class="text-maroon/60 dark:text-champagne/70 font-sans text-sm leading-relaxed mb-6">
+                    Manage thousands of guests, RSVPs, and dietary preferences without the chaos. Our unified dashboard transforms complex logistics into a seamless experience.
+                </p>
+<a class="mt-auto text-maroon dark:text-gold text-sm font-bold tracking-wide flex items-center gap-2 group-hover:gap-3 transition-all" href="#">
+                    View Features <span class="material-symbols-outlined text-base">arrow_right_alt</span>
+</a>
+</div>
+<div class="glass-card-light p-8 lg:p-10 rounded-2xl flex flex-col items-start group">
+<div class="w-14 h-14 rounded-full bg-maroon/5 dark:bg-gold/10 border border-maroon/10 dark:border-gold/20 flex items-center justify-center mb-6 group-hover:bg-maroon/10 dark:group-hover:bg-gold/20 transition-colors">
+<span class="material-symbols-outlined text-maroon dark:text-gold text-2xl">volunteer_activism</span>
+</div>
+<h3 class="text-xl font-display font-bold text-maroon dark:text-white mb-3">Emotional Resonance</h3>
+<p class="text-maroon/60 dark:text-champagne/70 font-sans text-sm leading-relaxed mb-6">
+                    More than just an invite—it's the first chapter of your story. Build anticipation and a deep emotional connection with your guests long before the big day arrives.
+                </p>
+<a class="mt-auto text-maroon dark:text-gold text-sm font-bold tracking-wide flex items-center gap-2 group-hover:gap-3 transition-all" href="#">
+                    See Examples <span class="material-symbols-outlined text-base">arrow_right_alt</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+<footer class="bg-maroon dark:bg-obsidian border-t border-gold/20 pt-24 pb-12 relative overflow-hidden transition-colors duration-500">
+<div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold/50 to-transparent"></div>
+<div class="absolute -bottom-[20%] -right-[10%] w-[600px] h-[600px] bg-gold/5 rounded-full blur-[120px] pointer-events-none"></div>
+<div class="max-w-7xl mx-auto px-6 relative z-10">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-20">
+<div>
+<h4 class="font-display text-gold text-lg font-medium tracking-wide mb-8">Product</h4>
+<ul class="space-y-4 font-sans text-sm font-light">
+<li><a class="text-champagne/70 hover:text-gold transition-colors duration-300 block w-fit" href="#">Templates</a></li>
+<li><a class="text-champagne/70 hover:text-gold transition-colors duration-300 block w-fit" href="#">Features</a></li>
+<li><a class="text-champagne/70 hover:text-gold transition-colors duration-300 block w-fit" href="#">Pricing</a></li>
+<li><a class="text-champagne/70 hover:text-gold transition-colors duration-300 block w-fit" href="#">RSVP</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-display text-gold text-lg font-medium tracking-wide mb-8">Company</h4>
+<ul class="space-y-4 font-sans text-sm font-light">
+<li><a class="text-champagne/70 hover:text-gold transition-colors duration-300 block w-fit" href="#">About Us</a></li>
+<li><a class="text-champagne/70 hover:text-gold transition-colors duration-300 block w-fit" href="#">Brand Story</a></li>
+<li><a class="text-champagne/70 hover:text-gold transition-colors duration-300 block w-fit" href="#">Careers</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-display text-gold text-lg font-medium tracking-wide mb-8">Support</h4>
+<ul class="space-y-4 font-sans text-sm font-light">
+<li><a class="text-champagne/70 hover:text-gold transition-colors duration-300 block w-fit" href="#">FAQ</a></li>
+<li><a class="text-champagne/70 hover:text-gold transition-colors duration-300 block w-fit" href="#">Contact</a></li>
+<li><a class="text-champagne/70 hover:text-gold transition-colors duration-300 block w-fit" href="#">Privacy Policy</a></li>
+<li><a class="text-champagne/70 hover:text-gold transition-colors duration-300 block w-fit" href="#">Terms</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-display text-gold text-lg font-medium tracking-wide mb-6">Subscribe to our Newsletter</h4>
+<p class="text-champagne/60 font-sans text-sm mb-6 leading-relaxed font-light">Stay updated with the latest trends in luxury weddings and platform updates.</p>
+<form class="mb-8 relative group">
+<input class="w-full bg-black/20 border border-gold/30 text-champagne px-4 py-3 rounded-lg focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold/50 transition-all font-sans text-sm placeholder:text-champagne/30" placeholder="Email Address" type="email"/>
+<button class="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 text-gold/70 hover:text-gold transition-colors">
+<span class="material-symbols-outlined text-xl">arrow_forward</span>
+</button>
+</form>
+<div class="flex items-center gap-6">
+<a class="text-gold/60 hover:text-gold transition-all hover:-translate-y-1 duration-300" href="#">
+<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path clip-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772 4.902 4.902 0 011.772-1.153c.636-.247 1.363-.416 2.427-.465 1.067-.047 1.409-.06 4.123-.06h.08zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" fill-rule="evenodd"></path></svg>
+</a>
+<a class="text-gold/60 hover:text-gold transition-all hover:-translate-y-1 duration-300" href="#">
+<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path clip-rule="evenodd" d="M12.007 0C5.376 0 0 5.375 0 12.007c0 4.985 3.018 9.274 7.29 11.082-.012-.87.058-1.92.203-2.753l1.107-4.693s-.284-.57-.284-1.41c0-1.323.767-2.31 1.722-2.31.812 0 1.205.61 1.205 1.34 0 .817-.52 2.04-0.79 3.173-.225.95.476 1.724 1.413 1.724 1.695 0 3.002-1.787 3.002-4.368 0-2.285-1.642-3.878-3.987-3.878-2.905 0-4.61 2.18-4.61 4.43 0 .876.337 1.816.758 2.326.084.102.096.192.07.295l-.283 1.168c-.046.184-.15.223-.346.134-1.29-.6-2.097-2.484-2.097-3.998 0-3.254 2.366-6.248 6.826-6.248 3.586 0 6.375 2.557 6.375 5.97 0 3.562-2.246 6.43-5.362 6.43-1.047 0-2.032-.544-2.37-1.186l-.645 2.456c-.234.906-.867 2.04-1.29 2.732 1.144.34 2.36.524 3.615.524 6.63 0 12.007-5.376 12.007-12.007C24.013 5.375 18.637 0 12.007 0z" fill-rule="evenodd"></path></svg>
+</a>
+<a class="text-gold/60 hover:text-gold transition-all hover:-translate-y-1 duration-300" href="#">
+<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path clip-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" fill-rule="evenodd"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="border-t border-gold/10 pt-12 flex flex-col items-center justify-center relative z-10">
+<div class="flex items-center gap-2 mb-4 group cursor-pointer">
+<span class="material-symbols-outlined text-gold group-hover:text-champagne transition-colors text-3xl">diamond</span>
+<h2 class="text-champagne text-2xl font-bold tracking-tight font-display">ForeverUs</h2>
+</div>
+<p class="text-gold font-display italic text-base tracking-widest mb-8">Made with love for your forever</p>
+<div class="flex flex-col md:flex-row items-center justify-between w-full text-xs text-champagne/40 font-sans border-t border-gold/10 pt-8 max-w-7xl mx-auto px-6">
+<p>© 2024 ForeverUs. All rights reserved.</p>
+<div class="flex gap-6 mt-4 md:mt-0">
+<a class="hover:text-gold transition-colors" href="#">Privacy</a>
+<a class="hover:text-gold transition-colors" href="#">Terms</a>
+<a class="hover:text-gold transition-colors" href="#">Sitemap</a>
+</div>
+</div>
+</div>
+</footer>
+<script>
+    // Simple script to toggle theme functionality
+    const toggleBtn = document.getElementById('theme-toggle');
+    const toggleBtnMobile = document.getElementById('theme-toggle-mobile');
+    const htmlElement = document.documentElement;
+    function toggleTheme() {
+        htmlElement.classList.toggle('dark');
+    }
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', toggleTheme);
+    }
+    if (toggleBtnMobile) {
+        toggleBtnMobile.addEventListener('click', toggleTheme);
+    }
+</script>
+
+</body></html>

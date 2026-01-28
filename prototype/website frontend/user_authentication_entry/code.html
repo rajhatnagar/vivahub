@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>User Authentication Entry</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#be123c", "background-light": "#f8f6f6", "background-dark": "#211115", "luxury-gold": "#D4AF37"}, fontFamily: {display: "Noto Serif"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased overflow-x-hidden">
+<div class="flex min-h-screen w-full flex-row">
+<!-- Left Side: Luxury Image Panel -->
+<!-- Hidden on mobile, visible on lg screens (50% width) -->
+<div class="relative hidden lg:flex w-1/2 flex-col bg-slate-900 overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-90 transition-transform duration-1000 hover:scale-105" data-alt="Intricate luxury Indian wedding henna designs on hands with gold jewelry details" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCftaXCDAvZTESiuwZLYUfrRIlNqAjGA4DlF1AatBgxSpWDMm_-6HRU5W2ba5nan-sQKULZyxGJbMGP5FIZx_ERmqGHN9duFaR-6kWo_AeayP5rTub5L1MJUzvb8vwVm1iI4pI6j_RBUSGRMu7af73KSeYxuaLSJVr7cWAeOVMF7u7tNbgyLSRkCRLh2K5VV__WsGTupYsly9CzR5eDWilh_tT-FXCNE7H_EH2n8rEQebiTeY1nyYDSzQDeBMX3gt7mCylnb9VSpzjH');">
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+<!-- Optional Overlay Content -->
+<div class="absolute bottom-0 left-0 p-12 text-white">
+<p class="text-lg font-light tracking-wide opacity-90">Experience the grandeur</p>
+<h2 class="mt-2 text-4xl font-bold leading-tight">Crafting Timeless Memories for Your Special Day</h2>
+</div>
+</div>
+<!-- Right Side: Authentication Form -->
+<div class="flex w-full lg:w-1/2 flex-col justify-center items-center px-6 py-12 lg:px-20 xl:px-32 bg-background-light dark:bg-background-dark transition-colors duration-300">
+<div class="w-full max-w-[480px] flex flex-col gap-6">
+<!-- Go Back Link -->
+<div class="mb-4">
+<a class="inline-flex items-center gap-2 text-sm font-medium text-luxury-gold hover:text-luxury-gold/80 transition-colors group" href="#">
+<span class="material-symbols-outlined text-lg transition-transform group-hover:-translate-x-1">arrow_back</span>
+                        Go Back to Home
+                    </a>
+</div>
+<!-- Header -->
+<div class="flex flex-col gap-2">
+<h1 class="text-3xl font-black tracking-tight text-slate-900 dark:text-white sm:text-4xl">Welcome Back</h1>
+<p class="text-slate-500 dark:text-slate-400 text-base">Create the perfect invitation for your special day.</p>
+</div>
+<!-- Segmented Control (Toggle) -->
+<div class="w-full rounded-full bg-slate-200 dark:bg-slate-800 p-1.5 flex mt-4">
+<label class="flex-1 cursor-pointer">
+<input checked="" class="peer sr-only" name="auth-mode" type="radio" value="login"/>
+<div class="flex items-center justify-center rounded-full py-2.5 text-sm font-bold text-slate-500 transition-all peer-checked:bg-white peer-checked:text-primary peer-checked:shadow-sm dark:text-slate-400 dark:peer-checked:bg-slate-700 dark:peer-checked:text-white">
+                            Login
+                        </div>
+</label>
+<label class="flex-1 cursor-pointer">
+<input class="peer sr-only" name="auth-mode" type="radio" value="register"/>
+<div class="flex items-center justify-center rounded-full py-2.5 text-sm font-bold text-slate-500 transition-all peer-checked:bg-white peer-checked:text-primary peer-checked:shadow-sm dark:text-slate-400 dark:peer-checked:bg-slate-700 dark:peer-checked:text-white">
+                            Register
+                        </div>
+</label>
+</div>
+<!-- Form -->
+<form class="flex flex-col gap-5 mt-2">
+<div class="space-y-5">
+<label class="block space-y-2">
+<span class="text-sm font-semibold text-slate-900 dark:text-slate-200 ml-1">Email Address</span>
+<input class="w-full rounded-full border border-slate-300 bg-white px-5 py-3.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500 transition-all" placeholder="Enter your email" type="email"/>
+</label>
+<label class="block space-y-2">
+<div class="flex items-center justify-between ml-1">
+<span class="text-sm font-semibold text-slate-900 dark:text-slate-200">Password</span>
+<a class="text-xs font-medium text-primary hover:underline" href="#">Forgot password?</a>
+</div>
+<div class="relative">
+<input class="w-full rounded-full border border-slate-300 bg-white px-5 py-3.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500 transition-all" placeholder="Enter your password" type="password"/>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200" type="button">
+<span class="material-symbols-outlined text-[20px]">visibility_off</span>
+</button>
+</div>
+</label>
+</div>
+<!-- Primary Button -->
+<button class="mt-2 flex w-full items-center justify-center gap-2 rounded-full bg-primary py-4 text-sm font-bold text-white shadow-lg shadow-primary/30 transition-all hover:bg-primary/90 hover:shadow-primary/40 active:scale-[0.98]" type="button">
+                        Sign In
+                    </button>
+</form>
+<!-- Divider -->
+<div class="relative flex items-center py-2">
+<div class="flex-grow border-t border-slate-300 dark:border-slate-700"></div>
+<span class="mx-4 flex-shrink-0 text-xs font-medium text-slate-500 dark:text-slate-400">OR CONTINUE WITH</span>
+<div class="flex-grow border-t border-slate-300 dark:border-slate-700"></div>
+</div>
+<!-- Social Login Buttons -->
+<div class="flex flex-col gap-3 sm:flex-row">
+<button class="flex flex-1 items-center justify-center gap-3 rounded-full border border-slate-300 bg-white px-4 py-3 text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 hover:border-slate-400 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700" type="button">
+<img alt="Google Logo" class="h-5 w-5" data-alt="Google logo icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAoewcVkX94C27G2Dv6_uE01KzaXM9c547QuCclebGlJo2x_fOuutQ7IHAQp08chF7wb9UkHp2z5HwzvG0oWWnQ-XvzeqIZA0LgnKSZSjS5Hn79ArEdtxxCRxXqjsc1dEf4DFbv-VMfoLYfBUNqAvjhl_XrHJSA6t35y6Y7JZGslrrWO3VEBJmiL5n0tzlLRrOfK-gjg9vagfJDVqlbt7k__39qywOa9Vs2T76QxHQ9EsEaOqHrWsBoPW4aTyVD-FkH3_hbqOcc3rF"/>
+<span>Google</span>
+</button>
+<button class="flex flex-1 items-center justify-center gap-3 rounded-full border border-slate-300 bg-white px-4 py-3 text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 hover:border-slate-400 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700" type="button">
+<img alt="Apple Logo" class="h-5 w-5 dark:invert" data-alt="Apple logo icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQ9id1ORmyeEsRW5GO_7irtj-9gYchxlRA5ZYZbQKV1rksNTtVAqtIjlvKizr3852b6utxXfAKcxvdNVwAmE4Pcx8BN-BWaAdlozVVc7jfdlJ8WTToHTVnhdJRst4lTXxBXFRJ_v2iTiGbOu5h-nAdA0CeL6gXJs0kBcjycOkhh05Ztg_2VUdIrFx0KiverTnBuY0UHzmRUn9pNaCr1UT2hx45QghuOVnyTq3YfMlRcMrBc3o1a_vCk7oGqWpOS4gOfsfIxTn24pmN"/>
+<span>Apple</span>
+</button>
+</div>
+<!-- Bottom CTA -->
+<p class="mt-4 text-center text-sm text-slate-500 dark:text-slate-400">
+                    Don't have an account? 
+                    <a class="font-bold text-primary hover:underline" href="#">Sign up now</a>
+</p>
+</div>
+</div>
+</div>
+</body></html>

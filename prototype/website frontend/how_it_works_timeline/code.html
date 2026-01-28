@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>How It Works - Royal Invites</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&amp;family=Noto+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#d41121",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221012",
+                        "gold": "#C5A059",
+                    },
+                    fontFamily: {
+                        "display": ["Noto Serif", "serif"],
+                        "sans": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                    backgroundImage: {
+                        'paisley-pattern': "url('data:image/svg+xml,%3Csvg width=\\'60\\' height=\\'60\\' viewBox=\\'0 0 60 60\\' xmlns=\\'http://www.w3.org/2000/svg\\'%3E%3Cg fill=\\'none\\' fill-rule=\\'evenodd\\'%3E%3Cg fill=\\'%23d41121\\' fill-opacity=\\'0.03\\'%3E%3Cpath d=\\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: "Noto Serif", serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#1b0d0f] dark:text-white overflow-x-hidden">
+<!-- Top Navigation -->
+<header class="sticky top-0 z-50 w-full border-b border-[#e6d0d2] bg-background-light/95 backdrop-blur dark:bg-background-dark/95 dark:border-[#3a1d1f]">
+<div class="px-6 md:px-10 lg:px-40 py-4 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="size-8 text-primary">
+<!-- Custom SVG Logo Icon -->
+<svg class="w-full h-full" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M39.475 21.6262C40.358 21.4363 40.6863 21.5589 40.7581 21.5934C40.7876 21.655 40.8547 21.857 40.8082 22.3336C40.7408 23.0255 40.4502 24.0046 39.8572 25.2301C38.6799 27.6631 36.5085 30.6631 33.5858 33.5858C30.6631 36.5085 27.6632 38.6799 25.2301 39.8572C24.0046 40.4502 23.0255 40.7407 22.3336 40.8082C21.8571 40.8547 21.6551 40.7875 21.5934 40.7581C21.5589 40.6863 21.4363 40.358 21.6262 39.475C21.8562 38.4054 22.4689 36.9657 23.5038 35.2817C24.7575 33.2417 26.5497 30.9744 28.7621 28.762C30.9744 26.5497 33.2417 24.7574 35.2817 23.5037C36.9657 22.4689 38.4054 21.8562 39.475 21.6262ZM4.41189 29.2403L18.7597 43.5881C19.8813 44.7097 21.4027 44.9179 22.7217 44.7893C24.0585 44.659 25.5148 44.1631 26.9723 43.4579C29.9052 42.0387 33.2618 39.5667 36.4142 36.4142C39.5667 33.2618 42.0387 29.9052 43.4579 26.9723C44.1631 25.5148 44.659 24.0585 44.7893 22.7217C44.9179 21.4027 44.7097 19.8813 43.5881 18.7597L29.2403 4.41187C27.8527 3.02428 25.8765 3.02573 24.2861 3.36776C22.6081 3.72863 20.7334 4.58419 18.8396 5.74801C16.4978 7.18716 13.9881 9.18353 11.5858 11.5858C9.18354 13.988 7.18717 16.4978 5.74802 18.8396C4.58421 20.7334 3.72865 22.6081 3.36778 24.2861C3.02574 25.8765 3.02429 27.8527 4.41189 29.2403Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-[#1b0d0f] dark:text-white text-xl font-bold tracking-tight">Royal Invites</h2>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-[#1b0d0f] dark:text-gray-200 text-sm font-medium hover:text-primary transition-colors" href="#">Templates</a>
+<a class="text-[#1b0d0f] dark:text-gray-200 text-sm font-medium hover:text-primary transition-colors" href="#">Pricing</a>
+<a class="text-[#1b0d0f] dark:text-gray-200 text-sm font-medium hover:text-primary transition-colors" href="#">About Us</a>
+<a class="text-[#1b0d0f] dark:text-gray-200 text-sm font-medium hover:text-primary transition-colors" href="#">Login</a>
+<button class="bg-primary hover:bg-red-700 text-white text-sm font-bold px-5 py-2.5 rounded-xl transition-all shadow-md hover:shadow-lg">
+                    Get Started
+                </button>
+</nav>
+<button class="md:hidden text-primary">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</header>
+<!-- Hero Section -->
+<section class="relative pt-16 pb-12 md:pt-24 md:pb-20 text-center bg-paisley-pattern">
+<div class="px-4 md:px-40">
+<div class="max-w-[800px] mx-auto flex flex-col items-center gap-4">
+<h1 class="text-primary text-5xl md:text-6xl font-black leading-tight tracking-tight">
+                    How It Works
+                </h1>
+<div class="w-24 h-1 bg-gold rounded-full my-2"></div>
+<p class="text-[#1b0d0f]/80 dark:text-gray-300 text-lg md:text-xl font-normal leading-relaxed max-w-xl">
+                    Crafting your dream invitation in 4 simple steps. We blend tradition with technology to create timeless memories.
+                </p>
+</div>
+</div>
+</section>
+<!-- Timeline Section -->
+<section class="relative py-10 md:py-20 px-4 md:px-10 overflow-hidden bg-gradient-to-b from-background-light via-[#fcfcfc] to-background-light dark:from-background-dark dark:via-[#2a1416] dark:to-background-dark">
+<div class="max-w-6xl mx-auto relative">
+<!-- Vertical Gold Line -->
+<div class="absolute left-[19px] md:left-1/2 top-0 bottom-0 w-[2px] bg-gradient-to-b from-transparent via-gold to-transparent md:-translate-x-1/2 z-0"></div>
+<!-- Step 1 -->
+<div class="relative flex flex-col md:flex-row items-start md:items-center justify-between mb-24 group">
+<!-- Content (Left on Desktop) -->
+<div class="pl-12 md:pl-0 md:pr-16 md:w-1/2 md:text-right order-2 md:order-1 mt-4 md:mt-0">
+<span class="text-gold font-bold text-sm tracking-widest uppercase mb-1 block">Step 01</span>
+<h3 class="text-3xl font-bold text-primary mb-3">Select a Template</h3>
+<p class="text-gray-600 dark:text-gray-300 leading-relaxed text-lg">
+                        Browse our curated collection of royal themes and traditional motifs. Choose from thousands of designs that reflect your style and heritage.
+                    </p>
+</div>
+<!-- Dot Marker -->
+<div class="absolute left-0 md:left-1/2 w-10 h-10 rounded-full bg-background-light dark:bg-background-dark border-4 border-gold z-10 md:-translate-x-1/2 flex items-center justify-center shadow-lg shadow-gold/20 order-1 md:order-2">
+<div class="w-3 h-3 bg-primary rounded-full"></div>
+</div>
+<!-- Image (Right on Desktop) -->
+<div class="pl-12 md:pl-16 md:w-1/2 order-3 md:order-3 w-full">
+<div class="relative overflow-hidden rounded-lg shadow-xl aspect-video md:aspect-[4/3] group-hover:scale-[1.02] transition-transform duration-500 bg-background-light">
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10"></div>
+<div class="w-full h-full bg-cover bg-center" data-alt="Elegant luxury wedding invitation cards arranged on a table" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB79z8_QZCSS7Ji6mZGyt1_nIHLlv2tfway5gpqMMLHTGIlqsa3n6-Ztw-JO8V-2hzBQYdZya9jXxDSMnCvIdobms2DN2LCmcUvARIdKdF_aWcjSDBVkeqo-dtpP95my4RXVtB-ZevE7j-xu0XuuXA5VWb4_nkO4f2Q7qb5vWtDbXG8ne44C153stY1rBpMr2YBVea_8FYSc7MvrUrGKvRTm7h1d1cuuJeXExo-B3FQVx-_ZHg_w1oHPKG1dliNjsh5mEmSbmdru3sF');"></div>
+</div>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="relative flex flex-col md:flex-row items-start md:items-center justify-between mb-24 group">
+<!-- Image (Left on Desktop) -->
+<div class="pl-12 md:pl-0 md:pr-16 md:w-1/2 order-3 md:order-1 w-full mt-4 md:mt-0">
+<div class="relative overflow-hidden rounded-lg shadow-xl aspect-video md:aspect-[4/3] group-hover:scale-[1.02] transition-transform duration-500 bg-background-light">
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10"></div>
+<div class="w-full h-full bg-cover bg-center" data-alt="Close up of ornate calligraphy and details on a wedding invitation" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAWs5xf2IKVYXl4-lbRR63HhSpV_PBFnn8nEgUuvFGWiHL3jX37oztW3DSMvh8QlLtGWdqhi0C_Zp1bMTcObY4-Z2875F10ZtDfK7rYuOvwioybFEZsAZT0o1BvcX9faZRmrvLmN7WBA2DoPMwssTjCympSL49EJQqJoLJMM-okidGPOsir9fNT6wpSAhMCZtE1Q_Fh_nyi8pZt3Kr4_Sa3vefIFh-i7NeTa0hfzUbNFMnCpbvGs6c813aUmMrS0Pz_5gqJ_lnV_4_H');"></div>
+</div>
+</div>
+<!-- Dot Marker -->
+<div class="absolute left-0 md:left-1/2 w-10 h-10 rounded-full bg-background-light dark:bg-background-dark border-4 border-gold z-10 md:-translate-x-1/2 flex items-center justify-center shadow-lg shadow-gold/20 order-1 md:order-2">
+<div class="w-3 h-3 bg-primary rounded-full"></div>
+</div>
+<!-- Content (Right on Desktop) -->
+<div class="pl-12 md:pl-16 md:w-1/2 md:text-left order-2 md:order-3">
+<span class="text-gold font-bold text-sm tracking-widest uppercase mb-1 block">Step 02</span>
+<h3 class="text-3xl font-bold text-primary mb-3">Personalize Details</h3>
+<p class="text-gray-600 dark:text-gray-300 leading-relaxed text-lg">
+                        Add your event dates, venue locations, and family details with ease using our intuitive editor. Customize fonts, colors, and layouts to perfection.
+                    </p>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="relative flex flex-col md:flex-row items-start md:items-center justify-between mb-24 group">
+<!-- Content (Left on Desktop) -->
+<div class="pl-12 md:pl-0 md:pr-16 md:w-1/2 md:text-right order-2 md:order-1 mt-4 md:mt-0">
+<span class="text-gold font-bold text-sm tracking-widest uppercase mb-1 block">Step 03</span>
+<h3 class="text-3xl font-bold text-primary mb-3">Preview Your Invite</h3>
+<p class="text-gray-600 dark:text-gray-300 leading-relaxed text-lg">
+                        Experience a real-time preview of your digital invitation before finalizing. See how it looks on mobile and desktop devices instantly.
+                    </p>
+</div>
+<!-- Dot Marker -->
+<div class="absolute left-0 md:left-1/2 w-10 h-10 rounded-full bg-background-light dark:bg-background-dark border-4 border-gold z-10 md:-translate-x-1/2 flex items-center justify-center shadow-lg shadow-gold/20 order-1 md:order-2">
+<div class="w-3 h-3 bg-primary rounded-full"></div>
+</div>
+<!-- Image (Right on Desktop) -->
+<div class="pl-12 md:pl-16 md:w-1/2 order-3 md:order-3 w-full">
+<div class="relative overflow-hidden rounded-lg shadow-xl aspect-video md:aspect-[4/3] group-hover:scale-[1.02] transition-transform duration-500 bg-background-light">
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10"></div>
+<div class="w-full h-full bg-cover bg-center" data-alt="Person holding a smartphone displaying a digital invitation preview" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDXahpxJQvLlUM0MJF4Lp0HO2-d0CbkUHd0SmLc0a529ex9BxQWJvjz2fLZAnxu5LlvEn6-Wxu8IhHkNxpee7aCzowGUxoEDXor_raOrjP4kabrZdzQk6yHETk2-_-ir_8tOMnrbOOT6uX7pxGLHDeGasx9qISQV6ayWSVzNRp7ruiS51NJp8QyOlcYjGm4wvOnHUBRf_O4L7Sp8VYXjsrc78weU6d9477ZEFJQC0kH5L14J1NdM0V3mzn674sogcAhjHyG0J8KxZZP');"></div>
+</div>
+</div>
+</div>
+<!-- Step 4 -->
+<div class="relative flex flex-col md:flex-row items-start md:items-center justify-between group">
+<!-- Image (Left on Desktop) -->
+<div class="pl-12 md:pl-0 md:pr-16 md:w-1/2 order-3 md:order-1 w-full mt-4 md:mt-0">
+<div class="relative overflow-hidden rounded-lg shadow-xl aspect-video md:aspect-[4/3] group-hover:scale-[1.02] transition-transform duration-500 bg-background-light">
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10"></div>
+<div class="w-full h-full bg-cover bg-center" data-alt="Digital tablet showing RSVP tracking dashboard and guest list" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC1SJZdhXJmSUtWjobl07BZmp-UUazHTje7NW9WshqIIsuuAxtpuAfGDia17uV-qANFnf4erm1nf-UnPWKgnGkiRj4syKlfWtsK0XddCHchZ12UPHlSAehUQdfqJjWm9mFuUsLHw8pZp2hqzAD1oqMU7kM6bMSuDBwI0mKKH7m1x7NL_zq6EL7oolvBqlziq4ZMmf8BxCMVbqqdb2WRjdaK8ZDwproYdmS7aXyqD_AWprUfkFDJqchdyqhxr3LLbJgNVscAec88Pk71');"></div>
+</div>
+</div>
+<!-- Dot Marker -->
+<div class="absolute left-0 md:left-1/2 w-10 h-10 rounded-full bg-background-light dark:bg-background-dark border-4 border-gold z-10 md:-translate-x-1/2 flex items-center justify-center shadow-lg shadow-gold/20 order-1 md:order-2">
+<div class="w-3 h-3 bg-primary rounded-full"></div>
+</div>
+<!-- Content (Right on Desktop) -->
+<div class="pl-12 md:pl-16 md:w-1/2 md:text-left order-2 md:order-3">
+<span class="text-gold font-bold text-sm tracking-widest uppercase mb-1 block">Step 04</span>
+<h3 class="text-3xl font-bold text-primary mb-3">Share &amp; Track</h3>
+<p class="text-gray-600 dark:text-gray-300 leading-relaxed text-lg">
+                        Send via WhatsApp, Email, or SMS with a single click. Track opens and RSVPs instantly through your personalized dashboard.
+                    </p>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="py-20 px-4 md:px-10 bg-white dark:bg-[#2a1416]">
+<div class="max-w-4xl mx-auto text-center bg-background-light dark:bg-background-dark border border-gold/20 rounded-2xl p-10 md:p-16 shadow-2xl relative overflow-hidden">
+<!-- Decorative corner flourishes -->
+<div class="absolute top-0 left-0 w-20 h-20 border-t-4 border-l-4 border-gold/40 rounded-tl-2xl"></div>
+<div class="absolute bottom-0 right-0 w-20 h-20 border-b-4 border-r-4 border-gold/40 rounded-br-2xl"></div>
+<h2 class="text-3xl md:text-5xl font-black text-primary mb-6 tracking-tight">Ready to begin your journey?</h2>
+<p class="text-lg text-gray-600 dark:text-gray-300 mb-10 max-w-2xl mx-auto">
+                Create a timeless invitation that your guests will cherish forever. Start designing your perfect wedding invite today.
+            </p>
+<button class="bg-primary hover:bg-red-800 text-white text-lg font-bold px-10 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+                Start Creating Now
+            </button>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-background-light dark:bg-background-dark border-t border-[#e6d0d2] dark:border-[#3a1d1f] py-12 px-6 md:px-40">
+<div class="max-w-6xl mx-auto flex flex-col gap-8 text-center">
+<!-- Logo in Footer -->
+<div class="flex items-center justify-center gap-3 mb-4">
+<div class="size-6 text-primary/80">
+<svg class="w-full h-full" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M39.475 21.6262C40.358 21.4363 40.6863 21.5589 40.7581 21.5934C40.7876 21.655 40.8547 21.857 40.8082 22.3336C40.7408 23.0255 40.4502 24.0046 39.8572 25.2301C38.6799 27.6631 36.5085 30.6631 33.5858 33.5858C30.6631 36.5085 27.6632 38.6799 25.2301 39.8572C24.0046 40.4502 23.0255 40.7407 22.3336 40.8082C21.8571 40.8547 21.6551 40.7875 21.5934 40.7581C21.5589 40.6863 21.4363 40.358 21.6262 39.475C21.8562 38.4054 22.4689 36.9657 23.5038 35.2817C24.7575 33.2417 26.5497 30.9744 28.7621 28.762C30.9744 26.5497 33.2417 24.7574 35.2817 23.5037C36.9657 22.4689 38.4054 21.8562 39.475 21.6262ZM4.41189 29.2403L18.7597 43.5881C19.8813 44.7097 21.4027 44.9179 22.7217 44.7893C24.0585 44.659 25.5148 44.1631 26.9723 43.4579C29.9052 42.0387 33.2618 39.5667 36.4142 36.4142C39.5667 33.2618 42.0387 29.9052 43.4579 26.9723C44.1631 25.5148 44.659 24.0585 44.7893 22.7217C44.9179 21.4027 44.7097 19.8813 43.5881 18.7597L29.2403 4.41187C27.8527 3.02428 25.8765 3.02573 24.2861 3.36776C22.6081 3.72863 20.7334 4.58419 18.8396 5.74801C16.4978 7.18716 13.9881 9.18353 11.5858 11.5858C9.18354 13.988 7.18717 16.4978 5.74802 18.8396C4.58421 20.7334 3.72865 22.6081 3.36778 24.2861C3.02574 25.8765 3.02429 27.8527 4.41189 29.2403Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<span class="text-[#1b0d0f] dark:text-gray-200 text-lg font-bold">Royal Invites</span>
+</div>
+<div class="flex flex-wrap items-center justify-center gap-6 md:gap-12">
+<a class="text-primary hover:text-red-800 font-medium transition-colors" href="#">Privacy Policy</a>
+<a class="text-primary hover:text-red-800 font-medium transition-colors" href="#">Terms of Service</a>
+<a class="text-primary hover:text-red-800 font-medium transition-colors" href="#">Contact Support</a>
+</div>
+<div class="flex flex-wrap justify-center gap-6">
+<a class="text-primary hover:text-red-800 transition-colors p-2 rounded-full hover:bg-red-50" href="#">
+<span class="material-symbols-outlined text-2xl">share</span>
+</a>
+<a class="text-primary hover:text-red-800 transition-colors p-2 rounded-full hover:bg-red-50" href="#">
+<span class="material-symbols-outlined text-2xl">thumb_up</span>
+</a>
+<a class="text-primary hover:text-red-800 transition-colors p-2 rounded-full hover:bg-red-50" href="#">
+<span class="material-symbols-outlined text-2xl">auto_awesome</span>
+</a>
+</div>
+<p class="text-gray-500 text-sm mt-4">© 2024 Royal Invites. All rights reserved.</p>
+</div>
+</footer>
+</body></html>
