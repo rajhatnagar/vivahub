@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('design_types')) {
-            Schema::create('design_types', function (Blueprint $table) {
-                $table->id();
-                $table->string('name')->unique(); // e.g. Wedding Events, Business Events
-                $table->timestamps();
-            });
-        }
+        Schema::table('invitations', function (Blueprint $table) {
+            if (!Schema::hasColumn('invitations', 'data')) {
+                $table->json('data')->nullable()->after('template_id');
+            }
+        });
     }
 
     /**
@@ -25,6 +23,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('design_types');
+        Schema::table('invitations', function (Blueprint $table) {
+            $table->dropColumn('data');
+        });
     }
 };

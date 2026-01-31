@@ -94,25 +94,37 @@
 
         <!-- Nav Links -->
         <nav class="flex-1 px-4 py-4 space-y-1 overflow-y-auto">
-            <a href="{{ route('dashboard') }}" class="nav-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-semibold {{ request()->routeIs('dashboard') ? 'bg-primary/10 text-primary border-transparent' : 'text-text-muted dark:text-gray-100 hover:bg-white/50 dark:hover:bg-white/10 hover:text-primary dark:hover:text-white' }} transition-all w-full text-left border-l-4 border-transparent">
-                <span class="material-symbols-outlined text-[22px]">dashboard</span> Dashboard
-            </a>
-            <a href="{{ route('invitations') }}" class="nav-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-medium {{ request()->routeIs('invitations') ? 'bg-primary/10 text-primary border-transparent' : 'text-text-muted dark:text-gray-100 hover:bg-white/50 dark:hover:bg-white/10 hover:text-primary dark:hover:text-white' }} transition-all w-full text-left border-l-4 border-transparent">
-                <span class="material-symbols-outlined text-[22px]">mail</span> My Invitations
-            </a>
-            <a href="{{ route('templates') }}" class="nav-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-medium {{ request()->routeIs('templates') ? 'bg-primary/10 text-primary border-transparent' : 'text-text-muted dark:text-gray-100 hover:bg-white/50 dark:hover:bg-white/10 hover:text-primary dark:hover:text-white' }} transition-all w-full text-left border-l-4 border-transparent">
-                <span class="material-symbols-outlined text-[22px]">grid_view</span> Templates
-            </a>
-            <a href="{{ route('rsvps') }}" class="nav-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-medium {{ request()->routeIs('rsvps') ? 'bg-primary/10 text-primary border-transparent' : 'text-text-muted dark:text-gray-100 hover:bg-white/50 dark:hover:bg-white/10 hover:text-primary dark:hover:text-white' }} transition-all w-full text-left border-l-4 border-transparent">
-                <span class="material-symbols-outlined text-[22px]">group</span> RSVPs
-                <span class="ml-auto bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded-full">12</span>
-            </a>
-            <a href="{{ route('billing') }}" class="nav-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-medium {{ request()->routeIs('billing') ? 'bg-primary/10 text-primary border-transparent' : 'text-text-muted dark:text-gray-100 hover:bg-white/50 dark:hover:bg-white/10 hover:text-primary dark:hover:text-white' }} transition-all w-full text-left border-l-4 border-transparent">
-                <span class="material-symbols-outlined text-[22px]">receipt_long</span> Billing
-            </a>
-             <a href="{{ route('settings') }}" class="nav-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-medium {{ request()->routeIs('settings') ? 'bg-primary/10 text-primary border-transparent' : 'text-text-muted dark:text-gray-100 hover:bg-white/50 dark:hover:bg-white/10 hover:text-primary dark:hover:text-white' }} transition-all w-full text-left border-l-4 border-transparent">
-                <span class="material-symbols-outlined text-[22px]">settings</span> Settings
-            </a>
+            @if(Auth::user()->role === 'partner')
+                <!-- PARTNER SIDEBAR -->
+                <a href="{{ route('partner.dashboard') }}" class="nav-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-semibold text-text-muted dark:text-gray-100 hover:bg-white/50 dark:hover:bg-white/10 hover:text-primary dark:hover:text-white transition-all w-full text-left border-l-4 border-transparent">
+                    <span class="material-symbols-outlined text-[22px]">arrow_back</span> Back to CRM
+                </a>
+                <div class="px-4 py-2 text-xs font-bold text-text-muted uppercase tracking-wider mt-4">Builder Tool</div>
+                <a href="#" class="nav-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-medium bg-primary/10 text-primary border-transparent transition-all w-full text-left border-l-4">
+                    <span class="material-symbols-outlined text-[22px]">brush</span> Editor
+                </a>
+            @else
+                <!-- USER SIDEBAR -->
+                <a href="{{ route('dashboard') }}" class="nav-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-semibold {{ request()->routeIs('dashboard') ? 'bg-primary/10 text-primary border-transparent' : 'text-text-muted dark:text-gray-100 hover:bg-white/50 dark:hover:bg-white/10 hover:text-primary dark:hover:text-white' }} transition-all w-full text-left border-l-4 border-transparent">
+                    <span class="material-symbols-outlined text-[22px]">dashboard</span> Dashboard
+                </a>
+                <a href="{{ route('invitations') }}" class="nav-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-medium {{ request()->routeIs('invitations') ? 'bg-primary/10 text-primary border-transparent' : 'text-text-muted dark:text-gray-100 hover:bg-white/50 dark:hover:bg-white/10 hover:text-primary dark:hover:text-white' }} transition-all w-full text-left border-l-4 border-transparent">
+                    <span class="material-symbols-outlined text-[22px]">mail</span> My Invitations
+                </a>
+                <a href="{{ route('templates') }}" class="nav-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-medium {{ request()->routeIs('templates') ? 'bg-primary/10 text-primary border-transparent' : 'text-text-muted dark:text-gray-100 hover:bg-white/50 dark:hover:bg-white/10 hover:text-primary dark:hover:text-white' }} transition-all w-full text-left border-l-4 border-transparent">
+                    <span class="material-symbols-outlined text-[22px]">grid_view</span> Templates
+                </a>
+                <a href="{{ route('rsvps') }}" class="nav-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-medium {{ request()->routeIs('rsvps') ? 'bg-primary/10 text-primary border-transparent' : 'text-text-muted dark:text-gray-100 hover:bg-white/50 dark:hover:bg-white/10 hover:text-primary dark:hover:text-white' }} transition-all w-full text-left border-l-4 border-transparent">
+                    <span class="material-symbols-outlined text-[22px]">group</span> RSVPs
+                    
+                </a>
+                <a href="{{ route('billing') }}" class="nav-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-medium {{ request()->routeIs('billing') ? 'bg-primary/10 text-primary border-transparent' : 'text-text-muted dark:text-gray-100 hover:bg-white/50 dark:hover:bg-white/10 hover:text-primary dark:hover:text-white' }} transition-all w-full text-left border-l-4 border-transparent">
+                    <span class="material-symbols-outlined text-[22px]">receipt_long</span> Billing
+                </a>
+                 <a href="{{ route('settings') }}" class="nav-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-medium {{ request()->routeIs('settings') ? 'bg-primary/10 text-primary border-transparent' : 'text-text-muted dark:text-gray-100 hover:bg-white/50 dark:hover:bg-white/10 hover:text-primary dark:hover:text-white' }} transition-all w-full text-left border-l-4 border-transparent">
+                    <span class="material-symbols-outlined text-[22px]">settings</span> Settings
+                </a>
+            @endif
         </nav>
 
         <!-- Bottom Profile -->
@@ -137,6 +149,9 @@
         <!-- HEADER (Desktop & Mobile) -->
         <header class="flex items-center justify-between px-4 lg:px-8 py-4 bg-white/60 dark:bg-black/20 backdrop-blur-md border-b border-gray-100 dark:border-white/5 sticky top-0 z-30">
             <div class="flex items-center gap-3 lg:hidden">
+                  <button onclick="toggleMobileSidebar()" class="p-2 -ml-2 text-text-muted hover:text-primary transition-colors">
+                      <span class="material-symbols-outlined">menu</span>
+                  </button>
                   <img src="{{ asset('VivaHub-logo.png') }}" alt="Logo" class="h-7 w-auto dark:hidden">
                   <img src="{{ asset('VivaHub-white-logo.png') }}" alt="Logo" class="h-7 w-auto hidden dark:block">
             </div>
@@ -149,12 +164,58 @@
             </div>
 
             <div class="flex items-center gap-2 lg:gap-3">
+                 <!-- Mobile Search Toggle -->
+                 <button class="lg:hidden h-10 w-10 flex items-center justify-center rounded-full text-text-muted hover:text-primary hover:bg-primary/5 transition-colors">
+                    <span class="material-symbols-outlined">search</span>
+                 </button>
+
                  <button onclick="toggleDarkMode()" class="h-10 w-10 flex items-center justify-center rounded-full text-text-muted hover:text-primary hover:bg-primary/5 transition-colors">
                     <span class="material-symbols-outlined dark:hidden">dark_mode</span>
                     <span class="material-symbols-outlined hidden dark:block">light_mode</span>
                  </button>
             </div>
         </header>
+
+        <!-- MOBILE SIDEBAR OVERLAY -->
+        <div id="mobile-sidebar-overlay" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden backdrop-blur-sm transition-opacity opacity-0"></div>
+        
+        <!-- MOBILE SIDEBAR -->
+        <div id="mobile-sidebar" class="fixed top-0 left-0 bottom-0 w-72 bg-white dark:bg-[#120505] z-50 transform -translate-x-full transition-transform duration-300 lg:hidden flex flex-col shadow-2xl">
+            <div class="p-6 border-b border-gray-100 dark:border-white/5 flex justify-between items-center">
+                <div class="flex flex-col items-start gap-1">
+                     <img src="{{ asset('VivaHub-logo.png') }}" alt="VivaHub" class="h-8 w-auto object-contain dark:hidden">
+                     <img src="{{ asset('VivaHub-white-logo.png') }}" alt="VivaHub" class="h-8 w-auto object-contain hidden dark:block">
+                </div>
+                <button onclick="toggleMobileSidebar()" class="p-2 text-text-muted hover:text-primary"><span class="material-symbols-outlined">close</span></button>
+            </div>
+            
+            <nav class="flex-1 overflow-y-auto p-4 space-y-1">
+                 <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold {{ request()->routeIs('dashboard') ? 'bg-primary/10 text-primary' : 'text-text-muted dark:text-gray-200' }}">
+                    <span class="material-symbols-outlined">dashboard</span> Dashboard
+                 </a>
+                 <a href="{{ route('invitations') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold {{ request()->routeIs('invitations') ? 'bg-primary/10 text-primary' : 'text-text-muted dark:text-gray-200' }}">
+                    <span class="material-symbols-outlined">mail</span> My Invitations
+                 </a>
+                 <a href="{{ route('templates') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold {{ request()->routeIs('templates') ? 'bg-primary/10 text-primary' : 'text-text-muted dark:text-gray-200' }}">
+                    <span class="material-symbols-outlined">grid_view</span> Templates
+                 </a>
+                 <a href="{{ route('rsvps') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold {{ request()->routeIs('rsvps') ? 'bg-primary/10 text-primary' : 'text-text-muted dark:text-gray-200' }}">
+                    <span class="material-symbols-outlined">group</span> RSVPs
+                 </a>
+                 <a href="{{ route('billing') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold {{ request()->routeIs('billing') ? 'bg-primary/10 text-primary' : 'text-text-muted dark:text-gray-200' }}">
+                    <span class="material-symbols-outlined">receipt_long</span> Billing
+                 </a>
+                 <a href="{{ route('settings') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold {{ request()->routeIs('settings') ? 'bg-primary/10 text-primary' : 'text-text-muted dark:text-gray-200' }}">
+                    <span class="material-symbols-outlined">settings</span> Settings
+                 </a>
+            </nav>
+
+            <div class="p-6 border-t border-gray-100 dark:border-white/5">
+                <a href="{{ route('builder') }}" class="w-full bg-primary text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg hover:bg-primary-dark transition-colors">
+                    <span class="material-symbols-outlined">add_circle</span> Create New
+                </a>
+            </div>
+        </div>
 
         <!-- DYNAMIC VIEW AREA -->
         <div class="flex-1 overflow-y-auto p-4 lg:p-8 pb-24 lg:pb-8 scroll-smooth relative">
@@ -192,10 +253,34 @@
         </div>
     </nav>
     
+    @if(session('impersonator_id'))
+        <a href="{{ route('impersonate.stop') }}" class="fixed bottom-20 right-4 z-[100] bg-gray-900 border-2 border-red-500 text-white px-6 py-3 rounded-full font-bold shadow-[0_0_20px_rgba(236,19,19,0.5)] hover:bg-black transition-all flex items-center gap-2 hover:scale-105">
+            <span class="material-symbols-outlined text-red-500">shield_person</span> 
+            <span class="text-red-500">Back to Admin</span>
+        </a>
+    @endif
+
     <script>
         function toggleDarkMode() {
             document.documentElement.classList.toggle('dark');
             localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+        }
+
+        function toggleMobileSidebar() {
+            const sidebar = document.getElementById('mobile-sidebar');
+            const overlay = document.getElementById('mobile-sidebar-overlay');
+            
+            if (sidebar.classList.contains('-translate-x-full')) {
+                // Open
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+                setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+            } else {
+                // Close
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('opacity-0');
+                setTimeout(() => overlay.classList.add('hidden'), 300);
+            }
         }
     </script>
     @stack('scripts')

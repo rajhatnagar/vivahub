@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Dipika & Sagar | Wedding Invitation</title>
 
   <!-- Tailwind CSS -->
@@ -144,7 +145,24 @@
       animation-delay: 4s;
     }
 
-    /* Glassmorphism Class */
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap');
+    
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    ::-webkit-scrollbar {
+        display: none;
+    }
+    /* Hide scrollbar for IE, Edge and Firefox */
+    html, body {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+    }
+    
+    .glass-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 247, 237, 0.5);
+    }
+    /* The original .glass-card definition continues here, merging the new border with the existing one */
     .glass-card {
       background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(12px);
@@ -202,6 +220,7 @@
   <div class="petal"></div>
 
   <!-- Audio Element -->
+  <audio id="wishing-audio" class="hidden"></audio>
   <audio id="wedding-audio" loop>
     <source src="https://csssofttech.com/wedding/assets/music.mp3" type="audio/mpeg">
   </audio>
@@ -481,62 +500,64 @@
       <!-- Central Line -->
       <div class="absolute left-6 md:left-1/2 top-0 bottom-0 w-1 bg-orange-500/30 rounded-full"></div>
 
-      <div class="flex flex-col gap-6" id="timeline-items">
-        <!-- Mehendi -->
-        <div class="flex flex-col md:flex-row gap-4 items-center relative" id="event-1">
-          <div class="absolute left-6 md:left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-orange-500 border-2 border-red-900 shadow-[0_0_0_2px_rgba(251,146,60,0.3)] z-10"></div>
-          <div class="hidden md:block w-1/2"></div>
-          <div class="w-full md:w-1/2 pl-12 md:pl-0">
-            <div class="glass-card-dark rounded-xl p-3 md:ml-8 hover:border-orange-400 transition-all">
-              <div class="flex items-center gap-4">
-                <div class="flex-shrink-0">
-                  <img id="preview-event-1-img" src="https://csssofttech.com/wedding/assets/icon_mehendi.png" class="w-12 h-12 object-contain drop-shadow-md" loading="lazy" alt="Mehendi">
-                </div>
-                <div class="flex-grow">
-                   <div class="flex flex-col md:flex-row md:justify-between md:items-baseline border-b border-orange-500/20 pb-1 mb-1">
-                      <h4 id="preview-event-1-title" class="font-serif text-lg text-orange-100 font-bold leading-tight">Mehendi</h4>
-                      <span id="preview-event-1-time" class="text-xs font-bold text-white/90 whitespace-nowrap">Dec 11, 04:00 PM</span>
-                   </div>
-                   <p id="preview-event-1-desc" class="text-orange-50/80 text-xs font-light tracking-wide mb-2">Music, Dance & Henna.</p>
-                   <div class="flex justify-between items-center mt-1">
-                     <p id="preview-event-1-loc" class="text-orange-200/90 text-xs italic font-medium"><i data-lucide="map-pin" class="inline w-3 h-3 mr-1"></i>Poolside Lawns</p>
-                     <a href="#" class="inline-flex items-center gap-1 bg-orange-500/20 hover:bg-orange-500/40 text-orange-200 text-[10px] uppercase font-bold px-2 py-1 rounded border border-orange-500/30 transition-all hover:text-white">
-                        <i data-lucide="map" class="w-3 h-3"></i> Map
-                     </a>
-                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Haldi -->
-        <div class="flex flex-col md:flex-row gap-4 items-center relative md:flex-row-reverse" id="event-2">
-            <div class="absolute left-6 md:left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-orange-500 border-2 border-red-900 shadow-[0_0_0_2px_rgba(251,146,60,0.3)] z-10"></div>
-            <div class="hidden md:block w-1/2"></div>
-            <div class="w-full md:w-1/2 pl-12 md:pl-0">
-                <div class="glass-card-dark rounded-xl p-3 md:mr-8 hover:border-orange-400 transition-all">
-                    <div class="flex items-center gap-4">
-                        <div class="flex-shrink-0">
-                            <img id="preview-event-2-img" src="https://csssofttech.com/wedding/assets/icon_haldi.png" class="w-12 h-12 object-contain drop-shadow-md" loading="lazy" alt="Haldi">
-                        </div>
-                        <div class="flex-grow">
-                            <div class="flex flex-col md:flex-row md:justify-between md:items-baseline border-b border-orange-500/20 pb-1 mb-1">
-                                <h4 id="preview-event-2-title" class="font-serif text-lg text-orange-100 font-bold leading-tight">Haldi</h4>
-                                <span id="preview-event-2-time" class="text-xs font-bold text-white/90 whitespace-nowrap">Dec 12, 09:00 AM</span>
+        <div class="flex flex-col gap-6" id="timeline-items">
+             <!-- Static Default Events (Mehendi & Haldi) -->
+             <div class="flex flex-col md:flex-row gap-4 items-center relative animate-fade-in-up" style="animation-delay: 0ms">
+                <div class="absolute left-6 md:left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-orange-500 border-2 border-red-900 shadow-[0_0_0_2px_rgba(251,146,60,0.3)] z-10"></div>
+                <div class="hidden md:block w-1/2 "></div>
+                <div class="w-full md:w-1/2 pl-12 md:pl-12">
+                    <div class="glass-card-dark rounded-xl p-4 md:p-5 hover:border-orange-400 transition-all border border-white/10 relative z-20">
+                        <div class="flex items-center gap-4 ">
+                            <div class="flex-shrink-0">
+                                <div class="w-10 h-10 md:w-12 md:h-12 bg-white/10 rounded-full flex items-center justify-center">
+                                    <span class="text-xl md:text-2xl text-orange-200">✨</span>
+                                </div>
                             </div>
-                            <p id="preview-event-2-desc" class="text-orange-50/80 text-xs font-light tracking-wide mb-2">A golden glow.</p>
-                            <div class="flex justify-between items-center mt-1">
-                                <p id="preview-event-2-loc" class="text-orange-200/90 text-xs italic font-medium"><i data-lucide="map-pin" class="inline w-3 h-3 mr-1"></i>The Courtyard</p>
-                                <a href="#" class="inline-flex items-center gap-1 bg-orange-500/20 hover:bg-orange-500/40 text-orange-200 text-[10px] uppercase font-bold px-2 py-1 rounded border border-orange-500/30 transition-all hover:text-white">
-                                    <i data-lucide="map" class="w-3 h-3"></i> Map
-                                </a>
+                            <div class="flex-grow">
+                                <div class="flex flex-col md:flex-row md:justify-between md:items-baseline border-b border-orange-500/20 pb-2 mb-2 gap-1">
+                                    <h4 class="font-serif text-lg md:text-xl text-orange-100 font-bold leading-tight">Mehendi</h4>
+                                    <span class="text-xs font-bold text-orange-300 uppercase tracking-wider">Dec 11, 04:00 PM</span>
+                                </div>
+                                <p class="text-orange-50/90 text-sm font-light tracking-wide mb-3">Music, Dance & Henna.</p>
+                                <div class="flex justify-start  items-center">
+                                    <p class="text-orange-200/90 text-xs italic font-medium bg-black/20 px-2 py-1 rounded-lg inline-flex items-center gap-1">
+                                        <i data-lucide="map-pin" class="w-3 h-3"></i> Poolside Lawns
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+             </div>
+
+             <div class="flex flex-col md:flex-row gap-4 items-center relative animate-fade-in-up" style="animation-delay: 100ms">
+                <div class="absolute left-6 md:left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-orange-500 border-2 border-red-900 shadow-[0_0_0_2px_rgba(251,146,60,0.3)] z-10"></div>
+                <div class="hidden md:block w-1/2 order-last"></div>
+                <div class="w-full md:w-1/2 pl-12 md:pr-12 md:text-right">
+                    <div class="glass-card-dark rounded-xl p-4 md:p-5 hover:border-orange-400 transition-all border border-white/10 relative z-20">
+                        <div class="flex items-center gap-4 md:flex-row-reverse">
+                            <div class="flex-shrink-0">
+                                <div class="w-10 h-10 md:w-12 md:h-12 bg-white/10 rounded-full flex items-center justify-center">
+                                    <span class="text-xl md:text-2xl text-orange-200">✨</span>
+                                </div>
+                            </div>
+                            <div class="flex-grow">
+                                <div class="flex flex-col md:flex-row md:justify-between md:items-baseline border-b border-orange-500/20 pb-2 mb-2 gap-1">
+                                    <h4 class="font-serif text-lg md:text-xl text-orange-100 font-bold leading-tight">Haldi</h4>
+                                    <span class="text-xs font-bold text-orange-300 uppercase tracking-wider">Dec 12, 09:00 AM</span>
+                                </div>
+                                <p class="text-orange-50/90 text-sm font-light tracking-wide mb-3">A golden glow.</p>
+                                <div class="flex justify-start md:justify-end items-center">
+                                    <p class="text-orange-200/90 text-xs italic font-medium bg-black/20 px-2 py-1 rounded-lg inline-flex items-center gap-1">
+                                        <i data-lucide="map-pin" class="w-3 h-3"></i> The Courtyard
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             </div>
         </div>
-      </div>
     </div>
   </section>
 
@@ -618,6 +639,7 @@
         </div>
 
         <form id="rsvp-form" class="space-y-3 mt-2 relative z-10">
+          <input type="hidden" name="user_id" value="">
           <div>
             <input type="text" required
               class="w-full px-3 py-2 rounded-lg border border-orange-100 focus:ring-2 focus:ring-red-100 focus:border-red-500 outline-none bg-orange-50 transition-all font-medium text-xs"
@@ -685,7 +707,8 @@
     <div class="max-w-6xl mx-auto px-4 text-center relative z-10">
       <img src="https://csssofttech.com/wedding/assets/VivaHub.png" alt="@VivaHub 2026" width="20%" class="mx-auto d-block">
       <p class="mb-8 font-light tracking-wider text-lg">Thank you for being part of our journey.</p>
-
+      
+       <!-- Social Icons -->
       <div class="flex flex-wrap justify-center gap-6 mb-10">
         <a href="#" class="group block">
           <div class="w-10 h-10 rounded-full bg-gradient-to-br from-red-600 to-orange-500 flex items-center justify-center transition-all duration-300 group-hover:from-orange-500 group-hover:to-red-600 group-hover:scale-110 shadow-lg">
@@ -708,7 +731,7 @@
   <!-- Fixed Mobile Bottom Navigation -->
   <div class="fixed bottom-0 left-0 right-0 z-50 px-2 py-2 md:hidden bg-gradient-to-t from-black/80 to-transparent pb-4">
     <div class="grid grid-cols-5 gap-1">
-      <a href="tel:+919876543210" class="flex flex-col items-center justify-center p-1 text-orange-100 hover:text-white transition-colors group">
+      <a href="tel:+919876543210" id="preview-call-btn" class="flex flex-col items-center justify-center p-1 text-orange-100 hover:text-white transition-colors group">
         <div class="p-2 rounded-full bg-black/40 backdrop-blur-md border border-orange-500/30 mb-1 group-hover:bg-orange-600 transition-colors shadow-lg">
           <i data-lucide="phone" class="w-5 h-5"></i>
         </div>
@@ -741,10 +764,7 @@
     </div>
   </div>
 
-  <!-- Script for Icons and basic functionality -->
   <script>
-    lucide.createIcons();
-    
     // Header Parallax
     document.addEventListener('DOMContentLoaded', () => {
        const heroBg = document.getElementById('preview-hero-bg');
@@ -755,30 +775,185 @@
        // Start Countdown
        startCountdown();
     });
+    
+    // Check Lucide
+    setInterval(() => {
+        if(window.lucide) window.lucide.createIcons();
+    }, 1000);
 
     // --- Audio Logic ---
     let isPlaying = false;
+    let hasWishingPlayed = false;
+    let wishingUrl = null;
+
     function toggleAudio() {
         const audio = document.getElementById('wedding-audio');
+        const wishingAudio = document.getElementById('wishing-audio');
         const icon = document.getElementById('music-icon');
+
         if(isPlaying) {
             audio.pause();
+            wishingAudio.pause();
             icon.setAttribute('data-lucide', 'volume-x');
             isPlaying = false;
         } else {
-            audio.play().catch(e => console.log("Audio play failed", e));
-            icon.setAttribute('data-lucide', 'volume-2');
-            isPlaying = true;
+            // Check for wishing audio first
+            if(wishingUrl && !hasWishingPlayed) {
+                wishingAudio.play().then(() => {
+                    isPlaying = true;
+                    icon.setAttribute('data-lucide', 'volume-2');
+                    
+                    wishingAudio.onended = () => {
+                         hasWishingPlayed = true;
+                         audio.play(); // Start bg music after
+                    };
+                }).catch(e => console.log("Audio play failed", e));
+            } else {
+                 audio.play().catch(e => console.log("Audio play failed", e));
+                 isPlaying = true;
+                 icon.setAttribute('data-lucide', 'volume-2');
+            }
         }
-        lucide.createIcons();
+        if(window.lucide) window.lucide.createIcons();
     }
 
     window.updateAudio = function(res) {
         const audio = document.getElementById('wedding-audio');
         audio.src = res;
-        // If was playing, keep playing
         if(isPlaying) audio.play();
     }
+
+    // New function for specific section updates
+    window.toggleSection = function(section, isEnabled) {
+        if(section === 'bg_music') {
+             const btn = document.getElementById('music-toggle');
+             if(isEnabled) btn.classList.remove('hidden'); else btn.classList.add('hidden');
+        }
+        if(section === 'rsvp') {
+             const sec = document.getElementById('rsvp');
+             if(isEnabled) sec.classList.remove('hidden'); else sec.classList.add('hidden');
+        }
+        if(section === 'wishing_audio') {
+             // Reset state
+             hasWishingPlayed = false;
+             if(!isEnabled) wishingUrl = null;
+        }
+    }
+    
+    window.updateAudioSource = function(src, type) {
+        if(type === 'wishing') {
+            wishingUrl = src;
+            document.getElementById('wishing-audio').src = src;
+            hasWishingPlayed = false; // Reset
+        } else {
+            document.getElementById('wedding-audio').src = src;
+        }
+    }
+
+    // --- Dynamic Events ---
+    window.updateEventsList = function(events) {
+        if(!events || events.length === 0) return; // Don't clear defaults if empty
+
+        const container = document.getElementById('timeline-items');
+        container.innerHTML = '';
+        
+        events.forEach((event, index) => {
+             const html = `
+             <div class="flex flex-col md:flex-row gap-4 items-center relative animate-fade-in-up" style="animation-delay: ${index * 100}ms">
+                <!-- Timeline Dot -->
+                <div class="absolute left-6 md:left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-orange-500 border-2 border-red-900 shadow-[0_0_0_2px_rgba(251,146,60,0.3)] z-10"></div>
+                
+                <!-- Spacer for Desktop Alternating -->
+                <div class="hidden md:block w-1/2 ${index % 2 !== 0 ? 'order-last' : ''}"></div>
+                
+                <!-- Content -->
+                <div class="w-full md:w-1/2 pl-12 md:pl-0 ${index % 2 !== 0 ? 'md:pr-12 md:text-right' : 'md:pl-12'}">
+                    <div class="glass-card-dark rounded-xl p-4 md:p-5 hover:border-orange-400 transition-all border border-white/10 relative z-20">
+                        <div class="flex items-center gap-4 ${index % 2 !== 0 ? 'md:flex-row-reverse' : ''}">
+                            <div class="flex-shrink-0">
+                                <div class="w-10 h-10 md:w-12 md:h-12 bg-white/10 rounded-full flex items-center justify-center">
+                                    <span class="text-xl md:text-2xl text-orange-200">✨</span>
+                                </div>
+                            </div>
+                            <div class="flex-grow">
+                                <div class="flex flex-col md:flex-row md:justify-between md:items-baseline border-b border-orange-500/20 pb-2 mb-2 gap-1">
+                                    <h4 class="font-serif text-lg md:text-xl text-orange-100 font-bold leading-tight">${event.title}</h4>
+                                    <span class="text-xs font-bold text-orange-300 uppercase tracking-wider">${event.time}</span>
+                                </div>
+                                <p class="text-orange-50/90 text-sm font-light tracking-wide mb-3">${event.description}</p>
+                                <div class="flex justify-start ${index % 2 !== 0 ? 'md:justify-end' : ''} items-center">
+                                    <p class="text-orange-200/90 text-xs italic font-medium bg-black/20 px-2 py-1 rounded-lg inline-flex items-center gap-1">
+                                        <i data-lucide="map-pin" class="w-3 h-3"></i> ${event.location}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             </div>`;
+             container.insertAdjacentHTML('beforeend', html);
+        });
+        
+        setTimeout(() => {
+            if(window.lucide) window.lucide.createIcons();
+        }, 100);
+    }
+    
+    // --- RSVP Logic ---
+    document.getElementById('rsvp-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const btn = document.getElementById('rsvp-btn');
+        btn.disabled = true;
+        btn.innerText = 'Sending...';
+        
+        const form = this;
+        const name = form.querySelector('input[placeholder="Your Name"]').value;
+        const phone = form.querySelector('input[placeholder="Phone No"]').value;
+        const count = form.querySelector('select').value.split(' ')[0]; // "1 Guest" -> "1"
+        
+        // Detect user_id from global if avail or hidden input
+        let userIdVal = null;
+        if(window.invitationUserId) userIdVal = window.invitationUserId;
+        const hiddenInput = form.querySelector('input[name="user_id"]');
+        if(hiddenInput) userIdVal = hiddenInput.value;
+
+        const attending = [];
+        const checkboxes = form.querySelectorAll('input[type="checkbox"]');
+        if(checkboxes[0] && checkboxes[0].checked) attending.push('Wedding');
+        if(checkboxes[1] && checkboxes[1].checked) attending.push('Reception');
+        if(checkboxes[2] && checkboxes[2].checked) attending.push('Pre-wedding');
+        
+        fetch('{{ route("rsvp.submit") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({
+                user_id: userIdVal,
+                guest_name: name,
+                guests_count: parseInt(count),
+                phone: phone,
+                attending_events: attending
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success) {
+                document.getElementById('rsvp-form').classList.add('hidden');
+                document.getElementById('rsvp-success').classList.remove('hidden');
+            } else {
+                alert('Something went wrong. Please try again.');
+                btn.disabled = false;
+                btn.innerText = 'Confirm';
+            }
+        })
+        .catch(err => {
+            console.error(err);
+             btn.disabled = false;
+             btn.innerText = 'Confirm';
+        });
+    });
 
     // --- Countdown Logic ---
     let weddingDate = new Date("2026-12-12T00:00:00").getTime();

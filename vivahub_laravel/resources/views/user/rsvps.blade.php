@@ -35,20 +35,14 @@
                     @forelse($guests as $guest)
                     <tr class="hover:bg-background-light dark:hover:bg-white/5 transition-colors group">
                         <td class="px-6 py-4 font-semibold text-text-dark dark:text-white flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-full bg-gray-100 dark:bg-white/10 flex items-center justify-center text-xs font-bold text-text-muted">{{ substr($guest['name'], 0, 1) }}</div>
-                            {{ $guest['name'] }}
+                            <div class="w-8 h-8 rounded-full bg-gray-100 dark:bg-white/10 flex items-center justify-center text-xs font-bold text-text-muted">{{ substr($guest->guest_name, 0, 1) }}</div>
+                            {{ $guest->guest_name }}
                         </td>
-                        <td class="px-6 py-4 text-sm text-text-muted dark:text-gray-400 font-mono">{{ $guest['phone'] }}</td>
+                        <td class="px-6 py-4 text-sm text-text-muted dark:text-gray-400 font-mono">{{ $guest->phone }}</td>
                         <td class="px-6 py-4">
-                            @if($guest['status'] === 'Accepted')
-                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 inline-flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-green-600"></span> Accepted</span>
-                            @elseif($guest['status'] === 'Declined')
-                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700 inline-flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-red-600"></span> Declined</span>
-                            @else
-                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-700 inline-flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-yellow-600"></span> Pending</span>
-                            @endif
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 inline-flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-green-600"></span> Accepted</span>
                         </td>
-                        <td class="px-6 py-4 text-center font-bold text-text-dark dark:text-white">{{ $guest['count'] }}</td>
+                        <td class="px-6 py-4 text-center font-bold text-text-dark dark:text-white">{{ $guest->guests_count }}</td>
                         <td class="px-6 py-4 text-right">
                             <button class="text-gray-400 hover:text-primary transition-colors p-1"><span class="material-symbols-outlined text-lg">edit</span></button>
                             <button class="text-gray-400 hover:text-red-500 transition-colors p-1 opacity-0 group-hover:opacity-100"><span class="material-symbols-outlined text-lg">delete</span></button>

@@ -40,11 +40,26 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
+    public function partnerDetails()
+    {
+        return $this->hasOne(PartnerDetail::class);
+    }
+    
+    public function isPartner()
+    {
+        return $this->role === 'partner';
+    }
+
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function invitations()
+    {
+        return $this->hasMany(Invitation::class);
     }
 }

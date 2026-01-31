@@ -29,10 +29,11 @@ VivaHub is a modern Laravel-based platform for creating and managing wedding inv
 
 ## Test Credentials
 
-| Role      | Email               | Password   |
-| --------- | ------------------- | ---------- |
-| **Admin** | `admin@vivahub.com` | `admin123` |
-| **User**  | `user@vivahub.com`  | `password` |
+| Role        | Email                 | Password   |
+| ----------- | --------------------- | ---------- |
+| **Admin**   | `admin@vivahub.com`   | `admin123` |
+| **User**    | `user@vivahub.com`    | `password` |
+| **Partner** | `partner@vivahub.com` | `password` |
 
 ## Deployment
 

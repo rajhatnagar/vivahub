@@ -25,6 +25,10 @@ class AuthController extends Controller
                 return redirect()->route('admin.dashboard');
             }
 
+            if (auth()->user()->role === 'partner') {
+                return redirect()->route('partner.dashboard');
+            }
+
             return redirect()->route('dashboard');
         }
 

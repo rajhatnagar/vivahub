@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('design_types')) {
-            Schema::create('design_types', function (Blueprint $table) {
-                $table->id();
-                $table->string('name')->unique(); // e.g. Wedding Events, Business Events
-                $table->timestamps();
-            });
-        }
+        Schema::table('coupons', function (Blueprint $table) {
+            $table->unsignedBigInteger('partner_id')->nullable()->change();
+        });
     }
 
     /**
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('design_types');
+        Schema::table('coupons', function (Blueprint $table) {
+            $table->unsignedBigInteger('partner_id')->nullable(false)->change();
+        });
     }
 };

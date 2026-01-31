@@ -48,7 +48,7 @@
                         </span>
                     </td>
                     <td class="px-6 py-4 text-right">
-                        <button class="text-primary hover:underline text-xs font-bold">Download</button>
+                        <a href="{{ asset('invoice_sample.pdf') }}" download="Invoice_{{ $t['id'] }}.pdf" class="text-primary hover:underline text-xs font-bold">Download</a>
                     </td>
                 </tr>
                  @empty

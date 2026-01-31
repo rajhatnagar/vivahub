@@ -25,7 +25,7 @@
         </button>
         <form action="{{ route('admin.plans.destroy', $plan->id) }}" method="POST" onsubmit="return confirm('Are you sure to Delete {{ addslashes($plan->name) }} this Plan?')">
              @csrf @method('DELETE')
-            <button class="size-10 flex items-center justify-center bg-red-50 dark:bg-red-500/10 hover:bg-red-100 dark:hover:bg-red-500/20 text-red-500 rounded-xl transition-colors">
+            <button type="submit" class="size-10 flex items-center justify-center bg-red-50 dark:bg-red-500/10 hover:bg-red-100 dark:hover:bg-red-500/20 text-red-500 rounded-xl transition-colors">
                 <span class="material-symbols-outlined text-sm">delete</span>
             </button>
         </form>
