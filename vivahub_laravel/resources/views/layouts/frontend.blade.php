@@ -198,7 +198,6 @@
                 <a class="text-sm font-medium {{ request()->is('/') ? 'text-maroon dark:text-gold border-b border-maroon dark:border-gold pb-0.5' : 'text-maroon/80 dark:text-champagne/80 hover:text-maroon dark:hover:text-gold' }} transition-colors" href="{{ url('/') }}">Home</a>
                 <a class="text-sm font-medium {{ request()->is('about') ? 'text-maroon dark:text-gold border-b border-maroon dark:border-gold pb-0.5' : 'text-maroon/80 dark:text-champagne/80 hover:text-maroon dark:hover:text-gold' }} transition-colors" href="{{ url('about') }}">About Us</a>
                 <a class="text-sm font-medium {{ request()->is('features') ? 'text-maroon dark:text-gold border-b border-maroon dark:border-gold pb-0.5' : 'text-maroon/80 dark:text-champagne/80 hover:text-maroon dark:hover:text-gold' }} transition-colors" href="{{ url('features') }}">Features</a>
-                <a class="text-sm font-medium {{ request()->is('templates') ? 'text-maroon dark:text-gold border-b border-maroon dark:border-gold pb-0.5' : 'text-maroon/80 dark:text-champagne/80 hover:text-maroon dark:hover:text-gold' }} transition-colors" href="{{ url('templates') }}">Templates</a>
                 <a class="text-sm font-medium {{ request()->is('pricing') ? 'text-maroon dark:text-gold border-b border-maroon dark:border-gold pb-0.5' : 'text-maroon/80 dark:text-champagne/80 hover:text-maroon dark:hover:text-gold' }} transition-colors" href="{{ url('pricing') }}">Pricing</a>
                 <a class="text-sm font-medium {{ request()->is('contact') ? 'text-maroon dark:text-gold border-b border-maroon dark:border-gold pb-0.5' : 'text-maroon/80 dark:text-champagne/80 hover:text-maroon dark:hover:text-gold' }} transition-colors" href="{{ url('contact') }}">Contact</a>
                 
@@ -233,7 +232,6 @@
              <a class="text-base font-bold py-2 {{ request()->is('/') ? 'text-maroon dark:text-gold pl-2 border-l-2 border-maroon dark:border-gold' : 'text-maroon/80 dark:text-champagne/80 hover:text-maroon dark:hover:text-gold' }}" href="{{ url('/') }}">Home</a>
              <a class="text-base font-bold py-2 {{ request()->is('about') ? 'text-maroon dark:text-gold pl-2 border-l-2 border-maroon dark:border-gold' : 'text-maroon/80 dark:text-champagne/80 hover:text-maroon dark:hover:text-gold' }}" href="{{ url('about') }}">About Us</a>
              <a class="text-base font-bold py-2 {{ request()->is('features') ? 'text-maroon dark:text-gold pl-2 border-l-2 border-maroon dark:border-gold' : 'text-maroon/80 dark:text-champagne/80 hover:text-maroon dark:hover:text-gold' }}" href="{{ url('features') }}">Features</a>
-             <a class="text-base font-bold py-2 {{ request()->is('templates') ? 'text-maroon dark:text-gold pl-2 border-l-2 border-maroon dark:border-gold' : 'text-maroon/80 dark:text-champagne/80 hover:text-maroon dark:hover:text-gold' }}" href="{{ url('templates') }}">Templates</a>
              <a class="text-base font-bold py-2 {{ request()->is('pricing') ? 'text-maroon dark:text-gold pl-2 border-l-2 border-maroon dark:border-gold' : 'text-maroon/80 dark:text-champagne/80 hover:text-maroon dark:hover:text-gold' }}" href="{{ url('pricing') }}">Pricing</a>
              <a class="text-base font-bold py-2 {{ request()->is('contact') ? 'text-maroon dark:text-gold pl-2 border-l-2 border-maroon dark:border-gold' : 'text-maroon/80 dark:text-champagne/80 hover:text-maroon dark:hover:text-gold' }}" href="{{ url('contact') }}">Contact</a>
              <div class="h-px bg-maroon/10 dark:bg-gold/10 my-2"></div>
@@ -270,7 +268,6 @@
                 <h4 class="font-display text-gold text-lg font-medium tracking-wide mb-4 md:mb-8">Product</h4>
                 <ul class="space-y-3 md:space-y-4 font-sans text-sm font-light">
                     <li><a class="text-champagne/70 hover:text-gold transition-colors duration-300 block w-fit mx-auto md:mx-0" href="{{ url('about') }}">About Us</a></li>
-                    <li><a class="text-champagne/70 hover:text-gold transition-colors duration-300 block w-fit mx-auto md:mx-0" href="{{ url('templates') }}">Templates</a></li>
                     <li><a class="text-champagne/70 hover:text-gold transition-colors duration-300 block w-fit mx-auto md:mx-0" href="{{ url('features') }}">Features</a></li>
                     <li><a class="text-champagne/70 hover:text-gold transition-colors duration-300 block w-fit mx-auto md:mx-0" href="{{ url('pricing') }}">Pricing</a></li>
                     <li><a class="text-champagne/70 hover:text-gold transition-colors duration-300 block w-fit mx-auto md:mx-0" href="{{ route('dashboard') }}">RSVP</a></li>

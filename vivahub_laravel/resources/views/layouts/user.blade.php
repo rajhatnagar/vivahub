@@ -94,6 +94,7 @@
 
         <!-- Nav Links -->
         <nav class="flex-1 px-4 py-4 space-y-1 overflow-y-auto">
+            @auth
             @if(Auth::user()->role === 'partner')
                 <!-- PARTNER SIDEBAR -->
                 <a href="{{ route('partner.dashboard') }}" class="nav-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-semibold text-text-muted dark:text-gray-100 hover:bg-white/50 dark:hover:bg-white/10 hover:text-primary dark:hover:text-white transition-all w-full text-left border-l-4 border-transparent">
@@ -111,7 +112,7 @@
                 <a href="{{ route('invitations') }}" class="nav-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-medium {{ request()->routeIs('invitations') ? 'bg-primary/10 text-primary border-transparent' : 'text-text-muted dark:text-gray-100 hover:bg-white/50 dark:hover:bg-white/10 hover:text-primary dark:hover:text-white' }} transition-all w-full text-left border-l-4 border-transparent">
                     <span class="material-symbols-outlined text-[22px]">mail</span> My Invitations
                 </a>
-                <a href="{{ route('templates') }}" class="nav-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-medium {{ request()->routeIs('templates') ? 'bg-primary/10 text-primary border-transparent' : 'text-text-muted dark:text-gray-100 hover:bg-white/50 dark:hover:bg-white/10 hover:text-primary dark:hover:text-white' }} transition-all w-full text-left border-l-4 border-transparent">
+                <a href="{{ route('dashboard.templates') }}" class="nav-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-medium {{ request()->routeIs('dashboard.templates') ? 'bg-primary/10 text-primary border-transparent' : 'text-text-muted dark:text-gray-100 hover:bg-white/50 dark:hover:bg-white/10 hover:text-primary dark:hover:text-white' }} transition-all w-full text-left border-l-4 border-transparent">
                     <span class="material-symbols-outlined text-[22px]">grid_view</span> Templates
                 </a>
                 <a href="{{ route('rsvps') }}" class="nav-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-medium {{ request()->routeIs('rsvps') ? 'bg-primary/10 text-primary border-transparent' : 'text-text-muted dark:text-gray-100 hover:bg-white/50 dark:hover:bg-white/10 hover:text-primary dark:hover:text-white' }} transition-all w-full text-left border-l-4 border-transparent">
@@ -125,6 +126,7 @@
                     <span class="material-symbols-outlined text-[22px]">settings</span> Settings
                 </a>
             @endif
+            @endauth
         </nav>
 
         <!-- Bottom Profile -->

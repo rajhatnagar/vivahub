@@ -42,12 +42,32 @@
                             <a href="{{ route('admin.designs.builder', ['invitation_id' => $draft->id]) }}" class="bg-white text-orange-600 px-6 py-2 rounded-full font-bold text-sm shadow-lg hover:bg-orange-50 transform hover:scale-105 transition-all flex items-center gap-2">
                                 <span class="material-symbols-outlined text-sm">edit</span> Edit Design
                             </a>
+                            @if(isset($draft->status) && $draft->status === 'published')
+                            <button onclick="copyToClipboard('{{ route('invitation.show', $draft->id) }}', this)" class="bg-black/80 text-white px-6 py-2 rounded-full font-bold text-sm shadow-lg hover:bg-black transform hover:scale-105 transition-all flex items-center gap-2 backdrop-blur-md border border-white/20">
+                                <span class="material-symbols-outlined text-sm">share</span> Share Link
+                            </button>
+                            @endif
+                        </div>
+                        
+                        <!-- Status Badge -->
+                        <div class="absolute top-3 left-3">
+                            @if(isset($draft->status) && $draft->status === 'published')
+                                <span class="bg-green-500/90 backdrop-blur text-white text-[10px] font-bold px-2.5 py-1 rounded-lg uppercase tracking-wider shadow-sm flex items-center gap-1.5 border border-white/20">
+                                    <span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse shadow-[0_0_5px_rgba(255,255,255,0.8)]"></span> Live
+                                </span>
+                            @else
+                                <span class="bg-gray-800/80 backdrop-blur text-white text-[10px] font-bold px-2.5 py-1 rounded-lg uppercase tracking-wider shadow-sm border border-white/10">Draft</span>
+                            @endif
                         </div>
                         
                         <div class="absolute top-3 right-3 flex gap-2">
-                             <form action="{{ route('admin.designs.destroy', $draft->id) }}" method="POST" onsubmit="return confirm('Delete this design?')">
+                             <form id="delete-draft-{{ $draft->id }}" action="{{ route('admin.designs.destroy', $draft->id) }}" method="POST">
                                 @csrf @method('DELETE')
-                                <button type="submit" class="bg-white/90 text-red-500 p-2 rounded-full shadow-sm hover:bg-red-50 transition-colors">
+                                <button type="button" @click="$dispatch('confirm-action', { 
+                                    title: 'Delete Draft Design?', 
+                                    message: 'This action cannot be undone. The design will be permanently removed.', 
+                                    formId: 'delete-draft-{{ $draft->id }}' 
+                                })" class="bg-white/90 text-red-500 p-2 rounded-full shadow-sm hover:bg-red-50 transition-colors">
                                     <span class="material-symbols-outlined text-sm">delete</span>
                                 </button>
                             </form>
@@ -170,10 +190,16 @@
                     
                     <div class="flex items-center justify-between border-t border-gray-50 dark:border-white/5 pt-3 relative z-10">
                         <span class="text-[10px] text-gray-400">Created {{ $coupon->created_at->format('M d, Y') }}</span>
-                        <!-- Fixed Form Submission: Direct Button inside Form -->
-                        <form action="{{ route('admin.coupons.delete', $coupon->id) }}" method="POST">
-                            @csrf @method('DELETE')
-                             <button type="submit" onclick="return confirm('Are you sure you want to delete this coupon?')" class="text-gray-400 hover:text-red-500 transition-colors text-xs font-bold flex items-center gap-1">
+                        <span class="text-[10px] text-gray-400">Created {{ $coupon->created_at->format('M d, Y') }}</span>
+                        <!-- Fixed Form Submission: DELETE Method with Custom Modal -->
+                        <form id="delete-coupon-{{ $coupon->id }}" action="{{ route('admin.coupons.delete', $coupon->id) }}" method="POST" class="inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button" @click="$dispatch('confirm-action', { 
+                                title: 'Delete Coupon?', 
+                                message: 'Users will no longer be able to use this code.', 
+                                formId: 'delete-coupon-{{ $coupon->id }}' 
+                            })" class="text-gray-400 hover:text-red-500 transition-colors text-xs font-bold flex items-center gap-1 group-hover:text-red-500">
                                 <span class="material-symbols-outlined text-sm">delete</span> Delete
                             </button>
                         </form>
@@ -194,5 +220,34 @@
 </div>
 
 <!-- AlpineJS -->
-<script src="//unpkg.com/alpinejs" defer></script>
+
+<script>
+    function copyToClipboard(text, btn) {
+        navigator.clipboard.writeText(text).then(() => {
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = '<span class="material-symbols-outlined text-sm">check</span> Copied!';
+            btn.classList.add('bg-green-600', 'text-white');
+            setTimeout(() => {
+                btn.innerHTML = originalContent;
+                btn.classList.remove('bg-green-600', 'text-white');
+            }, 2000);
+        }).catch(err => {
+            console.error('Failed to copy: ', err);
+            // Fallback
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                const originalContent = btn.innerHTML;
+                btn.innerHTML = '<span class="material-symbols-outlined text-sm">check</span> Copied!';
+                setTimeout(() => btn.innerHTML = originalContent, 2000);
+            } catch (e) {
+                alert('Failed to copy link');
+            }
+            document.body.removeChild(textarea);
+        });
+    }
+</script>
 @endsection

@@ -23,9 +23,13 @@
         class="flex-1 py-2.5 rounded-xl border border-border-light dark:border-border-dark text-slate-700 dark:text-white hover:bg-gray-50 dark:hover:bg-white/5 transition-colors text-sm font-medium">
             Edit
         </button>
-        <form action="{{ route('admin.plans.destroy', $plan->id) }}" method="POST" onsubmit="return confirm('Are you sure to Delete {{ addslashes($plan->name) }} this Plan?')">
+        <form id="delete-plan-{{ $plan->id }}" action="{{ route('admin.plans.destroy', $plan->id) }}" method="POST">
              @csrf @method('DELETE')
-            <button type="submit" class="size-10 flex items-center justify-center bg-red-50 dark:bg-red-500/10 hover:bg-red-100 dark:hover:bg-red-500/20 text-red-500 rounded-xl transition-colors">
+            <button type="button" @click="$dispatch('confirm-action', { 
+                title: 'Delete Plan?', 
+                message: 'Are you sure you want to delete {{ addslashes($plan->name) }}?', 
+                formId: 'delete-plan-{{ $plan->id }}' 
+            })" class="size-10 flex items-center justify-center bg-red-50 dark:bg-red-500/10 hover:bg-red-100 dark:hover:bg-red-500/20 text-red-500 rounded-xl transition-colors">
                 <span class="material-symbols-outlined text-sm">delete</span>
             </button>
         </form>

@@ -77,9 +77,8 @@ class DesignController extends Controller
         $isPartner = false; 
         $isAdmin = true; // Use this to customize builder UI for admin
 
-        // Render the SHARED builder view directly
-        // Ensure user.builder is flexible enough (it seems partner uses it too)
-        return view('user.builder', compact('templateId', 'invitation', 'saveRoute', 'isPartner', 'isAdmin'));
+        // Render the SEPARATE Admin builder view
+        return view('admin.designs.builder', compact('templateId', 'invitation', 'saveRoute', 'isPartner', 'isAdmin'));
     }
 
 
@@ -92,7 +91,8 @@ class DesignController extends Controller
             $user = Auth::user();
             $data = $request->all();
             $templateId = $data['templateId'] ?? 'wedding-1';
-            
+            $status = $data['status'] ?? 'draft';
+
             // If ID exists, update. Else create.
             $invitation = null;
             if(isset($data['id'])) {
@@ -105,21 +105,27 @@ class DesignController extends Controller
                 $invitation->update([
                     'title' => ($data['groom'] ?? 'Groom') . ' & ' . ($data['bride'] ?? 'Bride'),
                     'data' => $data,
-                    'status' => 'draft'
+                    'status' => $status
                 ]);
             } else {
                 $invitation = \App\Models\Invitation::create([
-                    'user_id' => $user->id, 
+                    'user_id' => $user->id,
                     'template_id' => $templateId,
                     'title' => ($data['groom'] ?? 'Groom') . ' & ' . ($data['bride'] ?? 'Bride'),
                     'content' => 'System Template / Draft', // Specific usage for admin
-                    'status' => 'draft',
+                    'status' => $status,
                     'data' => $data
                 ]);
             }
 
-            return response()->json(['success' => true, 'id' => $invitation->id]);
-            
+            $publicUrl = route('invitation.show', $invitation->id);
+
+            return response()->json([
+                'success' => true, 
+                'id' => $invitation->id,
+                'public_url' => $publicUrl
+            ]);
+
         } catch (\Exception $e) {
              \Illuminate\Support\Facades\Log::error('Admin Design Save Error: ' . $e->getMessage());
              return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
@@ -157,5 +163,15 @@ class DesignController extends Controller
         $coupon = Coupon::findOrFail($id);
         $coupon->delete();
         return redirect()->route('admin.designs.index', ['tab' => 'coupons'])->with('success', 'Coupon deleted.');
+    }
+
+    /**
+     * Delete Design/Draft
+     */
+    public function destroy($id)
+    {
+        $invitation = Invitation::where('user_id', Auth::id())->where('id', $id)->firstOrFail();
+        $invitation->delete();
+        return back()->with('success', 'Design deleted successfully.');
     }
 }

@@ -1,0 +1,6 @@
+BEGIN:VCARD
+VERSION:3.0
+N:{{ data_get($invitation->data ?? [], 'groom', 'Groom') }};{{ data_get($invitation->data ?? [], 'bride', 'Bride') }};;;
+FN:{{ data_get($invitation->data ?? [], 'groom', 'Groom') }} & {{ data_get($invitation->data ?? [], 'bride', 'Bride') }}
+TEL;TYPE=CELL:{{ data_get($invitation->data ?? [], 'contact.phone', '') }}
+END:VCARD

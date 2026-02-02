@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>VivaHub Admin Dashboard</title>
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
@@ -239,6 +240,52 @@
             @yield('content')
         </div>
     </main>
+    
+    <!-- Global Confirmation Modal -->
+    <div x-data="{ 
+            open: false, 
+            title: 'Confirm Action', 
+            message: 'Are you sure you want to proceed?', 
+            action: null, 
+            formId: null 
+        }" 
+        @confirm-action.window="
+            open = true; 
+            title = $event.detail.title || 'Confirm Action'; 
+            message = $event.detail.message || 'Are you sure?'; 
+            action = $event.detail.action; 
+            formId = $event.detail.formId;
+        "
+        x-show="open" 
+        style="display: none;" 
+        class="fixed inset-0 z-[100] flex items-center justify-center p-4"
+        x-transition.opacity>
+        
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="open = false"></div>
+        
+        <div class="relative bg-white dark:bg-surface-dark w-full max-w-sm rounded-2xl shadow-2xl border border-gray-100 dark:border-white/10 overflow-hidden animate-slide-up">
+            <div class="p-6 text-center">
+                <div class="w-16 h-16 bg-red-50 dark:bg-red-900/20 rounded-full flex items-center justify-center mx-auto mb-4 text-red-500">
+                    <span class="material-symbols-outlined text-3xl">warning</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2" x-text="title"></h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-6" x-text="message"></p>
+                
+                <div class="grid grid-cols-2 gap-3">
+                    <button @click="open = false" class="py-2.5 px-4 rounded-xl font-bold text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors">
+                        Cancel
+                    </button>
+                    <button @click="
+                        if(formId) { document.getElementById(formId).submit(); } 
+                        else if(action) { window.location.href = action; } 
+                        open = false;
+                    " class="py-2.5 px-4 rounded-xl font-bold text-white bg-red-600 hover:bg-red-700 shadow-lg shadow-red-500/30 transition-colors">
+                        Confirm
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- BOTTOM NAVIGATION BAR (Mobile Only) -->
@@ -272,5 +319,6 @@
         document.documentElement.classList.toggle('dark');
     }
 </script>
+@stack('scripts')
 </body>
 </html>

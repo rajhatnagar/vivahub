@@ -273,8 +273,8 @@
           <!-- 3. Names -->
           <h1
             class="font-serif text-[2.5rem] md:text-8xl text-[#F5E6D3] leading-none text-center mb-0 animate-fade-in-up drop-shadow-md">
-            <span id="preview-bride">Dipika</span> <span class="inline md:inline text-xl md:text-6xl align-top text-[#D4AF37] font-light">&</span>
-            <span id="preview-groom">Sagar</span>
+            <span id="preview-bride">{{ $invitation->data['bride_name'] ?? 'Dipika' }}</span> <span class="inline md:inline text-xl md:text-6xl align-top text-[#D4AF37] font-light">&</span>
+            <span id="preview-groom">{{ $invitation->data['groom_name'] ?? 'Sagar' }}</span>
           </h1>
 
           <!-- 4. Hashtag/Logo -->
@@ -285,11 +285,11 @@
             class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[rgba(93,46,46,0.9)] backdrop-blur-sm border border-white/10 shadow-lg mb-0 animate-fade-in-up delay-100">
             <div class="flex items-center gap-1 border-r border-white/20 pr-2">
               <i data-lucide="calendar" class="w-3 h-3 text-[#E6C68C]"></i>
-              <span id="preview-hero-date" class="text-white/95 text-[9px] md:text-sm font-medium tracking-wide">Dec 12, 2026</span>
+              <span id="preview-hero-date" class="text-white/95 text-[9px] md:text-sm font-medium tracking-wide">{{ \Carbon\Carbon::parse($invitation->data['date'] ?? '2026-12-12')->format('M d, Y') }}</span>
             </div>
             <div class="flex items-center gap-1">
               <i data-lucide="map-pin" class="w-3 h-3 text-[#E6C68C]"></i>
-              <span id="preview-hero-location" class="text-white/95 text-[9px] md:text-sm font-medium tracking-wide">Udaipur</span>
+              <span id="preview-hero-location" class="text-white/95 text-[9px] md:text-sm font-medium tracking-wide">{{ $invitation->data['venue_city'] ?? 'Udaipur' }}</span>
             </div>
           </div>
         </div>
@@ -346,7 +346,7 @@
 
       <div class="flex flex-col items-center gap-6 animate-fade-in-up delay-100">
         <p id="preview-std-date" class="font-serif text-2xl md:text-4xl text-orange-50 font-medium tracking-wide text-shadow-sm">
-          10th December 2026
+          {{ \Carbon\Carbon::parse($invitation->data['date'] ?? '2026-12-12')->format('jS F Y') }}
         </p>
         
         <button onclick="addToCalendar()" 
@@ -375,12 +375,12 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         <!-- Bride Card -->
         <div class="relative group overflow-hidden rounded-2xl shadow-2xl h-[400px] md:h-[500px]">
-          <img id="preview-bride-img" src="https://csssofttech.com/wedding/assets/bride.png" loading="lazy" alt="Bride"
-            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+          <img id="preview-bride-img" src="{{ $invitation->data['gallery'][0] ?? 'https://csssofttech.com/wedding/assets/bride.png' }}" loading="lazy" alt="Bride"
+            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
           <div
             class="absolute inset-0 bg-gradient-to-t from-red-900/90 via-transparent to-transparent flex flex-col justify-end p-8 text-white">
-            <h3 id="preview-bride-name" class="font-serif text-3xl mb-1 text-center text-orange-100">Dipika</h3>
-            <p id="preview-bride-bio" class="text-sm opacity-90 font-medium text-center text-orange-200">Daughter of Sagar Shivaji Hire</p>
+            <h3 id="preview-bride-name" class="font-serif text-3xl mb-1 text-center text-orange-100">{{ $invitation->data['bride_name'] ?? 'Dipika' }}</h3>
+            <p id="preview-bride-bio" class="text-sm opacity-90 font-medium text-center text-orange-200">{{ $invitation->data['bride_bio'] ?? 'Daughter of Sagar Shivaji Hire' }}</p>
             <div class="flex gap-4 mt-2 justify-center">
               <a href="#" class="group block">
                 <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/40 transition-all">
@@ -393,12 +393,12 @@
 
         <!-- Groom Card -->
         <div class="relative group overflow-hidden rounded-2xl shadow-2xl h-[400px] md:h-[500px]">
-          <img id="preview-groom-img" src="https://csssofttech.com/wedding/assets/groom.png" loading="lazy" alt="Groom"
-            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+          <img id="preview-groom-img" src="{{ $invitation->data['gallery'][1] ?? 'https://csssofttech.com/wedding/assets/groom.png' }}" loading="lazy" alt="Groom"
+            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
           <div
             class="absolute inset-0 bg-gradient-to-t from-red-900/90 via-transparent to-transparent flex flex-col justify-end p-8 text-white">
-            <h3 id="preview-groom-name" class="font-serif text-3xl mb-1 text-center text-orange-100">Sagar</h3>
-            <p id="preview-groom-bio" class="text-sm opacity-90 font-medium text-center text-orange-200">Son of Satyamurti</p>
+            <h3 id="preview-groom-name" class="font-serif text-3xl mb-1 text-center text-orange-100">{{ $invitation->data['groom_name'] ?? 'Sagar' }}</h3>
+            <p id="preview-groom-bio" class="text-sm opacity-90 font-medium text-center text-orange-200">{{ $invitation->data['groom_bio'] ?? 'Son of Satyamurti' }}</p>
             <div class="flex gap-4 mt-2 justify-center">
               <a href="#" class="group block">
                 <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/40 transition-all">
@@ -956,7 +956,7 @@
     });
 
     // --- Countdown Logic ---
-    let weddingDate = new Date("2026-12-12T00:00:00").getTime();
+    let weddingDate = new Date("{{ $invitation->data['date'] ?? '2026-12-12' }}T00:00:00").getTime();
 
     function startCountdown() {
         setInterval(() => {

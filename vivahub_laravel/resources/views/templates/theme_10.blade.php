@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Wedding of {{ $invitation->data['bride'] }} & {{ $invitation->data['groom'] }} | VivaHub</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Tangerine:wght@700&family=Tenor+Sans&display=swap" rel="stylesheet">
+    
+    <!-- Scripts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        :root {
+            --color-wine: #2a0a12;
+            --color-ruby: #450a0a;
+            --color-gold: #d97706;
+            --color-rose: #ffe4e6;
+        }
+
+        body {
+            font-family: 'Tenor Sans', sans-serif;
+            background-color: #2a0a12;
+            color: #ffe4e6;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* Mobile Cursor Reset */
+        @media (max-width: 768px) { body { cursor: auto; } }
+
+        .font-regal { font-family: 'Cinzel', serif; }
+        .font-script { font-family: 'Tangerine', cursive; }
+
+        /* --- Custom Cursor --- */
+        .cursor-dot {
+            width: 6px; height: 6px;
+            background-color: #fbbf24;
+            position: fixed; top: 0; left: 0;
+            transform: translate(-50%, -50%) rotate(45deg); /* Diamond shape */
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .cursor-outline {
+            width: 30px; height: 30px;
+            border: 1px solid rgba(251, 191, 36, 0.5);
+            position: fixed; top: 0; left: 0;
+            transform: translate(-50%, -50%) rotate(45deg); /* Diamond shape */
+            z-index: 9999;
+            pointer-events: none;
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        /* --- Moving Background Animation --- */
+        @keyframes bg-slide {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+        .animate-bg-slide {
+            animation: bg-slide 60s linear infinite;
+        }
+
+        /* --- Background Textures --- */
+        /* Texture 1: Stardust (Subtle Gold Dust) */
+        .bg-golden-dust {
+            background-color: #2a0a12;
+            background-image: 
+                radial-gradient(circle at 50% 30%, rgba(217, 119, 6, 0.15), transparent 70%),
+                url("https://www.transparenttextures.com/patterns/stardust.png");
+            background-repeat: repeat;
+        }
+
+        /* Texture 2: Diamonds (Art Deco) */
+        .bg-golden-diamonds {
+            background-color: #20050b;
+            background-image: 
+                linear-gradient(to bottom, rgba(32, 5, 11, 0.9), rgba(32, 5, 11, 0.8)),
+                url("https://www.transparenttextures.com/patterns/diagmonds-light.png");
+            background-size: auto;
+        }
+
+        /* Texture 3: Royal (Damask/Wall) */
+        .bg-golden-royal {
+            background-color: #1a0408;
+            background-image: 
+                radial-gradient(circle at 80% 20%, rgba(251, 191, 36, 0.08), transparent 60%),
+                url("https://www.transparenttextures.com/patterns/wall-4-light.png");
+        }
+
+        /* Texture 4: Luxury (Diamond Upholstery - New for RSVP) */
+        .bg-golden-luxury {
+            background-color: #150305;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(217, 119, 6, 0.15), transparent 70%),
+                url("https://www.transparenttextures.com/patterns/diamond-upholstery.png");
+        }
+
+        /* Overlay Texture for Start Screen */
+        .bg-pattern-scales {
+            background-image: url('https://www.transparenttextures.com/patterns/black-scales.png');
+        }
+
+        /* --- Animations --- */
+        .reveal {
+            opacity: 0; transform: translateY(40px);
+            transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .reveal-zoom.active { transform: scale(1); }
+        .reveal-zoom { transform: scale(0.95); }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in-up { animation: fadeInUp 1.2s ease-out forwards; }
+
+        @keyframes float-sparkle {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+        .sparkle {
+            position: fixed; width: 2px; height: 2px; background: #fbbf24;
+            border-radius: 50%; pointer-events: none; z-index: 0;
+            box-shadow: 0 0 4px 1px rgba(251, 191, 36, 0.6);
+            animation: float-sparkle linear forwards;
+        }
+
+        /* Ruby Glassmorphism */
+        .glass-ruby {
+            background: rgba(69, 10, 10, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(217, 119, 6, 0.3);
+            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        /* 3D Tilt */
+        .tilt-card { transition: transform 0.1s ease; transform-style: preserve-3d; perspective: 1000px; }
+
+        /* Audio Wave */
+        @keyframes wave { 0%, 100% { height: 4px; } 50% { height: 16px; } }
+        .animate-wave { animation: wave 1s ease-in-out infinite; }
+
+        /* Timeline */
+        .timeline-line::before {
+            content: ''; position: absolute; left: 50%; width: 1px; height: 100%;
+            background: linear-gradient(to bottom, transparent, #fbbf24, transparent); opacity: 0.4;
+            transform: translateX(-50%);
+        }
+        @media (max-width: 768px) { .timeline-line::before { left: 24px; } }
+
+        /* Inputs */
+        .input-ruby {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(217, 119, 6, 0.3);
+            color: #fff;
+        }
+        .input-ruby:focus { outline: none; border-color: #fbbf24; background: rgba(0, 0, 0, 0.4); }
+        .gallery-item { break-inside: avoid; margin-bottom: 1.5rem; }
+        
+        /* Text Gradient */
+        .text-gold {
+            background: linear-gradient(to right, #fef3c7, #fcd34d, #d97706, #fcd34d, #fef3c7);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 6s linear infinite;
+        }
+        @keyframes shine { to { background-position: 200% center; } }
+    </style>
+</head>
+<body class="selection:bg-red-900 selection:text-amber-200" id="main-body">
+
+    <!-- Cursor -->
+    <div class="cursor-dot hidden md:block"></div>
+    <div class="cursor-outline hidden md:block"></div>
+
+    <!-- Start Overlay -->
+    <div id="start-overlay" class="fixed inset-0 z-[100] bg-[#2a0a12] flex flex-col items-center justify-center transition-opacity duration-1000 overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-20 bg-pattern-scales"></div>
+        
+        <div class="relative z-10 px-6 w-full max-w-xl animate-fade-in-up">
+            <div class="glass-ruby p-12 text-center border-2 border-amber-600/30 relative">
+                <!-- Decorative Corners -->
+                <div class="absolute top-2 left-2 w-8 h-8 border-t-2 border-l-2 border-amber-500"></div>
+                <div class="absolute top-2 right-2 w-8 h-8 border-t-2 border-r-2 border-amber-500"></div>
+                <div class="absolute bottom-2 left-2 w-8 h-8 border-b-2 border-l-2 border-amber-500"></div>
+                <div class="absolute bottom-2 right-2 w-8 h-8 border-b-2 border-r-2 border-amber-500"></div>
+
+                <div class="space-y-6">
+                    <p class="font-regal tracking-[0.4em] text-[10px] text-amber-200 uppercase">Royal Invitation</p>
+                    
+                    <div class="py-4">
+                        <h1 class="font-regal text-5xl md:text-7xl text-gold leading-tight drop-shadow-lg">{{ $invitation->data['bride'] }} & {{ $invitation->data['groom'] }}</h1>
+                    </div>
+                    
+                    <div class="w-full h-[1px] bg-gradient-to-r from-transparent via-amber-600 to-transparent"></div>
+                    <p class="font-script text-4xl text-rose-200">The Royal Union</p>
+                    
+                    <button id="enter-btn" class="mt-6 group relative inline-flex items-center justify-center gap-3 px-12 py-4 bg-[#450a0a] border border-amber-500 text-amber-100 font-regal tracking-widest uppercase text-xs hover:bg-amber-700 hover:text-white hover:border-amber-400 transition-all duration-500 shadow-[0_0_20px_rgba(217,119,6,0.2)]">
+                        <span>Enter Celebration</span>
+                    </button>
+                    <p class="text-[9px] text-rose-300/50 uppercase tracking-widest mt-6">Audio Experience Enabled</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ambient Layer -->
+    <div id="ambient-container" class="fixed inset-0 pointer-events-none z-0 overflow-hidden"></div>
+
+    <!-- Music FAB -->
+    <button id="music-toggle" class="fixed top-6 right-6 z-50 w-12 h-12 glass-ruby rounded-none rotate-45 flex items-center justify-center text-amber-400 hover:text-white transition-all shadow-lg border border-amber-500/50 hover:bg-amber-900 group">
+        <i data-lucide="music" class="w-5 h-5 -rotate-45"></i>
+    </button>
+    <audio id="bg-music" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-16.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Family Msg FAB -->
+    <button id="family-msg-toggle" class="fixed top-6 left-6 z-50 w-12 h-12 glass-ruby rounded-none rotate-45 flex items-center justify-center text-amber-400 hover:text-white transition-all shadow-lg border border-amber-500/50 hover:bg-amber-900 group animate-pulse">
+        <i id="family-icon" data-lucide="message-square" class="w-5 h-5 -rotate-45"></i>
+        <!-- Waves hidden inside diamond -->
+        <div id="family-waves" class="hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-45 gap-1 h-3 items-center">
+            <div class="w-[2px] bg-amber-400 rounded-full animate-wave"></div>
+            <div class="w-[2px] bg-amber-400 rounded-full animate-wave" style="animation-delay: 0.1s"></div>
+            <div class="w-[2px] bg-amber-400 rounded-full animate-wave" style="animation-delay: 0.2s"></div>
+        </div>
+    </button>
+    <audio id="family-audio">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-[100dvh] w-full flex flex-col items-center justify-center p-6 pt-24 pb-12 overflow-hidden bg-[#2a0a12]">
+        <!-- Background Image -->
+        <div class="absolute inset-0 z-0">
+            <!-- Main Image with Ken Burns Zoom -->
+            <img id="hero-bg" src="{{ $invitation->data['h_img'] ?? 'https://images.unsplash.com/photo-1519225495810-758831c93e44?auto=format&fit=crop&q=80&w=2070' }}" 
+                 alt="Royal Wedding" 
+                 class="w-full h-full object-cover object-center animate-ken-burns opacity-60">
+            
+            <!-- Moving Golden Stardust Animation Layer -->
+            <div class="absolute inset-0 opacity-40 mix-blend-screen animate-bg-slide" 
+                 style="background-image: url('https://www.transparenttextures.com/patterns/stardust.png'); background-size: 400px;">
+            </div>
+
+            <div class="absolute inset-0 bg-gradient-to-t from-[#2a0a12] via-[#2a0a12]/50 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-[#2a0a12] via-transparent to-transparent"></div>
+            <!-- Static Texture Overlay -->
+            <div class="absolute inset-0 bg-golden-dust opacity-30 mix-blend-overlay"></div>
+        </div>
+
+        <!-- Content Overlay -->
+        <div class="relative z-10 text-center w-full mt-20 animate-fade-in-up">
+            <div class="glass-ruby p-10 md:p-16 mx-auto max-w-3xl backdrop-blur-md border border-amber-500/20 shadow-2xl relative">
+                <!-- Diamond Border Overlay -->
+                <div class="absolute inset-2 border border-amber-500/10 pointer-events-none"></div>
+                
+                <h2 class="font-script text-5xl md:text-7xl text-rose-200 mb-2">{{ $invitation->data['bride'] }} & {{ $invitation->data['groom'] }}</h2>
+                <div class="flex items-center justify-center gap-4 my-6">
+                    <div class="h-[1px] w-20 bg-amber-500/50"></div>
+                    <span class="text-gold font-regal text-xl tracking-widest uppercase">{{ \Carbon\Carbon::parse($invitation->data['date'])->format('M d, Y') }}</span>
+                    <div class="h-[1px] w-20 bg-amber-500/50"></div>
+                </div>
+                <p class="font-regal text-sm tracking-[0.3em] uppercase text-rose-100/70">{{ $invitation->data['location'] ?? 'Udaipur • Rajasthan • India' }}</p>
+                
+                <div class="mt-12 flex justify-center">
+                    <div class="w-[1px] h-16 bg-gradient-to-b from-amber-500 to-transparent"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Countdown Section (Texture: Gold Dust) -->
+    <section class="py-24 px-6 relative bg-golden-dust">
+        <div class="max-w-5xl mx-auto text-center reveal reveal-zoom relative z-10">
+            <div class="inline-block border-b-2 border-amber-600 pb-2 mb-16">
+                <h2 class="font-regal text-4xl md:text-5xl text-rose-100 uppercase tracking-widest">Countdown</h2>
+            </div>
+            
+            <div id="countdown" class="grid grid-cols-4 gap-4 md:flex md:justify-center md:gap-8 mb-16">
+                <!-- Diamond Counters -->
+                <div class="tilt-card relative w-14 h-14 md:w-32 md:h-32 rotate-45 border border-amber-700 bg-[#450a0a]/80 flex items-center justify-center group hover:bg-[#450a0a] transition-all shadow-[0_0_15px_rgba(0,0,0,0.5)] mx-auto">
+                    <div class="-rotate-45 text-center">
+                        <span id="days" class="block font-regal text-xl md:text-4xl text-amber-400 font-bold">00</span>
+                        <span class="text-[7px] md:text-[9px] uppercase tracking-widest text-rose-200/60 block">Days</span>
+                    </div>
+                </div>
+                <div class="tilt-card relative w-14 h-14 md:w-32 md:h-32 rotate-45 border border-amber-700 bg-[#450a0a]/80 flex items-center justify-center group hover:bg-[#450a0a] transition-all shadow-[0_0_15px_rgba(0,0,0,0.5)] mx-auto">
+                    <div class="-rotate-45 text-center">
+                        <span id="hours" class="block font-regal text-xl md:text-4xl text-amber-400 font-bold">00</span>
+                        <span class="text-[7px] md:text-[9px] uppercase tracking-widest text-rose-200/60 block">Hrs</span>
+                    </div>
+                </div>
+                <div class="tilt-card relative w-14 h-14 md:w-32 md:h-32 rotate-45 border border-amber-700 bg-[#450a0a]/80 flex items-center justify-center group hover:bg-[#450a0a] transition-all shadow-[0_0_15px_rgba(0,0,0,0.5)] mx-auto">
+                    <div class="-rotate-45 text-center">
+                        <span id="minutes" class="block font-regal text-xl md:text-4xl text-amber-400 font-bold">00</span>
+                        <span class="text-[7px] md:text-[9px] uppercase tracking-widest text-rose-200/60 block">Mins</span>
+                    </div>
+                </div>
+                <div class="tilt-card relative w-14 h-14 md:w-32 md:h-32 rotate-45 border border-amber-700 bg-[#450a0a]/80 flex items-center justify-center group hover:bg-[#450a0a] transition-all shadow-[0_0_15px_rgba(0,0,0,0.5)] mx-auto">
+                    <div class="-rotate-45 text-center">
+                        <span id="seconds" class="block font-regal text-xl md:text-4xl text-amber-400 font-bold">00</span>
+                        <span class="text-[7px] md:text-[9px] uppercase tracking-widest text-rose-200/60 block">Secs</span>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="addToCalendar()" class="px-10 py-4 border border-amber-500 text-amber-400 hover:bg-amber-600 hover:text-white transition-colors uppercase text-xs tracking-[0.2em] font-regal shadow-lg bg-[#2a0a12]/80">
+                Add to Calendar
+            </button>
+        </div>
+    </section>
+
+    <!-- Couple Section (Texture: Diamonds Gradient) -->
+    <section class="py-24 px-6 relative bg-golden-diamonds">
+        <div class="max-w-6xl mx-auto relative z-10">
+            <div class="text-center mb-24 reveal">
+                <span class="font-script text-5xl text-amber-600 block mb-2">Starring</span>
+                <h2 class="font-regal text-5xl text-rose-100 uppercase tracking-wide">The Happy Couple</h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-20 items-center">
+                <!-- Bride -->
+                <div class="reveal reveal-left group relative">
+                    <div class="absolute inset-0 border-2 border-amber-600/40 translate-x-4 translate-y-4 group-hover:translate-x-2 group-hover:translate-y-2 transition-transform duration-500"></div>
+                    <div class="tilt-card relative z-10 aspect-[3/4] overflow-hidden border border-amber-900 shadow-2xl">
+                        <img src="{{ isset($invitation->data['gallery']) && isset($invitation->data['gallery'][0]) ? $invitation->data['gallery'][0] : 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800' }}" 
+                             class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 sepia-[20%]" alt="Bride">
+                        <div class="absolute bottom-0 inset-x-0 p-6 bg-gradient-to-t from-[#2a0a12] to-transparent">
+                            <h3 class="font-regal text-3xl text-amber-100">{{ $invitation->data['bride'] }}</h3>
+                            <div class="w-10 h-[2px] bg-amber-500 mt-2 mb-3"></div>
+                            <a href="https://instagram.com" target="_blank" class="text-amber-500 hover:text-white transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Groom -->
+                <div class="reveal reveal-right group relative">
+                    <div class="absolute inset-0 border-2 border-amber-600/40 -translate-x-4 translate-y-4 group-hover:-translate-x-2 group-hover:translate-y-2 transition-transform duration-500"></div>
+                    <div class="tilt-card relative z-10 aspect-[3/4] overflow-hidden border border-amber-900 shadow-2xl">
+                        <img src="{{ isset($invitation->data['gallery']) && isset($invitation->data['gallery'][1]) ? $invitation->data['gallery'][1] : 'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&q=80&w=800' }}" 
+                             class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 sepia-[20%]" alt="Groom">
+                        <div class="absolute bottom-0 inset-x-0 p-6 bg-gradient-to-t from-[#2a0a12] to-transparent">
+                            <h3 class="font-regal text-3xl text-amber-100">{{ $invitation->data['groom'] }}</h3>
+                            <div class="w-10 h-[2px] bg-amber-500 mt-2 mb-3"></div>
+                            <a href="https://instagram.com" target="_blank" class="text-amber-500 hover:text-white transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline (Texture: Diamonds Gradient) -->
+    <section class="py-24 px-6 bg-golden-diamonds relative overflow-hidden">
+        <div class="absolute left-6 md:left-1/2 top-0 bottom-0 w-[1px] bg-amber-900/50"></div>
+
+        <div class="max-w-4xl mx-auto relative z-10">
+            <h2 class="font-regal text-4xl text-center mb-20 text-rose-100 uppercase tracking-widest reveal">Itinerary</h2>
+            
+            <div class="space-y-20">
+                @php
+                    $defaultEvents = [
+                      ['name' => 'Haldi Ceremony', 'date' => '11 Dec', 'time' => '10:00 AM', 'location' => 'Poolside Lawns', 'desc' => 'Music, Dance & Henna.'],
+                      ['name' => 'Sangeet Night', 'date' => '11 Dec', 'time' => '07:00 PM', 'location' => 'Grand Ballroom', 'desc' => 'Golden glow followed by the Pheras.'],
+                      ['name' => 'The Wedding', 'date' => '12 Dec', 'time' => '04:00 PM', 'location' => 'Royal Gardens', 'desc' => 'Dinner, Cocktails & Celebration.']
+                  ];
+                  $events = $invitation->data['events'] ?? $defaultEvents;
+                @endphp
+
+                @foreach($events as $index => $event)
+                <div class="relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-16 reveal {{ $index % 2 == 0 ? 'reveal-left' : 'reveal-right' }} items-center group">
+                    @if($index % 2 != 0) <div class="hidden md:block"></div> @endif
+                    
+                    <div class="{{ $index % 2 == 0 ? 'md:text-right' : '' }}">
+                        <span class="text-amber-500 font-bold text-xs uppercase mb-2 block tracking-widest">{{ $event['date'] }} • {{ $event['time'] }}</span>
+                        <h4 class="font-regal text-2xl text-rose-100 mb-2 group-hover:text-amber-400 transition-colors">{{ $event['name'] }}</h4>
+                        <p class="text-sm text-rose-200/60 font-light">{{ $event['location'] }}</p>
+                    </div>
+                    
+                    @if($index % 2 == 0) <div class="hidden md:block"></div> @endif
+
+                    <div class="absolute left-[20px] md:left-1/2 md:-ml-[7px] w-[14px] h-[14px] bg-[#450a0a] rotate-45 border border-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)] z-10 group-hover:bg-amber-600 transition-colors"></div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery (Texture: Diamonds Gradient) -->
+    <section class="py-24 px-6 bg-golden-diamonds">
+        <div class="max-w-6xl mx-auto relative z-10">
+            <h2 class="font-regal text-4xl text-center mb-16 text-rose-100 uppercase tracking-widest reveal">Memories</h2>
+            
+            <div class="columns-1 md:columns-3 gap-6 space-y-6">
+                @php
+                    $gallery = $invitation->data['gallery'] ?? [];
+                    // Ensure we have enough placeholders if gallery is empty
+                    while(count($gallery) < 6) {
+                        $gallery[] = 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800';
+                    }
+                @endphp
+                <div class="gallery-item reveal reveal-up">
+                    <img src="{{ $gallery[2] ?? 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800' }}" class="w-full border border-amber-900/50 hover:border-amber-500 transition-all duration-500 shadow-xl" alt="Gallery">
+                </div>
+                <div class="gallery-item reveal reveal-up" style="transition-delay: 100ms;">
+                    <img src="{{ $gallery[3] ?? 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800' }}" class="w-full border border-amber-900/50 hover:border-amber-500 transition-all duration-500 shadow-xl" alt="Gallery">
+                </div>
+                <div class="gallery-item reveal reveal-up" style="transition-delay: 200ms;">
+                    <div class="border border-amber-500/30 p-8 flex items-center justify-center text-center h-full min-h-[200px] bg-[#2a0a12]/80 backdrop-blur-sm">
+                        <p class="font-script text-4xl text-amber-500">"A love for eternity"</p>
+                    </div>
+                </div>
+                <div class="gallery-item reveal reveal-up">
+                    <img src="{{ $gallery[4] ?? 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800' }}" class="w-full border border-amber-900/50 hover:border-amber-500 transition-all duration-500 shadow-xl" alt="Gallery">
+                </div>
+                 <div class="gallery-item reveal reveal-up" style="transition-delay: 150ms;">
+                    <img src="{{ $gallery[5] ?? 'https://images.unsplash.com/photo-1610173824052-a56b3e71d378?auto=format&fit=crop&q=80&w=800' }}" class="w-full border border-amber-900/50 hover:border-amber-500 transition-all duration-500 shadow-xl" alt="Gallery">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Details (Texture: Gold Dust) -->
+    <section class="py-24 px-6 bg-golden-dust text-white relative">
+        <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center relative z-10">
+            <div class="reveal reveal-left">
+                <span class="text-amber-500 tracking-[0.2em] uppercase text-xs font-bold mb-4 block">Destination</span>
+                <h2 class="font-regal text-5xl mb-6 text-rose-100">{{ $invitation->data['location'] ?? 'Udaipur, Rajasthan' }}</h2>
+                <div class="w-20 h-[1px] bg-amber-600 mb-8"></div>
+                <p class="text-rose-200/60 mb-8 leading-relaxed font-light">Join us in the City of Lakes for a royal celebration under the stars.</p>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="p-6 border border-amber-900 hover:border-amber-500 transition-colors bg-[#2a0a12]/90">
+                        <i data-lucide="bed" class="w-6 h-6 text-amber-500 mb-2"></i>
+                        <span class="text-sm font-bold block text-rose-100">Rosewood Estate</span>
+                    </div>
+                    <div class="p-6 border border-amber-900 hover:border-amber-500 transition-colors bg-[#2a0a12]/90">
+                        <i data-lucide="plane" class="w-6 h-6 text-amber-500 mb-2"></i>
+                        <span class="text-sm font-bold block text-rose-100">Airport (UDR)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reveal reveal-right h-[400px] border-2 border-amber-900/50 p-2 rotate-2 hover:rotate-0 transition-transform duration-500 bg-[#2a0a12]">
+                <div class="h-full w-full overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
+                    <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d116086.08271166316!2d73.63609804829377!3d24.608361099159954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3967e56550a14411%3A0xdbd8c28455b868b0!2sUdaipur%2C%20Rajasthan!5e0!3m2!1sen!2sin!4v1700000000000" 
+                    class="w-full h-full" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RSVP (Texture: Luxury Diamond Upholstery) -->
+    <section class="py-20 px-4 relative bg-golden-luxury" id="rsvp">
+        <div class="max-w-lg mx-auto glass-ruby p-12 shadow-2xl relative z-10 reveal reveal-up">
+            <div class="absolute -top-3 -left-3 w-6 h-6 border-t-2 border-l-2 border-amber-500"></div>
+            <div class="absolute -bottom-3 -right-3 w-6 h-6 border-b-2 border-r-2 border-amber-500"></div>
+
+            <div class="text-center mb-10">
+                <h2 class="font-regal text-4xl text-rose-100 mb-2">RSVP</h2>
+                <div class="w-12 h-[1px] bg-amber-500 mx-auto"></div>
+                <p class="text-amber-500/70 mt-4 text-xs uppercase tracking-widest">By October 1st, 2026</p>
+            </div>
+
+            <form id="rsvp-form" class="space-y-6">
+                <div class="group">
+                    <input type="text" required placeholder="Full Name" class="w-full input-ruby rounded-none px-4 py-3 text-sm transition-all placeholder:text-rose-200/30">
+                </div>
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="relative">
+                        <select class="w-full input-ruby rounded-none px-4 py-3 text-sm appearance-none cursor-pointer">
+                            <option value="" disabled selected>Guests</option>
+                            <option class="bg-[#2a0a12]">1 Guest</option>
+                            <option class="bg-[#2a0a12]">2 Guests</option>
+                            <option class="bg-[#2a0a12]">3 Guests</option>
+                        </select>
+                        <i data-lucide="chevron-down" class="absolute right-3 top-3.5 w-4 h-4 text-amber-600 pointer-events-none"></i>
+                    </div>
+                    <input type="tel" placeholder="Phone" class="w-full input-ruby rounded-none px-4 py-3 text-sm transition-all placeholder:text-rose-200/30">
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4 pt-4">
+                    <label class="cursor-pointer relative">
+                        <input type="radio" name="attending" value="yes" class="peer sr-only" checked>
+                        <div class="flex items-center justify-center gap-2 py-4 border border-amber-900/50 text-rose-200 text-sm transition-all peer-checked:bg-amber-700 peer-checked:text-white peer-checked:border-amber-600 hover:border-amber-500/50">
+                            Accept
+                        </div>
+                    </label>
+                    <label class="cursor-pointer relative">
+                        <input type="radio" name="attending" value="no" class="peer sr-only">
+                        <div class="flex items-center justify-center gap-2 py-4 border border-amber-900/50 text-rose-200 text-sm transition-all peer-checked:bg-[#20050b] peer-checked:text-white hover:border-amber-500/50">
+                            Decline
+                        </div>
+                    </label>
+                </div>
+
+                <button type="submit" class="w-full mt-6 py-4 bg-gradient-to-r from-amber-700 to-amber-600 text-white font-regal tracking-widest uppercase text-xs hover:from-amber-600 hover:to-amber-500 transition-all duration-300 shadow-lg">
+                    Confirm Presence
+                </button>
+            </form>
+
+            <div id="rsvp-success" class="hidden text-center py-8 animate-fade-in-up">
+                <div class="w-16 h-16 border-2 border-amber-500 text-amber-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="check" class="w-8 h-8"></i>
+                </div>
+                <h3 class="text-xl font-regal text-rose-100 mb-2">Thank You</h3>
+                <p class="text-sm text-rose-200/60 font-light px-4">Your response has been received.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer (Texture: Diamonds) -->
+    <footer class="py-16 text-center bg-golden-diamonds border-t border-amber-900/30">
+        <div class="flex flex-col items-center justify-center gap-4 mb-8 relative z-10">
+            <h2 class="font-regal tracking-widest uppercase text-2xl text-rose-100">VivaHub</h2>
+            <div class="flex items-center gap-6">
+                <a href="#" class="text-amber-700 hover:text-amber-500 transition-all"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                <a href="#" class="text-amber-700 hover:text-amber-500 transition-all"><i data-lucide="facebook" class="w-5 h-5"></i></a>
+            </div>
+        </div>
+        <div class="flex items-center justify-center gap-2 mb-8 group cursor-default relative z-10">
+            <span class="text-xs text-amber-700/60 font-sans tracking-wide uppercase">Moments by <span class="text-amber-600 border-b border-amber-800 pb-1">Rahul Verma</span></span>
+        </div>
+        <p class="text-[10px] text-amber-900 uppercase tracking-widest relative z-10">© 2026 VivaHub</p>
+    </footer>
+
+    <!-- Mobile Nav -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#2a0a12]/95 backdrop-blur-md flex justify-around items-center px-4 py-3 pb-6 border-t border-amber-900/30 w-full max-w-full safe-pb">
+        <button onclick="window.open('tel:+123456789')" class="flex flex-col items-center text-amber-700 hover:text-amber-500 transition-colors">
+            <i data-lucide="phone" class="w-5 h-5"></i><span class="text-[9px] mt-1 font-medium uppercase">Call</span>
+        </button>
+        <button onclick="window.open('https://wa.me/123456789')" class="flex flex-col items-center text-amber-700 hover:text-amber-500 transition-colors">
+            <i data-lucide="message-circle" class="w-5 h-5"></i><span class="text-[9px] mt-1 font-medium uppercase">Chat</span>
+        </button>
+        <button onclick="downloadVCard()" class="w-14 h-14 bg-amber-700 text-white flex items-center justify-center -mt-8 shadow-[0_0_20px_rgba(217,119,6,0.3)] hover:scale-105 transition-transform rotate-45 border-4 border-[#2a0a12]">
+            <i data-lucide="user-plus" class="w-6 h-6 -rotate-45"></i>
+        </button>
+        <button onclick="window.print()" class="flex flex-col items-center text-amber-700 hover:text-amber-500 transition-colors">
+            <i data-lucide="download" class="w-5 h-5"></i><span class="text-[9px] mt-1 font-medium uppercase">Invite</span>
+        </button>
+        <button onclick="shareInvite()" class="flex flex-col items-center text-amber-700 hover:text-amber-500 transition-colors">
+            <i data-lucide="share-2" class="w-5 h-5"></i><span class="text-[9px] mt-1 font-medium uppercase">Share</span>
+        </button>
+    </nav>
+
+    <script>
+        lucide.createIcons();
+
+        // Audio & Overlay Logic
+        const startOverlay = document.getElementById('start-overlay');
+        const enterBtn = document.getElementById('enter-btn');
+        const musicBtn = document.getElementById('music-toggle');
+        const bgMusic = document.getElementById('bg-music');
+        const familyBtn = document.getElementById('family-msg-toggle');
+        const familyAudio = document.getElementById('family-audio');
+        const familyIcon = document.getElementById('family-icon');
+        const familyWaves = document.getElementById('family-waves');
+        let isMusicPlaying = false;
+        let isFamilyPlaying = false;
+
+        familyAudio.addEventListener('ended', () => {
+            isFamilyPlaying = false;
+            familyIcon.classList.remove('hidden');
+            familyWaves.classList.add('hidden');
+            bgMusic.play().then(() => {
+                isMusicPlaying = true;
+                musicBtn.classList.add('bg-amber-600', 'text-white');
+                lucide.createIcons();
+            });
+        });
+
+        enterBtn.addEventListener('click', () => {
+            startOverlay.style.opacity = '0';
+            setTimeout(() => { startOverlay.classList.add('hidden'); }, 1000);
+            familyAudio.play().then(() => {
+                isFamilyPlaying = true;
+                familyIcon.classList.add('hidden');
+                familyWaves.classList.remove('hidden');
+                familyWaves.classList.add('flex');
+            });
+        });
+
+        musicBtn.addEventListener('click', () => {
+            if (isMusicPlaying) {
+                bgMusic.pause();
+                musicBtn.classList.remove('bg-amber-600', 'text-white');
+            } else {
+                if (isFamilyPlaying) { familyAudio.pause(); isFamilyPlaying = false; familyIcon.classList.remove('hidden'); familyWaves.classList.add('hidden'); }
+                bgMusic.play();
+                musicBtn.classList.add('bg-amber-600', 'text-white');
+            }
+            isMusicPlaying = !isMusicPlaying;
+        });
+
+        familyBtn.addEventListener('click', () => {
+            if (isFamilyPlaying) {
+                familyAudio.pause();
+                familyIcon.classList.remove('hidden');
+                familyWaves.classList.add('hidden');
+            } else {
+                if (isMusicPlaying) { bgMusic.pause(); isMusicPlaying = false; musicBtn.classList.remove('bg-amber-600', 'text-white'); }
+                familyAudio.play();
+                familyIcon.classList.add('hidden');
+                familyWaves.classList.remove('hidden');
+                familyWaves.classList.add('flex');
+            }
+            isFamilyPlaying = !isFamilyPlaying;
+        });
+
+        // Countdown
+        const weddingDate = new Date("{{ $invitation->data['date'] }}T16:00:00").getTime();
+        setInterval(() => {
+            const now = new Date().getTime();
+            const distance = weddingDate - now;
+            if (distance > 0) {
+                document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+                document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+                document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+                document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
+            }
+        }, 1000);
+
+        // Animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal, .reveal-zoom').forEach(el => observer.observe(el));
+
+        // Tilt
+        document.querySelectorAll('.tilt-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left; const y = e.clientY - rect.top;
+                card.style.transform = `perspective(1000px) rotateX(${((y - rect.height/2)/rect.height/2)*-5}deg) rotateY(${((x - rect.width/2)/rect.width/2)*5}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+            card.addEventListener('mouseleave', () => { card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)'; });
+        });
+
+        // Cursor
+        const dot = document.querySelector('.cursor-dot'), outline = document.querySelector('.cursor-outline');
+        window.addEventListener('mousemove', (e) => {
+            dot.style.left = `${e.clientX}px`; dot.style.top = `${e.clientY}px`;
+            outline.animate({ left: `${e.clientX}px`, top: `${e.clientY}px` }, { duration: 500, fill: "forwards" });
+        });
+
+        // Sparkle Animation
+        const ambientContainer = document.getElementById('ambient-container');
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.classList.add('sparkle');
+            sparkle.style.left = `${Math.random() * 100}vw`;
+            const duration = Math.random() * 5 + 5;
+            sparkle.style.animationDuration = `${duration}s`;
+            ambientContainer.appendChild(sparkle);
+            setTimeout(() => sparkle.remove(), duration * 1000);
+        }
+        setInterval(createSparkle, 300);
+
+        // RSVP
+        document.getElementById('rsvp-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            e.target.style.display = 'none';
+            document.getElementById('rsvp-success').classList.remove('hidden');
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#d97706', '#ffe4e6', '#2a0a12'] });
+        });
+
+        // Utils
+        function addToCalendar() { window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text={{ $invitation->data['bride'] }}%20%26%20{{ $invitation->data['groom'] }}%20Wedding&dates={{ \Carbon\Carbon::parse($invitation->data['date'])->format('Ymd') }}T160000Z/{{ \Carbon\Carbon::parse($invitation->data['date'])->addDays(1)->format('Ymd') }}T020000Z`, '_blank'); }
+        function shareInvite() { if(navigator.share) navigator.share({ title: '{{ $invitation->data['bride'] }} & {{ $invitation->data['groom'] }} Wedding', url: window.location.href }); else alert('Link copied!'); }
+        function downloadVCard() {
+            const blob = new Blob([`BEGIN:VCARD\nVERSION:3.0\nFN:{{ $invitation->data['bride'] }} & {{ $invitation->data['groom'] }} Wedding\nURL:${window.location.href}\nEND:VCARD`], { type: 'text/vcard' });
+            const a = document.createElement('a'); a.href = window.URL.createObjectURL(blob); a.download = 'wedding.vcf'; a.click();
+        }
+
+        // --- Live Preview Hooks ---
+        window.updateAudioSource = function(src, type) {
+            // Theme 10 might separate wish/bg audio if implemented, otherwise generic
+            const audio = document.getElementById('bg-music');
+            if(audio) { audio.src = src; if(isMusicPlaying) audio.play(); }
+        }
+        
+        window.updateAudio = function(res) {
+            const audio = document.getElementById('bg-music');
+            if(audio) { audio.src = res; if(isMusicPlaying) audio.play(); }
+        }
+
+        window.toggleSection = function(section, isEnabled) {
+            // Map sections if IDs differ
+            const el = document.getElementById(section);
+            if(el) { if(isEnabled) el.classList.remove('hidden'); else el.classList.add('hidden'); }
+        }
+
+        window.updateCountdown = function(dateStr) {
+             // dateStr is YYYY-MM-DD
+            const newDate = new Date(dateStr + "T16:00:00").getTime();
+            // We need to update the interval logic, primarily by updating a global var if we had one
+            // Ideally we re-run the interval. For now, let's reload or just set a global override if accessible.
+            // Since the interval captures 'weddingDate', we might need to reload the iframe or expose weddingDate.
+            // DO NOTHING effectively requires a reload or exposing the var.
+            // Let's try to reload the frame for date changes in builder or better:
+            window.location.reload(); 
+        }
+
+        window.updateGallery = function(urls) {
+             // Theme 10 Gallery Logic
+        } 
+    </script>
+</body>
+</html>

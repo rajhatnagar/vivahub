@@ -3,7 +3,7 @@
 @section('title', 'Plan Management')
 
 @section('content')
-<div class="max-w-7xl mx-auto flex flex-col gap-6 animate-fade-in">
+<div class="max-w-7xl mx-auto flex flex-col gap-6 animate-fade-in" x-data="{}">
     <div class="flex justify-between items-center">
         <h2 class="text-2xl font-bold text-slate-800 dark:text-white">Subscription Plans</h2>
         <button onclick="openCreatePlanModal()" class="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-xl text-sm font-medium shadow-md transition-colors flex items-center gap-2">

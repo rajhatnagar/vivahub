@@ -10,10 +10,10 @@
         <!-- Form Header -->
         <div class="p-5 border-b border-gray-100 dark:border-white/5">
             <div class="flex justify-between items-center mb-3">
-                <a href="{{ route('templates') }}" class="text-sm text-text-muted hover:text-primary flex gap-1 font-bold"><span class="material-symbols-outlined text-sm">arrow_back</span> Back</a>
-                <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold" id="step-indicator">Step 1/6</span>
+                <a href="{{ route('dashboard.templates') }}" class="text-sm text-text-muted hover:text-primary flex gap-1 font-bold"><span class="material-symbols-outlined text-sm">arrow_back</span> Back</a>
+                <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold" id="step-indicator">Step 1/7</span>
             </div>
-            <div class="w-full bg-gray-100 dark:bg-white/10 rounded-full h-1.5"><div class="bg-primary h-1.5 rounded-full transition-all duration-500" style="width: 20%" id="progress-bar"></div></div>
+            <div class="w-full bg-gray-100 dark:bg-white/10 rounded-full h-1.5"><div class="bg-primary h-1.5 rounded-full transition-all duration-500" style="width: 14%" id="progress-bar"></div></div>
         </div>
 
         <!-- Form Content -->
@@ -38,20 +38,7 @@
                    </div>
                 </div>
 
-                <!-- Baground Audio -->
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2 ml-1">Background Music</label>
-                    <div class="relative group">
-                        <input type="file" accept="audio/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" onchange="handleAudioUpload(this)">
-                        <div class="flex items-center gap-3 p-3 rounded-xl border border-dashed border-gray-300 dark:border-white/20 bg-gray-50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors">
-                            <div class="w-10 h-10 rounded-lg bg-accent-gold/10 flex items-center justify-center text-accent-gold"><span class="material-symbols-outlined">music_note</span></div>
-                            <div class="text-sm">
-                                <p class="font-bold text-text-dark dark:text-white">Click to Upload Audio</p>
-                                <p class="text-xs text-text-muted">MP3 format</p>
-                            </div>
-                        </div>
-                    </div>
-                 </div>
+
 
                 <!-- Tagline -->
                 <div>
@@ -151,29 +138,70 @@
                 </div>
             </div>
 
-            <!-- Step 5: Settings -->
+            <!-- Step 5: Audio & Settings -->
             <div id="step-5" class="space-y-6 animate-fade-in hidden">
-                <h3 class="text-xl font-bold text-text-dark dark:text-white border-b border-gray-100 dark:border-white/10 pb-2">Settings</h3>
+                <h3 class="text-xl font-bold text-text-dark dark:text-white border-b border-gray-100 dark:border-white/10 pb-2">Audio & Settings</h3>
 
-                <!-- Wishing Audio -->
-                <div class="bg-gray-50 dark:bg-white/5 p-4 rounded-xl flex items-center justify-between">
+                <!-- Audio Experience Section -->
+                <div class="space-y-6">
+                    <!-- Background Audio -->
                     <div>
-                        <h4 class="font-bold text-sm text-text-dark dark:text-white">Family Wishing Audio</h4>
-                        <p class="text-xs text-text-muted">Play a family message before the music starts.</p>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2 ml-1">Background Music</label>
+                        
+                        <div class="bg-gray-50 dark:bg-white/5 p-4 rounded-xl mb-4 flex items-center justify-between">
+                             <div>
+                                 <h4 class="font-bold text-sm text-text-dark dark:text-white">Enable Music</h4>
+                                 <p class="text-xs text-text-muted">Play music automatically on invite open.</p>
+                             </div>
+                             <label class="relative inline-flex items-center cursor-pointer">
+                                 <input type="checkbox" class="sr-only peer" checked onchange="toggleFeature('bg_music', this.checked)">
+                                 <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                             </label>
+                        </div>
+
+                        <div class="relative group">
+                            <input type="file" accept="audio/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" onchange="handleAudioUpload(this)">
+                            <div class="flex items-center gap-3 p-3 rounded-xl border border-dashed border-gray-300 dark:border-white/20 bg-gray-50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors">
+                                <div class="w-10 h-10 rounded-lg bg-accent-gold/10 flex items-center justify-center text-accent-gold"><span class="material-symbols-outlined">music_note</span></div>
+                                <div class="text-sm">
+                                    <p class="font-bold text-text-dark dark:text-white">Click to Upload Music</p>
+                                    <p class="text-xs text-text-muted">MP3 format (Max 5MB)</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" class="sr-only peer" onchange="toggleFeature('wishing_audio', this.checked)">
-                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-                    </label>
+
+                    <!-- Wishing Audio -->
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2 ml-1">Family Message</label>
+                        <div class="bg-gray-50 dark:bg-white/5 p-4 rounded-xl mb-4 flex items-center justify-between">
+                            <div>
+                                <h4 class="font-bold text-sm text-text-dark dark:text-white">Enable Family Message</h4>
+                                <p class="text-xs text-text-muted">Play a voice message before music.</p>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" class="sr-only peer" onchange="toggleFeature('wishing_audio', this.checked)">
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                            </label>
+                        </div>
+                        <!-- Upload Wishing Audio -->
+                        <div id="wishing-audio-upload" class="hidden">
+                             <div class="relative group">
+                                 <input type="file" accept="audio/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" onchange="handleAudioUpload(this, 'wishing')">
+                                 <div class="flex items-center gap-3 p-3 rounded-xl border border-dashed border-gray-300 dark:border-white/20 bg-gray-50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors">
+                                     <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary"><span class="material-symbols-outlined">mic</span></div>
+                                     <div class="text-sm">
+                                         <p class="font-bold text-text-dark dark:text-white">Click to Upload Voice Message</p>
+                                         <p class="text-xs text-text-muted">MP3/WAV format</p>
+                                     </div>
+                                 </div>
+                             </div>
+                        </div>
+                    </div>
                 </div>
-                 <!-- Upload Wishing Audio -->
-                 <div id="wishing-audio-upload" class="hidden pl-2">
-                     <label class="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2 ml-1">Upload Message</label>
-                     <input type="file" accept="audio/*" class="block w-full text-sm text-text-muted file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20" onchange="handleAudioUpload(this, 'wishing')">
-                 </div>
 
                 <!-- RSVP Section -->
-                <div class="bg-gray-50 dark:bg-white/5 p-4 rounded-xl flex items-center justify-between">
+                <div class="bg-gray-50 dark:bg-white/5 p-4 rounded-xl flex items-center justify-between border-t border-gray-100 dark:border-white/10 pt-6">
                     <div>
                         <h4 class="font-bold text-sm text-text-dark dark:text-white">RSVP Section</h4>
                         <p class="text-xs text-text-muted">Allow guests to confirm attendance.</p>
@@ -183,28 +211,16 @@
                         <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                     </label>
                 </div>
-
-                <!-- Background Music -->
-                <div class="bg-gray-50 dark:bg-white/5 p-4 rounded-xl flex items-center justify-between">
-                    <div>
-                        <h4 class="font-bold text-sm text-text-dark dark:text-white">Background Music</h4>
-                        <p class="text-xs text-text-muted">Enable background music.</p>
-                    </div>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" class="sr-only peer" checked onchange="toggleFeature('bg_music', this.checked)">
-                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-                    </label>
-                </div>
             </div>
 
-             <!-- Step 6: Finish (Moved) -->
-             <div id="step-6" class="space-y-6 animate-fade-in hidden text-center pt-10">
+            <!-- Step 6: Finish -->
+            <div id="step-6" class="space-y-6 animate-fade-in hidden text-center pt-10">
                  <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce-soft">
                      <span class="material-symbols-outlined text-4xl text-green-600">check_circle</span>
                  </div>
                  <h3 class="text-2xl font-bold text-text-dark dark:text-white">Ready to Publish!</h3>
                  <p class="text-text-muted">Your invitation looks amazing. Click publish to go live.</p>
-             </div>
+            </div>
 
         </div>
 
@@ -231,7 +247,7 @@
             <div id="preview-notch" class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-[#1b0d12] dark:bg-[#2a2a2a] rounded-b-2xl z-20"></div>
             
             <!-- Iframe Preview -->
-            <iframe id="preview-frame" src="{{ $templateId === 'wedding-1' ? route('builder.preview.wedding-1') : route('builder.preview.wedding-1') }}" class="w-full h-full bg-white" style="border:none;"></iframe>
+            <iframe id="preview-frame" src="{{ route('builder.preview', ['template' => $templateId]) }}" class="w-full h-full bg-white" style="border:none;"></iframe>
         </div>
 
         <!-- Preview Toggle -->
@@ -585,8 +601,15 @@
             phone: document.querySelector('input[type="tel"]').value,
             groomBio: document.querySelector('input[oninput*="preview-groom-bio"]')?.value || '',
             brideBio: document.querySelector('input[oninput*="preview-bride-bio"]')?.value || '',
+            // Compatibility mappings
+            bride_name: document.querySelector('input[oninput*="preview-bride"]').value,
+            groom_name: document.querySelector('input[oninput*="preview-groom"]').value,
+            location_name: document.querySelector('input[oninput*="preview-hero-location"]').value,
+            venue_city: document.querySelector('input[oninput*="preview-hero-location"]').value,
             // JSON of events
             eventDates: [],
+            events: [],
+            timeline: [],
             coupon_code: typeof appliedCoupon !== 'undefined' && appliedCoupon ? appliedCoupon.code : null
         };
 
@@ -595,12 +618,19 @@
         const cards = container.querySelectorAll('.event-card');
         cards.forEach((card) => {
             const inputs = card.querySelectorAll('input');
-            data.eventDates.push({
+            const eventObj = {
                 title: inputs[0].value,
                 time: inputs[1].value,
                 description: inputs[2].value,
-                location: inputs[3].value
-            });
+                location: inputs[3].value,
+                // Variants
+                name: inputs[0].value,
+                date: inputs[1].value, // Some templates use date/time in one or separate
+                desc: inputs[2].value
+            };
+            data.eventDates.push(eventObj);
+            data.events.push(eventObj);
+            data.timeline.push(eventObj);
         });
 
         // Send to Server
@@ -746,6 +776,38 @@
         if(mobileFrame.contentWindow && mobileFrame.contentWindow.updateEventsList) mobileFrame.contentWindow.updateEventsList(events);
     }
     
+    // --- Scrollbar Fix ---
+    function hideScrollbar(frameId) {
+        const frame = document.getElementById(frameId);
+        if(!frame) return;
+        
+        const injectStyle = () => {
+            try {
+                const doc = frame.contentDocument || frame.contentWindow.document;
+                if(!doc) return;
+                
+                if(!doc.getElementById('scrollbar-hide-style')) {
+                   const style = doc.createElement('style');
+                   style.id = 'scrollbar-hide-style';
+                   style.innerHTML = '::-webkit-scrollbar { display: none; } body { -ms-overflow-style: none; scrollbar-width: none; }';
+                   doc.head.appendChild(style);
+                }
+            } catch(e) {
+                console.log('Cross-origin restriction or frame not ready for scrollbar fix');
+            }
+        };
+
+        // Try immediately and on load
+        injectStyle();
+        frame.addEventListener('load', injectStyle);
+    }
+
+    // Apply to both frames on load
+    document.addEventListener('DOMContentLoaded', () => {
+        hideScrollbar('preview-frame');
+        hideScrollbar('mobile-preview-frame');
+    });
+    
     // --- Features Logic ---
     function toggleFeature(feature, isEnabled) {
         if(feature === 'wishing_audio') {
@@ -775,13 +837,21 @@
     function updateFrame(frame, type, id, value) {
         const doc = frame.contentDocument || frame.contentWindow.document;
         if (!doc) return;
+        
+        const applyUpdate = (el) => {
+             if (type === 'text') el.innerText = value;
+             if (type === 'src') el.src = value;
+             if (type === 'bg') el.style.backgroundImage = `url('${value}')`;
+             if (type === 'href') el.href = value;
+        };
+
+        // Try ID
         const el = doc.getElementById(id);
-        if (el) {
-            if (type === 'text') el.innerText = value;
-            if (type === 'src') el.src = value;
-            if (type === 'bg') el.style.backgroundImage = `url('${value}')`;
-            if (type === 'href') el.href = value;
-        }
+        if (el) applyUpdate(el);
+
+        // Try Class (for multiple occurrences)
+        const els = doc.getElementsByClassName(id);
+        Array.from(els).forEach(element => applyUpdate(element));
     }
     
     // --- File Upload Logic ---
@@ -1080,7 +1150,7 @@
         
         // Sync source if not already set or needs refresh (optional, but good)
         if(frame.src === "about:blank" || frame.src === "") {
-             frame.src = "{{ $templateId === 'wedding-1' ? route('builder.preview.wedding-1') : route('builder.preview.wedding-1') }}";
+             frame.src = "{{ route('builder.preview', ['template' => $templateId]) }}";
              
              // Sync when loaded
              frame.onload = function() {

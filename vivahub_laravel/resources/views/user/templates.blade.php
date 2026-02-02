@@ -26,11 +26,14 @@
             if(str_contains($t['style'], 'Elegant') || str_contains($t['style'], 'Minimalist')) $cats .= ' Modern';
             if(str_contains($t['style'], 'Luxury')) $cats .= ' Luxury';
         @endphp
-        <div class="template-card group bg-white dark:bg-surface-dark rounded-2xl overflow-hidden shadow-card hover:shadow-floating transition-all duration-500 border border-primary/5 dark:border-white/5 relative" data-categories="{{ $cats }}">
+        <div onclick="window.location.href='{{ route('builder', ['template' => $t['id'] ?? 'wedding-1']) }}'" class="template-card group bg-white dark:bg-surface-dark rounded-2xl overflow-hidden shadow-card hover:shadow-floating transition-all duration-500 border border-primary/5 dark:border-white/5 relative cursor-pointer" data-categories="{{ $cats }}">
             <div class="h-64 overflow-hidden relative">
                 <img src="{{ $t['img'] }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <a href="{{ route('builder', ['template' => $t['id'] ?? null]) }}" class="bg-white text-text-dark font-bold py-2 px-6 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Use Template</a>
+                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-3 z-20">
+                    <button onclick="event.stopPropagation(); openPreview('{{ $t['id'] ?? 'wedding-1' }}')" class="bg-white/90 hover:bg-white text-text-dark font-bold py-2 px-6 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 delay-75 shadow-lg flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">visibility</span> Preview
+                    </button>
+                    <span class="bg-primary text-white font-bold py-2 px-6 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 shadow-lg">Use Template</span>
                 </div>
             </div>
             <div class="p-4 text-center">
@@ -63,5 +66,72 @@
              }
         });
     }
+
+    function hideScrollbar(frame) {
+        if(!frame) return;
+        
+        const injectStyle = () => {
+            try {
+                const doc = frame.contentDocument || frame.contentWindow.document;
+                if(!doc) return;
+                
+                if(!doc.getElementById('scrollbar-hide-style')) {
+                   const style = doc.createElement('style');
+                   style.id = 'scrollbar-hide-style';
+                   style.innerHTML = '::-webkit-scrollbar { display: none; } body { -ms-overflow-style: none; scrollbar-width: none; }';
+                   doc.head.appendChild(style);
+                }
+            } catch(e) {
+                console.log('Cross-origin restriction or frame not ready');
+            }
+        };
+
+        injectStyle();
+        frame.onload = injectStyle; // Re-apply on load
+        frame.addEventListener('load', injectStyle);
+    }
+
+    function openPreview(id) {
+        const modal = document.getElementById('preview-modal');
+        const frame = document.getElementById('preview-frame');
+        const url = "{{ route('builder.preview', ['template' => ':id']) }}".replace(':id', id);
+        
+        frame.src = url;
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        
+        hideScrollbar(frame);
+    }
+
+    function closePreview() {
+        const modal = document.getElementById('preview-modal');
+        const frame = document.getElementById('preview-frame');
+        
+        modal.classList.add('hidden');
+        frame.src = '';
+        document.body.style.overflow = '';
+    }
 </script>
+
+<!-- Preview Modal -->
+<div id="preview-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 lg:p-10">
+    <div class="absolute inset-0 bg-black/90 backdrop-blur-md" onclick="closePreview()"></div>
+    
+    <!-- Mobile Frame -->
+    <div class="relative w-full max-w-[340px] md:max-w-[375px] h-[85vh] md:h-[750px] bg-black rounded-[45px] border-[10px] md:border-[12px] border-[#1b0d12] overflow-hidden shadow-2xl animate-fade-in-up flex flex-col">
+         <!-- Notch -->
+         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-[#1b0d12] rounded-b-2xl z-20"></div>
+         
+         <iframe id="preview-frame" class="w-full h-full bg-white relative z-10" style="border:0"></iframe>
+         
+         <!-- Close Button (External) -->
+         <button onclick="closePreview()" class="absolute top-4 right-4 z-50 p-2 bg-black/50 rounded-full text-white hover:bg-black/70 backdrop-blur-md transition-colors hidden md:block">
+             <span class="material-symbols-outlined text-sm">close</span>
+         </button>
+    </div>
+
+    <button onclick="closePreview()" class="absolute top-6 right-6 z-50 p-4 bg-white/10 rounded-full text-white hover:bg-white/20 backdrop-blur-md transition-colors md:hidden">
+         <span class="material-symbols-outlined">close</span>
+    </button>
+</div>
 @endsection

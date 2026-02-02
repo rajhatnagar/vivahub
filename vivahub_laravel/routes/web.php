@@ -31,11 +31,9 @@ use App\Http\Controllers\UserPanelController;
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::controller(UserPanelController::class)->group(function () {
         Route::get('/dashboard', 'dashboard')->name('dashboard');
-        Route::get('/builder/preview/wedding-1', function () {
-            return view('templates.wedding_theme_1');
-        })->name('builder.preview.wedding-1');
+        Route::get('/builder/preview/{template}', [UserPanelController::class, 'previewTemplate'])->name('builder.preview');
         Route::get('/invitations', 'invitations')->name('invitations');
-        Route::get('/templates', 'templates')->name('templates');
+        Route::get('/dashboard/templates', 'templates')->name('dashboard.templates');
         Route::get('/builder', 'builder')->name('builder');
         Route::post('/builder/save', 'saveDraft')->name('builder.save');
         Route::get('/plans', 'getPlans')->name('plans.get');
@@ -45,9 +43,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/settings', 'settings')->name('settings');
         Route::post('/settings', 'updateSettings')->name('settings.update');
     });
-
-    Route::get('/stop-impersonating', [\App\Http\Controllers\Admin\UserController::class, 'stopImpersonating'])->name('impersonate.stop');
 });
+
+
+
+Route::middleware(['auth'])->get('/stop-impersonating', [\App\Http\Controllers\Admin\UserController::class, 'stopImpersonating'])->name('impersonate.stop');
 
 // Auth Routes (Guest only)
 Route::middleware('guest')->group(function () {

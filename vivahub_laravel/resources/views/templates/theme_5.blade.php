@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ $invitation->data['bride'] }} & {{ $invitation->data['groom'] }} | Wedding Invitation</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Jost:wght@300;400;500&display=swap"
+    rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['Playfair Display', 'serif'],
+            script: ['Alex Brush', 'cursive'],
+            sans: ['Jost', 'sans-serif'],
+          },
+          colors: {
+            rust: {
+              50: '#fff7ed',
+              100: '#ffedd5',
+              200: '#fed7aa',
+              300: '#fdba74',
+              400: '#fb923c',
+              500: '#f97316',
+              600: '#ea580c',
+              700: '#c2410c', // Terracotta
+              800: '#9a3412',
+              900: '#7c2d12',
+            },
+            sage: {
+              100: '#f0fdf4',
+              200: '#dcfce7',
+              300: '#bbf7d0',
+              500: '#84a98c', // Muted Sage
+              800: '#52796f',
+              900: '#2f3e46',
+            },
+            sand: '#fdfbf7', // Paper color
+            paper: '#f5f5f4',
+          },
+          animation: {
+            'fade-in-up': 'fadeInUp 1s ease-out forwards',
+            'float': 'float 8s ease-in-out infinite',
+            'spin-slow': 'spin 12s linear infinite',
+          },
+          keyframes: {
+            fadeInUp: {
+              '0%': { opacity: '0', transform: 'translateY(20px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0) translateX(0)' },
+              '50%': { transform: 'translateY(-15px) translateX(5px)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Styles */
+    body {
+      background-color: #fdfbf7; /* sand */
+      color: #7c2d12; /* rust-900 */
+      background-image: url("https://www.transparenttextures.com/patterns/cream-paper.png");
+    }
+
+    /* Wave Animation for Audio Icon */
+    @keyframes ripple {
+      0% { box-shadow: 0 0 0 0 rgba(194, 65, 12, 0.4); } 
+      70% { box-shadow: 0 0 0 15px rgba(194, 65, 12, 0); } 
+      100% { box-shadow: 0 0 0 0 rgba(194, 65, 12, 0); }
+    }
+    
+    .animate-ripple {
+      animation: ripple 2s infinite cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Boho Particles Animation */
+    @keyframes drift {
+      0% { transform: translateY(110vh) scale(0); opacity: 0; }
+      20% { opacity: 0.5; }
+      80% { opacity: 0.5; }
+      100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+    }
+
+    .particle {
+      position: fixed;
+      bottom: -10vh;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fed7aa 0%, transparent 70%);
+      animation: drift 15s linear infinite;
+      z-index: 0;
+      pointer-events: none;
+    }
+    
+    .particle:nth-child(2n) { background: radial-gradient(circle, #bbf7d0 0%, transparent 70%); animation-duration: 20s; }
+
+    /* Paper Card Style */
+    .paper-card {
+      background: #ffffff;
+      border: 1px solid #e7e5e4;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      transition: all 0.3s ease;
+    }
+
+    .paper-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 15px -3px rgba(124, 45, 18, 0.1), 0 4px 6px -2px rgba(124, 45, 18, 0.05);
+    }
+
+    .parallax-bg { will-change: transform; }
+  </style>
+</head>
+
+<body class="overflow-x-hidden selection:bg-rust-200 selection:text-rust-900 font-sans">
+
+  <!-- Welcome Overlay -->
+  <div id="welcome-overlay" class="fixed inset-0 z-[100] bg-rust-50 flex flex-col items-center justify-center text-center p-4 transition-opacity duration-700 bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')]">
+    <div class="relative w-full h-full max-w-md mx-auto flex flex-col items-center justify-center border-[1px] border-rust-200 m-4 bg-white/40 backdrop-blur-sm shadow-xl rounded-t-[200px]">
+        <!-- VivaHub Arch Decoration -->
+        <div class="absolute inset-4 border border-rust-300 rounded-t-[180px] pointer-events-none"></div>
+        
+        <img src="https://csssofttech.com/wedding/assets/ganesha.png" alt="Ganesha" class="w-16 h-16 mb-8 opacity-70 sepia brightness-90">
+        
+        <h1 class="font-script text-6xl md:text-8xl text-rust-800 mb-2 drop-shadow-sm">{{ $invitation->data['bride'] }} & {{ $invitation->data['groom'] }}</h1>
+        <p class="font-serif text-rust-600 text-sm tracking-[0.2em] uppercase mb-10">The Wedding Celebration</p>
+        
+        <button id="enter-btn" class="group relative px-10 py-3 bg-rust-700 text-white rounded-full hover:bg-rust-800 transition-all shadow-lg z-50 cursor-pointer">
+            <span class="relative z-10 font-serif tracking-widest text-xs font-bold flex items-center gap-3 uppercase">
+                Open Invitation <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+            </span>
+        </button>
+        
+        <p class="mt-8 text-rust-400 text-[10px] font-sans uppercase tracking-widest flex items-center gap-2">
+            <i data-lucide="music" class="w-3 h-3"></i> Turn on Sound
+        </p>
+    </div>
+  </div>
+
+  <!-- Particles -->
+  <div id="particles-container"></div>
+
+  <!-- Audio Elements -->
+  <audio id="wedding-audio" loop preload="auto">
+    <source src="https://csssofttech.com/wedding/assets/music.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="family-audio" preload="auto">
+    <source src="https://csssofttech.com/wedding/assets/music.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Buttons -->
+  <button id="family-msg-toggle"
+    class="fixed top-6 right-6 z-50 bg-white/90 backdrop-blur-md p-3 rounded-full border border-rust-300 text-rust-800 hover:bg-rust-50 transition-all shadow-lg hidden opacity-0 translate-y-[-20px]" style="transition: all 0.5s ease-out;">
+    <div id="family-icon-container"><i data-lucide="play-circle" class="w-6 h-6 fill-current"></i></div>
+    <span class="absolute top-1/2 -translate-y-1/2 right-14 bg-white px-3 py-1 rounded-full shadow-sm text-[10px] uppercase tracking-wide text-rust-800 pointer-events-none whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Family Msg</span>
+  </button>
+
+  <button id="music-toggle"
+    class="fixed bottom-24 md:bottom-6 right-6 z-50 bg-white/90 backdrop-blur-md p-3 rounded-full border border-rust-300 text-rust-800 hover:bg-rust-50 transition-all shadow-lg hidden opacity-0 translate-y-[20px]" style="transition: all 0.5s ease-out;">
+    <i data-lucide="volume-x" class="w-6 h-6 fill-current"></i>
+  </button>
+
+  <!-- HERO SECTION -->
+  <div class="relative h-[100dvh] w-full overflow-hidden bg-sand">
+    <!-- Parallax Image -->
+    <div id="hero-bg" class="absolute inset-0 z-0 bg-cover bg-center md:bg-left bg-no-repeat parallax-bg"
+      style="background-image: url('{{ $invitation->data['h_img'] ?? 'https://csssofttech.com/wedding/assets/hero.png' }}'); filter: sepia(0.3) opacity(0.85);">
+    </div>
+    
+    <!-- Warm Vignette -->
+    <div class="absolute inset-0 z-1 bg-gradient-to-t from-sand via-sand/40 to-transparent md:bg-gradient-to-r md:from-transparent md:via-sand/30 md:to-sand/90"></div>
+
+    <div class="relative z-10 h-full w-full max-w-7xl mx-auto flex flex-col md:grid md:grid-cols-2 px-4 md:px-12 items-center">
+      <div class="hidden md:block"></div>
+      
+      <div class="flex flex-col items-center md:items-end w-full h-full justify-end md:justify-center text-center md:text-right pb-24 md:pb-0">
+         
+         <div class="flex flex-col items-center md:items-end justify-end w-full gap-2 p-8 md:p-12 relative bg-white/90 md:bg-transparent backdrop-blur-sm md:backdrop-blur-none rounded-t-[200px] md:rounded-none shadow-2xl md:shadow-none border border-white md:border-none">
+            <!-- Decorative Arch behind text on Desktop -->
+            <div class="hidden md:block absolute -top-10 -right-10 w-[120%] h-[120%] border border-rust-200/50 rounded-t-full rounded-b-none pointer-events-none -z-10 rotate-12"></div>
+            <div class="hidden md:block absolute top-0 right-0 w-full h-full bg-white/80 backdrop-blur-sm rounded-t-[200px] shadow-2xl -z-10"></div>
+
+            <div class="md:w-full md:flex md:flex-col md:items-center relative z-20">
+                 <p class="font-serif text-xs tracking-[0.4em] text-rust-500 uppercase mb-4 animate-fade-in-down">The Wedding Of</p>
+
+                <h1 class="font-script text-[4.5rem] md:text-[9rem] text-rust-800 leading-[0.9] md:leading-[0.7] drop-shadow-sm py-4 animate-fade-in-up">
+                   {{ $invitation->data['bride'] }} <br class="md:hidden" /> <span class="text-5xl align-middle font-serif text-sage-600 block md:inline md:my-4">&</span> <br class="md:hidden" /> {{ $invitation->data['groom'] }}
+                </h1>
+                
+                <div class="w-32 h-px bg-rust-300 my-6 mx-auto"></div>
+                
+                <div class="flex flex-col items-center gap-2 animate-fade-in-up delay-100">
+                    <p class="font-serif text-3xl text-rust-900 font-bold">{{ \Carbon\Carbon::parse($invitation->data['date'])->format('F d, Y') }}</p>
+                    <div class="flex items-center gap-2 text-rust-600 uppercase tracking-widest text-[10px] font-bold mt-1 bg-rust-50 px-3 py-1 rounded-full">
+                        <i data-lucide="map-pin" class="w-3 h-3"></i>
+                        <span>{{ $invitation->data['location'] ?? 'The Oberoi Udaivilas, Udaipur' }}</span>
+                    </div>
+                </div>
+            </div>
+         </div>
+
+         <!-- Scroll Indicator -->
+         <div class="absolute bottom-28 md:hidden animate-bounce text-rust-800/80 z-20">
+            <i data-lucide="chevron-down" class="w-6 h-6"></i>
+         </div>
+         
+         <div class="hidden md:flex flex-col items-center justify-center gap-2 animate-bounce-slow opacity-80 md:w-full md:mt-8">
+            <span class="text-[9px] uppercase tracking-widest text-rust-800 font-bold bg-white/50 px-3 py-1 rounded-full shadow-sm backdrop-blur-md">Scroll to Explore</span>
+         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COUNTDOWN -->
+  <div class="bg-rust-50 py-24 relative overflow-hidden">
+     <!-- Abstract VivaHub Shapes -->
+     <div class="absolute -top-10 -left-10 w-40 h-40 bg-sage-200 rounded-full mix-blend-multiply filter blur-2xl opacity-50 animate-float"></div>
+     <div class="absolute top-20 right-0 w-60 h-60 bg-rust-200 rounded-full mix-blend-multiply filter blur-2xl opacity-50 animate-float" style="animation-delay: 2s"></div>
+
+     <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
+        <h2 class="font-serif text-5xl md:text-6xl text-rust-900 mb-12">The Countdown</h2>
+
+        <div class="grid grid-cols-4 gap-2 md:flex md:justify-center md:gap-12 mb-12" id="countdown-container">
+            <div class="bg-white w-full py-4 md:w-28 md:h-32 rounded-t-full flex flex-col items-center justify-center shadow-lg border border-rust-100">
+                <span id="days" class="block font-serif text-2xl md:text-5xl text-rust-800 leading-none mt-2">00</span>
+                <span class="text-[8px] md:text-[9px] uppercase tracking-widest text-sage-800 mt-1">Days</span>
+            </div>
+            <div class="bg-white w-full py-4 md:w-28 md:h-32 rounded-t-full flex flex-col items-center justify-center shadow-lg border border-rust-100">
+                <span id="hours" class="block font-serif text-2xl md:text-5xl text-rust-800 leading-none mt-2">00</span>
+                <span class="text-[8px] md:text-[9px] uppercase tracking-widest text-sage-800 mt-1">Hrs</span>
+            </div>
+            <div class="bg-white w-full py-4 md:w-28 md:h-32 rounded-t-full flex flex-col items-center justify-center shadow-lg border border-rust-100">
+                <span id="minutes" class="block font-serif text-2xl md:text-5xl text-rust-800 leading-none mt-2">00</span>
+                <span class="text-[8px] md:text-[9px] uppercase tracking-widest text-sage-800 mt-1">Mins</span>
+            </div>
+            <div class="bg-white w-full py-4 md:w-28 md:h-32 rounded-t-full flex flex-col items-center justify-center shadow-lg border border-rust-100">
+                <span id="seconds" class="block font-serif text-2xl md:text-5xl text-rust-800 leading-none mt-2">00</span>
+                <span class="text-[8px] md:text-[9px] uppercase tracking-widest text-sage-800 mt-1">Secs</span>
+            </div>
+        </div>
+        
+        <button onclick="addToCalendar()" class="inline-flex items-center gap-3 px-8 py-3 border border-rust-800 text-rust-900 rounded-full font-serif text-sm font-bold tracking-widest hover:bg-rust-800 hover:text-white transition-all">
+            <i data-lucide="calendar-plus" class="w-4 h-4"></i> Add to Calendar
+        </button>
+     </div>
+  </div>
+
+  <!-- COUPLE (Arched Photos) -->
+  <section class="py-24 px-4 bg-white relative">
+     <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-20">
+            <h3 class="font-script text-6xl text-rust-800 mb-2">The Happy Couple</h3>
+            <p class="font-sans text-xs tracking-[0.3em] uppercase text-sage-500">Made for each other</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <!-- Bride -->
+            <div class="text-center group">
+                <div class="relative w-64 md:w-80 mx-auto aspect-[3/4] rounded-t-full overflow-hidden border-8 border-sage-100 shadow-xl mb-6">
+                    <img src="{{ isset($invitation->data['gallery']) && isset($invitation->data['gallery'][0]) ? $invitation->data['gallery'][0] : 'https://images.unsplash.com/photo-1502477610086-44ca0f9b69b5?auto=format&fit=crop&q=80&w=800' }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 sepia-[.3]">
+                </div>
+                <h3 id="bride-name" class="font-serif text-4xl text-rust-900">{{ $invitation->data['bride'] }}</h3>
+                <p class="font-sans text-xs text-sage-500 uppercase tracking-widest mt-1">The Bride</p>
+            </div>
+            
+            <!-- Groom -->
+            <div class="text-center group md:mt-20">
+                <div class="relative w-64 md:w-80 mx-auto aspect-[3/4] rounded-t-full overflow-hidden border-8 border-rust-50 shadow-xl mb-6">
+                    <img src="{{ isset($invitation->data['gallery']) && isset($invitation->data['gallery'][1]) ? $invitation->data['gallery'][1] : 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=800' }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 sepia-[.3]">
+                </div>
+                <h3 id="groom-name" class="font-serif text-4xl text-rust-900">{{ $invitation->data['groom'] }}</h3>
+                <p class="font-sans text-xs text-sage-500 uppercase tracking-widest mt-1">The Groom</p>
+            </div>
+        </div>
+     </div>
+  </section>
+
+  <!-- EVENTS (Timeline) -->
+  <section class="py-24 px-4 bg-sage-100/50">
+      <div class="max-w-4xl mx-auto">
+          <div class="text-center mb-16">
+              <h3 class="font-serif text-5xl text-sage-900 mb-4">Celebrations</h3>
+              <div class="w-16 h-1 bg-rust-400 mx-auto"></div>
+          </div>
+          
+          <div class="space-y-6">
+              @php
+                    $defaultEvents = [
+                      ['name' => 'Mehendi', 'date' => '11 Dec', 'time' => '04:00 PM', 'location' => 'Poolside Lawns', 'desc' => 'Music, Dance & Henna.'],
+                      ['name' => 'Haldi & Wedding', 'date' => '12 Dec', 'time' => '09:00 AM', 'location' => 'The Courtyard & Mandap', 'desc' => 'Golden glow followed by the Pheras.'],
+                      ['name' => 'Reception', 'date' => '12 Dec', 'time' => '07:00 PM', 'location' => 'Grand Ballroom', 'desc' => 'Dinner, Cocktails & Celebration.']
+                  ];
+                  $events = $invitation->data['events'] ?? $defaultEvents;
+              @endphp
+
+              @foreach($events as $index => $event)
+              <div class="paper-card p-6 md:p-8 rounded-lg flex flex-col md:flex-row gap-6 items-center {{ $index == 2 ? 'border-l-4 border-l-rust-600' : '' }}">
+                  <div class="w-20 h-20 rounded-full {{ $index == 2 ? 'bg-rust-800 text-white' : 'bg-rust-100 text-rust-800' }} flex flex-col items-center justify-center flex-shrink-0 border-2 border-white shadow-sm">
+                      <span class="font-bold font-serif text-2xl">{{ \Carbon\Carbon::parse($event['date'] ?? 'now')->format('d') }}</span>
+                      <span class="text-[9px] uppercase tracking-wide">{{ \Carbon\Carbon::parse($event['date'] ?? 'now')->format('M') }}</span>
+                  </div>
+                  <div class="flex-grow text-center md:text-left">
+                      <h4 class="font-serif text-2xl text-rust-900 {{ $index == 2 ? 'font-bold' : '' }}">{{ $event['name'] ?? 'Event' }}</h4>
+                      <p class="text-sage-700 text-sm mt-1 mb-2">{{ $event['time'] }} • {{ $event['location'] }}</p>
+                      <p class="text-xs text-sage-500 font-light">{{ $event['desc'] }}</p>
+                  </div>
+                  <a href="https://maps.google.com" target="_blank" class="px-4 py-2 border border-sage-300 text-sage-700 text-[10px] uppercase font-bold tracking-wider hover:bg-sage-700 hover:text-white transition-all rounded-sm">Map</a>
+              </div>
+              @endforeach
+          </div>
+      </div>
+  </section>
+
+  <!-- MEMORIES -->
+  <section class="py-24 px-4 bg-white">
+      <div class="max-w-6xl mx-auto">
+          <div class="text-center mb-16">
+              <h3 class="font-script text-6xl text-rust-800">Our Story</h3>
+          </div>
+
+          <!-- Video Player -->
+          <div class="max-w-4xl mx-auto mb-16">
+            <div class="relative aspect-video rounded-t-full rounded-b-lg overflow-hidden shadow-xl group cursor-pointer border-[10px] border-rust-50">
+                <img src="{{ isset($invitation->data['gallery']) && isset($invitation->data['gallery'][2]) ? $invitation->data['gallery'][2] : 'https://csssofttech.com/wedding/assets/gallery1.png' }}" class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-700 sepia-[.3]">
+                <div class="absolute inset-0 bg-rust-900/20 flex items-center justify-center">
+                    <button class="w-20 h-20 bg-white/90 backdrop-blur-md rounded-full flex items-center justify-center text-rust-800 hover:scale-110 transition-transform shadow-lg border border-rust-200">
+                        <i data-lucide="play" class="w-8 h-8 fill-current ml-1"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+
+          <!-- Gallery (Masonry) -->
+          <div class="columns-2 md:columns-3 gap-4 space-y-4">
+              <div class="break-inside-avoid rounded-lg overflow-hidden shadow hover:shadow-lg transition-all"><img src="{{ isset($invitation->data['gallery']) && isset($invitation->data['gallery'][3]) ? $invitation->data['gallery'][3] : 'https://csssofttech.com/wedding/assets/gallery1.png' }}" class="w-full sepia-[.2] hover:sepia-0 transition-all duration-500"></div>
+              <div class="break-inside-avoid rounded-t-full overflow-hidden shadow hover:shadow-lg transition-all"><img src="{{ isset($invitation->data['gallery']) && isset($invitation->data['gallery'][4]) ? $invitation->data['gallery'][4] : 'https://csssofttech.com/wedding/assets/gallery2.png' }}" class="w-full sepia-[.2] hover:sepia-0 transition-all duration-500"></div>
+              <div class="break-inside-avoid rounded-lg overflow-hidden shadow hover:shadow-lg transition-all"><img src="{{ isset($invitation->data['gallery']) && isset($invitation->data['gallery'][5]) ? $invitation->data['gallery'][5] : 'https://csssofttech.com/wedding/assets/gallery3.png' }}" class="w-full sepia-[.2] hover:sepia-0 transition-all duration-500"></div>
+              <div class="break-inside-avoid rounded-lg overflow-hidden shadow hover:shadow-lg transition-all"><img src="{{ isset($invitation->data['gallery']) && isset($invitation->data['gallery'][6]) ? $invitation->data['gallery'][6] : 'https://csssofttech.com/wedding/assets/gallery4.png' }}" class="w-full sepia-[.2] hover:sepia-0 transition-all duration-500"></div>
+              <div class="break-inside-avoid rounded-t-full overflow-hidden shadow hover:shadow-lg transition-all"><img src="{{ isset($invitation->data['gallery']) && isset($invitation->data['gallery'][7]) ? $invitation->data['gallery'][7] : 'https://csssofttech.com/wedding/assets/gallery5.png' }}" class="w-full sepia-[.2] hover:sepia-0 transition-all duration-500"></div>
+              <div class="break-inside-avoid rounded-lg overflow-hidden shadow hover:shadow-lg transition-all"><img src="{{ isset($invitation->data['gallery']) && isset($invitation->data['gallery'][8]) ? $invitation->data['gallery'][8] : 'https://csssofttech.com/wedding/assets/gallery6.png' }}" class="w-full sepia-[.2] hover:sepia-0 transition-all duration-500"></div>
+          </div>
+      </div>
+  </section>
+
+  <!-- DETAILS -->
+  <section class="py-24 px-4 bg-rust-50 text-center">
+      <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
+          <div class="bg-white p-10 rounded-t-full rounded-b-lg shadow-sm border border-rust-100">
+              <i data-lucide="bed-double" class="w-8 h-8 text-rust-600 mx-auto mb-4"></i>
+              <h4 class="font-serif text-2xl text-rust-900 mb-2">Accommodation</h4>
+              <p class="text-sm text-sage-600 font-sans">The Trident Hotel, {{ $invitation->data['location'] ?? 'Udaipur' }}</p>
+          </div>
+          <div class="bg-white p-10 rounded-t-full rounded-b-lg shadow-sm border border-rust-100">
+              <i data-lucide="shirt" class="w-8 h-8 text-rust-600 mx-auto mb-4"></i>
+              <h4 class="font-serif text-2xl text-rust-900 mb-2">Dress Code</h4>
+              <p class="text-sm text-sage-600 font-sans">Traditional Royal / VivaHub Formal</p>
+          </div>
+      </div>
+      <div class="mt-12 max-w-4xl mx-auto h-64 rounded-lg overflow-hidden shadow-md border-4 border-white">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3628.616335359666!2d73.6694663150005!3d24.56763798419266!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3967e56272555555%3A0x6b48c442e3919c62!2sThe%20Oberoi%20Udaivilas%2C%20Udaipur!5e0!3m2!1sen!2sin!4v1625838384848!5m2!1sen!2sin" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" class="grayscale hover:grayscale-0 transition-all duration-700"></iframe>
+      </div>
+  </section>
+
+  <!-- RSVP -->
+  <section class="py-24 px-4 bg-white relative">
+     <div class="max-w-xl mx-auto relative z-10 bg-sand rounded-xl shadow-xl overflow-hidden border-2 border-dashed border-rust-300">
+         <div class="p-8 md:p-12 text-center">
+             <h3 class="font-serif text-4xl text-rust-900 mb-2">R.S.V.P</h3>
+             <p class="font-sans text-xs uppercase tracking-widest text-sage-500 mb-10">Kindly respond by Dec 1st</p>
+             
+             <div id="rsvp-success" class="hidden py-8 text-rust-700 font-bold font-serif text-xl">Thank You for confirming!</div>
+
+             <form id="rsvp-form" class="space-y-6 text-left">
+                 <div class="space-y-1">
+                     <label class="text-[10px] uppercase font-bold text-rust-400 pl-1">Full Name</label>
+                     <input type="text" class="w-full bg-white border-b-2 border-rust-200 p-3 text-rust-900 focus:border-rust-500 transition-all outline-none placeholder-rust-200">
+                 </div>
+                 <div class="grid grid-cols-2 gap-4">
+                     <div class="space-y-1">
+                         <label class="text-[10px] uppercase font-bold text-rust-400 pl-1">Guests</label>
+                         <select class="w-full bg-white border-b-2 border-rust-200 p-3 text-rust-900 focus:border-rust-500 outline-none">
+                             <option>1</option><option>2</option><option>3</option>
+                         </select>
+                     </div>
+                     <div class="space-y-1">
+                         <label class="text-[10px] uppercase font-bold text-rust-400 pl-1">Phone</label>
+                         <input type="tel" class="w-full bg-white border-b-2 border-rust-200 p-3 text-rust-900 focus:border-rust-500 outline-none">
+                     </div>
+                 </div>
+                 <button type="submit" id="rsvp-btn" class="w-full bg-rust-700 text-white py-4 rounded-sm font-bold hover:bg-rust-800 transition-colors uppercase text-xs tracking-widest mt-6 shadow-md">Confirm Presence</button>
+             </form>
+         </div>
+     </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-rust-900 py-16 text-center text-rust-100/60">
+      <!-- White Logo -->
+      <img src="https://csssofttech.com/wedding/assets/VivaHub.png" class="w-48 mx-auto mb-8 opacity-80 filter brightness-0 invert">
+      
+      <div class="flex justify-center gap-6 mb-8">
+          <a href="#" class="hover:text-white transition-colors"><i data-lucide="instagram"></i></a>
+          <a href="#" class="hover:text-white transition-colors"><i data-lucide="facebook"></i></a>
+      </div>
+      <p class="text-[10px] uppercase tracking-widest mb-4">Designed for {{ $invitation->data['bride'] }} & {{ $invitation->data['groom'] }}</p>
+      <div class="inline-flex items-center gap-2 bg-rust-800 px-3 py-1 rounded-full border border-rust-700 text-[10px] uppercase font-bold text-rust-200">
+          <i data-lucide="camera" class="w-3 h-3"></i> Lens Magic
+      </div>
+  </footer>
+
+  <!-- MOBILE NAV -->
+  <div class="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-rust-100 px-4 py-3 md:hidden shadow-[0_-5px_20px_rgba(0,0,0,0.05)] w-full max-w-full safe-pb">
+      <div class="grid grid-cols-5 gap-2 text-center text-rust-800">
+          <a href="tel:+" class="flex flex-col items-center gap-1 hover:text-rust-600"><i data-lucide="phone" class="w-5 h-5"></i><span class="text-[9px]">Call</span></a>
+          <a href="#" class="flex flex-col items-center gap-1 hover:text-rust-600"><i data-lucide="message-circle" class="w-5 h-5"></i><span class="text-[9px]">Chat</span></a>
+          <button onclick="downloadVCard()" class="flex flex-col items-center gap-1 text-sage-500"><div class="bg-rust-50 p-2 rounded-full -mt-6 border-4 border-white shadow-sm"><i data-lucide="user-plus" class="w-5 h-5 text-rust-600"></i></div><span class="text-[9px] font-bold text-rust-800">Save</span></button>
+          <a href="#" class="flex flex-col items-center gap-1 hover:text-rust-600"><i data-lucide="download" class="w-5 h-5"></i><span class="text-[9px]">Invite</span></a>
+          <button onclick="shareInvite()" class="flex flex-col items-center gap-1 hover:text-rust-600"><i data-lucide="share-2" class="w-5 h-5"></i><span class="text-[9px]">Share</span></button>
+      </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Audio Elements
+      const audio = document.getElementById('wedding-audio');
+      const familyAudio = document.getElementById('family-audio');
+      
+      // UI Elements
+      const enterBtn = document.getElementById('enter-btn');
+      const welcomeOverlay = document.getElementById('welcome-overlay');
+      const musicToggle = document.getElementById('music-toggle');
+      const familyBtn = document.getElementById('family-msg-toggle');
+      const familyIconContainer = document.getElementById('family-icon-container');
+      const particlesContainer = document.getElementById('particles-container');
+
+      // State
+      let isMusicPlaying = false;
+      let isFamilyPlaying = false;
+
+      // Audio Config
+      audio.volume = 0.4;
+      familyAudio.volume = 1.0;
+
+      // --- VivaHub Particles ---
+      for(let i=0; i<10; i++) {
+          const p = document.createElement('div');
+          p.className = 'particle';
+          p.style.left = Math.random() * 100 + 'vw';
+          p.style.width = Math.random() * 50 + 20 + 'px';
+          p.style.height = p.style.width;
+          p.style.animationDelay = Math.random() * 5 + 's';
+          particlesContainer.appendChild(p);
+      }
+
+      // --- Helper Functions ---
+      function safePlay(el) {
+          if(!el) return;
+          const p = el.play();
+          if (p !== undefined) p.catch(e => console.log('Autoplay prevented', e));
+      }
+
+      function updateMusicIcon(playing) {
+          musicToggle.innerHTML = '';
+          const i = document.createElement('i');
+          i.className = 'w-6 h-6 fill-current';
+          i.setAttribute('data-lucide', playing ? 'volume-2' : 'volume-x');
+          musicToggle.appendChild(i);
+          lucide.createIcons();
+      }
+
+      function updateFamilyIcon(playing) {
+          const iconDiv = familyIconContainer.querySelector('svg');
+          if (playing) {
+            iconDiv.classList.add('animate-ripple');
+            familyBtn.classList.add('bg-rust-100', 'border-rust-500');
+            iconDiv.setAttribute('data-lucide', 'audio-lines');
+          } else {
+            iconDiv.classList.remove('animate-ripple');
+            familyBtn.classList.remove('bg-rust-100', 'border-rust-500');
+            iconDiv.setAttribute('data-lucide', 'play-circle');
+          }
+          lucide.createIcons();
+      }
+
+      // --- Interaction Handler ---
+      if(enterBtn) {
+          enterBtn.addEventListener('click', () => {
+              welcomeOverlay.style.opacity = '0';
+              setTimeout(() => {
+                  welcomeOverlay.style.display = 'none';
+                  musicToggle.classList.remove('hidden', 'opacity-0', 'translate-y-[20px]');
+                  familyBtn.classList.remove('hidden', 'opacity-0', 'translate-y-[-20px]');
+              }, 700);
+
+              // Play sequence
+              safePlay(familyAudio);
+              isFamilyPlaying = true;
+              updateFamilyIcon(true);
+          });
+      }
+
+      // --- Audio Sequence ---
+      familyAudio.addEventListener('ended', () => {
+          isFamilyPlaying = false;
+          updateFamilyIcon(false);
+          safePlay(audio);
+          isMusicPlaying = true;
+          updateMusicIcon(true);
+      });
+
+      // --- Toggles ---
+      musicToggle.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if(isMusicPlaying) {
+              audio.pause(); isMusicPlaying = false; updateMusicIcon(false);
+          } else {
+              if(isFamilyPlaying) { familyAudio.pause(); isFamilyPlaying = false; updateFamilyIcon(false); }
+              safePlay(audio); isMusicPlaying = true; updateMusicIcon(true);
+          }
+      });
+
+      familyBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if(isFamilyPlaying) {
+              familyAudio.pause(); isFamilyPlaying = false; updateFamilyIcon(false);
+          } else {
+              if(isMusicPlaying) { audio.pause(); isMusicPlaying = false; updateMusicIcon(false); }
+              safePlay(familyAudio); isFamilyPlaying = true; updateFamilyIcon(true);
+          }
+      });
+
+      // --- Countdown ---
+      const date = new Date("{{ $invitation->data['date'] }}T10:00:00").getTime();
+      const ids = ['days', 'hours', 'minutes', 'seconds'];
+      const els = ids.map(id => document.getElementById(id));
+      
+      setInterval(() => {
+          const now = new Date().getTime();
+          const dist = date - now;
+          if(dist > 0) {
+             els[0].innerText = Math.floor(dist / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+             els[1].innerText = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+             els[2].innerText = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+             els[3].innerText = Math.floor((dist % (1000 * 60)) / 1000).toString().padStart(2, '0');
+          }
+      }, 1000);
+
+      // --- RSVP ---
+      const form = document.getElementById('rsvp-form');
+      if(form) {
+          form.addEventListener('submit', (e) => {
+              e.preventDefault();
+              document.getElementById('rsvp-btn').innerText = 'Sending...';
+              setTimeout(() => {
+                  form.classList.add('hidden');
+                  document.getElementById('rsvp-success').classList.remove('hidden');
+              }, 1500);
+          });
+      }
+    });
+
+    // Global
+    function shareInvite() { if(navigator.share) navigator.share({title:'Wedding', url:window.location.href}); else alert('Copy URL'); }
+    function downloadVCard() { /* vCard Logic */ }
+    function addToCalendar() { window.open('https://calendar.google.com/calendar/render?action=TEMPLATE&text={{ $invitation->data['bride'] }}%20%26%20{{ $invitation->data['groom'] }}%20Wedding&dates={{ \Carbon\Carbon::parse($invitation->data['date'])->format('Ymd') }}T100000/{{ \Carbon\Carbon::parse($invitation->data['date'])->addDays(1)->format('Ymd') }}T230000&location={{ $invitation->data['location'] ?? 'Venue' }}', '_blank'); }
+
+    // --- Live Hooks ---
+    window.updateCountdown = function(dateStr) { window.location.reload(); }
+    window.updateAudioSource = function(src, type) { 
+        const audio = document.getElementById('wedding-audio');
+        if(audio) { audio.src = src; if(isMusicPlaying) audio.play(); }
+    }
+    window.toggleSection = function(id, visible) { 
+        const el = document.getElementById(id); 
+        if(el) visible ? el.classList.remove('hidden') : el.classList.add('hidden'); 
+    }
+  </script>
+</body>
+</html>

@@ -35,6 +35,7 @@ class UserController extends Controller
             'email' => $validated['email'],
             'password' => 'password', // Default password
             'role' => $validated['role'],
+            'email_verified_at' => now(),
         ]);
 
         if ($validated['role'] === 'partner') {
