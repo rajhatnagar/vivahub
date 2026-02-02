@@ -12,36 +12,61 @@ use Illuminate\Support\Facades\DB;
 
 class UserPanelController extends Controller
 {
+    private function getTemplatesList() {
+        return [
+            ['name' => "Classic Elegant", 'style' => "Indian Traditional", 'color' => "Red/Gold", 'img' => asset('assets/hero-background.png'), 'id' => 'wedding-1'],
+            ['name' => "Minimalist Chic", 'style' => "Modern Clean", 'color' => "White/Black", 'img' => asset('assets/thumbnails/thumb_modern_minimal_1769914243192.png'), 'id' => 'theme_2'],
+            ['name' => "Midnight Rose", 'style' => "Dark Romantic", 'color' => "Black/Rose", 'img' => asset('assets/thumbnails/thumb_luxury_dark_1769914285194.png'), 'id' => 'theme_3'],
+            ['name' => "Sage & Blush", 'style' => "Botanical Minimal", 'color' => "Sage/Pink", 'img' => asset('assets/thumbnails/thumb_floral_pastel_1769914259626.png'), 'id' => 'theme_4'],
+            ['name' => "Boho Rust", 'style' => "Bohemian Rustic", 'color' => "Rust/Beige", 'img' => asset('assets/thumbnails/thumb_rustic_boho_1769914300003.png'), 'id' => 'theme_5'],
+            ['name' => "Majestic Garden", 'style' => "Vintage Floral", 'color' => "Pastel/Floral", 'img' => asset('assets/thumbnails/thumb_vintage_retro_1769914405735.png'), 'id' => 'theme_6'],
+            ['name' => "Royal Heritage", 'style' => "Luxury Traditional", 'color' => "Gold/Cream", 'img' => asset('assets/thumbnails/thumb_royal_gold_1769914222427.png'), 'id' => 'theme_7'],
+            ['name' => "Boho Sunshine", 'style' => "Bohemian Rustic", 'color' => "Rust/Orange", 'img' => asset('assets/thumbnails/thumb_beach_tropical_1769914370611.png'), 'id' => 'theme_8'],
+            ['name' => "Teal Harmony", 'style' => "Modern Minimal", 'color' => "Teal/Gold", 'img' => asset('assets/thumbnails/thumb_modern_minimal_1769914243192.png'), 'id' => 'theme_9'],
+            ['name' => "Royal Ruby", 'style' => "Luxury Dark", 'color' => "Ruby/Gold", 'img' => asset('assets/thumbnails/thumb_traditional_red_1769914314829.png'), 'id' => 'theme_10'],
+        ];
+    }
+
     public function dashboard()
     {
-        // Mock Data for Dashboard
-        $stats = [
-            'total_guests' => 450,
-            'confirmed' => 320,
-            'pending' => 130
-        ];
+        // Real Data
+        $userId = Auth::id();
+        $invitations = Invitation::where('user_id', $userId)->latest()->take(6)->get();
+        
+        $templates = collect($this->getTemplatesList())->keyBy('id');
 
-        $recent_invitations = [
-            [
-                'id' => 1,
-                'title' => "The Wedding",
-                'date' => "Dec 12, 2024",
-                'location' => "Udaipur",
-                'type' => "Main Ceremony",
-                'status' => "Live",
-                'rsvps' => 142,
-                'img' => "https://lh3.googleusercontent.com/aida-public/AB6AXuC9nu-8rVUT7Wz-Vxt9BT824-hq4LswifXbY04Ryv8v1SbyxnTZtdp3KZuMzBf9nWrUkjJ9ndq52UOW0kjFL5o3UtTMXytAyQ_6vwGlMNMdv2r5OY-UFC2dNRgLa28FNuuAeYBmJ5p4cXeHnVzPPOxqicIktNMJihYCr_kDSj-zody2O2TrEHpFfRcNy6LvyyDFGyth4Q_icsFrtKF8ysuMh1VjRHSiXPAl-fgwnjyY6RNVjcR1KWTqxis3xcsQg2vapqsd043UY459"
-            ],
-            [
-                'id' => 2,
-                'title' => "Sangeet Night",
-                'date' => "Dec 11, 2024",
-                'location' => "City Palace",
-                'type' => "Pre-Wedding",
-                'status' => "Draft",
-                'rsvps' => 0,
-                'img' => "https://lh3.googleusercontent.com/aida-public/AB6AXuDzYEZUX-l-TUwZSPbPgzGDMjlmSHNn7eZbp5pDaR98aFdzDDjyh_q7r9cm12N5TUiEUzPckOXj0IqvhyPkawfKoG3lDFg-Eaz1JSJdBSHDBuke3zYMLE2OwDSVhPz83NI2fZYis5OXjel99lKxVfaVH-5uswf9VlCrPSKyxsXg3FdhLpE-V5KC7cXKRqpmuexoozDOll6LzcdeQTtsOvK7F_vCJyK1aC3lZrySCA4brPbvS2gQ88HTA7VKNop-8Wud6OI_G8DqpZt1"
-            ]
+        $recent_invitations = $invitations->map(function($inv) use ($templates) {
+            $data = $inv->data;
+            if (!is_array($data)) $data = []; // Ensure data is array
+            
+            $templateId = $inv->template_id ?? 'wedding-1';
+            $thumb = isset($templates[$templateId]) ? $templates[$templateId]['img'] : asset('assets/thumbnails/classic_elegant_final.png');
+
+            $formattedDate = 'TBD';
+            if ($rawDate = data_get($data, 'date')) {
+                try {
+                    $formattedDate = \Carbon\Carbon::parse($rawDate)->format('M d, Y');
+                } catch (\Exception $e) {
+                    $formattedDate = 'TBD';
+                }
+            }
+
+            return [
+                'id' => $inv->id,
+                'title' => (data_get($data, 'bride_name') ?: data_get($data, 'bride', 'Bride')) . ' & ' . (data_get($data, 'groom_name') ?: data_get($data, 'groom', 'Groom')),
+                'date' => $formattedDate,
+                'location' => data_get($data, 'venue_city', 'Venue'),
+                'type' => 'Wedding',
+                'status' => ucfirst($inv->status),
+                'rsvps' => \App\Models\Rsvp::where('invitation_id', $inv->id)->count(),
+                'img' => $thumb // Use template thumbnail
+            ];
+        });
+
+        $stats = [
+            'total_guests' => \App\Models\Rsvp::whereIn('invitation_id', $invitations->pluck('id'))->count(), // Simplified
+            'confirmed' => \App\Models\Rsvp::whereIn('invitation_id', $invitations->pluck('id'))->count(),
+            'pending' => 0 // Pending logic can be added later
         ];
 
         return view('user.dashboard', compact('stats', 'recent_invitations'));
@@ -50,15 +75,19 @@ class UserPanelController extends Controller
     public function invitations()
     {
         $invitations = \App\Models\Invitation::where('user_id', Auth::id())->latest()->get()->map(function($inv) {
+             $data = $inv->data;
+             if (!is_array($data)) $data = [];
+             
              return [
                  'id' => $inv->id,
                  'title' => $inv->title,
-                 'date' => data_get($inv->data, 'eventDates.0.date', 'TBD'),
-                 'location' => data_get($inv->data, 'eventDates.0.location', 'TBD'),
+                 'template_id' => $inv->template_id,
+                 'date' => data_get($data, 'eventDates.0.date', 'TBD'),
+                 'location' => data_get($data, 'eventDates.0.location', 'TBD'),
                  'type' => 'Wedding',
                  'status' => ucfirst($inv->status),
                  'rsvps' => 0,
-                 'img' => data_get($inv->data, 'h_img', "https://csssofttech.com/wedding/assets/hero.png")
+                 'img' => data_get($data, 'h_img', "https://csssofttech.com/wedding/assets/hero.png")
              ];
         });
 
@@ -132,20 +161,15 @@ class UserPanelController extends Controller
         }
     }
 
+    public function themes()
+    {
+         // Alias for templates
+         return $this->templates();
+    }
+
     public function templates()
     {
-        $templates = [
-            ['name' => "Emerald Garden", 'style' => "Modern Nature", 'color' => "Green/Gold", 'img' => asset('assets/thumbnails/thumb_islamic_green_1769914342369.png'), 'id' => 'theme_2'],
-            ['name' => "Midnight Rose", 'style' => "Modern Dark", 'color' => "Midnight/Rose", 'img' => asset('assets/thumbnails/thumb_luxury_dark_1769914285194.png'), 'id' => 'theme_3'],
-            ['name' => "Sage & Blush", 'style' => "Botanical Minimal", 'color' => "Sage/Pink", 'img' => asset('assets/thumbnails/thumb_floral_pastel_1769914259626.png'), 'id' => 'theme_4'],
-            ['name' => "Boho Rust", 'style' => "Bohemian Rustic", 'color' => "Rust/Beige", 'img' => asset('assets/thumbnails/thumb_rustic_boho_1769914300003.png'), 'id' => 'theme_5'],
-            ['name' => "Majestic Garden", 'style' => "Vintage Floral", 'color' => "Pastel/Floral", 'img' => asset('assets/thumbnails/thumb_vintage_retro_1769914405735.png'), 'id' => 'theme_6'],
-            ['name' => "Royal Heritage", 'style' => "Luxury Traditional", 'color' => "Gold/Cream", 'img' => asset('assets/thumbnails/thumb_royal_gold_1769914222427.png'), 'id' => 'theme_7'],
-            ['name' => "Boho Sunshine", 'style' => "Bohemian Rustic", 'color' => "Rust/Orange", 'img' => asset('assets/thumbnails/thumb_beach_tropical_1769914370611.png'), 'id' => 'theme_8'],
-            ['name' => "Teal Harmony", 'style' => "Modern Minimal", 'color' => "Teal/Gold", 'img' => asset('assets/thumbnails/thumb_modern_minimal_1769914243192.png'), 'id' => 'theme_9'],
-            ['name' => "Royal Ruby", 'style' => "Luxury Dark", 'color' => "Ruby/Gold", 'img' => asset('assets/thumbnails/thumb_traditional_red_1769914314829.png'), 'id' => 'theme_10'],
-            ['name' => "Classic Elegant", 'style' => "Indian Traditional", 'color' => "Red/Gold", 'img' => asset('assets/thumbnails/wedding_theme_1_thumb_compact_1770030637876.png'), 'id' => 'wedding-1']
-        ];
+        $templates = $this->getTemplatesList();
         return view('user.templates', compact('templates'));
     }
 
@@ -153,7 +177,20 @@ class UserPanelController extends Controller
     {
         try {
             $templateId = $request->query('template', 'wedding-1');
-            return view('user.builder', compact('templateId'));
+            $invitationId = $request->query('invitation_id');
+            $invitation = null;
+
+            if ($invitationId) {
+                // Fetch existing invitation for editing
+                $invitation = \App\Models\Invitation::where('id', $invitationId)
+                    ->where('user_id', Auth::id())
+                    ->firstOrFail();
+                
+                // If editing, use the invitation's template
+                $templateId = $invitation->template_id;
+            }
+
+            return view('user.builder', compact('templateId', 'invitation'));
         } catch (\Exception $e) {
              return response("Builder Error: " . $e->getMessage() . " in " . $e->getFile() . " line " . $e->getLine(), 500);
         }
@@ -252,10 +289,20 @@ class UserPanelController extends Controller
         return $this->renderTemplateView($templateId, ['invitation' => $invitation, 'isPublic' => true]);
     }
 
-    public function previewTemplate($template)
+    public function previewTemplate($template, Request $request)
     {
         try {
-            return $this->renderTemplateView($template, ['isPreview' => true]);
+            $data = ['isPreview' => true];
+            
+            // If invitation ID provided, fetch it to show real data in preview
+            if ($request->has('invitation_id')) {
+                $invitation = \App\Models\Invitation::find($request->invitation_id);
+                if ($invitation) {
+                    $data['invitation'] = $invitation;
+                }
+            }
+            
+            return $this->renderTemplateView($template, $data);
         } catch (\Exception $e) {
             return response("Error loading template: " . $e->getMessage(), 500);
         }

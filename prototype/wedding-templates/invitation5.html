@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ $invitation->data['bride'] }} & {{ $invitation->data['groom'] }} | Wedding Invitation</title>
+  <title>Dipika & Sagar | Wedding Invitation</title>
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -133,12 +133,12 @@
   <!-- Welcome Overlay -->
   <div id="welcome-overlay" class="fixed inset-0 z-[100] bg-rust-50 flex flex-col items-center justify-center text-center p-4 transition-opacity duration-700 bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')]">
     <div class="relative w-full h-full max-w-md mx-auto flex flex-col items-center justify-center border-[1px] border-rust-200 m-4 bg-white/40 backdrop-blur-sm shadow-xl rounded-t-[200px]">
-        <!-- VivaHub Arch Decoration -->
+        <!-- Boho Arch Decoration -->
         <div class="absolute inset-4 border border-rust-300 rounded-t-[180px] pointer-events-none"></div>
         
         <img src="https://csssofttech.com/wedding/assets/ganesha.png" alt="Ganesha" class="w-16 h-16 mb-8 opacity-70 sepia brightness-90">
         
-        <h1 class="font-script text-6xl md:text-8xl text-rust-800 mb-2 drop-shadow-sm"><span class="preview-bride">{{ $invitation->data['bride'] }}</span> & <span class="preview-groom">{{ $invitation->data['groom'] }}</span></h1>
+        <h1 class="font-script text-6xl md:text-8xl text-rust-800 mb-2 drop-shadow-sm">Dipika & Sagar</h1>
         <p class="font-serif text-rust-600 text-sm tracking-[0.2em] uppercase mb-10">The Wedding Celebration</p>
         
         <button id="enter-btn" class="group relative px-10 py-3 bg-rust-700 text-white rounded-full hover:bg-rust-800 transition-all shadow-lg z-50 cursor-pointer">
@@ -179,19 +179,19 @@
   <!-- HERO SECTION -->
   <div class="relative h-[100dvh] w-full overflow-hidden bg-sand">
     <!-- Parallax Image -->
-    <div id="preview-hero-bg" class="absolute inset-0 z-0 bg-cover bg-center md:bg-left bg-no-repeat parallax-bg"
-      style="background-image: url('{{ $invitation->data['h_img'] ?? 'https://csssofttech.com/wedding/assets/hero.png' }}'); filter: sepia(0.3) opacity(0.85);">
+    <div id="hero-bg" class="absolute inset-0 z-0 bg-cover bg-center md:bg-left bg-no-repeat parallax-bg"
+      style="background-image: url('https://csssofttech.com/wedding/assets/hero.png'); filter: sepia(0.3) opacity(0.85);">
     </div>
     
     <!-- Warm Vignette -->
     <div class="absolute inset-0 z-1 bg-gradient-to-t from-sand via-sand/40 to-transparent md:bg-gradient-to-r md:from-transparent md:via-sand/30 md:to-sand/90"></div>
 
-    <div class="relative z-10 h-full w-full max-w-7xl mx-auto flex flex-col md:grid md:grid-cols-2 px-4 md:px-12 items-center">
+    <div class="relative z-10 h-full w-full max-w-7xl mx-auto flex flex-col md:grid md:grid-cols-2 pt-12 pb-8 px-4 md:py-0 md:px-12 items-center">
       <div class="hidden md:block"></div>
       
-      <div class="flex flex-col items-center md:items-end w-full h-full justify-end md:justify-center text-center md:text-right pb-24 md:pb-0">
+      <div class="flex flex-col items-center md:items-end w-full h-full md:h-auto md:justify-center text-center md:text-right">
          
-         <div class="flex flex-col items-center md:items-end justify-end w-full gap-2 p-8 md:p-12 relative bg-white/90 md:bg-transparent backdrop-blur-sm md:backdrop-blur-none rounded-t-[200px] md:rounded-none shadow-2xl md:shadow-none border border-white md:border-none">
+         <div class="flex flex-col items-center md:items-end justify-end h-[35%] md:h-auto w-full gap-2 p-8 md:p-12 relative">
             <!-- Decorative Arch behind text on Desktop -->
             <div class="hidden md:block absolute -top-10 -right-10 w-[120%] h-[120%] border border-rust-200/50 rounded-t-full rounded-b-none pointer-events-none -z-10 rotate-12"></div>
             <div class="hidden md:block absolute top-0 right-0 w-full h-full bg-white/80 backdrop-blur-sm rounded-t-[200px] shadow-2xl -z-10"></div>
@@ -199,28 +199,26 @@
             <div class="md:w-full md:flex md:flex-col md:items-center relative z-20">
                  <p class="font-serif text-xs tracking-[0.4em] text-rust-500 uppercase mb-4 animate-fade-in-down">The Wedding Of</p>
 
-                <h1 class="font-script text-[4.5rem] md:text-[9rem] text-rust-800 leading-[0.9] md:leading-[0.7] drop-shadow-sm py-4 animate-fade-in-up">
-                   <span class="preview-bride">{{ $invitation->data['bride'] }}</span> <br class="md:hidden" /> <span class="text-5xl align-middle font-serif text-sage-600 block md:inline md:my-4">&</span> <br class="md:hidden" /> <span class="preview-groom">{{ $invitation->data['groom'] }}</span>
+                <h1 class="font-script text-[5rem] md:text-[9rem] text-rust-800 leading-[0.7] drop-shadow-sm py-4 animate-fade-in-up">
+                   Dipika <br class="md:hidden" /> <span class="text-5xl align-middle font-serif text-sage-600 block md:inline md:my-4">&</span> <br class="md:hidden" /> Sagar
                 </h1>
                 
                 <div class="w-32 h-px bg-rust-300 my-6 mx-auto"></div>
                 
                 <div class="flex flex-col items-center gap-2 animate-fade-in-up delay-100">
-                    <p id="preview-hero-date" class="font-serif text-3xl text-rust-900 font-bold">{{ \Carbon\Carbon::parse($invitation->data['date'])->format('F d, Y') }}</p>
-                    <div class="flex items-center gap-2 text-rust-600 uppercase tracking-widest text-[10px] font-bold mt-1 bg-rust-50 px-3 py-1 rounded-full">
+                    <p class="font-serif text-3xl text-rust-900 font-bold">December 12th, 2026</p>
+                    <div class="flex items-center gap-2 text-rust-600 uppercase tracking-widest text-xs font-bold mt-1">
                         <i data-lucide="map-pin" class="w-3 h-3"></i>
-                        <span id="preview-hero-location">{{ $invitation->data['location'] ?? 'The Oberoi Udaivilas, Udaipur' }}</span>
+                        <span>The Oberoi Udaivilas, Udaipur</span>
                     </div>
                 </div>
             </div>
          </div>
 
-         <!-- Scroll Indicator -->
-         <div class="absolute bottom-28 md:hidden animate-bounce text-rust-800/80 z-20">
-            <i data-lucide="chevron-down" class="w-6 h-6"></i>
-         </div>
+         <!-- Mobile Spacer -->
+         <div class="h-[55%] md:hidden w-full"></div>
          
-         <div class="hidden md:flex flex-col items-center justify-center gap-2 animate-bounce-slow opacity-80 md:w-full md:mt-8">
+         <div class="flex flex-col items-center justify-center h-[10%] md:h-auto gap-2 animate-bounce-slow opacity-80 md:w-full md:mt-8">
             <span class="text-[9px] uppercase tracking-widest text-rust-800 font-bold bg-white/50 px-3 py-1 rounded-full shadow-sm backdrop-blur-md">Scroll to Explore</span>
          </div>
       </div>
@@ -229,29 +227,29 @@
 
   <!-- COUNTDOWN -->
   <div class="bg-rust-50 py-24 relative overflow-hidden">
-     <!-- Abstract VivaHub Shapes -->
+     <!-- Abstract Boho Shapes -->
      <div class="absolute -top-10 -left-10 w-40 h-40 bg-sage-200 rounded-full mix-blend-multiply filter blur-2xl opacity-50 animate-float"></div>
      <div class="absolute top-20 right-0 w-60 h-60 bg-rust-200 rounded-full mix-blend-multiply filter blur-2xl opacity-50 animate-float" style="animation-delay: 2s"></div>
 
      <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
         <h2 class="font-serif text-5xl md:text-6xl text-rust-900 mb-12">The Countdown</h2>
 
-        <div class="grid grid-cols-4 gap-2 md:flex md:justify-center md:gap-12 mb-12" id="countdown-container">
-            <div class="bg-white w-full py-4 md:w-28 md:h-32 rounded-t-full flex flex-col items-center justify-center shadow-lg border border-rust-100">
-                <span id="days" class="block font-serif text-2xl md:text-5xl text-rust-800 leading-none mt-2">00</span>
-                <span class="text-[8px] md:text-[9px] uppercase tracking-widest text-sage-800 mt-1">Days</span>
+        <div class="flex justify-center gap-4 md:gap-12 mb-12 flex-wrap" id="countdown-container">
+            <div class="bg-white w-20 h-24 md:w-28 md:h-32 rounded-t-full flex flex-col items-center justify-center shadow-lg border border-rust-100">
+                <span id="days" class="block font-serif text-3xl md:text-5xl text-rust-800 leading-none mt-2">00</span>
+                <span class="text-[9px] uppercase tracking-widest text-sage-800 mt-1">Days</span>
             </div>
-            <div class="bg-white w-full py-4 md:w-28 md:h-32 rounded-t-full flex flex-col items-center justify-center shadow-lg border border-rust-100">
-                <span id="hours" class="block font-serif text-2xl md:text-5xl text-rust-800 leading-none mt-2">00</span>
-                <span class="text-[8px] md:text-[9px] uppercase tracking-widest text-sage-800 mt-1">Hrs</span>
+            <div class="bg-white w-20 h-24 md:w-28 md:h-32 rounded-t-full flex flex-col items-center justify-center shadow-lg border border-rust-100">
+                <span id="hours" class="block font-serif text-3xl md:text-5xl text-rust-800 leading-none mt-2">00</span>
+                <span class="text-[9px] uppercase tracking-widest text-sage-800 mt-1">Hrs</span>
             </div>
-            <div class="bg-white w-full py-4 md:w-28 md:h-32 rounded-t-full flex flex-col items-center justify-center shadow-lg border border-rust-100">
-                <span id="minutes" class="block font-serif text-2xl md:text-5xl text-rust-800 leading-none mt-2">00</span>
-                <span class="text-[8px] md:text-[9px] uppercase tracking-widest text-sage-800 mt-1">Mins</span>
+            <div class="bg-white w-20 h-24 md:w-28 md:h-32 rounded-t-full flex flex-col items-center justify-center shadow-lg border border-rust-100">
+                <span id="minutes" class="block font-serif text-3xl md:text-5xl text-rust-800 leading-none mt-2">00</span>
+                <span class="text-[9px] uppercase tracking-widest text-sage-800 mt-1">Mins</span>
             </div>
-            <div class="bg-white w-full py-4 md:w-28 md:h-32 rounded-t-full flex flex-col items-center justify-center shadow-lg border border-rust-100">
-                <span id="seconds" class="block font-serif text-2xl md:text-5xl text-rust-800 leading-none mt-2">00</span>
-                <span class="text-[8px] md:text-[9px] uppercase tracking-widest text-sage-800 mt-1">Secs</span>
+            <div class="bg-white w-20 h-24 md:w-28 md:h-32 rounded-t-full flex flex-col items-center justify-center shadow-lg border border-rust-100">
+                <span id="seconds" class="block font-serif text-3xl md:text-5xl text-rust-800 leading-none mt-2">00</span>
+                <span class="text-[9px] uppercase tracking-widest text-sage-800 mt-1">Secs</span>
             </div>
         </div>
         
@@ -273,18 +271,18 @@
             <!-- Bride -->
             <div class="text-center group">
                 <div class="relative w-64 md:w-80 mx-auto aspect-[3/4] rounded-t-full overflow-hidden border-8 border-sage-100 shadow-xl mb-6">
-                    <img id="preview-bride-img" src="{{ isset($invitation->data['gallery']) && isset($invitation->data['gallery'][0]) ? $invitation->data['gallery'][0] : 'https://images.unsplash.com/photo-1502477610086-44ca0f9b69b5?auto=format&fit=crop&q=80&w=800' }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 sepia-[.3]">
+                    <img src="https://csssofttech.com/wedding/assets/bride.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 sepia-[.3]">
                 </div>
-                <h3 id="preview-bride-name" class="font-serif text-4xl text-rust-900">{{ $invitation->data['bride'] }}</h3>
+                <h3 class="font-serif text-4xl text-rust-900">Dipika</h3>
                 <p class="font-sans text-xs text-sage-500 uppercase tracking-widest mt-1">The Bride</p>
             </div>
             
             <!-- Groom -->
             <div class="text-center group md:mt-20">
                 <div class="relative w-64 md:w-80 mx-auto aspect-[3/4] rounded-t-full overflow-hidden border-8 border-rust-50 shadow-xl mb-6">
-                    <img id="preview-groom-img" src="{{ isset($invitation->data['gallery']) && isset($invitation->data['gallery'][1]) ? $invitation->data['gallery'][1] : 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=800' }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 sepia-[.3]">
+                    <img src="https://csssofttech.com/wedding/assets/groom.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 sepia-[.3]">
                 </div>
-                <h3 id="preview-groom-name" class="font-serif text-4xl text-rust-900">{{ $invitation->data['groom'] }}</h3>
+                <h3 class="font-serif text-4xl text-rust-900">Sagar</h3>
                 <p class="font-sans text-xs text-sage-500 uppercase tracking-widest mt-1">The Groom</p>
             </div>
         </div>
@@ -299,30 +297,48 @@
               <div class="w-16 h-1 bg-rust-400 mx-auto"></div>
           </div>
           
-          <div class="space-y-6" id="timeline-items">
-              @php
-                    $defaultEvents = [
-                      ['name' => 'Mehendi', 'date' => '11 Dec', 'time' => '04:00 PM', 'location' => 'Poolside Lawns', 'desc' => 'Music, Dance & Henna.'],
-                      ['name' => 'Haldi & Wedding', 'date' => '12 Dec', 'time' => '09:00 AM', 'location' => 'The Courtyard & Mandap', 'desc' => 'Golden glow followed by the Pheras.'],
-                      ['name' => 'Reception', 'date' => '12 Dec', 'time' => '07:00 PM', 'location' => 'Grand Ballroom', 'desc' => 'Dinner, Cocktails & Celebration.']
-                  ];
-                  $events = $invitation->data['events'] ?? $defaultEvents;
-              @endphp
-
-              @foreach($events as $index => $event)
-              <div class="paper-card p-6 md:p-8 rounded-lg flex flex-col md:flex-row gap-6 items-center {{ $index == 2 ? 'border-l-4 border-l-rust-600' : '' }}">
-                  <div class="w-20 h-20 rounded-full {{ $index == 2 ? 'bg-rust-800 text-white' : 'bg-rust-100 text-rust-800' }} flex flex-col items-center justify-center flex-shrink-0 border-2 border-white shadow-sm">
-                      <span class="font-bold font-serif text-2xl">{{ \Carbon\Carbon::parse($event['date'] ?? 'now')->format('d') }}</span>
-                      <span class="text-[9px] uppercase tracking-wide">{{ \Carbon\Carbon::parse($event['date'] ?? 'now')->format('M') }}</span>
+          <div class="space-y-6">
+              <!-- Event Card -->
+              <div class="paper-card p-6 md:p-8 rounded-lg flex flex-col md:flex-row gap-6 items-center">
+                  <div class="w-20 h-20 rounded-full bg-rust-100 flex flex-col items-center justify-center flex-shrink-0 text-rust-800 border-2 border-white shadow-sm">
+                      <span class="font-bold font-serif text-2xl">11</span>
+                      <span class="text-[9px] uppercase tracking-wide">Dec</span>
                   </div>
                   <div class="flex-grow text-center md:text-left">
-                      <h4 class="font-serif text-2xl text-rust-900 {{ $index == 2 ? 'font-bold' : '' }}">{{ $event['name'] ?? 'Event' }}</h4>
-                      <p class="text-sage-700 text-sm mt-1 mb-2">{{ $event['time'] }} • {{ $event['location'] }}</p>
-                      <p class="text-xs text-sage-500 font-light">{{ $event['desc'] }}</p>
+                      <h4 class="font-serif text-2xl text-rust-900">Mehendi</h4>
+                      <p class="text-sage-700 text-sm mt-1 mb-2">04:00 PM • Poolside Lawns</p>
+                      <p class="text-xs text-sage-500 font-light">Music, Dance & Henna.</p>
                   </div>
                   <a href="https://maps.google.com" target="_blank" class="px-4 py-2 border border-sage-300 text-sage-700 text-[10px] uppercase font-bold tracking-wider hover:bg-sage-700 hover:text-white transition-all rounded-sm">Map</a>
               </div>
-              @endforeach
+
+              <!-- Event Card -->
+              <div class="paper-card p-6 md:p-8 rounded-lg flex flex-col md:flex-row gap-6 items-center">
+                  <div class="w-20 h-20 rounded-full bg-rust-100 flex flex-col items-center justify-center flex-shrink-0 text-rust-800 border-2 border-white shadow-sm">
+                      <span class="font-bold font-serif text-2xl">12</span>
+                      <span class="text-[9px] uppercase tracking-wide">Dec</span>
+                  </div>
+                  <div class="flex-grow text-center md:text-left">
+                      <h4 class="font-serif text-2xl text-rust-900">Haldi & Wedding</h4>
+                      <p class="text-sage-700 text-sm mt-1 mb-2">09:00 AM • The Courtyard & Mandap</p>
+                      <p class="text-xs text-sage-500 font-light">Golden glow followed by the Pheras.</p>
+                  </div>
+                  <a href="https://maps.google.com" target="_blank" class="px-4 py-2 border border-sage-300 text-sage-700 text-[10px] uppercase font-bold tracking-wider hover:bg-sage-700 hover:text-white transition-all rounded-sm">Map</a>
+              </div>
+
+              <!-- Event Card -->
+              <div class="paper-card p-6 md:p-8 rounded-lg flex flex-col md:flex-row gap-6 items-center border-l-4 border-l-rust-600">
+                  <div class="w-20 h-20 rounded-full bg-rust-800 flex flex-col items-center justify-center flex-shrink-0 text-white border-2 border-white shadow-sm">
+                      <span class="font-bold font-serif text-2xl">12</span>
+                      <span class="text-[9px] uppercase tracking-wide">Dec</span>
+                  </div>
+                  <div class="flex-grow text-center md:text-left">
+                      <h4 class="font-serif text-2xl text-rust-900 font-bold">Reception</h4>
+                      <p class="text-sage-700 text-sm mt-1 mb-2">07:00 PM • Grand Ballroom</p>
+                      <p class="text-xs text-sage-500 font-light">Dinner, Cocktails & Celebration.</p>
+                  </div>
+                  <a href="https://maps.google.com" target="_blank" class="px-4 py-2 border border-sage-300 text-sage-700 text-[10px] uppercase font-bold tracking-wider hover:bg-sage-700 hover:text-white transition-all rounded-sm">Map</a>
+              </div>
           </div>
       </div>
   </section>
@@ -337,7 +353,7 @@
           <!-- Video Player -->
           <div class="max-w-4xl mx-auto mb-16">
             <div class="relative aspect-video rounded-t-full rounded-b-lg overflow-hidden shadow-xl group cursor-pointer border-[10px] border-rust-50">
-                <img src="{{ isset($invitation->data['gallery']) && isset($invitation->data['gallery'][2]) ? $invitation->data['gallery'][2] : 'https://csssofttech.com/wedding/assets/gallery1.png' }}" class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-700 sepia-[.3]">
+                <img src="https://csssofttech.com/wedding/assets/gallery1.png" class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-700 sepia-[.3]">
                 <div class="absolute inset-0 bg-rust-900/20 flex items-center justify-center">
                     <button class="w-20 h-20 bg-white/90 backdrop-blur-md rounded-full flex items-center justify-center text-rust-800 hover:scale-110 transition-transform shadow-lg border border-rust-200">
                         <i data-lucide="play" class="w-8 h-8 fill-current ml-1"></i>
@@ -347,21 +363,13 @@
           </div>
 
           <!-- Gallery (Masonry) -->
-          <div class="columns-2 md:columns-3 gap-4 space-y-4" id="preview-gallery-grid">
-              @if(!empty($invitation->data['gallery']) && is_array($invitation->data['gallery']))
-                  @foreach($invitation->data['gallery'] as $index => $img)
-                     @if($index > 2)
-                      <div class="break-inside-avoid rounded-lg overflow-hidden shadow hover:shadow-lg transition-all"><img src="{{ $img }}" class="w-full sepia-[.2] hover:sepia-0 transition-all duration-500"></div>
-                     @endif
-                  @endforeach
-              @else
-                  <div class="break-inside-avoid rounded-lg overflow-hidden shadow hover:shadow-lg transition-all"><img src="https://csssofttech.com/wedding/assets/gallery1.png" class="w-full sepia-[.2] hover:sepia-0 transition-all duration-500"></div>
-                  <div class="break-inside-avoid rounded-t-full overflow-hidden shadow hover:shadow-lg transition-all"><img src="https://csssofttech.com/wedding/assets/gallery2.png" class="w-full sepia-[.2] hover:sepia-0 transition-all duration-500"></div>
-                  <div class="break-inside-avoid rounded-lg overflow-hidden shadow hover:shadow-lg transition-all"><img src="https://csssofttech.com/wedding/assets/gallery3.png" class="w-full sepia-[.2] hover:sepia-0 transition-all duration-500"></div>
-                  <div class="break-inside-avoid rounded-lg overflow-hidden shadow hover:shadow-lg transition-all"><img src="https://csssofttech.com/wedding/assets/gallery4.png" class="w-full sepia-[.2] hover:sepia-0 transition-all duration-500"></div>
-                  <div class="break-inside-avoid rounded-t-full overflow-hidden shadow hover:shadow-lg transition-all"><img src="https://csssofttech.com/wedding/assets/gallery5.png" class="w-full sepia-[.2] hover:sepia-0 transition-all duration-500"></div>
-                  <div class="break-inside-avoid rounded-lg overflow-hidden shadow hover:shadow-lg transition-all"><img src="https://csssofttech.com/wedding/assets/gallery6.png" class="w-full sepia-[.2] hover:sepia-0 transition-all duration-500"></div>
-              @endif
+          <div class="columns-2 md:columns-3 gap-4 space-y-4">
+              <div class="break-inside-avoid rounded-lg overflow-hidden shadow hover:shadow-lg transition-all"><img src="https://csssofttech.com/wedding/assets/gallery1.png" class="w-full sepia-[.2] hover:sepia-0 transition-all duration-500"></div>
+              <div class="break-inside-avoid rounded-t-full overflow-hidden shadow hover:shadow-lg transition-all"><img src="https://csssofttech.com/wedding/assets/gallery2.png" class="w-full sepia-[.2] hover:sepia-0 transition-all duration-500"></div>
+              <div class="break-inside-avoid rounded-lg overflow-hidden shadow hover:shadow-lg transition-all"><img src="https://csssofttech.com/wedding/assets/gallery3.png" class="w-full sepia-[.2] hover:sepia-0 transition-all duration-500"></div>
+              <div class="break-inside-avoid rounded-lg overflow-hidden shadow hover:shadow-lg transition-all"><img src="https://csssofttech.com/wedding/assets/gallery4.png" class="w-full sepia-[.2] hover:sepia-0 transition-all duration-500"></div>
+              <div class="break-inside-avoid rounded-t-full overflow-hidden shadow hover:shadow-lg transition-all"><img src="https://csssofttech.com/wedding/assets/gallery5.png" class="w-full sepia-[.2] hover:sepia-0 transition-all duration-500"></div>
+              <div class="break-inside-avoid rounded-lg overflow-hidden shadow hover:shadow-lg transition-all"><img src="https://csssofttech.com/wedding/assets/gallery6.png" class="w-full sepia-[.2] hover:sepia-0 transition-all duration-500"></div>
           </div>
       </div>
   </section>
@@ -372,12 +380,12 @@
           <div class="bg-white p-10 rounded-t-full rounded-b-lg shadow-sm border border-rust-100">
               <i data-lucide="bed-double" class="w-8 h-8 text-rust-600 mx-auto mb-4"></i>
               <h4 class="font-serif text-2xl text-rust-900 mb-2">Accommodation</h4>
-              <p class="text-sm text-sage-600 font-sans">The Trident Hotel, {{ $invitation->data['location'] ?? 'Udaipur' }}</p>
+              <p class="text-sm text-sage-600 font-sans">The Trident Hotel, Udaipur</p>
           </div>
           <div class="bg-white p-10 rounded-t-full rounded-b-lg shadow-sm border border-rust-100">
               <i data-lucide="shirt" class="w-8 h-8 text-rust-600 mx-auto mb-4"></i>
               <h4 class="font-serif text-2xl text-rust-900 mb-2">Dress Code</h4>
-              <p class="text-sm text-sage-600 font-sans">Traditional Royal / VivaHub Formal</p>
+              <p class="text-sm text-sage-600 font-sans">Traditional Royal / Boho Formal</p>
           </div>
       </div>
       <div class="mt-12 max-w-4xl mx-auto h-64 rounded-lg overflow-hidden shadow-md border-4 border-white">
@@ -426,14 +434,14 @@
           <a href="#" class="hover:text-white transition-colors"><i data-lucide="instagram"></i></a>
           <a href="#" class="hover:text-white transition-colors"><i data-lucide="facebook"></i></a>
       </div>
-      <p class="text-[10px] uppercase tracking-widest mb-4">Designed for {{ $invitation->data['bride'] }} & {{ $invitation->data['groom'] }}</p>
+      <p class="text-[10px] uppercase tracking-widest mb-4">Designed for Dipika & Sagar</p>
       <div class="inline-flex items-center gap-2 bg-rust-800 px-3 py-1 rounded-full border border-rust-700 text-[10px] uppercase font-bold text-rust-200">
           <i data-lucide="camera" class="w-3 h-3"></i> Lens Magic
       </div>
   </footer>
 
   <!-- MOBILE NAV -->
-  <div class="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-rust-100 px-4 py-3 md:hidden shadow-[0_-5px_20px_rgba(0,0,0,0.05)] w-full max-w-full safe-pb">
+  <div class="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-rust-100 px-4 py-3 md:hidden shadow-[0_-5px_20px_rgba(0,0,0,0.05)]">
       <div class="grid grid-cols-5 gap-2 text-center text-rust-800">
           <a href="tel:+" class="flex flex-col items-center gap-1 hover:text-rust-600"><i data-lucide="phone" class="w-5 h-5"></i><span class="text-[9px]">Call</span></a>
           <a href="#" class="flex flex-col items-center gap-1 hover:text-rust-600"><i data-lucide="message-circle" class="w-5 h-5"></i><span class="text-[9px]">Chat</span></a>
@@ -467,7 +475,7 @@
       audio.volume = 0.4;
       familyAudio.volume = 1.0;
 
-      // --- VivaHub Particles ---
+      // --- Boho Particles ---
       for(let i=0; i<10; i++) {
           const p = document.createElement('div');
           p.className = 'particle';
@@ -556,7 +564,7 @@
       });
 
       // --- Countdown ---
-      const date = new Date("{{ $invitation->data['date'] }}T10:00:00").getTime();
+      const date = new Date("2026-12-10T10:00:00").getTime();
       const ids = ['days', 'hours', 'minutes', 'seconds'];
       const els = ids.map(id => document.getElementById(id));
       
@@ -588,64 +596,7 @@
     // Global
     function shareInvite() { if(navigator.share) navigator.share({title:'Wedding', url:window.location.href}); else alert('Copy URL'); }
     function downloadVCard() { /* vCard Logic */ }
-    function addToCalendar() { window.open('https://calendar.google.com/calendar/render?action=TEMPLATE&text={{ $invitation->data['bride'] }}%20%26%20{{ $invitation->data['groom'] }}%20Wedding&dates={{ \Carbon\Carbon::parse($invitation->data['date'])->format('Ymd') }}T100000/{{ \Carbon\Carbon::parse($invitation->data['date'])->addDays(1)->format('Ymd') }}T230000&location={{ $invitation->data['location'] ?? 'Venue' }}', '_blank'); }
-
-    // --- Live Hooks (Standardized) ---
-    window.updateCountdown = function(dateStr) { window.location.reload(); }
-    window.updateAudioSource = function(src, type) { 
-        const audio = document.getElementById('wedding-audio');
-        if(audio) { audio.src = src; if(isMusicPlaying) audio.play(); }
-    }
-    window.toggleSection = function(id, visible) { 
-        const el = document.getElementById(id); 
-        if(el) visible ? el.classList.remove('hidden') : el.classList.add('hidden'); 
-    }
-    window.updateEvents = function(events) { window.updateEventsList(events); };
-    window.updateEventsList = function(events) {
-         const container = document.getElementById('timeline-items');
-         if(!container) return;
-         container.innerHTML = '';
-         events.forEach(event => {
-             const html = `
-              <div class="paper-card p-6 md:p-8 rounded-lg flex flex-col md:flex-row gap-6 items-center">
-                  <div class="w-20 h-20 rounded-full bg-rust-100 text-rust-800 flex flex-col items-center justify-center flex-shrink-0 border-2 border-white shadow-sm">
-                      <span class="font-bold font-serif text-2xl">${new Date(event.date).getDate()}</span>
-                      <span class="text-[9px] uppercase tracking-wide">${new Date(event.date).toLocaleString('default', { month: 'short' })}</span>
-                  </div>
-                  <div class="flex-grow text-center md:text-left">
-                      <h4 class="font-serif text-2xl text-rust-900">${event.title}</h4>
-                      <p class="text-sage-700 text-sm mt-1 mb-2">${event.time} • ${event.location}</p>
-                      <p class="text-xs text-sage-500 font-light">${event.description}</p>
-                  </div>
-                  <a href="#" class="px-4 py-2 border border-sage-300 text-sage-700 text-[10px] uppercase font-bold tracking-wider hover:bg-sage-700 hover:text-white transition-all rounded-sm">Map</a>
-              </div>
-             `;
-             container.insertAdjacentHTML('beforeend', html);
-         });
-         if(window.lucide) window.lucide.createIcons();
-    };
-    window.updateGallery = function(urls) {
-        const grid = document.getElementById('preview-gallery-grid');
-        if(grid) {
-            grid.innerHTML = '';
-            urls.forEach((url, i) => {
-                 const div = document.createElement('div');
-                 // Alternating shapes for Masonry feel
-                 const isArch = i % 2 !== 0; 
-                 div.className = `break-inside-avoid ${isArch ? 'rounded-t-full' : 'rounded-lg'} overflow-hidden shadow hover:shadow-lg transition-all`;
-                 div.innerHTML = `<img src="${url}" class="w-full sepia-[.2] hover:sepia-0 transition-all duration-500">`;
-                 grid.appendChild(div);
-            });
-        }
-    };
-    window.updatePreview = function(type, id, value) {
-        if(type === 'text') { 
-            const el = document.getElementById(id); if(el) el.innerText = value;
-            const els = document.getElementsByClassName(id); Array.from(els).forEach(e => e.innerText = value);
-        }
-        if(type === 'src') { const el = document.getElementById(id); if(el) el.src = value; }
-        if(type === 'bg') { const el = document.getElementById(id); if(el) el.style.backgroundImage = `url('${value}')`; }
-    };
+    function addToCalendar() { window.open('https://calendar.google.com/calendar/render?action=TEMPLATE&text=Dipika%20%26%20Sagar%20Wedding&dates=20261210T100000/20261212T230000&location=Udaipur', '_blank'); }
   </script>
 </body>
 </html>

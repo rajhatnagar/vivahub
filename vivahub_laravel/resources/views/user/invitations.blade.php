@@ -29,7 +29,9 @@
                         <p class="text-sm text-text-muted flex items-center gap-2"><span class="material-symbols-outlined text-base">location_on</span> {{ $inv['location'] }}</p>
                     </div>
                     <div class="flex gap-2 pt-2 border-t border-gray-100 dark:border-white/5">
-                        <a href="{{ route('builder', ['template' => 'wedding-1']) }}" class="flex-1 text-center py-2 rounded-lg bg-gray-50 dark:bg-white/5 text-text-dark dark:text-white text-sm font-bold hover:bg-gray-100 dark:hover:bg-white/10 transition-colors">Edit</a>
+                        <a href="{{ route('builder', ['template' => $inv['template_id'] ?? 'wedding-1', 'invitation_id' => $inv['id']]) }}" class="flex-1 text-center py-2 rounded-lg bg-gray-50 dark:bg-white/5 text-text-dark dark:text-white text-sm font-bold hover:bg-gray-100 dark:hover:bg-white/10 transition-colors">Edit</a>
+
+
                         @if($inv['status'] === 'Published')
                         <button onclick="copyInvitationLink('{{ route('invitation.show', $inv['id']) }}', this)" class="flex-1 text-center py-2 rounded-lg bg-primary/10 text-primary text-sm font-bold hover:bg-primary/20 transition-colors cursor-pointer group-hover/btn:bg-primary/20">
                             Copy Link

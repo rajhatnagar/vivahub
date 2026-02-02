@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ananya & Vikram | Wedding Invitation</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['Playfair Display', 'serif'],
+            cinzel: ['Cinzel', 'serif'],
+            sans: ['Poppins', 'sans-serif'],
+          },
+          colors: {
+            orange: {
+              50: '#fff7ed',
+              100: '#ffedd5',
+              200: '#fed7aa',
+              300: '#fdba74',
+              400: '#fb923c',
+              500: '#f97316',
+              600: '#ea580c',
+              700: '#c2410c',
+              800: '#9a3412',
+              900: '#7c2d12',
+              950: '#431407',
+            }
+          },
+          animation: {
+            'fade-in-up': 'fadeInUp 1s ease-out forwards',
+            'fade-in-down': 'fadeInDown 1s ease-out forwards',
+            'bounce-slow': 'bounce 3s infinite',
+            'spin-slow': 'spin 12s linear infinite',
+          },
+          keyframes: {
+            fadeInUp: {
+              '0%': { opacity: '0', transform: 'translateY(20px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            fadeInDown: {
+              '0%': { opacity: '0', transform: 'translateY(-20px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Styles */
+    body {
+      background-color: #fff7ed;
+      /* orange-50 */
+      color: #1f2937;
+    }
+
+    /* Petal Animation */
+    @keyframes float {
+      0% {
+        transform: translateY(-10vh) rotate(0deg);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 1;
+      }
+
+      90% {
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    .petal {
+      position: fixed;
+      top: -10vh;
+      width: 15px;
+      height: 15px;
+      background: #ff4500;
+      /* OrangeRed */
+      opacity: 0.8;
+      border-radius: 20px 0px 20px 0px;
+      animation: float 15s linear infinite;
+      z-index: 50;
+      pointer-events: none;
+    }
+
+    .petal:nth-child(even) {
+      background: #ff8c00;
+      width: 12px;
+      height: 12px;
+    }
+
+    .petal:nth-child(2) {
+      left: 10%;
+      animation-duration: 12s;
+      animation-delay: 0s;
+    }
+
+    .petal:nth-child(3) {
+      left: 30%;
+      animation-duration: 18s;
+      animation-delay: 2s;
+    }
+
+    .petal:nth-child(4) {
+      left: 50%;
+      animation-duration: 14s;
+      animation-delay: 5s;
+    }
+
+    .petal:nth-child(5) {
+      left: 70%;
+      animation-duration: 16s;
+      animation-delay: 1s;
+    }
+
+    .petal:nth-child(6) {
+      left: 90%;
+      animation-duration: 13s;
+      animation-delay: 4s;
+    }
+
+    /* Glassmorphism Class */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(254, 215, 170, 0.6);
+      /* orange-200 */
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      transition: all 0.5s ease;
+    }
+
+    .glass-card:hover {
+      border-color: rgba(248, 113, 113, 0.6);
+      transform: translateY(-5px);
+      /* red-400 */
+    }
+
+    /* Dark Glass for Events */
+    .glass-card-dark {
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.5s ease;
+    }
+
+    .glass-card-dark:hover {
+      background: rgba(0, 0, 0, 0.5);
+      border-color: rgba(251, 146, 60, 0.6);
+      transform: scale(1.02);
+    }
+
+    /* Text Gradients */
+    .text-gradient {
+      background: linear-gradient(to right, #ea580c, #dc2626);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .gold-gradient-text {
+      background: linear-gradient(to right, #fed7aa, #ffffff, #fed7aa);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Utility for Parallax */
+    .parallax-bg {
+      will-change: transform;
+    }
+  </style>
+</head>
+
+<body class="overflow-x-hidden selection:bg-orange-500 selection:text-white">
+
+  <!-- Floating Petals -->
+  <div class="petal"></div>
+  <div class="petal"></div>
+  <div class="petal"></div>
+  <div class="petal"></div>
+  <div class="petal"></div>
+
+  <!-- Audio Element -->
+  <audio id="wedding-audio" loop>
+    <source src="assets/music.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Music Toggle Button -->
+  <button id="music-toggle"
+    class="fixed bottom-6 right-6 z-50 bg-white/80 backdrop-blur-md p-3 rounded-full border-2 border-orange-500 text-red-600 hover:bg-white transition-all shadow-lg animate-pulse">
+    <i data-lucide="volume-x" class="w-6 h-6 fill-current"></i>
+  </button>
+
+  <!-- HERO SECTION -->
+  <div class="relative h-[100dvh] w-full overflow-hidden">
+    <!-- Background Image with Parallax -->
+    <div id="hero-bg" class="absolute inset-0 z-0 bg-cover bg-center md:bg-right bg-no-repeat parallax-bg"
+      style="background-image: url('./assets/hero.png');">
+    </div>
+    <!-- Overlay: Warm Burgundy Gradient for Readability -->
+    <div
+      class="absolute inset-0 z-1 bg-gradient-to-b from-red-950/60 via-red-950/20 to-red-950/80 mix-blend-multiply pointer-events-none md:hidden">
+    </div>
+    <!-- Desktop Horizontal Gradient (Right to Left) -->
+    <div
+      class="hidden md:block absolute inset-0 z-1 bg-gradient-to-l from-[#4A2525] via-[#4A2525]/40 to-transparent mix-blend-multiply pointer-events-none">
+    </div>
+    <div class="absolute inset-0 z-1 bg-gradient-to-t from-black/40 via-transparent to-black/20 pointer-events-none">
+    </div>
+
+    <!-- Content Container -->
+    <div
+      class="relative z-10 h-full w-full max-w-7xl mx-auto flex flex-col md:grid md:grid-cols-2 pt-16 pb-8 px-4 md:py-0 md:px-12 items-center">
+
+      <!-- Mobile Layout: Vertical Stack -->
+      <!-- Desktop Spacer (Left Column) -->
+      <div class="hidden md:block"></div>
+
+      <!-- Content Wrapper -->
+      <div class="flex flex-col items-center w-full h-full md:h-auto md:justify-center">
+
+        <!-- Mobile: Top 23% Content Area (Highly Compacted) -->
+        <div class="flex flex-col items-center justify-end h-[23%] md:h-auto w-full gap-0.5 md:gap-4 overflow-visible">
+
+          <!-- 1. Ganesha Icon -->
+          <img src="./assets/ganesha.png" alt="Ganesha"
+            class="w-10 h-10 md:w-32 md:h-32 mb-0.5 md:mb-6 drop-shadow-2xl hover:scale-110 transition-transform duration-500 filter brightness-110 contrast-125">
+
+          <!-- 2. "We Are Getting Married" Banner -->
+          <div
+            class="inline-block px-3 py-0.5 mb-0.5 rounded-full bg-[rgba(93,46,46,0.9)] backdrop-blur-sm border border-white/10 shadow-lg animate-fade-in-down">
+            <p class="text-white/95 font-cinzel text-[7px] md:text-sm tracking-[0.2em] uppercase font-bold text-center">
+              We are getting married
+            </p>
+          </div>
+
+          <!-- 3. Names -->
+          <h1
+            class="font-serif text-[2.5rem] md:text-8xl text-[#F5E6D3] leading-none text-center mb-0 animate-fade-in-up drop-shadow-md">
+            Ananya <span class="inline md:inline text-xl md:text-6xl align-top text-[#D4AF37] font-light">&</span>
+            Vikram
+          </h1>
+
+          <!-- 4. Hashtag -->
+          <p
+            class="font-serif text-xs md:text-2xl text-[#C5A059] tracking-[0.15em] font-medium mb-1 md:mb-8 drop-shadow-sm uppercase">
+            #ViNan2026
+          </p>
+
+          <!-- 5. Date & Location Banner -->
+          <div
+            class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[rgba(93,46,46,0.9)] backdrop-blur-sm border border-white/10 shadow-lg mb-0 animate-fade-in-up delay-100">
+            <div class="flex items-center gap-1 border-r border-white/20 pr-2">
+              <i data-lucide="calendar" class="w-3 h-3 text-[#E6C68C]"></i>
+              <span class="text-white/95 text-[9px] md:text-sm font-medium tracking-wide">Dec 12, 2026</span>
+            </div>
+            <div class="flex items-center gap-1">
+              <i data-lucide="map-pin" class="w-3 h-3 text-[#E6C68C]"></i>
+              <span class="text-white/95 text-[9px] md:text-sm font-medium tracking-wide">Udaipur</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile: Middle 67% Image Space (Expanded) -->
+        <div class="h-[67%] md:hidden w-full"></div>
+
+        <!-- Mobile: Bottom 10% Scroll Area -->
+        <div
+          class="flex flex-col items-center justify-center h-[10%] md:h-auto gap-2 animate-bounce-slow opacity-80 hover:opacity-100 transition-opacity">
+          <span class="text-[10px] text-orange-200 font-cinzel tracking-[0.3em] uppercase md:hidden">Scroll</span>
+          <i data-lucide="chevron-down" class="w-5 h-5 text-orange-200"></i>
+          <!-- Desktop Scroll Text (Hidden on Mobile) -->
+          <span
+            class="hidden md:block text-[8px] uppercase tracking-widest mt-1 font-bold text-orange-200 text-center opacity-80">Scroll</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- COUNTDOWN SECTION -->
+  <div class="bg-gradient-to-r from-red-800 to-orange-700 py-12 border-b-4 border-orange-300">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 text-center text-orange-50" id="countdown-container">
+        <!-- Mobile: 2 cols, Desktop: 4 cols -->
+        <!-- Countdown Items generated by JS -->
+        <div class="flex flex-col items-center">
+          <span id="days"
+            class="font-serif text-3xl md:text-6xl font-bold bg-black/10 w-full py-4 rounded-lg border border-white/20 backdrop-blur-sm shadow-inner text-white">00</span>
+          <span class="text-xs md:text-sm uppercase tracking-widest mt-2 font-semibold text-orange-200">Days</span>
+        </div>
+        <div class="flex flex-col items-center">
+          <span id="hours"
+            class="font-serif text-3xl md:text-6xl font-bold bg-black/10 w-full py-4 rounded-lg border border-white/20 backdrop-blur-sm shadow-inner text-white">00</span>
+          <span class="text-xs md:text-sm uppercase tracking-widest mt-2 font-semibold text-orange-200">Hours</span>
+        </div>
+        <div class="flex flex-col items-center">
+          <span id="minutes"
+            class="font-serif text-3xl md:text-6xl font-bold bg-black/10 w-full py-4 rounded-lg border border-white/20 backdrop-blur-sm shadow-inner text-white">00</span>
+          <span class="text-xs md:text-sm uppercase tracking-widest mt-2 font-semibold text-orange-200">Mins</span>
+        </div>
+        <div class="flex flex-col items-center">
+          <span id="seconds"
+            class="font-serif text-3xl md:text-6xl font-bold bg-black/10 w-full py-4 rounded-lg border border-white/20 backdrop-blur-sm shadow-inner text-white">00</span>
+          <span class="text-xs md:text-sm uppercase tracking-widest mt-2 font-semibold text-orange-200">Secs</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAMILY SECTION -->
+  <section id="family" class="py-16 md:py-24 px-4 bg-orange-50">
+    <div class="max-w-6xl mx-auto text-center mb-12">
+      <h3 class="font-serif text-3xl md:text-5xl text-red-700 mb-3 drop-shadow-sm tracking-wide">With Blessings From
+      </h3>
+      <p class="text-orange-600 uppercase tracking-widest text-sm md:text-base font-bold">The Families</p>
+      <div class="flex justify-center mt-4">
+        <div class="h-1 w-16 bg-gradient-to-r from-red-500 to-orange-400 rounded-full"></div>
+        <div class="mx-2 text-red-600">❖</div>
+        <div class="h-1 w-16 bg-gradient-to-l from-red-500 to-orange-400 rounded-full"></div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto"> <!-- Mobile: 1 col, Desktop: 2 cols -->
+      <!-- Bride's Family -->
+      <div class="glass-card rounded-2xl p-8 text-center bg-white border-orange-100">
+        <div
+          class="w-16 h-16 mx-auto bg-gradient-to-br from-red-500 to-orange-500 rounded-full flex items-center justify-center mb-4 text-white shadow-lg">
+          <i data-lucide="users" class="w-8 h-8 fill-current"></i>
+        </div>
+        <h4 class="font-cinzel text-xl font-bold text-red-700 mb-2">The Bride's Family</h4>
+        <p class="text-gray-800 font-medium mb-1">Mr. Rajesh & Mrs. Sunita Sharma</p>
+        <p class="text-sm text-gray-500 italic">"We eagerly await your presence to bless our daughter."</p>
+      </div>
+      <!-- Groom's Family -->
+      <div class="glass-card rounded-2xl p-8 text-center bg-white border-orange-100">
+        <div
+          class="w-16 h-16 mx-auto bg-gradient-to-br from-red-500 to-orange-500 rounded-full flex items-center justify-center mb-4 text-white shadow-lg">
+          <i data-lucide="users" class="w-8 h-8 fill-current"></i>
+        </div>
+        <h4 class="font-cinzel text-xl font-bold text-red-700 mb-2">The Groom's Family</h4>
+        <p class="text-gray-800 font-medium mb-1">Mr. Alok & Mrs. Meera Verma</p>
+        <p class="text-sm text-gray-500 italic">"Join us as we celebrate the union of two souls."</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- COUPLE SECTION -->
+  <section id="couple" class="py-16 md:py-24 px-4 bg-gradient-to-b from-orange-50 to-red-100">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-12">
+        <h3 class="font-serif text-3xl md:text-5xl text-red-700 mb-3 drop-shadow-sm tracking-wide">The Happy Couple</h3>
+        <p class="text-orange-600 uppercase tracking-widest text-sm md:text-base font-bold">Made for each other</p>
+        <div class="flex justify-center mt-4">
+          <div class="h-1 w-16 bg-gradient-to-r from-red-500 to-orange-400 rounded-full"></div>
+          <div class="mx-2 text-red-600">❖</div>
+          <div class="h-1 w-16 bg-gradient-to-l from-red-500 to-orange-400 rounded-full"></div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center"> <!-- Mobile: 1 col -->
+        <!-- Bride Card -->
+        <div class="relative group overflow-hidden rounded-2xl shadow-2xl h-[400px] md:h-[500px]">
+          <img src="./assets/bride.png" loading="lazy" alt="Bride"
+            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-red-900/90 via-transparent to-transparent flex flex-col justify-end p-8 text-white">
+            <h3 class="font-serif text-3xl mb-1 text-center text-orange-100">Ananya</h3>
+            <p class="text-sm opacity-90 font-medium text-center text-orange-200">Architect & Dreamer</p>
+            <div class="flex gap-4 mt-2 justify-center">
+              <!-- Instagram -->
+              <a href="#" class="group block">
+                <div
+                  class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/40 transition-all">
+                  <i data-lucide="instagram" class="w-5 h-5 text-white"></i>
+                </div>
+              </a>
+              <!-- Facebook -->
+              <a href="#" class="group block">
+                <div
+                  class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/40 transition-all">
+                  <i data-lucide="facebook" class="w-5 h-5 text-white"></i>
+                </div>
+              </a>
+              <!-- Whatsapp -->
+              <a href="#" class="group block">
+                <div
+                  class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/40 transition-all">
+                  <i data-lucide="message-circle" class="w-5 h-5 text-white"></i>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Groom Card -->
+        <div class="relative group overflow-hidden rounded-2xl shadow-2xl h-[400px] md:h-[500px]">
+          <img src="./assets/groom.png" loading="lazy" alt="Groom"
+            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-red-900/90 via-transparent to-transparent flex flex-col justify-end p-8 text-white">
+            <h3 class="font-serif text-3xl mb-1 text-center text-orange-100">Vikram</h3>
+            <p class="text-sm opacity-90 font-medium text-center text-orange-200">Entrepreneur & Traveler</p>
+            <div class="flex gap-4 mt-2 justify-center">
+              <!-- Instagram -->
+              <a href="#" class="group block">
+                <div
+                  class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/40 transition-all">
+                  <i data-lucide="instagram" class="w-5 h-5 text-white"></i>
+                </div>
+              </a>
+              <!-- Facebook -->
+              <a href="#" class="group block">
+                <div
+                  class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/40 transition-all">
+                  <i data-lucide="facebook" class="w-5 h-5 text-white"></i>
+                </div>
+              </a>
+              <!-- Whatsapp -->
+              <a href="#" class="group block">
+                <div
+                  class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/40 transition-all">
+                  <i data-lucide="message-circle" class="w-5 h-5 text-white"></i>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVENTS TIMELINE -->
+  <section id="events"
+    class="py-16 md:py-24 px-4 bg-gradient-to-b from-red-900 to-orange-900 text-white relative overflow-hidden">
+    <!-- Radial Pattern Overlay -->
+    <div class="absolute inset-0 opacity-10"
+      style="background-image: radial-gradient(circle at 50% 50%, #fb923c 1px, transparent 1px); background-size: 30px 30px;">
+    </div>
+
+    <div class="max-w-6xl mx-auto relative z-10 text-center mb-12">
+      <h3 class="font-serif text-3xl md:text-5xl text-orange-200 mb-3 drop-shadow-sm tracking-wide">The Celebrations
+      </h3>
+      <p class="text-orange-300 uppercase tracking-widest text-sm md:text-base font-bold">Save The Dates</p>
+      <div class="flex justify-center mt-4">
+        <div class="h-1 w-16 bg-orange-300 rounded-full"></div>
+        <div class="mx-2 text-orange-200">❖</div>
+        <div class="h-1 w-16 bg-orange-300 rounded-full"></div>
+      </div>
+    </div>
+
+    <div class="relative max-w-6xl mx-auto px-4">
+      <!-- Central Line -->
+      <div class="absolute left-6 md:left-1/2 top-0 bottom-0 w-1 bg-orange-500/30 rounded-full"></div>
+
+      <div class="flex flex-col gap-12" id="timeline-container">
+        <!-- Timeline Items -->
+        <!-- Ganesh Puja -->
+        <div class="flex flex-col md:flex-row gap-8 items-center relative md:flex-row-reverse">
+          <div
+            class="absolute left-6 md:left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-orange-500 border-4 border-red-900 shadow-[0_0_0_4px_rgba(251,146,60,0.3)] z-10">
+          </div>
+          <div class="hidden md:block w-1/2"></div>
+          <div class="w-full md:w-1/2 pl-16 md:pl-0">
+            <div class="glass-card-dark rounded-2xl p-6 md:mr-12 hover:border-orange-400">
+              <div
+                class="flex flex-col sm:grid sm:grid-cols-[80px_1fr_100px] items-center gap-4 text-center sm:text-left">
+                <!-- Icon -->
+                <div class="flex justify-center shrink-0">
+                  <img src="./assets/icon_puja.png" class="w-16 h-16 sm:w-20 sm:h-20 drop-shadow-lg object-contain"
+                    loading="lazy" alt="Puja">
+                </div>
+                <!-- Content -->
+                <div class="w-full sm:w-auto">
+                  <h4 class="font-serif text-xl sm:text-2xl text-orange-200 font-bold leading-tight mb-1">Ganesh Puja
+                  </h4>
+                  <p class="text-orange-50 text-sm font-light tracking-wide leading-relaxed">Beginning with blessings.
+                  </p>
+                </div>
+                <!-- Date/Time -->
+                <div
+                  class="w-full sm:w-auto flex flex-row sm:flex-col justify-center sm:justify-end items-center sm:items-end gap-3 sm:gap-0">
+                  <div
+                    class="text-base sm:text-lg font-bold text-white bg-red-800/80 px-3 py-1 rounded-lg inline-block mb-0 sm:mb-1 shadow-md whitespace-nowrap">
+                    Dec 10</div>
+                  <div class="text-xs sm:text-sm text-orange-300 font-medium tracking-wider whitespace-nowrap">10:00 AM
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mehendi -->
+        <div class="flex flex-col md:flex-row gap-8 items-center relative">
+          <div
+            class="absolute left-6 md:left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-orange-500 border-4 border-red-900 shadow-[0_0_0_4px_rgba(251,146,60,0.3)] z-10">
+          </div>
+          <div class="hidden md:block w-1/2"></div>
+          <div class="w-full md:w-1/2 pl-16 md:pl-0">
+            <div class="glass-card-dark rounded-2xl p-6 md:ml-12 hover:border-orange-400">
+              <div
+                class="flex flex-col sm:grid sm:grid-cols-[80px_1fr_100px] items-center gap-4 text-center sm:text-left">
+                <!-- Icon -->
+                <div class="flex justify-center shrink-0">
+                  <img src="./assets/icon_mehendi.png" class="w-16 h-16 sm:w-20 sm:h-20 drop-shadow-lg object-contain"
+                    loading="lazy" alt="Mehendi">
+                </div>
+                <!-- Content -->
+                <div class="w-full sm:w-auto">
+                  <h4 class="font-serif text-xl sm:text-2xl text-orange-200 font-bold leading-tight mb-1">Mehendi</h4>
+                  <p class="text-orange-50 text-sm font-light tracking-wide leading-relaxed">Music, Dance & Henna.</p>
+                </div>
+                <!-- Date/Time -->
+                <div
+                  class="w-full sm:w-auto flex flex-row sm:flex-col justify-center sm:justify-end items-center sm:items-end gap-3 sm:gap-0">
+                  <div
+                    class="text-base sm:text-lg font-bold text-white bg-red-800/80 px-3 py-1 rounded-lg inline-block mb-0 sm:mb-1 shadow-md whitespace-nowrap">
+                    Dec 11</div>
+                  <div class="text-xs sm:text-sm text-orange-300 font-medium tracking-wider whitespace-nowrap">04:00 PM
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Haldi -->
+        <div class="flex flex-col md:flex-row gap-8 items-center relative md:flex-row-reverse">
+          <div
+            class="absolute left-6 md:left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-orange-500 border-4 border-red-900 shadow-[0_0_0_4px_rgba(251,146,60,0.3)] z-10">
+          </div>
+          <div class="hidden md:block w-1/2"></div>
+          <div class="w-full md:w-1/2 pl-16 md:pl-0">
+            <div class="glass-card-dark rounded-2xl p-6 md:mr-12 hover:border-orange-400">
+              <div
+                class="flex flex-col sm:grid sm:grid-cols-[80px_1fr_100px] items-center gap-4 text-center sm:text-left">
+                <!-- Icon -->
+                <div class="flex justify-center shrink-0">
+                  <img src="./assets/icon_haldi.png" class="w-16 h-16 sm:w-20 sm:h-20 drop-shadow-lg object-contain"
+                    loading="lazy" alt="Haldi">
+                </div>
+                <!-- Content -->
+                <div class="w-full sm:w-auto">
+                  <h4 class="font-serif text-xl sm:text-2xl text-orange-200 font-bold leading-tight mb-1">Haldi</h4>
+                  <p class="text-orange-50 text-sm font-light tracking-wide leading-relaxed">A golden glow.</p>
+                </div>
+                <!-- Date/Time -->
+                <div
+                  class="w-full sm:w-auto flex flex-row sm:flex-col justify-center sm:justify-end items-center sm:items-end gap-3 sm:gap-0">
+                  <div
+                    class="text-base sm:text-lg font-bold text-white bg-red-800/80 px-3 py-1 rounded-lg inline-block mb-0 sm:mb-1 shadow-md whitespace-nowrap">
+                    Dec 12</div>
+                  <div class="text-xs sm:text-sm text-orange-300 font-medium tracking-wider whitespace-nowrap">09:00 AM
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wedding -->
+        <div class="flex flex-col md:flex-row gap-8 items-center relative">
+          <div
+            class="absolute left-6 md:left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-orange-500 border-4 border-red-900 shadow-[0_0_0_4px_rgba(251,146,60,0.3)] z-10">
+          </div>
+          <div class="hidden md:block w-1/2"></div>
+          <div class="w-full md:w-1/2 pl-16 md:pl-0">
+            <div class="glass-card-dark rounded-2xl p-6 md:ml-12 hover:border-orange-400">
+              <div
+                class="flex flex-col sm:grid sm:grid-cols-[80px_1fr_100px] items-center gap-4 text-center sm:text-left">
+                <!-- Icon -->
+                <div class="flex justify-center shrink-0">
+                  <img src="./assets/icon_wedding.png" class="w-16 h-16 sm:w-20 sm:h-20 drop-shadow-lg object-contain"
+                    loading="lazy" alt="Wedding">
+                </div>
+                <!-- Content -->
+                <div class="w-full sm:w-auto">
+                  <h4 class="font-serif text-xl sm:text-2xl text-orange-200 font-bold leading-tight mb-1">Wedding</h4>
+                  <p class="text-orange-50 text-sm font-light tracking-wide leading-relaxed">Muhurat & Pheras.</p>
+                </div>
+                <!-- Date/Time -->
+                <div
+                  class="w-full sm:w-auto flex flex-row sm:flex-col justify-center sm:justify-end items-center sm:items-end gap-3 sm:gap-0">
+                  <div
+                    class="text-base sm:text-lg font-bold text-white bg-red-800/80 px-3 py-1 rounded-lg inline-block mb-0 sm:mb-1 shadow-md whitespace-nowrap">
+                    Dec 12</div>
+                  <div class="text-xs sm:text-sm text-orange-300 font-medium tracking-wider whitespace-nowrap">11:00 AM
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reception -->
+        <div class="flex flex-col md:flex-row gap-8 items-center relative md:flex-row-reverse">
+          <div
+            class="absolute left-6 md:left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-orange-500 border-4 border-red-900 shadow-[0_0_0_4px_rgba(251,146,60,0.3)] z-10">
+          </div>
+          <div class="hidden md:block w-1/2"></div>
+          <div class="w-full md:w-1/2 pl-16 md:pl-0">
+            <div class="glass-card-dark rounded-2xl p-6 md:mr-12 hover:border-orange-400">
+              <div
+                class="flex flex-col sm:grid sm:grid-cols-[80px_1fr_100px] items-center gap-4 text-center sm:text-left">
+                <!-- Icon -->
+                <div class="flex justify-center shrink-0">
+                  <img src="./assets/icon_reception.png" class="w-16 h-16 sm:w-20 sm:h-20 drop-shadow-lg object-contain"
+                    loading="lazy" alt="Reception">
+                </div>
+                <!-- Content -->
+                <div class="w-full sm:w-auto">
+                  <h4 class="font-serif text-xl sm:text-2xl text-orange-200 font-bold leading-tight mb-1">Reception</h4>
+                  <p class="text-orange-50 text-sm font-light tracking-wide leading-relaxed">Dinner & Cocktails.</p>
+                </div>
+                <!-- Date/Time -->
+                <div
+                  class="w-full sm:w-auto flex flex-row sm:flex-col justify-center sm:justify-end items-center sm:items-end gap-3 sm:gap-0">
+                  <div
+                    class="text-base sm:text-lg font-bold text-white bg-red-800/80 px-3 py-1 rounded-lg inline-block mb-0 sm:mb-1 shadow-md whitespace-nowrap">
+                    Dec 12</div>
+                  <div class="text-xs sm:text-sm text-orange-300 font-medium tracking-wider whitespace-nowrap">07:00 PM
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VENUE SECTION -->
+  <section id="venue" class="py-16 md:py-24 px-4 bg-orange-50">
+    <div class="max-w-6xl mx-auto text-center mb-12">
+      <h3 class="font-serif text-3xl md:text-5xl text-red-700 mb-3 drop-shadow-sm tracking-wide">The Royal Venue</h3>
+      <p class="text-orange-600 uppercase tracking-widest text-sm md:text-base font-bold">How to reach us</p>
+      <div class="flex justify-center mt-4">
+        <div class="h-1 w-16 bg-gradient-to-r from-red-500 to-orange-400 rounded-full"></div>
+        <div class="mx-2 text-red-600">❖</div>
+        <div class="h-1 w-16 bg-gradient-to-l from-red-500 to-orange-400 rounded-full"></div>
+      </div>
+    </div>
+
+    <div
+      class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-8 bg-white shadow-2xl rounded-3xl overflow-hidden border border-orange-100">
+      <!-- Mobile: 1 col -->
+      <div class="lg:col-span-2 p-8 md:p-12 flex flex-col justify-center bg-orange-50">
+        <h3 class="font-serif text-3xl text-red-800 mb-6 font-bold">The Oberoi Udaivilas</h3>
+        <div class="space-y-6">
+          <div class="flex items-start gap-4 group">
+            <div class="p-3 bg-red-600 rounded-full text-white shadow-lg group-hover:scale-110 transition-transform">
+              <i data-lucide="map-pin" class="w-6 h-6 fill-current"></i>
+            </div>
+            <div>
+              <p class="font-bold text-gray-800">Address</p>
+              <p class="text-gray-600 text-sm">Badi-Gorela, Mulla Talai,<br /> Udaipur, Rajasthan 313001</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4 group">
+            <div class="p-3 bg-orange-500 rounded-full text-white shadow-lg group-hover:scale-110 transition-transform">
+              <i data-lucide="navigation" class="w-6 h-6 fill-current"></i>
+            </div>
+            <div>
+              <p class="font-bold text-gray-800">Arrival</p>
+              <p class="text-gray-600 text-sm">25km from Maharana Pratap Airport<br />Valet Parking Available</p>
+            </div>
+          </div>
+        </div>
+        <a href="https://maps.google.com" target="_blank" rel="noreferrer"
+          class="mt-8 inline-flex items-center justify-center gap-2 bg-gradient-to-r from-red-600 to-orange-600 text-white py-4 px-6 rounded-full hover:from-red-700 hover:to-orange-700 transition-all shadow-lg hover:shadow-orange-500/30">
+          <span class="font-bold tracking-wide">View on Google Maps</span>
+          <i data-lucide="navigation" class="w-4 h-4"></i>
+        </a>
+      </div>
+      <div class="lg:col-span-3 h-[400px] lg:h-auto bg-gray-200 relative">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3628.616335359666!2d73.6694663150005!3d24.56763798419266!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3967e56272555555%3A0x6b48c442e3919c62!2sThe%20Oberoi%20Udaivilas%2C%20Udaipur!5e0!3m2!1sen!2sin!4v1625838384848!5m2!1sen!2sin"
+          width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+          class="grayscale hover:grayscale-0 transition-all duration-500"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- DETAILS SECTION -->
+  <section class="py-16 md:py-24 px-4 bg-white">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16"> <!-- Mobile: 1 col -->
+      <!-- Dress Code -->
+      <div class="glass-card rounded-2xl p-8 bg-orange-50/50 border-orange-200">
+        <h4 class="font-serif text-2xl text-red-800 mb-6 flex items-center gap-3 font-bold">
+          <span class="text-3xl">👗</span> Dress Code
+        </h4>
+        <div class="space-y-6">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-yellow-400 rounded-full shadow-md border-2 border-orange-200"></div>
+            <div>
+              <p class="font-bold text-gray-900">Haldi & Mehendi</p>
+              <p class="text-sm text-gray-600">Shades of Yellow & Green. Comfort fit.</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-red-700 rounded-full shadow-md border-2 border-red-900"></div>
+            <div>
+              <p class="font-bold text-gray-900">Wedding Ceremony</p>
+              <p class="text-sm text-gray-600">Traditional Indian Ethnic. Regal Colors.</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-black rounded-full shadow-md border-2 border-gray-600"></div>
+            <div>
+              <p class="font-bold text-gray-900">Reception</p>
+              <p class="text-sm text-gray-600">Indo-Western / Formal Evening Wear.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accommodation -->
+      <div class="glass-card rounded-2xl p-8 bg-red-50/50 border-red-200">
+        <h4 class="font-serif text-2xl text-red-800 mb-6 flex items-center gap-3 font-bold">
+          <span class="text-3xl">🏨</span> Stay
+        </h4>
+        <p class="text-gray-700 mb-4 leading-relaxed font-medium">
+          We have arranged comfortable stay for our outstation guests at <strong>The Trident Hotel</strong>, located
+          adjacent to the wedding venue.
+        </p>
+        <ul class="space-y-4 text-sm text-gray-700">
+          <li class="flex items-center gap-3 bg-white p-3 rounded-lg shadow-sm border border-red-100">
+            <i data-lucide="check-circle" class="w-5 h-5 text-green-600 fill-green-100"></i> Check-in: Dec 11, 12:00 PM
+          </li>
+          <li class="flex items-center gap-3 bg-white p-3 rounded-lg shadow-sm border border-red-100">
+            <i data-lucide="check-circle" class="w-5 h-5 text-green-600 fill-green-100"></i> Check-out: Dec 13, 11:00 AM
+          </li>
+          <li class="flex items-center gap-3 bg-white p-3 rounded-lg shadow-sm border border-red-100">
+            <i data-lucide="check-circle" class="w-5 h-5 text-green-600 fill-green-100"></i> Pick-up & Drop service
+            available
+          </li>
+        </ul>
+        <div class="mt-6 pt-6 border-t border-red-200 flex items-center gap-4">
+          <div class="bg-red-100 p-3 rounded-full text-red-700">
+            <i data-lucide="phone" class="w-6 h-6 fill-current"></i>
+          </div>
+          <div>
+            <p class="text-xs font-bold uppercase tracking-wider text-red-800">Hospitality Desk</p>
+            <p class="text-lg font-serif font-bold text-red-900">+91 98765 43210</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY SECTION -->
+  <section id="gallery" class="py-16 md:py-24 px-4 bg-orange-950 text-white">
+    <div class="max-w-6xl mx-auto text-center mb-12">
+      <h3 class="font-serif text-3xl md:text-5xl text-orange-200 mb-3 drop-shadow-sm tracking-wide">Captured Moments
+      </h3>
+      <p class="text-orange-300 uppercase tracking-widest text-sm md:text-base font-bold">Our Journey so far</p>
+      <div class="flex justify-center mt-4">
+        <div class="h-1 w-16 bg-orange-300 rounded-full"></div>
+        <div class="mx-2 text-orange-200">❖</div>
+        <div class="h-1 w-16 bg-orange-300 rounded-full"></div>
+      </div>
+    </div>
+
+    <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 auto-rows-[300px]">
+      <!-- Image 1: Ring Exchange -->
+      <div class="group relative overflow-hidden rounded-2xl shadow-2xl border-4 border-orange-900/50 h-full">
+        <img src="./assets/gallery1.png" loading="lazy" alt="Ring Exchange"
+          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100">
+        <div
+          class="absolute inset-0 bg-gradient-to-t from-orange-950/80 to-transparent opacity-60 group-hover:opacity-40 transition-opacity">
+        </div>
+      </div>
+      <!-- Image 2: Pheras -->
+      <div class="group relative overflow-hidden rounded-2xl shadow-2xl border-4 border-orange-900/50 h-full">
+        <img src="./assets/gallery2.png" loading="lazy" alt="Pheras"
+          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100">
+        <div
+          class="absolute inset-0 bg-gradient-to-t from-orange-950/80 to-transparent opacity-60 group-hover:opacity-40 transition-opacity">
+        </div>
+      </div>
+      <!-- Image 3: Holding Hands -->
+      <div class="group relative overflow-hidden rounded-2xl shadow-2xl border-4 border-orange-900/50 h-full">
+        <img src="./assets/gallery3.png" loading="lazy" alt="Holding Hands"
+          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100">
+        <div
+          class="absolute inset-0 bg-gradient-to-t from-orange-950/80 to-transparent opacity-60 group-hover:opacity-40 transition-opacity">
+        </div>
+      </div>
+      <!-- Image 4: Candid Laugh -->
+      <div class="group relative overflow-hidden rounded-2xl shadow-2xl border-4 border-orange-900/50 h-full">
+        <img src="./assets/gallery4.png" loading="lazy" alt="Candid Moment"
+          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100">
+        <div
+          class="absolute inset-0 bg-gradient-to-t from-orange-950/80 to-transparent opacity-60 group-hover:opacity-40 transition-opacity">
+        </div>
+      </div>
+      <!-- Image 5: Decor -->
+      <div class="group relative overflow-hidden rounded-2xl shadow-2xl border-4 border-orange-900/50 h-full">
+        <img src="./assets/gallery5.png" loading="lazy" alt="Royal Decor"
+          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100">
+        <div
+          class="absolute inset-0 bg-gradient-to-t from-orange-950/80 to-transparent opacity-60 group-hover:opacity-40 transition-opacity">
+        </div>
+      </div>
+      <!-- Image 6: Blessings -->
+      <div class="group relative overflow-hidden rounded-2xl shadow-2xl border-4 border-orange-900/50 h-full">
+        <img src="./assets/gallery6.png" loading="lazy" alt="Blessings"
+          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100">
+        <div
+          class="absolute inset-0 bg-gradient-to-t from-orange-950/80 to-transparent opacity-60 group-hover:opacity-40 transition-opacity">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RSVP SECTION -->
+  <section id="rsvp" class="py-16 md:py-24 px-4 bg-orange-50">
+    <div class="max-w-2xl mx-auto">
+      <div class="glass-card bg-white border-4 border-orange-200 shadow-2xl relative overflow-hidden p-8 rounded-3xl">
+        <!-- Decor corners -->
+        <div class="absolute top-0 left-0 w-20 h-20 border-t-8 border-l-8 border-red-500/20 rounded-tl-3xl"></div>
+        <div class="absolute bottom-0 right-0 w-20 h-20 border-b-8 border-r-8 border-red-500/20 rounded-br-3xl"></div>
+
+        <div class="text-center mb-8 relative z-10">
+          <h3 class="font-serif text-3xl md:text-5xl text-red-700 mb-3 drop-shadow-sm tracking-wide">R.S.V.P</h3>
+          <p class="text-orange-600 uppercase tracking-widest text-sm md:text-base font-bold">Please grace us with your
+            presence</p>
+          <div class="flex justify-center mt-4">
+            <div class="h-1 w-16 bg-gradient-to-r from-red-500 to-orange-400 rounded-full"></div>
+            <div class="mx-2 text-red-600">❖</div>
+            <div class="h-1 w-16 bg-gradient-to-l from-red-500 to-orange-400 rounded-full"></div>
+          </div>
+        </div>
+
+        <div id="rsvp-success" class="hidden text-center py-12 animate-fade-in-up">
+          <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
+            <i data-lucide="check-circle" class="w-12 h-12 text-green-600 fill-green-100"></i>
+          </div>
+          <h3 class="font-serif text-3xl text-gray-800 mb-2 font-bold">Thank You!</h3>
+          <p class="text-gray-600 text-lg">Your response has been recorded. We can't wait to see you!</p>
+        </div>
+
+        <form id="rsvp-form" class="space-y-6 mt-8 relative z-10">
+          <div>
+            <label class="block text-sm font-bold text-gray-700 mb-2">Full Name</label>
+            <input type="text" required
+              class="w-full px-5 py-4 rounded-xl border-2 border-orange-100 focus:ring-4 focus:ring-red-100 focus:border-red-500 outline-none bg-orange-50 transition-all font-medium"
+              placeholder="Enter your name">
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6"> <!-- Mobile: 1 col for form inputs -->
+            <div>
+              <label class="block text-sm font-bold text-gray-700 mb-2">Guests</label>
+              <select
+                class="w-full px-5 py-4 rounded-xl border-2 border-orange-100 focus:ring-4 focus:ring-red-100 focus:border-red-500 outline-none bg-orange-50 transition-all font-medium">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4+</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-bold text-gray-700 mb-2">Phone</label>
+              <input type="tel" required
+                class="w-full px-5 py-4 rounded-xl border-2 border-orange-100 focus:ring-4 focus:ring-red-100 focus:border-red-500 outline-none bg-orange-50 transition-all font-medium"
+                placeholder="+91">
+            </div>
+          </div>
+
+          <div class="pt-4">
+            <span class="block text-sm font-bold text-gray-700 mb-3">Attending Functions:</span>
+            <div class="flex flex-wrap gap-4">
+              <label
+                class="flex items-center space-x-3 cursor-pointer bg-orange-50 px-4 py-2 rounded-lg border border-orange-100 hover:bg-orange-100 transition-colors">
+                <input type="checkbox" class="w-5 h-5 text-red-600 rounded focus:ring-red-500 border-gray-300" checked>
+                <span class="text-sm font-medium text-gray-700">Wedding</span>
+              </label>
+              <label
+                class="flex items-center space-x-3 cursor-pointer bg-orange-50 px-4 py-2 rounded-lg border border-orange-100 hover:bg-orange-100 transition-colors">
+                <input type="checkbox" class="w-5 h-5 text-red-600 rounded focus:ring-red-500 border-gray-300" checked>
+                <span class="text-sm font-medium text-gray-700">Reception</span>
+              </label>
+              <label
+                class="flex items-center space-x-3 cursor-pointer bg-orange-50 px-4 py-2 rounded-lg border border-orange-100 hover:bg-orange-100 transition-colors">
+                <input type="checkbox" class="w-5 h-5 text-red-600 rounded focus:ring-red-500 border-gray-300">
+                <span class="text-sm font-medium text-gray-700">Pre-wedding</span>
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" id="rsvp-btn"
+            class="w-full bg-gradient-to-r from-red-600 to-orange-600 text-white py-4 rounded-xl font-serif text-lg tracking-wide hover:from-red-700 hover:to-orange-700 transition-all shadow-xl hover:shadow-orange-500/40 mt-6 transform hover:-translate-y-1 font-bold">
+            Confirm Presence
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- GIFT SECTION -->
+  <div class="text-center py-16 bg-white px-4 border-t border-orange-100">
+    <div class="inline-block p-4 bg-orange-50 rounded-full mb-6 text-red-600 shadow-sm">
+      <i data-lucide="gift" class="w-10 h-10 fill-current"></i>
+    </div>
+    <p class="font-serif text-2xl text-gray-800 italic max-w-2xl mx-auto leading-relaxed">"Your blessings are the most
+      precious gift to us, and we seek nothing more."</p>
+    <p class="text-sm font-bold text-gray-400 mt-4 uppercase tracking-wider">No boxed gifts please</p>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-gradient-to-br from-red-950 to-orange-950 text-orange-100/60 py-12 relative overflow-hidden">
+    <div class="max-w-6xl mx-auto px-4 text-center relative z-10">
+      <h2 class="font-serif text-3xl md:text-5xl text-orange-400 mb-6">#ViNan2026</h2>
+      <p class="mb-8 font-light tracking-wider text-lg">Thank you for being part of our journey.</p>
+
+      <div class="flex flex-wrap justify-center gap-6 mb-10"> <!-- Allow wrapping for footer icons if needed -->
+        <a href="#" class="group block">
+          <div
+            class="w-10 h-10 rounded-full bg-gradient-to-br from-red-600 to-orange-500 flex items-center justify-center transition-all duration-300 group-hover:from-orange-500 group-hover:to-red-600 group-hover:scale-110 shadow-lg">
+            <svg viewBox="0 0 32 32" class="w-5 h-5 fill-white">
+              <path
+                d="M16 8.5c-2.5 0-2.8 0-3.8.2-1 .2-1.7.5-2.3 1.1-.6.6-1 1.3-1.1 2.3-.2 1-.2 1.3-.2 3.8s0 2.8.2 3.8c.2 1 .5 1.7 1.1 2.3.6.6 1.3 1 2.3 1.1 1 .2 1.3.2 3.8.2s2.8 0 3.8-.2c1-.2 1.7-.5 2.3-1.1.6-.6 1-1.3 1.1-2.3.2-1 .2-1.3.2-3.8s0-2.8-.2-3.8c-.2-1-.5-1.7-1.1-2.3-.6-.6-1.3-1-2.3-1.1-1-.2-1.3-.2-3.8-.2z M16 5c2.7 0 3 .2 4.1.6 1.1.4 2.1 1 2.8 1.8.8.8 1.4 1.7 1.8 2.8.4 1.1.6 1.4.6 4.1s-.2 3-.6 4.1c-.4 1.1-1 2.1-1.8 2.8-.8.8-1.7 1.4-2.8 1.8-1.1.4-1.4.6-4.1.6s-3-.2-4.1-.6c-1.1-.4-2.1-1-2.8-1.8-.8-.8-1.4-1.7-1.8-2.8-.4-1.1-.6-1.4-.6-4.1s.2-3 .6-4.1c.4-1.1 1-2.1 1.8-2.8.8-.8 1.7-1.4 2.8-1.8 1.1-.4 1.4-.6 4.1-.6z M16 10.6c-3 0-5.4 2.4-5.4 5.4s2.4 5.4 5.4 5.4 5.4-2.4 5.4-5.4-2.4-5.4-5.4-5.4z" />
+            </svg>
+          </div>
+        </a>
+        <a href="#" class="group block">
+          <div
+            class="w-10 h-10 rounded-full bg-gradient-to-br from-red-600 to-orange-500 flex items-center justify-center transition-all duration-300 group-hover:from-orange-500 group-hover:to-red-600 group-hover:scale-110 shadow-lg">
+            <svg viewBox="0 0 32 32" class="w-5 h-5 fill-white">
+              <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+            </svg>
+          </div>
+        </a>
+      </div>
+
+      <p class="text-xs opacity-50 font-medium">Designed with <i data-lucide="heart"
+          class="inline w-3 h-3 text-red-500 fill-red-500 mx-1"></i> for Ananya & Vikram</p>
+    </div>
+  </footer>
+
+  <!-- Scroll to Top Button (Hidden by default) -->
+  <button id="scroll-top"
+    class="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-orange-500 to-red-500 text-white p-3 rounded-full shadow-lg hover:shadow-orange-500/50 transition-all animate-bounce hidden">
+    <i data-lucide="chevron-up" class="w-7 h-7"></i>
+  </button>
+
+  <script>
+    // --- Icon Initialization ---
+    lucide.createIcons();
+
+    // --- Logic ---
+    document.addEventListener('DOMContentLoaded', () => {
+      const weddingDate = new Date("2026-12-12T10:00:00").getTime();
+      const daysEl = document.getElementById('days');
+      const hoursEl = document.getElementById('hours');
+      const minsEl = document.getElementById('minutes');
+      const secsEl = document.getElementById('seconds');
+      const scrollBtn = document.getElementById('scroll-top');
+      const heroBg = document.getElementById('hero-bg');
+      const audio = document.getElementById('wedding-audio');
+      const musicToggle = document.getElementById('music-toggle');
+      const musicIcon = musicToggle.querySelector('svg');
+      let isPlaying = false;
+
+      // 1. Countdown Timer
+      const timer = setInterval(() => {
+        const now = new Date().getTime();
+        const distance = weddingDate - now;
+
+        if (distance < 0) {
+          clearInterval(timer);
+          document.getElementById('countdown-container').innerHTML = '<div class="col-span-4 text-3xl font-serif text-white">We are Married!</div>';
+        } else {
+          daysEl.innerText = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+          hoursEl.innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+          minsEl.innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+          secsEl.innerText = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
+        }
+      }, 1000);
+
+      // 2. Audio Logic
+      audio.volume = 0.4; // Soft volume
+
+      // Attempt Auto-play
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          isPlaying = true;
+          updateMusicIcon(true);
+        }).catch(error => {
+          console.log("Auto-play prevented by browser policy.");
+          isPlaying = false;
+          updateMusicIcon(false);
+        });
+      }
+
+      // Toggle Logic
+      musicToggle.addEventListener('click', () => {
+        if (isPlaying) {
+          audio.pause();
+        } else {
+          audio.play();
+        }
+        isPlaying = !isPlaying;
+        updateMusicIcon(isPlaying);
+      });
+
+      function updateMusicIcon(playing) {
+        // Clear existing icon content
+        musicToggle.innerHTML = '';
+        // Create new icon element
+        const icon = document.createElement('i');
+        icon.className = 'w-6 h-6 fill-current';
+
+        if (playing) {
+          icon.setAttribute('data-lucide', 'volume-2');
+        } else {
+          icon.setAttribute('data-lucide', 'volume-x');
+        }
+        musicToggle.appendChild(icon);
+        lucide.createIcons(); // Re-render icon
+      }
+
+      // 3. Scroll Effects (Parallax & Scroll-to-top)
+      window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY;
+
+        // Parallax
+        heroBg.style.transform = `translateY(${scrollY * 0.5}px)`;
+
+        // Scroll to top visibility
+        if (scrollY > 300) {
+          scrollBtn.classList.remove('hidden');
+        } else {
+          scrollBtn.classList.add('hidden');
+        }
+      });
+
+      // 4. Scroll To Top Action
+      scrollBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      // 5. RSVP Form Handling
+      const form = document.getElementById('rsvp-form');
+      const successMsg = document.getElementById('rsvp-success');
+      const btn = document.getElementById('rsvp-btn');
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        btn.innerText = 'Confirming...';
+        btn.disabled = true;
+        btn.classList.add('opacity-75');
+
+        // Simulate API call
+        setTimeout(() => {
+          form.classList.add('hidden');
+          successMsg.classList.remove('hidden');
+        }, 2000);
+      });
+    });
+  </script>
+</body>
+
+</html>

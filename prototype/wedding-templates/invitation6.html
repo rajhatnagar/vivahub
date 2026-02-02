@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Wedding of {{ $invitation->data['bride_name'] ?? 'Elena' }} & {{ $invitation->data['groom_name'] ?? 'Julian' }} | VivaHub</title>
+    <title>The Wedding of Elena & Julian | VivaHub</title>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -144,7 +144,7 @@
         }
 
         /* Hero Parallax */
-        #preview-hero-bg {
+        #hero-bg {
             transition: transform 0.1s ease-out;
         }
 
@@ -183,7 +183,7 @@
         
         <!-- Rich Background Image with Ken Burns Effect -->
         <div class="absolute inset-0 z-0">
-            <img src="{{ $invitation->data['hero_image'] ?? 'https://images.unsplash.com/photo-1549887534-1541e9326642?auto=format&fit=crop&q=80&w=2000' }}" 
+            <img src="https://images.unsplash.com/photo-1549887534-1541e9326642?auto=format&fit=crop&q=80&w=2000" 
                  class="w-full h-full object-cover opacity-40 scale-110 animate-ken-burns" 
                  alt="Background Texture">
             <div class="absolute inset-0 bg-gradient-to-t from-emerald-950 via-emerald-950/80 to-emerald-900/90"></div>
@@ -209,11 +209,10 @@
                         <span class="text-amber-400 text-xl">✦</span>
                     </div>
                     
-                <!-- FOOTER -->
-  <footer class="bg-[#1f1f1f] py-12 px-4 border-t border-white/5 text-center relative z-10 safe-pb">
-    <h2 class="font-serif text-3xl text-amber-100 mb-6 font-semibold tracking-widest"><span class="preview-bride">{{ $invitation->data['bride_name'] ?? 'Meera' }}</span> & <span class="preview-groom">{{ $invitation->data['groom_name'] ?? 'Arav' }}</span></h2>
+                    <div class="space-y-3 py-4">
+                        <h1 class="font-cinzel text-5xl md:text-7xl text-gradient-gold drop-shadow-md leading-tight pb-2">Elena & Julian</h1>
                         <div class="w-24 h-[1px] bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto opacity-70"></div>
-                        <p class="text-amber-300 drop-shadow-md font-decorative text-3xl pt-2">{{ $invitation->data['tagline'] ?? 'The Royal Union' }}</p>
+                        <p class="text-emerald-200 font-decorative text-3xl pt-2">The Royal Union</p>
                     </div>
 
                     <div class="pt-6">
@@ -238,12 +237,10 @@
         <i data-lucide="music" class="w-5 h-5"></i>
     </button>
     <audio id="bg-music" loop>
-        <source src="https://csssofttech.com/wedding/assets/music.mp3" type="audio/mpeg">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
     </audio>
 
-
     <!-- Family Audio Message Fab (Top Left) -->
-    @if(isset($invitation->data['family_audio']))
     <button id="family-msg-toggle" class="fixed top-6 left-6 z-50 w-auto px-4 h-12 glass rounded-full flex items-center justify-center gap-2 text-emerald-800 border border-emerald-100/50 hover:scale-105 transition-all shadow-lg group">
         <!-- Default Icon -->
         <i id="family-icon" data-lucide="message-circle-heart" class="w-5 h-5 text-rose-500"></i>
@@ -259,16 +256,15 @@
     </button>
     <audio id="family-audio">
         <!-- Placeholder audio for family message -->
-        <source src="{{ $invitation->data['family_audio'] ?? 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3' }}" type="audio/mpeg">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" type="audio/mpeg">
     </audio>
-    @endif
 
     <!-- Hero Section -->
     <section class="relative h-[100dvh] w-full overflow-hidden flex flex-col md:flex-row">
         
         <!-- Parallax Background Image -->
         <div class="absolute inset-0 z-0">
-            <img id="preview-hero-bg" src="{{ $invitation->data['hero_image'] ?? 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=2070' }}" 
+            <img id="hero-bg" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=2070" 
                  alt="Wedding Decor" 
                  class="w-full h-[120%] object-cover object-center scale-110">
             <div class="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-white/60"></div>
@@ -278,20 +274,20 @@
         <div class="relative z-10 flex flex-col justify-center items-center w-full h-full p-8 md:w-1/2 md:items-start md:pl-20">
             <div class="glass p-8 md:p-12 rounded-3xl max-w-lg text-center md:text-left space-y-6 animate-fade-in-up">
                 <span class="inline-block px-4 py-1 rounded-full bg-emerald-800 text-white text-xs tracking-widest uppercase font-semibold">
-                    {{ $invitation->data['tagline'] ?? 'The Union' }}
+                    The Royal Union
                 </span>
                 <h1 class="font-cinzel text-5xl md:text-7xl text-emerald-900 leading-tight">
-                    <span class="preview-bride">{{ $invitation->data['bride_name'] ?? 'Elena' }}</span> <br/> <span class="text-gradient-gold font-decorative text-4xl md:text-6xl">&</span> <br/> <span class="preview-groom">{{ $invitation->data['groom_name'] ?? 'Julian' }}</span>
+                    Elena <br/> <span class="text-gradient-gold font-decorative text-4xl md:text-6xl">&</span> <br/> Julian
                 </h1>
-                <p class="font-serif text-xl italic text-amber-700">{{ $invitation->data['hashtag'] ?? '#ElenasJulianEverAfter' }}</p>
+                <p class="font-serif text-xl italic text-amber-700">#ElenasJulianEverAfter</p>
                 <div class="space-y-2 border-t border-emerald-100 pt-6">
                     <p class="flex items-center justify-center md:justify-start gap-2">
                         <i data-lucide="calendar" class="w-4 h-4 text-rose-400"></i>
-                        <span id="preview-hero-date">{{ \Carbon\Carbon::parse($invitation->data['date'] ?? '2026-12-12')->format('F jS, Y') }}</span>
+                        December 12th, 2026
                     </p>
                     <p class="flex items-center justify-center md:justify-start gap-2">
                         <i data-lucide="map-pin" class="w-4 h-4 text-rose-400"></i>
-                        <span id="preview-hero-location">{{ $invitation->data['location'] ?? 'The Rosewood Estate, Udaipur' }}</span>
+                        The Rosewood Estate, Udaipur
                     </p>
                 </div>
             </div>
@@ -304,26 +300,26 @@
             <span class="text-rose-500 font-decorative text-2xl">The wait is almost over</span>
             <h2 class="font-cinzel text-4xl mt-2 mb-12 text-emerald-900">Save The Date</h2>
             
-            <div id="countdown" class="grid grid-cols-4 gap-2 md:gap-8 mb-12">
+            <div id="countdown" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 mb-12">
                 <!-- Days -->
-                <div class="glass tilt-card border-2 border-amber-200/50 p-2 md:p-6 rounded-2xl transform hover:scale-105 transition-transform">
-                    <span id="days" class="block text-2xl md:text-4xl font-serif text-emerald-900">00</span>
-                    <span class="text-[8px] md:text-xs uppercase tracking-widest text-emerald-900 font-bold">Days</span>
+                <div class="glass tilt-card border-2 border-amber-200/50 p-6 rounded-2xl transform hover:scale-105 transition-transform">
+                    <span id="days" class="block text-4xl font-serif text-emerald-900">00</span>
+                    <span class="text-xs uppercase tracking-widest text-emerald-700">Days</span>
                 </div>
                 <!-- Hours -->
-                <div class="glass tilt-card border-2 border-amber-200/50 p-2 md:p-6 rounded-2xl transform hover:scale-105 transition-transform">
-                    <span id="hours" class="block text-2xl md:text-4xl font-serif text-emerald-900">00</span>
-                    <span class="text-[8px] md:text-xs uppercase tracking-widest text-emerald-900 font-bold">Hrs</span>
+                <div class="glass tilt-card border-2 border-amber-200/50 p-6 rounded-2xl transform hover:scale-105 transition-transform">
+                    <span id="hours" class="block text-4xl font-serif text-emerald-900">00</span>
+                    <span class="text-xs uppercase tracking-widest text-emerald-700">Hours</span>
                 </div>
                 <!-- Mins -->
-                <div class="glass tilt-card border-2 border-amber-200/50 p-2 md:p-6 rounded-2xl transform hover:scale-105 transition-transform">
-                    <span id="minutes" class="block text-2xl md:text-4xl font-serif text-emerald-900">00</span>
-                    <span class="text-[8px] md:text-xs uppercase tracking-widest text-emerald-900 font-bold">Mins</span>
+                <div class="glass tilt-card border-2 border-amber-200/50 p-6 rounded-2xl transform hover:scale-105 transition-transform">
+                    <span id="minutes" class="block text-4xl font-serif text-emerald-900">00</span>
+                    <span class="text-xs uppercase tracking-widest text-emerald-700">Minutes</span>
                 </div>
                 <!-- Secs -->
-                <div class="glass tilt-card border-2 border-amber-200/50 p-2 md:p-6 rounded-2xl transform hover:scale-105 transition-transform">
-                    <span id="seconds" class="block text-2xl md:text-4xl font-serif text-emerald-900">00</span>
-                    <span class="text-[8px] md:text-xs uppercase tracking-widest text-emerald-900 font-bold">Secs</span>
+                <div class="glass tilt-card border-2 border-amber-200/50 p-6 rounded-2xl transform hover:scale-105 transition-transform">
+                    <span id="seconds" class="block text-4xl font-serif text-emerald-900">00</span>
+                    <span class="text-xs uppercase tracking-widest text-emerald-700">Seconds</span>
                 </div>
             </div>
 
@@ -346,17 +342,15 @@
                 <!-- Bride -->
                 <div class="reveal reveal-left">
                     <div class="glass tilt-card p-4 rounded-[40px] transform hover:rotate-1 transition-transform duration-500">
-                        <img id="preview-bride-img" src="{{ $invitation->data['bride_image'] ?? 'https://images.unsplash.com/photo-1616165415772-07873495d66c?auto=format&fit=crop&q=80&w=800' }}" class="w-full aspect-[4/5] object-cover rounded-[30px] mb-6 shadow-md" alt="The Bride">
+                        <img src="https://images.unsplash.com/photo-1616165415772-07873495d66c?auto=format&fit=crop&q=80&w=800" class="w-full aspect-[4/5] object-cover rounded-[30px] mb-6 shadow-md" alt="The Bride">
                         <div class="p-4 text-center">
-                            <h3 class="font-cinzel text-3xl text-emerald-900 mb-2 preview-bride-name">{{ $invitation->data['bride_name'] ?? 'Elena Rossi' }}</h3>
-                            <p class="text-emerald-700 mb-6 italic">"{{ $invitation->data['bride_quote'] ?? 'He is my soul\'s mirror, my best friend, and my greatest adventure.' }}"</p>
-                            @if(isset($invitation->data['bride_instagram']))
+                            <h3 class="font-cinzel text-3xl text-emerald-900 mb-2">Elena Rossi</h3>
+                            <p class="text-emerald-700 mb-6 italic">"He is my soul's mirror, my best friend, and my greatest adventure."</p>
                             <div class="flex justify-center gap-4">
-                                <a href="{{ $invitation->data['bride_instagram'] }}" target="_blank" class="p-3 glass rounded-full text-rose-400 hover:text-white hover:bg-gradient-to-tr hover:from-orange-500 hover:to-purple-600 transition-all">
+                                <a href="https://instagram.com" target="_blank" class="p-3 glass rounded-full text-rose-400 hover:text-white hover:bg-gradient-to-tr hover:from-orange-500 hover:to-purple-600 transition-all">
                                     <i data-lucide="instagram" class="w-6 h-6"></i>
                                 </a>
                             </div>
-                            @endif
                         </div>
                     </div>
                 </div>
@@ -364,17 +358,15 @@
                 <!-- Groom -->
                 <div class="reveal reveal-right">
                     <div class="glass tilt-card p-4 rounded-[40px] transform hover:-rotate-1 transition-transform duration-500">
-                        <img id="preview-groom-img" src="{{ $invitation->data['groom_image'] ?? 'https://images.unsplash.com/photo-1596521575231-31a6907662c5?auto=format&fit=crop&q=80&w=800' }}" class="w-full aspect-[4/5] object-cover rounded-[30px] mb-6 shadow-md" alt="The Groom">
+                        <img src="https://images.unsplash.com/photo-1596521575231-31a6907662c5?auto=format&fit=crop&q=80&w=800" class="w-full aspect-[4/5] object-cover rounded-[30px] mb-6 shadow-md" alt="The Groom">
                         <div class="p-4 text-center">
-                            <h3 class="font-cinzel text-3xl text-emerald-900 mb-2 preview-groom-name">{{ $invitation->data['groom_name'] ?? 'Julian Vance' }}</h3>
-                            <p class="text-emerald-700 mb-6 italic">"{{ $invitation->data['groom_quote'] ?? 'In her, I found the love I never knew I was searching for.' }}"</p>
-                            @if(isset($invitation->data['groom_instagram']))
+                            <h3 class="font-cinzel text-3xl text-emerald-900 mb-2">Julian Vance</h3>
+                            <p class="text-emerald-700 mb-6 italic">"In her, I found the love I never knew I was searching for."</p>
                             <div class="flex justify-center gap-4">
-                                <a href="{{ $invitation->data['groom_instagram'] }}" target="_blank" class="p-3 glass rounded-full text-rose-400 hover:text-white hover:bg-gradient-to-tr hover:from-orange-500 hover:to-purple-600 transition-all">
+                                <a href="https://instagram.com" target="_blank" class="p-3 glass rounded-full text-rose-400 hover:text-white hover:bg-gradient-to-tr hover:from-orange-500 hover:to-purple-600 transition-all">
                                     <i data-lucide="instagram" class="w-6 h-6"></i>
                                 </a>
                             </div>
-                            @endif
                         </div>
                     </div>
                 </div>
@@ -382,13 +374,13 @@
         </div>
     </section>
 
-    <!-- Events Timeline (Static Structure for now, can be made dynamic if data structure allows) -->
+    <!-- Events Timeline (Indian Wedding) -->
     <section class="py-24 px-6 bg-emerald-50">
         <div class="max-w-4xl mx-auto">
             <h2 class="font-cinzel text-3xl text-center mb-4 text-emerald-900 reveal reveal-up">Wedding Itinerary</h2>
             <p class="text-center text-emerald-700 mb-20 reveal reveal-up font-serif italic">Join us for a celebration of love, tradition, and joy.</p>
             
-            <div class="relative timeline-line" id="timeline-items">
+            <div class="relative timeline-line">
                 <!-- Event 1: Haldi & Mehendi -->
                 <div class="relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-16 mb-20 reveal reveal-left">
                     <div class="md:text-right">
@@ -483,24 +475,22 @@
             </div>
 
             <!-- Masonry Grid -->
-            <div class="columns-1 md:columns-2 gap-6 space-y-6" id="preview-gallery-grid">
-                @if(isset($invitation->data['gallery']) && is_array($invitation->data['gallery']))
-                    @foreach($invitation->data['gallery'] as $img)
-                    <div class="gallery-item reveal reveal-up">
-                        <img src="{{ $img }}" class="w-full rounded-3xl shadow-lg hover:shadow-2xl transition-shadow duration-300">
-                    </div>
-                    @endforeach
-                @else
-                    <div class="gallery-item reveal reveal-up">
-                        <img src="https://images.unsplash.com/photo-1621621667797-e06afc217fb0?auto=format&fit=crop&q=80&w=800" class="w-full rounded-3xl shadow-lg hover:shadow-2xl transition-shadow duration-300" alt="Gallery Image 1">
-                    </div>
-                    <div class="gallery-item reveal reveal-up" style="transition-delay: 100ms;">
-                        <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800" class="w-full rounded-3xl shadow-lg hover:shadow-2xl transition-shadow duration-300" alt="Gallery Image 2">
-                    </div>
-                    <div class="gallery-item reveal reveal-up" style="transition-delay: 200ms;">
-                        <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&q=80&w=800" class="w-full rounded-3xl shadow-lg hover:shadow-2xl transition-shadow duration-300" alt="Gallery Image 3">
-                    </div>
-                @endif
+            <div class="columns-1 md:columns-2 gap-6 space-y-6">
+                <div class="gallery-item reveal reveal-up">
+                    <img src="https://images.unsplash.com/photo-1621621667797-e06afc217fb0?auto=format&fit=crop&q=80&w=800" class="w-full rounded-3xl shadow-lg hover:shadow-2xl transition-shadow duration-300" alt="Gallery Image 1">
+                </div>
+                <div class="gallery-item reveal reveal-up" style="transition-delay: 100ms;">
+                    <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800" class="w-full rounded-3xl shadow-lg hover:shadow-2xl transition-shadow duration-300" alt="Gallery Image 2">
+                </div>
+                <div class="gallery-item reveal reveal-up" style="transition-delay: 200ms;">
+                    <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&q=80&w=800" class="w-full rounded-3xl shadow-lg hover:shadow-2xl transition-shadow duration-300" alt="Gallery Image 3">
+                </div>
+                <div class="gallery-item reveal reveal-up">
+                    <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800" class="w-full rounded-3xl shadow-lg hover:shadow-2xl transition-shadow duration-300" alt="Gallery Image 4">
+                </div>
+                <div class="gallery-item reveal reveal-up" style="transition-delay: 150ms;">
+                    <img src="https://images.unsplash.com/photo-1610173824052-a56b3e71d378?auto=format&fit=crop&q=80&w=800" class="w-full rounded-3xl shadow-lg hover:shadow-2xl transition-shadow duration-300" alt="Gallery Image 5">
+                </div>
             </div>
         </div>
     </section>
@@ -510,7 +500,7 @@
         <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
             <div class="reveal reveal-left">
                 <span class="text-amber-400 tracking-widest uppercase text-sm font-semibold mb-2 block">The Destination</span>
-                <h2 class="font-cinzel text-4xl mb-6">{{ $invitation->data['venue_city'] ?? 'Udaipur, Rajasthan' }}</h2>
+                <h2 class="font-cinzel text-4xl mb-6">Udaipur, Rajasthan</h2>
                 <p class="text-emerald-100 mb-8 leading-relaxed text-lg">We are thrilled to host our wedding in the City of Lakes. A place where royalty meets romance, providing the perfect backdrop for our new beginning.</p>
                 
                 <div class="space-y-6">
@@ -518,14 +508,14 @@
                         <i data-lucide="bed" class="w-6 h-6 text-amber-400 mt-1"></i>
                         <div>
                             <h4 class="font-bold mb-1 text-lg">Accommodation</h4>
-                            <p class="text-sm text-emerald-200">{{ $invitation->data['accommodation_details'] ?? 'Luxury suites reserved at The Rosewood Estate & nearby heritage hotels. Shuttle services provided.' }}</p>
+                            <p class="text-sm text-emerald-200">Luxury suites reserved at The Rosewood Estate & nearby heritage hotels. Shuttle services provided.</p>
                         </div>
                     </div>
                     <div class="glass bg-white/10 p-6 rounded-2xl flex items-start gap-4 hover:bg-white/20 transition-colors">
                         <i data-lucide="plane" class="w-6 h-6 text-amber-400 mt-1"></i>
                         <div>
                             <h4 class="font-bold mb-1 text-lg">Travel</h4>
-                            <p class="text-sm text-emerald-200">{{ $invitation->data['travel_details'] ?? 'Nearest Airport: Maharana Pratap Airport (UDR). Airport transfers are arranged for all guests.' }}</p>
+                            <p class="text-sm text-emerald-200">Nearest Airport: Maharana Pratap Airport (UDR). Airport transfers are arranged for all guests.</p>
                         </div>
                     </div>
                 </div>
@@ -533,7 +523,7 @@
 
             <div class="reveal reveal-right h-96 rounded-[40px] overflow-hidden shadow-2xl border-4 border-white/20 transform hover:scale-[1.02] transition-transform">
                 <iframe 
-                    src="{{ $invitation->data['map_url'] ?? 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d116086.08271166316!2d73.63609804829377!3d24.608361099159954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3967e56550a14411%3A0xdbd8c28455b868b0!2sUdaipur%2C%20Rajasthan!5e0!3m2!1sen!2sin!4v1700000000000' }}" 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d116086.08271166316!2d73.63609804829377!3d24.608361099159954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3967e56550a14411%3A0xdbd8c28455b868b0!2sUdaipur%2C%20Rajasthan!5e0!3m2!1sen!2sin!4v1700000000000" 
                     class="w-full h-full" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
             </div>
         </div>
@@ -545,7 +535,7 @@
             <div class="text-center mb-10">
                 <span class="text-rose-500 font-decorative text-2xl">Join us in our celebration</span>
                 <h2 class="font-cinzel text-3xl text-emerald-900 mt-2">Kindly Respond</h2>
-                <p class="text-emerald-700 mt-2">Please RSVP by {{ \Carbon\Carbon::parse($invitation->data['rsvp_date'] ?? '2026-10-01')->format('F jS, Y') }}</p>
+                <p class="text-emerald-700 mt-2">Please RSVP by October 1st, 2026</p>
             </div>
 
             <form id="rsvp-form" class="space-y-6">
@@ -591,7 +581,7 @@
                     <i data-lucide="check" class="w-10 h-10"></i>
                 </div>
                 <h3 class="text-2xl font-bold text-emerald-900 mb-2">Thank You!</h3>
-                <p class="text-emerald-700">We've received your response and can't wait to celebrate with you.</p>
+                <p class="text-emerald-700">We've received your response and can't wait to celebrate with you in Udaipur.</p>
             </div>
         </div>
     </section>
@@ -609,7 +599,7 @@
                 <i data-lucide="camera" class="w-4 h-4"></i>
             </div>
             <span class="text-sm text-emerald-700 font-serif italic">
-                Moments captured by <span class="not-italic font-bold text-emerald-900 border-b-2 border-amber-400/50 px-1 group-hover:border-amber-400 transition-colors">{{ $invitation->data['photographer'] ?? 'Rahul Verma' }}</span>
+                Moments captured by <span class="not-italic font-bold text-emerald-900 border-b-2 border-amber-400/50 px-1 group-hover:border-amber-400 transition-colors">Rahul Verma</span>
             </span>
         </div>
 
@@ -617,7 +607,7 @@
     </footer>
 
     <!-- Sticky Mobile Nav -->
-    <nav class="md:hidden fixed bottom-0 left-0 right-0 z-50 glass border-t border-emerald-100/50 flex justify-around items-center px-4 py-3 rounded-t-3xl shadow-[0_-10px_20px_rgba(0,0,0,0.05)] w-full max-w-full safe-pb">
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 z-50 glass border-t border-emerald-100/50 flex justify-around items-center px-4 py-3 rounded-t-3xl shadow-[0_-10px_20px_rgba(0,0,0,0.05)]">
         <button onclick="window.open('tel:+123456789')" class="flex flex-col items-center text-emerald-800">
             <i data-lucide="phone" class="w-5 h-5"></i>
             <span class="text-[10px] mt-1 font-semibold">Call</span>
@@ -705,21 +695,19 @@
         });
 
         // Sequence: Family Message -> Background Music
-        if(familyAudio) {
-            familyAudio.addEventListener('ended', () => {
-                // Reset Family Button Visuals
-                isFamilyPlaying = false;
-                familyIcon.classList.remove('hidden');
-                familyWaves.classList.add('hidden');
-                
-                // Start BG Music Automatically
-                bgMusic.play().then(() => {
-                    isMusicPlaying = true;
-                    musicBtn.innerHTML = '<i data-lucide="volume-2" class="w-5 h-5"></i>';
-                    lucide.createIcons();
-                }).catch(e => console.log("Autoplay blocked for sequence", e));
-            });
-        }
+        familyAudio.addEventListener('ended', () => {
+            // Reset Family Button Visuals
+            isFamilyPlaying = false;
+            familyIcon.classList.remove('hidden');
+            familyWaves.classList.add('hidden');
+            
+            // Start BG Music Automatically
+            bgMusic.play().then(() => {
+                isMusicPlaying = true;
+                musicBtn.innerHTML = '<i data-lucide="volume-2" class="w-5 h-5"></i>';
+                lucide.createIcons();
+            }).catch(e => console.log("Autoplay blocked for sequence", e));
+        });
 
         // ENTER BUTTON CLICK (Handles User Interaction Requirement)
         enterBtn.addEventListener('click', () => {
@@ -732,23 +720,14 @@
             }, 1000);
 
             // Attempt to play family audio immediately
-            if(familyAudio) {
-                familyAudio.play().then(() => {
-                    isFamilyPlaying = true;
-                    familyIcon.classList.add('hidden');
-                    familyWaves.classList.remove('hidden');
-                    familyWaves.classList.add('flex');
-                }).catch(e => {
-                    console.log("Audio play failed even after click", e);
-                });
-            } else {
-                 // If no family audio, try bg music
-                 bgMusic.play().then(() => {
-                    isMusicPlaying = true;
-                    musicBtn.innerHTML = '<i data-lucide="volume-2" class="w-5 h-5"></i>';
-                    lucide.createIcons();
-                 }).catch(e => console.log("Autoplay blocked for bg music", e));
-            }
+            familyAudio.play().then(() => {
+                isFamilyPlaying = true;
+                familyIcon.classList.add('hidden');
+                familyWaves.classList.remove('hidden');
+                familyWaves.classList.add('flex');
+            }).catch(e => {
+                console.log("Audio play failed even after click", e);
+            });
         });
 
         musicBtn.addEventListener('click', () => {
@@ -757,7 +736,7 @@
                 musicBtn.innerHTML = '<i data-lucide="music" class="w-5 h-5"></i>';
             } else {
                 // Pause family audio if playing
-                if (isFamilyPlaying && familyAudio) {
+                if (isFamilyPlaying) {
                     familyAudio.pause();
                     isFamilyPlaying = false;
                     familyIcon.classList.remove('hidden');
@@ -770,38 +749,36 @@
             lucide.createIcons();
         });
 
-        if(familyBtn) {
-            familyBtn.addEventListener('click', () => {
-                if (isFamilyPlaying && familyAudio) {
-                    familyAudio.pause();
-                    // Show Icon, Hide Waves
-                    familyIcon.classList.remove('hidden');
-                    familyWaves.classList.add('hidden');
-                } else {
-                    // Pause bg music if playing
-                    if (isMusicPlaying) {
-                        bgMusic.pause();
-                        isMusicPlaying = false;
-                        musicBtn.innerHTML = '<i data-lucide="music" class="w-5 h-5"></i>';
-                        lucide.createIcons();
-                    }
-                    if(familyAudio) {
-                        familyAudio.play().catch(e => console.log("Autoplay blocked"));
-                        // Hide Icon, Show Waves
-                        familyIcon.classList.add('hidden');
-                        familyWaves.classList.remove('hidden');
-                        familyWaves.classList.add('flex');
-                    }
+        familyBtn.addEventListener('click', () => {
+            if (isFamilyPlaying) {
+                familyAudio.pause();
+                // Show Icon, Hide Waves
+                familyIcon.classList.remove('hidden');
+                familyWaves.classList.add('hidden');
+            } else {
+                // Pause bg music if playing
+                if (isMusicPlaying) {
+                    bgMusic.pause();
+                    isMusicPlaying = false;
+                    musicBtn.innerHTML = '<i data-lucide="music" class="w-5 h-5"></i>';
+                    lucide.createIcons();
                 }
-                isFamilyPlaying = !isFamilyPlaying;
-            });
-        }
+                familyAudio.play().catch(e => console.log("Autoplay blocked"));
+                // Hide Icon, Show Waves
+                familyIcon.classList.add('hidden');
+                familyWaves.classList.remove('hidden');
+                familyWaves.classList.add('flex');
+            }
+            isFamilyPlaying = !isFamilyPlaying;
+        });
 
         // Parallax Effect
         window.addEventListener('scroll', () => {
             const scrolled = window.pageYOffset;
-            const heroBg = document.getElementById('preview-hero-bg');
-            if(heroBg) heroBg.style.transform = `scale(1.1) translateY(${scrolled * 0.5}px)`;
+            const heroBg = document.getElementById('hero-bg');
+            if(window.innerWidth > 768) {
+                heroBg.style.transform = `translateY(${scrolled * 0.4}px) scale(1.1)`;
+            }
         });
 
         // Scroll Reveal Animation (Enhanced)
@@ -821,7 +798,7 @@
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
         // Countdown Timer - Target: Dec 12, 2026
-        const weddingDate = new Date("{{ $invitation->data['date'] ?? '2026-12-12' }}T16:00:00").getTime();
+        const weddingDate = new Date("Dec 12, 2026 16:00:00").getTime();
 
         function updateCountdown() {
             const now = new Date().getTime();
@@ -892,11 +869,11 @@
         // Add to Calendar Logic
         function addToCalendar() {
             const event = {
-                title: '{{ $invitation->data["bride_name"] ?? "Elena" }} and {{ $invitation->data["groom_name"] ?? "Julian" }} Wedding',
-                start: '{{ \Carbon\Carbon::parse($invitation->data["date"] ?? "2026-12-12")->format("Ymd") }}T160000Z',
-                end: '{{ \Carbon\Carbon::parse($invitation->data["date"] ?? "2026-12-12")->addDay()->format("Ymd") }}T020000Z',
-                details: 'Celebrate the union of {{ $invitation->data["bride_name"] ?? "Elena" }} and {{ $invitation->data["groom_name"] ?? "Julian" }}.',
-                location: '{{ $invitation->data["location"] ?? "The Rosewood Estate, Udaipur, Rajasthan" }}'
+                title: 'Elena and Julian Wedding',
+                start: '20261212T160000Z',
+                end: '20261213T020000Z',
+                details: 'Celebrate the union of Elena and Julian.',
+                location: 'The Rosewood Estate, Udaipur, Rajasthan'
             };
             const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${event.start}/${event.end}&details=${encodeURIComponent(event.details)}&location=${encodeURIComponent(event.location)}`;
             window.open(googleUrl, '_blank');
@@ -906,8 +883,8 @@
         function shareInvite() {
             if (navigator.share) {
                 navigator.share({
-                    title: '{{ $invitation->data["bride_name"] ?? "Elena" }} & {{ $invitation->data["groom_name"] ?? "Julian" }} Wedding',
-                    text: 'Join us for our special day in {{ $invitation->data["venue_city"] ?? "Udaipur" }}!',
+                    title: 'Elena & Julian Wedding',
+                    text: 'Join us for our special day in Udaipur!',
                     url: window.location.href
                 });
             } else {
@@ -925,10 +902,10 @@
         function downloadVCard() {
             const vcard = `BEGIN:VCARD
 VERSION:3.0
-FN:{{ $invitation->data["bride_name"] ?? "Elena" }} & {{ $invitation->data["groom_name"] ?? "Julian" }} Wedding
+FN:Elena & Julian Wedding
 ORG:VivaHub Wedding Event
 TEL;TYPE=CELL:+123456789
-NOTE:Save the date for {{ $invitation->data["date"] ?? "December 12, 2026" }}
+NOTE:Save the date for December 12, 2026
 URL:${window.location.href}
 END:VCARD`;
             const blob = new Blob([vcard], { type: 'text/vcard' });
@@ -937,17 +914,6 @@ END:VCARD`;
             a.href = url;
             a.download = 'wedding_contact.vcf';
             a.click();
-        }
-
-        // --- Live Hooks ---
-        window.updateCountdown = function(dateStr) { window.location.reload(); }
-        window.updateAudioSource = function(src, type) {
-            const audio = document.getElementById('bg-music');
-            if(audio) { audio.src = src; if(isMusicPlaying) audio.play(); }
-        }
-        window.toggleSection = function(id, visible) {
-            // Mapping for Theme 6 sections if needed, or reload
-             window.location.reload(); 
         }
     </script>
 </body>

@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <title>Dipika & Sagar | Wedding Invitation</title>
+  <title>{{ $invitation->data['groom_name'] ?? 'Groom' }} & {{ $invitation->data['bride_name'] ?? 'Bride' }} | Wedding Invitation</title>
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -207,6 +207,9 @@
     .parallax-bg {
       will-change: transform;
     }
+    .safe-pb {
+        padding-bottom: 80px !important;
+    }
   </style>
 </head>
 
@@ -231,11 +234,13 @@
     <i data-lucide="volume-x" class="w-6 h-6 fill-current" id="music-icon"></i>
   </button>
 
+
+
   <!-- HERO SECTION -->
   <div class="relative h-[100dvh] w-full overflow-hidden">
     <!-- Background Image with Parallax -->
     <div id="preview-hero-bg" class="absolute inset-0 z-0 bg-cover bg-center md:bg-left bg-no-repeat parallax-bg"
-      style="background-image: url('https://csssofttech.com/wedding/assets/hero.png');">
+      style="background-image: url('{{ $invitation->data['hero_bg'] ?? $invitation->data['h_img'] ?? asset('assets/hero-background.png') }}');">
     </div>
     <!-- Overlay -->
     <div
@@ -266,7 +271,7 @@
           <div
             class="inline-block px-3 py-0.5 mb-0.5 rounded-full bg-[rgba(93,46,46,0.9)] backdrop-blur-sm border border-white/10 shadow-lg animate-fade-in-down">
             <p id="preview-tagline" class="text-white/95 font-cinzel text-[7px] md:text-sm tracking-[0.2em] uppercase font-bold text-center">
-              We are getting married
+              {{ $invitation->data['tagline'] ?: 'We are getting married' }}
             </p>
           </div>
 
@@ -277,8 +282,8 @@
             <span id="preview-groom">{{ $invitation->data['groom_name'] ?? 'Sagar' }}</span>
           </h1>
 
-          <!-- 4. Hashtag/Logo -->
-          <img id="preview-hasht-img" src="https://csssofttech.com/wedding/assets/VivaHub.png" alt="Vivahub" class="mx-auto d-block" width="20%">
+          <!-- 4. Hashtag/Logo (Removed) -->
+          <!-- <img id="preview-hasht-img" src="https://csssofttech.com/wedding/assets/VivaHub.png" alt="Vivahub" class="mx-auto d-block" width="20%"> -->
 
           <!-- 5. Date & Location Banner -->
           <div
@@ -375,36 +380,40 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         <!-- Bride Card -->
         <div class="relative group overflow-hidden rounded-2xl shadow-2xl h-[400px] md:h-[500px]">
-          <img id="preview-bride-img" src="{{ $invitation->data['gallery'][0] ?? 'https://csssofttech.com/wedding/assets/bride.png' }}" loading="lazy" alt="Bride"
+          <img id="preview-bride-img" src="{{ $invitation->data['bride_image'] ?? $invitation->data['gallery'][0] ?? 'https://csssofttech.com/wedding/assets/bride.png' }}" loading="lazy" alt="Bride"
             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
           <div
             class="absolute inset-0 bg-gradient-to-t from-red-900/90 via-transparent to-transparent flex flex-col justify-end p-8 text-white">
             <h3 id="preview-bride-name" class="font-serif text-3xl mb-1 text-center text-orange-100">{{ $invitation->data['bride_name'] ?? 'Dipika' }}</h3>
             <p id="preview-bride-bio" class="text-sm opacity-90 font-medium text-center text-orange-200">{{ $invitation->data['bride_bio'] ?? 'Daughter of Sagar Shivaji Hire' }}</p>
             <div class="flex gap-4 mt-2 justify-center">
-              <a href="#" class="group block">
+              @if(!empty($invitation->data['bride_insta']))
+              <a href="{{ $invitation->data['bride_insta'] }}" target="_blank" class="group block">
                 <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/40 transition-all">
                   <i data-lucide="instagram" class="w-5 h-5 text-white"></i>
                 </div>
               </a>
+              @endif
             </div>
           </div>
         </div>
 
         <!-- Groom Card -->
         <div class="relative group overflow-hidden rounded-2xl shadow-2xl h-[400px] md:h-[500px]">
-          <img id="preview-groom-img" src="{{ $invitation->data['gallery'][1] ?? 'https://csssofttech.com/wedding/assets/groom.png' }}" loading="lazy" alt="Groom"
+          <img id="preview-groom-img" src="{{ $invitation->data['groom_image'] ?? $invitation->data['gallery'][1] ?? 'https://csssofttech.com/wedding/assets/groom.png' }}" loading="lazy" alt="Groom"
             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
           <div
             class="absolute inset-0 bg-gradient-to-t from-red-900/90 via-transparent to-transparent flex flex-col justify-end p-8 text-white">
             <h3 id="preview-groom-name" class="font-serif text-3xl mb-1 text-center text-orange-100">{{ $invitation->data['groom_name'] ?? 'Sagar' }}</h3>
             <p id="preview-groom-bio" class="text-sm opacity-90 font-medium text-center text-orange-200">{{ $invitation->data['groom_bio'] ?? 'Son of Satyamurti' }}</p>
             <div class="flex gap-4 mt-2 justify-center">
-              <a href="#" class="group block">
+              @if(!empty($invitation->data['groom_insta']))
+              <a href="{{ $invitation->data['groom_insta'] }}" target="_blank" class="group block">
                 <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/40 transition-all">
                   <i data-lucide="instagram" class="w-5 h-5 text-white"></i>
                 </div>
               </a>
+              @endif
             </div>
           </div>
         </div>
@@ -426,55 +435,23 @@
       </div>
 
       <div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 auto-rows-[200px] md:auto-rows-[300px]" id="preview-gallery-grid">
-      <!-- Image 1: Ring Exchange -->
-      <div class="group relative overflow-hidden rounded-xl md:rounded-2xl shadow-xl border-2 md:border-4 border-orange-900/50 h-full">
-        <img src="https://csssofttech.com/wedding/assets/gallery1.png" loading="lazy" alt="Ring Exchange"
-          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100">
-        <div
-          class="absolute inset-0 bg-gradient-to-t from-orange-950/80 to-transparent opacity-60 group-hover:opacity-40 transition-opacity">
-        </div>
+      @if(!empty($invitation->data['gallery']) && is_array($invitation->data['gallery']))
+          @foreach($invitation->data['gallery'] as $img)
+          <div class="group relative overflow-hidden rounded-xl md:rounded-2xl shadow-xl border-2 md:border-4 border-orange-900/50 h-full">
+            <img src="{{ $img }}" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100">
+            <div class="absolute inset-0 bg-gradient-to-t from-orange-950/80 to-transparent opacity-60 group-hover:opacity-40 transition-opacity"></div>
+          </div>
+          @endforeach
+      @else
+          <!-- Default Gallery -->
+          @for($i=1; $i<=6; $i++)
+          <div class="group relative overflow-hidden rounded-xl md:rounded-2xl shadow-xl border-2 md:border-4 border-orange-900/50 h-full">
+            <img src="https://csssofttech.com/wedding/assets/gallery{{$i}}.png" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100">
+            <div class="absolute inset-0 bg-gradient-to-t from-orange-950/80 to-transparent opacity-60 group-hover:opacity-40 transition-opacity"></div>
+          </div>
+          @endfor
+      @endif
       </div>
-      <!-- Image 2: Pheras -->
-      <div class="group relative overflow-hidden rounded-xl md:rounded-2xl shadow-xl border-2 md:border-4 border-orange-900/50 h-full">
-        <img src="https://csssofttech.com/wedding/assets/gallery2.png" loading="lazy" alt="Pheras"
-          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100">
-        <div
-          class="absolute inset-0 bg-gradient-to-t from-orange-950/80 to-transparent opacity-60 group-hover:opacity-40 transition-opacity">
-        </div>
-      </div>
-       <!-- Image 3: Holding Hands -->
-       <div class="group relative overflow-hidden rounded-xl md:rounded-2xl shadow-xl border-2 md:border-4 border-orange-900/50 h-full">
-        <img src="https://csssofttech.com/wedding/assets/gallery3.png" loading="lazy" alt="Holding Hands"
-          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100">
-        <div
-          class="absolute inset-0 bg-gradient-to-t from-orange-950/80 to-transparent opacity-60 group-hover:opacity-40 transition-opacity">
-        </div>
-      </div>
-       <!-- Image 4: Candid Laugh -->
-       <div class="group relative overflow-hidden rounded-xl md:rounded-2xl shadow-xl border-2 md:border-4 border-orange-900/50 h-full">
-        <img src="https://csssofttech.com/wedding/assets/gallery4.png" loading="lazy" alt="Candid Moment"
-          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100">
-        <div
-          class="absolute inset-0 bg-gradient-to-t from-orange-950/80 to-transparent opacity-60 group-hover:opacity-40 transition-opacity">
-        </div>
-      </div>
-       <!-- Image 5: Decor -->
-       <div class="group relative overflow-hidden rounded-xl md:rounded-2xl shadow-xl border-2 md:border-4 border-orange-900/50 h-full">
-        <img src="https://csssofttech.com/wedding/assets/gallery5.png" loading="lazy" alt="Royal Decor"
-          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100">
-        <div
-          class="absolute inset-0 bg-gradient-to-t from-orange-950/80 to-transparent opacity-60 group-hover:opacity-40 transition-opacity">
-        </div>
-      </div>
-       <!-- Image 6: Blessings -->
-       <div class="group relative overflow-hidden rounded-xl md:rounded-2xl shadow-xl border-2 md:border-4 border-orange-900/50 h-full">
-        <img src="https://csssofttech.com/wedding/assets/gallery6.png" loading="lazy" alt="Blessings"
-          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100">
-        <div
-          class="absolute inset-0 bg-gradient-to-t from-orange-950/80 to-transparent opacity-60 group-hover:opacity-40 transition-opacity">
-        </div>
-      </div>
-    </div>
   </section>
 
   <!-- EVENTS TIMELINE -->
@@ -501,62 +478,71 @@
       <div class="absolute left-6 md:left-1/2 top-0 bottom-0 w-1 bg-orange-500/30 rounded-full"></div>
 
         <div class="flex flex-col gap-6" id="timeline-items">
-             <!-- Static Default Events (Mehendi & Haldi) -->
-             <div class="flex flex-col md:flex-row gap-4 items-center relative animate-fade-in-up" style="animation-delay: 0ms">
-                <div class="absolute left-6 md:left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-orange-500 border-2 border-red-900 shadow-[0_0_0_2px_rgba(251,146,60,0.3)] z-10"></div>
-                <div class="hidden md:block w-1/2 "></div>
-                <div class="w-full md:w-1/2 pl-12 md:pl-12">
-                    <div class="glass-card-dark rounded-xl p-4 md:p-5 hover:border-orange-400 transition-all border border-white/10 relative z-20">
-                        <div class="flex items-center gap-4 ">
-                            <div class="flex-shrink-0">
-                                <div class="w-10 h-10 md:w-12 md:h-12 bg-white/10 rounded-full flex items-center justify-center">
-                                    <span class="text-xl md:text-2xl text-orange-200">✨</span>
+             @if(!empty($invitation->data['eventDates']) && is_array($invitation->data['eventDates']))
+                 @foreach($invitation->data['eventDates'] as $index => $event)
+                 <div class="flex flex-col md:flex-row gap-4 items-center relative animate-fade-in-up" style="animation-delay: {{ $index * 100 }}ms">
+                    <div class="absolute left-6 md:left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-orange-500 border-2 border-red-900 shadow-[0_0_0_2px_rgba(251,146,60,0.3)] z-10"></div>
+                    <div class="hidden md:block w-1/2 {{ $index % 2 != 0 ? 'order-last' : '' }}"></div>
+                    <div class="w-full md:w-1/2 pl-12 {{ $index % 2 != 0 ? 'md:pr-12 md:text-right' : 'md:pl-12' }}">
+                        <div class="glass-card-dark rounded-xl p-4 md:p-5 hover:border-orange-400 transition-all border border-white/10 relative z-20">
+                            <div class="flex items-center gap-4 {{ $index % 2 != 0 ? 'md:flex-row-reverse' : '' }}">
+                                <div class="flex-shrink-0">
+                                    <div class="w-10 h-10 md:w-12 md:h-12 bg-white/10 rounded-full flex items-center justify-center">
+                                        <span class="text-xl md:text-2xl text-orange-200">✨</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="flex-grow">
-                                <div class="flex flex-col md:flex-row md:justify-between md:items-baseline border-b border-orange-500/20 pb-2 mb-2 gap-1">
-                                    <h4 class="font-serif text-lg md:text-xl text-orange-100 font-bold leading-tight">Mehendi</h4>
-                                    <span class="text-xs font-bold text-orange-300 uppercase tracking-wider">Dec 11, 04:00 PM</span>
-                                </div>
-                                <p class="text-orange-50/90 text-sm font-light tracking-wide mb-3">Music, Dance & Henna.</p>
-                                <div class="flex justify-start  items-center">
-                                    <p class="text-orange-200/90 text-xs italic font-medium bg-black/20 px-2 py-1 rounded-lg inline-flex items-center gap-1">
-                                        <i data-lucide="map-pin" class="w-3 h-3"></i> Poolside Lawns
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-             </div>
-
-             <div class="flex flex-col md:flex-row gap-4 items-center relative animate-fade-in-up" style="animation-delay: 100ms">
-                <div class="absolute left-6 md:left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-orange-500 border-2 border-red-900 shadow-[0_0_0_2px_rgba(251,146,60,0.3)] z-10"></div>
-                <div class="hidden md:block w-1/2 order-last"></div>
-                <div class="w-full md:w-1/2 pl-12 md:pr-12 md:text-right">
-                    <div class="glass-card-dark rounded-xl p-4 md:p-5 hover:border-orange-400 transition-all border border-white/10 relative z-20">
-                        <div class="flex items-center gap-4 md:flex-row-reverse">
-                            <div class="flex-shrink-0">
-                                <div class="w-10 h-10 md:w-12 md:h-12 bg-white/10 rounded-full flex items-center justify-center">
-                                    <span class="text-xl md:text-2xl text-orange-200">✨</span>
-                                </div>
-                            </div>
-                            <div class="flex-grow">
-                                <div class="flex flex-col md:flex-row md:justify-between md:items-baseline border-b border-orange-500/20 pb-2 mb-2 gap-1">
-                                    <h4 class="font-serif text-lg md:text-xl text-orange-100 font-bold leading-tight">Haldi</h4>
-                                    <span class="text-xs font-bold text-orange-300 uppercase tracking-wider">Dec 12, 09:00 AM</span>
-                                </div>
-                                <p class="text-orange-50/90 text-sm font-light tracking-wide mb-3">A golden glow.</p>
-                                <div class="flex justify-start md:justify-end items-center">
-                                    <p class="text-orange-200/90 text-xs italic font-medium bg-black/20 px-2 py-1 rounded-lg inline-flex items-center gap-1">
-                                        <i data-lucide="map-pin" class="w-3 h-3"></i> The Courtyard
-                                    </p>
+                                <div class="flex-grow">
+                                    <div class="flex flex-col md:flex-row md:justify-between md:items-baseline border-b border-orange-500/20 pb-2 mb-2 gap-1">
+                                        <h4 class="font-serif text-lg md:text-xl text-orange-100 font-bold leading-tight">{{ $event['title'] ?? 'Event' }}</h4>
+                                        <span class="text-xs font-bold text-orange-300 uppercase tracking-wider">{{ $event['time'] ?? 'TBD' }}</span>
+                                    </div>
+                                    <p class="text-orange-50/90 text-sm font-light tracking-wide mb-3">{{ $event['description'] ?? '' }}</p>
+                                    <div class="flex justify-start {{ $index % 2 != 0 ? 'md:justify-end' : '' }} items-center">
+                                        <p class="text-orange-200/90 text-xs italic font-medium bg-black/20 px-2 py-1 rounded-lg inline-flex items-center gap-1">
+                                            <i data-lucide="map-pin" class="w-3 h-3"></i> {{ $event['location'] ?? 'Location' }}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-             </div>
+                 </div>
+                 @endforeach
+             @else
+                 <!-- Demo Event -->
+                 <div class="flex flex-col md:flex-row gap-4 items-center relative animate-fade-in-up" style="animation-delay: 0ms">
+                    <div class="absolute left-6 md:left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-orange-500 border-2 border-red-900 shadow-[0_0_0_2px_rgba(251,146,60,0.3)] z-10"></div>
+                    <div class="hidden md:block w-1/2"></div>
+                    <div class="w-full md:w-1/2 pl-12 md:pl-12">
+                        <div class="glass-card-dark rounded-xl p-4 md:p-5 hover:border-orange-400 transition-all border border-white/10 relative z-20">
+                            <div class="mt-6 animate-fade-in-up delay-200">
+           @if(!empty($invitation->data['map_url']))
+             <iframe src="{{ $invitation->data['map_url'] }}" width="100%" height="250" style="border:0; border-radius: 1rem;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+           @endif
+        </div>
+                            <div class="flex items-center gap-4">
+                                <div class="flex-shrink-0">
+                                    <div class="w-10 h-10 md:w-12 md:h-12 bg-white/10 rounded-full flex items-center justify-center">
+                                        <span class="text-xl md:text-2xl text-orange-200">✨</span>
+                                    </div>
+                                </div>
+                                <div class="flex-grow">
+                                    <div class="flex flex-col md:flex-row md:justify-between md:items-baseline border-b border-orange-500/20 pb-2 mb-2 gap-1">
+                                        <h4 class="font-serif text-lg md:text-xl text-orange-100 font-bold leading-tight">Mehendi</h4>
+                                        <span class="text-xs font-bold text-orange-300 uppercase tracking-wider">Dec 11, 04:00 PM</span>
+                                    </div>
+                                    <p class="text-orange-50/90 text-sm font-light tracking-wide mb-3">Music, Dance & Henna.</p>
+                                    <div class="flex justify-start items-center">
+                                        <p class="text-orange-200/90 text-xs italic font-medium bg-black/20 px-2 py-1 rounded-lg inline-flex items-center gap-1">
+                                            <i data-lucide="map-pin" class="w-3 h-3"></i> Poolside Lawns
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+             @endif
         </div>
     </div>
   </section>
@@ -639,7 +625,7 @@
         </div>
 
         <form id="rsvp-form" class="space-y-3 mt-2 relative z-10">
-          <input type="hidden" name="user_id" value="">
+          <input type="hidden" name="user_id" value="{{ $invitation->user_id ?? '' }}">
           <div>
             <input type="text" required
               class="w-full px-3 py-2 rounded-lg border border-orange-100 focus:ring-2 focus:ring-red-100 focus:border-red-500 outline-none bg-orange-50 transition-all font-medium text-xs"
@@ -931,6 +917,7 @@
             },
             body: JSON.stringify({
                 user_id: userIdVal,
+                invitation_id: '{{ $invitation->id }}', // Add invitation_id
                 guest_name: name,
                 guests_count: parseInt(count),
                 phone: phone,

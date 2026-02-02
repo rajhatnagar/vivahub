@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Wedding of {{ $invitation->data['bride_name'] ?? 'Elena' }} & {{ $invitation->data['groom_name'] ?? 'Julian' }} | VivaHub</title>
+    <title>The Wedding of Elena & Julian | VivaHub</title>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -133,7 +133,7 @@
         </div>
         
         <div class="relative z-10 px-6 w-full max-w-lg animate-fade-in-up">
-            <div class="glass-modern p-6 md:p-14 rounded-arch text-center border-b-4 border-amber-600 shadow-2xl relative overflow-hidden">
+            <div class="glass-modern p-10 md:p-14 rounded-arch text-center border-b-4 border-amber-600 shadow-2xl relative overflow-hidden">
                 
                 <div class="space-y-8">
                     <div class="flex items-center justify-center gap-3 opacity-80">
@@ -143,11 +143,11 @@
                     </div>
 
                     <div class="relative py-4">
-                        <h1 class="font-serif text-5xl md:text-7xl text-white leading-none mix-blend-overlay"><span class="preview-bride">{{ $invitation->data['bride_name'] ?? 'Elena' }}</span> & <span class="preview-groom">{{ $invitation->data['groom_name'] ?? 'Julian' }}</span></h1>
-                        <h1 class="font-serif text-5xl md:text-7xl text-copper absolute top-4 left-0 w-full leading-none opacity-80 pointer-events-none transform translate-x-[2px] translate-y-[2px]"><span class="preview-bride">{{ $invitation->data['bride_name'] ?? 'Elena' }}</span> & <span class="preview-groom">{{ $invitation->data['groom_name'] ?? 'Julian' }}</span></h1>
+                        <h1 class="font-serif text-6xl md:text-7xl text-white leading-none mix-blend-overlay">Elena & Julian</h1>
+                        <h1 class="font-serif text-6xl md:text-7xl text-copper absolute top-4 left-0 w-full leading-none opacity-80 pointer-events-none transform translate-x-[2px] translate-y-[2px]">Elena & Julian</h1>
                     </div>
                     
-                    <p class="text-teal-200/80 font-light italic text-lg preview-tagline">{{ $invitation->data['tagline'] ?? 'A modern celebration of love' }}</p>
+                    <p class="text-teal-200/80 font-light italic text-lg">A modern celebration of love</p>
                     
                     <button id="enter-btn" class="mt-4 group relative inline-flex items-center justify-center gap-3 px-12 py-4 bg-transparent border border-amber-500 text-amber-400 font-sans tracking-widest uppercase text-xs hover:bg-amber-600 hover:text-white hover:border-amber-600 transition-all duration-500">
                         <span>Open Invitation</span>
@@ -170,12 +170,10 @@
         <i data-lucide="music" class="w-5 h-5"></i>
     </button>
     <audio id="bg-music" loop>
-        <source src="https://csssofttech.com/wedding/assets/music.mp3" type="audio/mpeg">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-16.mp3" type="audio/mpeg">
     </audio>
 
-
     <!-- Family Msg FAB -->
-    @if(isset($invitation->data['family_audio']))
     <button id="family-msg-toggle" class="fixed top-6 left-6 z-50 px-5 h-12 glass-modern rounded-full flex items-center justify-center gap-3 text-amber-400 hover:text-white transition-all shadow-lg hover:scale-105 group animate-pulse border border-amber-500/30">
         <i id="family-icon" data-lucide="message-square" class="w-4 h-4"></i>
         <span class="text-[10px] uppercase font-bold tracking-widest">Family Msg</span>
@@ -186,9 +184,8 @@
         </div>
     </button>
     <audio id="family-audio">
-        <source src="{{ $invitation->data['family_audio'] ?? 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3' }}" type="audio/mpeg">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" type="audio/mpeg">
     </audio>
-    @endif
 
     <!-- Hero Section -->
     <section class="relative min-h-[100dvh] w-full flex flex-col items-center justify-center p-6 pt-24 pb-12 overflow-hidden">
@@ -196,24 +193,24 @@
         <div class="relative w-full max-w-4xl h-[70vh] flex items-center justify-center animate-fade-in-up">
             <!-- Central Arch Image -->
             <div class="absolute inset-0 z-0 rounded-arch overflow-hidden border border-amber-500/20 shadow-2xl mx-auto w-full md:w-[60%] bg-teal-900">
-                <img id="preview-hero-bg" src="{{ $invitation->data['hero_image'] ?? 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=1600' }}" 
+                <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=1600" 
                      class="w-full h-full object-cover opacity-60 hover:scale-105 transition-transform duration-[2s]" alt="Couple">
                 <div class="absolute inset-0 bg-gradient-to-t from-teal-950 via-transparent to-transparent"></div>
             </div>
 
             <!-- Content Overlay -->
             <div class="relative z-10 text-center w-full mt-[20vh] md:mt-[30vh]">
-                <div class="glass-modern p-6 md:p-12 mx-auto max-w-xl backdrop-blur-xl border-t border-amber-500/30">
-                    <h1 class="font-serif text-4xl md:text-7xl text-white mb-2 leading-none"><span class="preview-bride">{{ $invitation->data['bride_name'] ?? 'Elena' }}</span> <span class="text-amber-500 font-script text-3xl md:text-4xl mx-2">&</span> <span class="preview-groom">{{ $invitation->data['groom_name'] ?? 'Julian' }}</span></h1>
+                <div class="glass-modern p-8 md:p-12 mx-auto max-w-xl backdrop-blur-xl border-t border-amber-500/30">
+                    <h1 class="font-serif text-5xl md:text-7xl text-white mb-2 leading-none">Elena <span class="text-amber-500 font-script text-4xl mx-2">&</span> Julian</h1>
                     
                     <div class="flex items-center justify-center gap-4 my-6">
                         <div class="h-[1px] w-12 bg-white/20"></div>
-                        <p id="preview-hero-date" class="text-teal-200 text-sm tracking-widest uppercase preview-hero-date">{{ \Carbon\Carbon::parse($invitation->data['date'] ?? '2026-12-12')->format('F jS • Y') }}</p>
+                        <p class="text-teal-200 text-sm tracking-widest uppercase">Dec 12 • 2026</p>
                         <div class="h-[1px] w-12 bg-white/20"></div>
                     </div>
 
                     <div class="flex justify-center gap-8 text-xs font-bold tracking-[0.2em] text-amber-400">
-                        <span id="preview-hero-location" class="preview-hero-location">{{ strtoupper($invitation->data['venue_city'] ?? 'UDAIPUR') }}</span>
+                        <span>UDAIPUR</span>
                         <span>•</span>
                         <span>INDIA</span>
                     </div>
@@ -227,44 +224,44 @@
         <div class="max-w-5xl mx-auto text-center reveal reveal-zoom">
             <h2 class="font-serif text-5xl text-white mb-16">The Countdown</h2>
             
-            <div id="countdown" class="grid grid-cols-4 gap-2 md:flex md:justify-center md:gap-12 mb-16">
+            <div id="countdown" class="flex flex-wrap justify-center gap-4 md:gap-12 mb-16">
                 <!-- Modern Minimalist Counters -->
                 <div class="tilt-card flex flex-col items-center group">
-                    <div class="w-full h-16 md:w-24 md:h-32 border border-teal-700 bg-teal-900/30 flex items-center justify-center relative overflow-hidden group-hover:border-amber-500 transition-colors duration-500">
-                        <span id="days" class="font-serif text-2xl md:text-5xl text-white z-10">00</span>
+                    <div class="w-24 h-32 border border-teal-700 bg-teal-900/30 flex items-center justify-center relative overflow-hidden group-hover:border-amber-500 transition-colors duration-500">
+                        <span id="days" class="font-serif text-5xl text-white z-10">00</span>
                         <div class="absolute inset-0 bg-amber-500/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
                     </div>
-                    <span class="text-[8px] md:text-[10px] uppercase tracking-widest text-teal-400 mt-2 md:mt-3 border-t border-teal-800 pt-1 md:pt-2 w-full">Days</span>
+                    <span class="text-[10px] uppercase tracking-widest text-teal-400 mt-3 border-t border-teal-800 pt-2 w-full">Days</span>
                 </div>
 
                 <div class="hidden md:block h-32 w-[1px] bg-teal-800/50"></div>
 
                 <div class="tilt-card flex flex-col items-center group">
-                    <div class="w-full h-16 md:w-24 md:h-32 border border-teal-700 bg-teal-900/30 flex items-center justify-center relative overflow-hidden group-hover:border-amber-500 transition-colors duration-500">
-                        <span id="hours" class="font-serif text-2xl md:text-5xl text-white z-10">00</span>
+                    <div class="w-24 h-32 border border-teal-700 bg-teal-900/30 flex items-center justify-center relative overflow-hidden group-hover:border-amber-500 transition-colors duration-500">
+                        <span id="hours" class="font-serif text-5xl text-white z-10">00</span>
                         <div class="absolute inset-0 bg-amber-500/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
                     </div>
-                    <span class="text-[8px] md:text-[10px] uppercase tracking-widest text-teal-400 mt-2 md:mt-3 border-t border-teal-800 pt-1 md:pt-2 w-full">Hrs</span>
+                    <span class="text-[10px] uppercase tracking-widest text-teal-400 mt-3 border-t border-teal-800 pt-2 w-full">Hours</span>
                 </div>
 
                 <div class="hidden md:block h-32 w-[1px] bg-teal-800/50"></div>
 
                 <div class="tilt-card flex flex-col items-center group">
-                    <div class="w-full h-16 md:w-24 md:h-32 border border-teal-700 bg-teal-900/30 flex items-center justify-center relative overflow-hidden group-hover:border-amber-500 transition-colors duration-500">
-                        <span id="minutes" class="font-serif text-2xl md:text-5xl text-white z-10">00</span>
+                    <div class="w-24 h-32 border border-teal-700 bg-teal-900/30 flex items-center justify-center relative overflow-hidden group-hover:border-amber-500 transition-colors duration-500">
+                        <span id="minutes" class="font-serif text-5xl text-white z-10">00</span>
                         <div class="absolute inset-0 bg-amber-500/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
                     </div>
-                    <span class="text-[8px] md:text-[10px] uppercase tracking-widest text-teal-400 mt-2 md:mt-3 border-t border-teal-800 pt-1 md:pt-2 w-full">Mins</span>
+                    <span class="text-[10px] uppercase tracking-widest text-teal-400 mt-3 border-t border-teal-800 pt-2 w-full">Mins</span>
                 </div>
 
                 <div class="hidden md:block h-32 w-[1px] bg-teal-800/50"></div>
 
                 <div class="tilt-card flex flex-col items-center group">
-                    <div class="w-full h-16 md:w-24 md:h-32 border border-teal-700 bg-teal-900/30 flex items-center justify-center relative overflow-hidden group-hover:border-amber-500 transition-colors duration-500">
-                        <span id="seconds" class="font-serif text-2xl md:text-5xl text-white z-10">00</span>
+                    <div class="w-24 h-32 border border-teal-700 bg-teal-900/30 flex items-center justify-center relative overflow-hidden group-hover:border-amber-500 transition-colors duration-500">
+                        <span id="seconds" class="font-serif text-5xl text-white z-10">00</span>
                         <div class="absolute inset-0 bg-amber-500/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
                     </div>
-                    <span class="text-[8px] md:text-[10px] uppercase tracking-widest text-teal-400 mt-2 md:mt-3 border-t border-teal-800 pt-1 md:pt-2 w-full">Secs</span>
+                    <span class="text-[10px] uppercase tracking-widest text-teal-400 mt-3 border-t border-teal-800 pt-2 w-full">Secs</span>
                 </div>
             </div>
 
@@ -286,32 +283,29 @@
                 <span class="text-amber-500 tracking-[0.3em] text-xs font-bold uppercase block mb-3">Starring</span>
                 <h2 class="font-serif text-5xl md:text-6xl text-white mb-2">The Happy Couple</h2>
             </div>
-            
+
             <div class="flex flex-col md:flex-row justify-center items-center gap-12 md:gap-24">
                 
                 <!-- Bride Card (Arch Top) -->
                 <div class="reveal reveal-left group relative w-full md:w-[400px]">
                     <div class="relative h-[550px] rounded-t-[200px] border border-amber-500/20 p-2 transition-transform duration-500 hover:-translate-y-3 bg-[#042f2e]/50 backdrop-blur-sm">
                         <div class="h-full w-full rounded-t-[190px] overflow-hidden relative">
-                            <!-- REMOVED GRAYSCALE -->
-                            <img id="preview-bride-img" src="{{ $invitation->data['gallery'][0] ?? 'https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&q=80&w=800' }}" 
-                                 class="w-full h-full object-cover transition-all duration-1000 scale-105 group-hover:scale-100 hover:brightness-110" alt="Bride">
+                            <img src="https://images.unsplash.com/photo-1549333321-22f83d9f1583?auto=format&fit=crop&q=80&w=800" 
+                                 class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100" alt="Bride">
                             
                             <!-- Gradient Overlay -->
                             <div class="absolute inset-0 bg-gradient-to-t from-[#022c22] via-transparent to-transparent opacity-90"></div>
                             
                             <div class="absolute bottom-10 left-0 right-0 text-center">
-                                <h3 id="preview-bride-name" class="font-serif text-4xl text-white mb-1 preview-bride">{{ $invitation->data['bride_name'] ?? 'Elena Rossi' }}</h3>
+                                <h3 class="font-serif text-4xl text-white mb-1">Elena Rossi</h3>
                                 <p class="text-amber-500 font-script text-2xl">The Bride</p>
                                 
                                 <!-- Socials slide up on hover -->
-                                @if(isset($invitation->data['bride_instagram']))
                                 <div class="mt-4 flex justify-center gap-4 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
-                                    <a href="{{ $invitation->data['bride_instagram'] }}" target="_blank" class="p-2 rounded-full border border-amber-500/30 text-white hover:bg-amber-500 hover:border-amber-500 hover:text-white transition-all">
+                                    <a href="https://instagram.com" target="_blank" class="p-2 rounded-full border border-amber-500/30 text-white hover:bg-amber-500 hover:border-amber-500 hover:text-white transition-all">
                                         <i data-lucide="instagram" class="w-4 h-4"></i>
                                     </a>
                                 </div>
-                                @endif
                             </div>
                         </div>
                     </div>
@@ -328,25 +322,22 @@
                 <div class="reveal reveal-right group relative w-full md:w-[400px]">
                     <div class="relative h-[550px] rounded-b-[200px] border border-amber-500/20 p-2 transition-transform duration-500 hover:translate-y-3 bg-[#042f2e]/50 backdrop-blur-sm">
                         <div class="h-full w-full rounded-b-[190px] overflow-hidden relative">
-                             <!-- REMOVED GRAYSCALE -->
-                            <img id="preview-groom-img" src="{{ $invitation->data['gallery'][1] ?? 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800' }}" 
-                                 class="w-full h-full object-cover transition-all duration-1000 scale-105 group-hover:scale-100 hover:brightness-110" alt="Groom">
+                            <img src="https://images.unsplash.com/photo-1594463750939-ebb28c3f7f75?auto=format&fit=crop&q=80&w=800" 
+                                 class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100" alt="Groom">
                             
                             <!-- Gradient Overlay (Top heavy for inverted card) -->
                             <div class="absolute inset-0 bg-gradient-to-b from-[#022c22] via-transparent to-transparent opacity-90"></div>
                             
                             <div class="absolute top-10 left-0 right-0 text-center">
-                                <h3 id="preview-groom-name" class="font-serif text-4xl text-white mb-1 preview-groom">{{ $invitation->data['groom_name'] ?? 'Julian Vance' }}</h3>
+                                <h3 class="font-serif text-4xl text-white mb-1">Julian Vance</h3>
                                 <p class="text-amber-500 font-script text-2xl">The Groom</p>
                                 
                                 <!-- Socials slide down on hover -->
-                                @if(isset($invitation->data['groom_instagram']))
                                 <div class="mt-4 flex justify-center gap-4 opacity-0 group-hover:opacity-100 transition-all duration-500 -translate-y-4 group-hover:translate-y-0">
-                                    <a href="{{ $invitation->data['groom_instagram'] }}" target="_blank" class="p-2 rounded-full border border-amber-500/30 text-white hover:bg-amber-500 hover:border-amber-500 hover:text-white transition-all">
+                                    <a href="https://instagram.com" target="_blank" class="p-2 rounded-full border border-amber-500/30 text-white hover:bg-amber-500 hover:border-amber-500 hover:text-white transition-all">
                                         <i data-lucide="instagram" class="w-4 h-4"></i>
                                     </a>
                                 </div>
-                                @endif
                             </div>
                         </div>
                     </div>
@@ -364,7 +355,7 @@
         <div class="max-w-4xl mx-auto relative z-10">
             <h2 class="font-serif text-5xl text-center mb-20 text-white reveal">Itinerary</h2>
             
-            <div class="space-y-16" id="timeline-items">
+            <div class="space-y-16">
                 <!-- Event 1 -->
                 <div class="relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-16 reveal reveal-left items-center group">
                     <div class="md:text-right">
@@ -406,33 +397,24 @@
         <div class="max-w-6xl mx-auto">
             <h2 class="font-serif text-5xl text-center mb-16 text-white reveal">Memories</h2>
             
-             <!-- REMOVED GRAYSCALE FROM ALL IMAGES -->
-            <div class="columns-1 md:columns-3 gap-6 space-y-6" id="preview-gallery-grid">
-                @if(isset($invitation->data['gallery']) && is_array($invitation->data['gallery']))
-                    @foreach($invitation->data['gallery'] as $img)
-                    <div class="gallery-item reveal reveal-up">
-                        <img src="{{ $img }}" class="w-full transition-all duration-700 hover:scale-[1.02] hover:brightness-110">
+            <div class="columns-1 md:columns-3 gap-6 space-y-6">
+                <div class="gallery-item reveal reveal-up">
+                    <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800" class="w-full grayscale hover:grayscale-0 transition-all duration-700 hover:scale-[1.02]" alt="Gallery">
+                </div>
+                <div class="gallery-item reveal reveal-up" style="transition-delay: 100ms;">
+                    <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800" class="w-full grayscale hover:grayscale-0 transition-all duration-700 hover:scale-[1.02]" alt="Gallery">
+                </div>
+                <div class="gallery-item reveal reveal-up" style="transition-delay: 200ms;">
+                    <div class="border border-amber-500/30 p-8 flex items-center justify-center text-center h-full min-h-[200px]">
+                        <p class="font-script text-4xl text-amber-500">"Forever Begins"</p>
                     </div>
-                    @endforeach
-                @else
-                    <div class="gallery-item reveal reveal-up">
-                        <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800" class="w-full transition-all duration-700 hover:scale-[1.02] hover:brightness-110" alt="Gallery">
-                    </div>
-                    <div class="gallery-item reveal reveal-up" style="transition-delay: 100ms;">
-                        <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800" class="w-full transition-all duration-700 hover:scale-[1.02] hover:brightness-110" alt="Gallery">
-                    </div>
-                    <div class="gallery-item reveal reveal-up" style="transition-delay: 200ms;">
-                        <div class="border border-amber-500/30 p-8 flex items-center justify-center text-center h-full min-h-[200px]">
-                            <p class="font-script text-4xl text-amber-500">"Forever Begins"</p>
-                        </div>
-                    </div>
-                    <div class="gallery-item reveal reveal-up">
-                        <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800" class="w-full transition-all duration-700 hover:scale-[1.02] hover:brightness-110" alt="Gallery">
-                    </div>
-                     <div class="gallery-item reveal reveal-up" style="transition-delay: 150ms;">
-                        <img src="https://images.unsplash.com/photo-1610173824052-a56b3e71d378?auto=format&fit=crop&q=80&w=800" class="w-full transition-all duration-700 hover:scale-[1.02] hover:brightness-110" alt="Gallery">
-                    </div>
-                @endif
+                </div>
+                <div class="gallery-item reveal reveal-up">
+                    <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800" class="w-full grayscale hover:grayscale-0 transition-all duration-700 hover:scale-[1.02]" alt="Gallery">
+                </div>
+                 <div class="gallery-item reveal reveal-up" style="transition-delay: 150ms;">
+                    <img src="https://images.unsplash.com/photo-1610173824052-a56b3e71d378?auto=format&fit=crop&q=80&w=800" class="w-full grayscale hover:grayscale-0 transition-all duration-700 hover:scale-[1.02]" alt="Gallery">
+                </div>
             </div>
         </div>
     </section>
@@ -442,27 +424,26 @@
         <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center relative z-10">
             <div class="reveal reveal-left">
                 <span class="text-teal-400 tracking-[0.2em] uppercase text-xs font-bold mb-4 block">Destination</span>
-                <h2 class="font-serif text-5xl mb-6" id="preview-hero-location">{{ $invitation->data['venue_city'] ?? 'Udaipur, Rajasthan' }}</h2>
+                <h2 class="font-serif text-5xl mb-6">Udaipur, Rajasthan</h2>
                 <div class="w-20 h-[1px] bg-amber-500 mb-8"></div>
                 <p class="text-teal-100/70 mb-8 leading-relaxed font-light">Join us in the City of Lakes for a royal celebration under the stars.</p>
                 
                 <div class="grid grid-cols-2 gap-4">
                     <div class="p-6 border border-teal-800 hover:border-amber-500/50 transition-colors">
                         <i data-lucide="bed" class="w-6 h-6 text-amber-500 mb-2"></i>
-                        <span class="text-sm font-bold block">{{ $invitation->data['accommodation_details'] ?? 'Rosewood Estate' }}</span>
+                        <span class="text-sm font-bold block">Rosewood Estate</span>
                     </div>
                     <div class="p-6 border border-teal-800 hover:border-amber-500/50 transition-colors">
                         <i data-lucide="plane" class="w-6 h-6 text-amber-500 mb-2"></i>
-                        <span class="text-sm font-bold block">{{ $invitation->data['travel_details'] ?? 'Maharana Pratap (UDR)' }}</span>
+                        <span class="text-sm font-bold block">Maharana Pratap (UDR)</span>
                     </div>
                 </div>
             </div>
 
             <div class="reveal reveal-right h-[400px] overflow-hidden border border-white/10 relative group">
-                <!-- REMOVED GRAYSCALE -->
                 <iframe 
-                    src="{{ $invitation->data['map_url'] ?? 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d116086.08271166316!2d73.63609804829377!3d24.608361099159954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3967e56550a14411%3A0xdbd8c28455b868b0!2sUdaipur%2C%20Rajasthan!5e0!3m2!1sen!2sin!4v1700000000000' }}" 
-                    class="w-full h-full transition-all duration-700" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d116086.08271166316!2d73.63609804829377!3d24.608361099159954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3967e56550a14411%3A0xdbd8c28455b868b0!2sUdaipur%2C%20Rajasthan!5e0!3m2!1sen!2sin!4v1700000000000" 
+                    class="w-full h-full grayscale group-hover:grayscale-0 transition-all duration-700" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
             </div>
         </div>
     </section>
@@ -473,7 +454,7 @@
             <div class="text-center mb-10">
                 <h2 class="font-serif text-4xl text-white mb-2">RSVP</h2>
                 <div class="w-12 h-[1px] bg-amber-500 mx-auto"></div>
-                <p class="text-teal-400 mt-4 text-xs uppercase tracking-widest">By {{ \Carbon\Carbon::parse($invitation->data['rsvp_date'] ?? '2026-10-01')->format('F jS, Y') }}</p>
+                <p class="text-teal-400 mt-4 text-xs uppercase tracking-widest">By October 1st, 2026</p>
             </div>
 
             <form id="rsvp-form" class="space-y-6">
@@ -533,20 +514,19 @@
             </div>
         </div>
         <div class="flex items-center justify-center gap-2 mb-8 group cursor-default">
-            <span class="text-xs text-teal-600 font-sans tracking-wide uppercase">Moments by <span class="text-teal-400 border-b border-teal-800 pb-1">{{ $invitation->data['photographer'] ?? 'Rahul Verma' }}</span></span>
+            <span class="text-xs text-teal-600 font-sans tracking-wide uppercase">Moments by <span class="text-teal-400 border-b border-teal-800 pb-1">Rahul Verma</span></span>
         </div>
         <p class="text-[10px] text-teal-800 uppercase tracking-widest">© 2026 VivaHub</p>
     </footer>
 
     <!-- Mobile Nav -->
-    <nav class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#042f2e]/90 backdrop-blur-md flex justify-around items-center px-4 py-3 pb-6 border-t border-teal-800 w-full max-w-full safe-pb">
-        <button id="preview-mobile-call" onclick="window.open('tel:{{ $invitation->data['phone'] ?? '' }}')" class="flex flex-col items-center text-teal-500 hover:text-amber-500 transition-colors">
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#042f2e]/90 backdrop-blur-md flex justify-around items-center px-4 py-3 pb-6 border-t border-teal-800">
+        <button onclick="window.open('tel:+123456789')" class="flex flex-col items-center text-teal-500 hover:text-amber-500 transition-colors">
             <i data-lucide="phone" class="w-5 h-5"></i><span class="text-[9px] mt-1 font-medium uppercase">Call</span>
         </button>
-        <button id="preview-mobile-whatsapp" onclick="window.open('https://wa.me/{{ preg_replace('/[^0-9]/', '', $invitation->data['whatsapp'] ?? '') }}')" class="flex flex-col items-center text-teal-500 hover:text-amber-500 transition-colors">
+        <button onclick="window.open('https://wa.me/123456789')" class="flex flex-col items-center text-teal-500 hover:text-amber-500 transition-colors">
             <i data-lucide="message-circle" class="w-5 h-5"></i><span class="text-[9px] mt-1 font-medium uppercase">Chat</span>
         </button>
-
         <button onclick="downloadVCard()" class="w-14 h-14 bg-amber-600 text-white flex items-center justify-center -mt-8 shadow-[0_0_20px_rgba(217,119,6,0.3)] hover:scale-105 transition-transform rotate-45 border-4 border-[#042f2e]">
             <i data-lucide="user-plus" class="w-6 h-6 -rotate-45"></i>
         </button>
@@ -573,39 +553,26 @@
         let isMusicPlaying = false;
         let isFamilyPlaying = false;
 
-        if(familyAudio){
-            familyAudio.addEventListener('ended', () => {
-                isFamilyPlaying = false;
-                familyIcon.classList.remove('hidden');
-                familyWaves.classList.add('hidden');
-                bgMusic.play().then(() => {
-                    isMusicPlaying = true;
-                    musicBtn.innerHTML = '<i data-lucide="volume-2" class="w-5 h-5"></i>';
-                    lucide.createIcons();
-                });
+        familyAudio.addEventListener('ended', () => {
+            isFamilyPlaying = false;
+            familyIcon.classList.remove('hidden');
+            familyWaves.classList.add('hidden');
+            bgMusic.play().then(() => {
+                isMusicPlaying = true;
+                musicBtn.innerHTML = '<i data-lucide="volume-2" class="w-5 h-5"></i>';
+                lucide.createIcons();
             });
-        }
+        });
 
         enterBtn.addEventListener('click', () => {
             startOverlay.style.opacity = '0';
-            setTimeout(() => { startOverlay.classList.add('hidden'); 
-            // Allow scrolling after enter
-             document.body.classList.remove('overflow-hidden');
-            }, 1000);
-            if(familyAudio){
-                familyAudio.play().then(() => {
-                    isFamilyPlaying = true;
-                    familyIcon.classList.add('hidden');
-                    familyWaves.classList.remove('hidden');
-                    familyWaves.classList.add('flex');
-                }).catch(console.log);
-            } else {
-                 bgMusic.play().then(() => {
-                    isMusicPlaying = true;
-                    musicBtn.innerHTML = '<i data-lucide="volume-2" class="w-5 h-5"></i>';
-                    lucide.createIcons();
-                 }).catch(e => console.log("Autoplay blocked for bg music", e));
-            }
+            setTimeout(() => { startOverlay.classList.add('hidden'); }, 1000);
+            familyAudio.play().then(() => {
+                isFamilyPlaying = true;
+                familyIcon.classList.add('hidden');
+                familyWaves.classList.remove('hidden');
+                familyWaves.classList.add('flex');
+            });
         });
 
         musicBtn.addEventListener('click', () => {
@@ -613,7 +580,7 @@
                 bgMusic.pause();
                 musicBtn.innerHTML = '<i data-lucide="music" class="w-5 h-5"></i>';
             } else {
-                if (isFamilyPlaying && familyAudio) { familyAudio.pause(); isFamilyPlaying = false; familyIcon.classList.remove('hidden'); familyWaves.classList.add('hidden'); }
+                if (isFamilyPlaying) { familyAudio.pause(); isFamilyPlaying = false; familyIcon.classList.remove('hidden'); familyWaves.classList.add('hidden'); }
                 bgMusic.play();
                 musicBtn.innerHTML = '<i data-lucide="volume-2" class="w-5 h-5"></i>';
             }
@@ -621,27 +588,23 @@
             lucide.createIcons();
         });
 
-        if(familyBtn){
-            familyBtn.addEventListener('click', () => {
-                if (isFamilyPlaying && familyAudio) {
-                    familyAudio.pause();
-                    familyIcon.classList.remove('hidden');
-                    familyWaves.classList.add('hidden');
-                } else {
-                    if (isMusicPlaying) { bgMusic.pause(); isMusicPlaying = false; musicBtn.innerHTML = '<i data-lucide="music" class="w-5 h-5"></i>'; lucide.createIcons(); }
-                    if(familyAudio){
-                        familyAudio.play();
-                        familyIcon.classList.add('hidden');
-                        familyWaves.classList.remove('hidden');
-                        familyWaves.classList.add('flex');
-                    }
-                }
-                isFamilyPlaying = !isFamilyPlaying;
-            });
-        }
+        familyBtn.addEventListener('click', () => {
+            if (isFamilyPlaying) {
+                familyAudio.pause();
+                familyIcon.classList.remove('hidden');
+                familyWaves.classList.add('hidden');
+            } else {
+                if (isMusicPlaying) { bgMusic.pause(); isMusicPlaying = false; musicBtn.innerHTML = '<i data-lucide="music" class="w-5 h-5"></i>'; lucide.createIcons(); }
+                familyAudio.play();
+                familyIcon.classList.add('hidden');
+                familyWaves.classList.remove('hidden');
+                familyWaves.classList.add('flex');
+            }
+            isFamilyPlaying = !isFamilyPlaying;
+        });
 
         // Countdown
-        const weddingDate = new Date("{{ $invitation->data['date'] ?? '2026-12-12' }}T16:00:00").getTime();
+        const weddingDate = new Date("Dec 12, 2026 16:00:00").getTime();
         setInterval(() => {
             const now = new Date().getTime();
             const distance = weddingDate - now;
@@ -685,123 +648,12 @@
         });
 
         // Utils
-        function addToCalendar() { 
-             const event = {
-                title: '{{ $invitation->data["bride_name"] ?? "Elena" }} and {{ $invitation->data["groom_name"] ?? "Julian" }} Wedding',
-                start: '{{ \Carbon\Carbon::parse($invitation->data["date"] ?? "2026-12-12")->format("Ymd") }}T160000Z',
-                end: '{{ \Carbon\Carbon::parse($invitation->data["date"] ?? "2026-12-12")->addDay()->format("Ymd") }}T020000Z',
-                details: 'Celebrate the union of {{ $invitation->data["bride_name"] ?? "Elena" }} and {{ $invitation->data["groom_name"] ?? "Julian" }}.',
-                location: '{{ $invitation->data["location"] ?? "Udaipur, Rajasthan" }}'
-            };
-            const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${event.start}/${event.end}&details=${encodeURIComponent(event.details)}&location=${encodeURIComponent(event.location)}`;
-            window.open(googleUrl, '_blank');
-        }
-        function shareInvite() { if(navigator.share) navigator.share({ title: '{{ $invitation->data["bride_name"] ?? "Elena" }} & {{ $invitation->data["groom_name"] ?? "Julian" }} Wedding', url: window.location.href }); else alert('Link copied!'); }
+        function addToCalendar() { window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=Elena%20%26%20Julian%20Wedding&dates=20261212T160000Z/20261213T020000Z`, '_blank'); }
+        function shareInvite() { if(navigator.share) navigator.share({ title: 'Elena & Julian Wedding', url: window.location.href }); else alert('Link copied!'); }
         function downloadVCard() {
-             const vcard = `BEGIN:VCARD
-VERSION:3.0
-FN:{{ $invitation->data["bride_name"] ?? "Elena" }} & {{ $invitation->data["groom_name"] ?? "Julian" }} Wedding
-TEL:+123456789
-URL:${window.location.href}
-END:VCARD`;
-            const blob = new Blob([vcard], { type: 'text/vcard' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url; a.download = 'wedding.vcf'; a.click();
+            const blob = new Blob([`BEGIN:VCARD\nVERSION:3.0\nFN:Elena & Julian Wedding\nURL:${window.location.href}\nEND:VCARD`], { type: 'text/vcard' });
+            const a = document.createElement('a'); a.href = window.URL.createObjectURL(blob); a.download = 'wedding.vcf'; a.click();
         }
-
-        // --- Live Hooks ---
-        window.updateCountdown = function(dateStr) { console.log('Date update: ', dateStr); }
-        window.updateAudioSource = function(src, type) {
-            const audio = document.getElementById('bg-music');
-            if(audio) { audio.src = src; if(isMusicPlaying) audio.play(); }
-        }
-        window.toggleSection = function(id, visible) { 
-             const el = document.getElementById(id); 
-             if(el) visible ? el.classList.remove('hidden') : el.classList.add('hidden'); 
-        }
-        window.updateEvents = function(events) { window.updateEventsList(events); };
-        window.updateEventsList = function(events) {
-             const container = document.getElementById('timeline-items');
-             if(!container) return;
-             
-             let html = '';
-             events.forEach((event, index) => {
-                 const isEven = index % 2 === 0;
-                 const alignRight = isEven; 
-                 
-                 // Date Parsing
-                 let dateStr = event.time;
-                 if(event.date) {
-                      const d = new Date(event.date);
-                      if(!isNaN(d.getTime())) {
-                          const options = { month: 'short', day: 'numeric' };
-                          const datePart = d.toLocaleDateString('en-US', options);
-                          dateStr = `${datePart} • ${event.time}`;
-                      }
-                 }
-                 
-                 const contentHtml = `
-                    <div class="bg-white p-8 shadow-sm ${alignRight ? 'md:text-right' : ''} hover:shadow-lg transition-shadow duration-500 border-l-4 border-teal-500">
-                        <span class="text-teal-600 font-bold tracking-widest text-xs uppercase mb-2 block">${dateStr}</span>
-                        <h4 class="font-serif text-2xl text-slate-800 mb-2">${event.title}</h4>
-                        <p class="text-sm text-slate-500 mb-4 font-light leading-relaxed">${event.description}</p>
-                        <div class="mt-4 flex items-center ${alignRight ? 'md:justify-end' : ''} gap-2 text-xs text-teal-600 font-bold uppercase">
-                            <i data-lucide="map-pin" class="w-3 h-3"></i> ${event.location}
-                        </div>
-                    </div>
-                 `;
-                 
-                 const dotHtml = `<div class="absolute left-[-6px] top-8 md:left-1/2 md:-ml-2 w-4 h-4 rounded-full bg-teal-500 border-2 border-white shadow-md z-10"></div>`;
-
-                 if(alignRight) {
-                     html += `
-                     <div class="relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-16 mb-20 reveal reveal-left">
-                        <div class="md:text-right">${contentHtml}</div>
-                        <div class="hidden md:block"></div>
-                        ${dotHtml}
-                     </div>`;
-                 } else {
-                     html += `
-                     <div class="relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-16 mb-20 reveal reveal-right">
-                        <div class="hidden md:block"></div>
-                        <div>${contentHtml}</div>
-                        ${dotHtml}
-                     </div>`;
-                 }
-             });
-             container.innerHTML = html;
-             if(window.lucide) window.lucide.createIcons();
-        };
-        window.updateGallery = function(urls) {
-            const grid = document.getElementById('preview-gallery-grid');
-            if(grid) {
-                grid.innerHTML = '';
-                urls.forEach((url, i) => {
-                     const div = document.createElement('div');
-                     div.className = "gallery-item reveal reveal-up";
-                     div.innerHTML = `<img src="${url}" class="w-full transition-all duration-700 hover:scale-[1.02] hover:brightness-110">`;
-                     grid.appendChild(div);
-                });
-            }
-        };
-        window.updatePreview = function(type, id, value) {
-            if(type === 'text') { 
-                const el = document.getElementById(id); if(el) el.innerText = value;
-                const els = document.getElementsByClassName(id); Array.from(els).forEach(e => e.innerText = value);
-            }
-            if(type === 'src') { const el = document.getElementById(id); if(el) el.src = value; }
-            if(type === 'bg') { const el = document.getElementById(id); if(el) el.style.backgroundImage = `url('${value}')`; }
-            
-            // Mobile Nav Updates
-            if(type === 'link_tel') {
-                const el = document.getElementById('preview-mobile-call');
-                if(el) el.setAttribute('onclick', `window.open('tel:${value}')`);
-            }
-            if(type === 'link_whatsapp') {
-                const el = document.getElementById('preview-mobile-whatsapp');
-                if(el) el.setAttribute('onclick', `window.open('https://wa.me/${value}')`);
-            }
-        };
     </script>
 </body>
 </html>

@@ -13,7 +13,8 @@ class RsvpController extends Controller
             'phone' => 'required|string|max:20',
             'guests_count' => 'required|integer|min:1',
             'attending_events' => 'nullable|array',
-            'user_id' => 'nullable|exists:users,id' // In real app, this should be required/derived from context
+            'user_id' => 'nullable|exists:users,id',
+            'invitation_id' => 'nullable|exists:invitations,id'
         ]);
 
         $rsvp = \App\Models\Rsvp::create($validated);

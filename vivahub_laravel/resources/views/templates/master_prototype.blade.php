@@ -487,6 +487,13 @@
           <div class="absolute inset-0 bg-gradient-to-t from-secondary-900/90 via-transparent to-transparent flex flex-col justify-end p-8 text-white">
             <h3 id="preview-bride-name" class="font-serif text-3xl mb-1 text-center text-primary-100">{{ data_get($invitation->data ?? [], 'bride', 'Dipika') }}</h3>
             <p id="preview-bride-bio" class="text-sm opacity-90 font-medium text-center text-primary-200">{{ data_get($invitation->data ?? [], 'brideBio', 'Daughter of Sagar Shivaji Hire') }}</p>
+            @if(!empty($invitation->data['bride_insta']))
+            <div class="flex justify-center mt-3">
+                <a href="{{ $invitation->data['bride_insta'] }}" target="_blank" class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/40 transition-all text-white">
+                    <i data-lucide="instagram" class="w-4 h-4"></i>
+                </a>
+            </div>
+            @endif
           </div>
         </div>
         <!-- Groom Card -->
@@ -495,6 +502,13 @@
           <div class="absolute inset-0 bg-gradient-to-t from-secondary-900/90 via-transparent to-transparent flex flex-col justify-end p-8 text-white">
             <h3 id="preview-groom-name" class="font-serif text-3xl mb-1 text-center text-primary-100">{{ data_get($invitation->data ?? [], 'groom', 'Sagar') }}</h3>
             <p id="preview-groom-bio" class="text-sm opacity-90 font-medium text-center text-primary-200">{{ data_get($invitation->data ?? [], 'groomBio', 'Son of Satyamurti') }}</p>
+            @if(!empty($invitation->data['groom_insta']))
+            <div class="flex justify-center mt-3">
+                <a href="{{ $invitation->data['groom_insta'] }}" target="_blank" class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/40 transition-all text-white">
+                    <i data-lucide="instagram" class="w-4 h-4"></i>
+                </a>
+            </div>
+            @endif
           </div>
         </div>
       </div>
@@ -509,12 +523,21 @@
         <p class="text-primary-600 uppercase tracking-widest text-sm md:text-base font-bold">A glimpse into our journey</p>
       </div>
       <div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 auto-rows-[200px] md:auto-rows-[300px]" id="preview-gallery-grid">
-         @for($i=1; $i<=6; $i++)
-         <div class="group relative overflow-hidden rounded-xl md:rounded-2xl shadow-xl border-2 md:border-4 border-primary-900/50 h-full">
-           <img src="https://csssofttech.com/wedding/assets/gallery{{$i}}.png" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100">
-           <div class="absolute inset-0 bg-gradient-to-t from-primary-950/80 to-transparent opacity-60 group-hover:opacity-40 transition-opacity"></div>
-         </div>
-         @endfor
+         @if(!empty($invitation->data['gallery']) && is_array($invitation->data['gallery']))
+             @foreach($invitation->data['gallery'] as $img)
+             <div class="group relative overflow-hidden rounded-xl md:rounded-2xl shadow-xl border-2 md:border-4 border-primary-900/50 h-full">
+               <img src="{{ $img }}" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100">
+               <div class="absolute inset-0 bg-gradient-to-t from-primary-950/80 to-transparent opacity-60 group-hover:opacity-40 transition-opacity"></div>
+             </div>
+             @endforeach
+         @else
+             @for($i=1; $i<=6; $i++)
+             <div class="group relative overflow-hidden rounded-xl md:rounded-2xl shadow-xl border-2 md:border-4 border-primary-900/50 h-full">
+               <img src="https://csssofttech.com/wedding/assets/gallery{{$i}}.png" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100">
+               <div class="absolute inset-0 bg-gradient-to-t from-primary-950/80 to-transparent opacity-60 group-hover:opacity-40 transition-opacity"></div>
+             </div>
+             @endfor
+         @endif
       </div>
     </div>
   </section>
@@ -569,7 +592,7 @@
   <section id="venue" class="py-16 md:py-24 px-4 bg-primary-50/50">
     <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
       <div class="glass-card rounded-2xl p-4 h-[400px] shadow-lg animate-fade-in-up">
-        <iframe src="https://www.google.com/maps/embed?pb=..." width="100%" height="100%" style="border:0; border-radius: 1rem;" allowfullscreen="" loading="lazy"></iframe>
+        <iframe src="{{ data_get($invitation->data ?? [], 'map_url', 'https://www.google.com/maps/embed?pb=...') }}" width="100%" height="100%" style="border:0; border-radius: 1rem;" allowfullscreen="" loading="lazy"></iframe>
       </div>
       <div class="space-y-8 flex flex-col justify-center">
          <div class="bg-white rounded-xl p-8 border-l-4 border-primary-400 shadow-md hover:shadow-xl transition-all">
@@ -580,22 +603,44 @@
     </div>
   </section>
 
-  <!-- RSVP SECTION -->
-  <section id="rsvp" class="py-8 md:py-16 px-4 bg-primary-50">
-     <div class="max-w-lg mx-auto">
-       <div class="glass-card bg-white border-2 border-primary-200 shadow-xl relative overflow-hidden p-4 rounded-xl">
-         <div class="text-center mb-4 relative z-10">
-           <h3 class="font-serif text-2xl text-secondary-700 mb-1 drop-shadow-sm tracking-wide">R.S.V.P</h3>
-           <p class="text-primary-600 uppercase tracking-widest text-[10px] font-bold">Please grace us</p>
-         </div>
-         <form id="rsvp-form" class="space-y-3 mt-2 relative z-10">
-            <input type="hidden" name="user_id" value="">
-            <input type="text" placeholder="Your Name" class="w-full px-3 py-2 rounded-lg border border-primary-100 focus:ring-2 focus:ring-secondary-100 focus:border-secondary-500 outline-none bg-primary-50 text-xs">
-            <button type="submit" id="rsvp-btn" class="w-full bg-gradient-to-r from-secondary-600 to-primary-600 text-white py-2 rounded-lg font-bold">Confirm</button>
-         </form>
-       </div>
-     </div>
-  </section>
+   <!-- RSVP SECTION -->
+   <section id="rsvp" class="py-16 md:py-24 px-4 bg-primary-50">
+      <div class="max-w-lg mx-auto">
+        <div class="glass-card bg-white border-2 border-primary-200 shadow-xl relative overflow-hidden p-8 rounded-xl">
+          <div id="rsvp-success" class="hidden text-center animate-fade-in-up">
+              <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <i data-lucide="check" class="w-8 h-8 text-green-600"></i>
+              </div>
+              <h3 class="text-2xl font-serif text-secondary-900 mb-2">Thank You!</h3>
+              <p class="text-primary-600">We look forward to celebrating with you.</p>
+          </div>
+
+          <div id="rsvp-block" class="relative z-10">
+              <div class="text-center mb-6 relative z-10">
+                <h3 class="font-serif text-2xl text-secondary-700 mb-1 drop-shadow-sm tracking-wide">R.S.V.P</h3>
+                <p class="text-primary-600 uppercase tracking-widest text-[10px] font-bold">Please grace us</p>
+              </div>
+              <form id="rsvp-form" class="space-y-4 mt-2 relative z-10">
+                 <input type="hidden" name="user_id" value="{{ data_get($invitation, 'user_id', '') }}">
+                 <input type="hidden" name="invitation_id" value="{{ data_get($invitation, 'id', '') }}">
+                 <input type="text" placeholder="Your Name" class="w-full px-4 py-3 rounded-lg border border-primary-200 focus:ring-2 focus:ring-secondary-100 focus:border-secondary-500 outline-none bg-primary-50/50 text-sm" required>
+                 <input type="tel" placeholder="Phone Number" class="w-full px-4 py-3 rounded-lg border border-primary-200 focus:ring-2 focus:ring-secondary-100 focus:border-secondary-500 outline-none bg-primary-50/50 text-sm" required>
+                 <select class="w-full px-4 py-3 rounded-lg border border-primary-200 focus:ring-2 focus:ring-secondary-100 focus:border-secondary-500 outline-none bg-primary-50/50 text-sm">
+                      <option>1 Guest</option>
+                      <option>2 Guests</option>
+                      <option>3 Guests</option>
+                      <option>4 Guests</option>
+                 </select>
+                 <label class="flex items-center gap-2 cursor-pointer group mt-2">
+                      <input type="checkbox" class="w-4 h-4 rounded border-primary-300 text-secondary-600 focus:ring-secondary-500" checked>
+                      <span class="text-sm text-secondary-700 group-hover:text-secondary-900 transition-colors">I will attend the Wedding</span>
+                 </label>
+                 <button type="submit" id="rsvp-btn" class="w-full bg-gradient-to-r from-secondary-600 to-primary-600 text-white py-3 rounded-lg font-bold shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 mt-2">Confirm Attendance</button>
+              </form>
+          </div>
+        </div>
+      </div>
+   </section>
 
   <!-- GIFT SECTION -->
   <div class="text-center py-16 bg-white px-4 border-t border-primary-100">
@@ -694,17 +739,54 @@
         setTimeout(() => { if(window.lucide) window.lucide.createIcons(); }, 100);
     }
     
-    // --- RSVP Logic ---
     document.getElementById('rsvp-form').addEventListener('submit', function(e) {
         e.preventDefault();
         const btn = document.getElementById('rsvp-btn');
         btn.disabled = true;
         btn.innerText = 'Sending...';
-        // (Simplified fetch for prototype)
-        setTimeout(() => {
-           alert('RSVP Feature active in full version (requires DB setup)');
-           btn.disabled = false;
-        }, 1000);
+        
+        const form = this;
+        const name = form.querySelector('input[placeholder="Your Name"]').value;
+        const phone = form.querySelector('input[placeholder="Phone Number"]').value;
+        const count = form.querySelector('select').value.split(' ')[0]; 
+        const userIdVal = form.querySelector('input[name="user_id"]').value;
+        const invitationIdVal = form.querySelector('input[name="invitation_id"]').value;
+        
+        const attending = [];
+        const checkbox = form.querySelector('input[type="checkbox"]');
+        if(checkbox && checkbox.checked) attending.push('Wedding');
+
+        fetch('{{ route("rsvp.submit") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({
+                user_id: userIdVal,
+                invitation_id: invitationIdVal,
+                guest_name: name,
+                guests_count: parseInt(count),
+                phone: phone,
+                attending_events: attending
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success) {
+                document.getElementById('rsvp-block').classList.add('hidden');
+                document.getElementById('rsvp-success').classList.remove('hidden');
+            } else {
+                alert('Something went wrong. Please try again.');
+                btn.disabled = false;
+                btn.innerText = 'Confirm Attendance';
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            btn.disabled = false;
+            btn.innerText = 'Confirm Attendance';
+        });
     });
 
     // --- Countdown Logic ---
@@ -779,6 +861,14 @@
     }
   </script>
 
+  @if(!empty($invitation->data['whatsapp']))
+    <!-- Floating WhatsApp (Desktop Only) -->
+    <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', data_get($invitation->data, 'whatsapp', '919876543210')) }}" target="_blank" class="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 hidden md:flex items-center justify-center group">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-circle"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+        <span class="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap ml-0 group-hover:ml-2 font-bold">Chat with us</span>
+    </a>
+  @endif
+
   <!-- Mobile Bottom Navigation -->
   <div class="fixed bottom-0 left-0 w-full z-50 bg-black/80 backdrop-blur-md border-t border-white/10 md:hidden pb-safe mb-safe">
     <div class="grid grid-cols-5 h-16 items-center">
@@ -790,7 +880,7 @@
             <span class="text-[9px] tracking-wide font-medium">Call</span>
         </a>
         <!-- WhatsApp -->
-        <a href="https://wa.me/{{ data_get($invitation->data ?? [], 'contact.phone', '') }}" target="_blank" class="flex flex-col items-center justify-center text-white/70 hover:text-white transition-colors">
+        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', data_get($invitation->data ?? [], 'whatsapp', data_get($invitation->data ?? [], 'contact.phone', ''))) }}" target="_blank" class="flex flex-col items-center justify-center text-white/70 hover:text-white transition-colors">
             <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center mb-0.5">
                 <i data-lucide="message-circle" class="w-4 h-4"></i>
             </div>

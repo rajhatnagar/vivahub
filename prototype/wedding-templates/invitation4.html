@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ $invitation->data['bride'] }} & {{ $invitation->data['groom'] }} | Wedding Invitation</title>
+  <title>Dipika & Sagar | Wedding Invitation</title>
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -143,7 +143,7 @@
         
         <img src="https://csssofttech.com/wedding/assets/ganesha.png" alt="Ganesha" class="w-20 h-20 mb-6 opacity-60">
         
-        <h1 class="font-script text-6xl md:text-8xl text-sage-800 mb-2 drop-shadow-sm"><span class="preview-bride">{{ $invitation->data['bride'] }}</span> <span class="text-3xl">&</span> <span class="preview-groom">{{ $invitation->data['groom'] }}</span></h1>
+        <h1 class="font-script text-6xl md:text-8xl text-sage-800 mb-2 drop-shadow-sm">Dipika & Sagar</h1>
         <p class="font-sans text-sage-500 text-xs tracking-[0.2em] uppercase mb-10">Request the honor of your presence</p>
         
         <button id="enter-btn" class="group relative px-10 py-3 bg-sage-700 text-white rounded-sm hover:bg-sage-800 transition-all shadow-lg z-50 cursor-pointer">
@@ -152,7 +152,7 @@
             </span>
         </button>
         
-        <p id="preview-tagline" class="mt-8 text-sage-400 text-[10px] font-sans uppercase tracking-widest flex items-center gap-2">
+        <p class="mt-8 text-sage-400 text-[10px] font-sans uppercase tracking-widest flex items-center gap-2">
             <i data-lucide="music" class="w-3 h-3"></i> Experience with Audio
         </p>
     </div>
@@ -183,41 +183,41 @@
 
   <!-- HERO SECTION -->
   <div class="relative h-[100dvh] w-full overflow-hidden bg-white">
-    <div id="preview-hero-bg" class="absolute inset-0 z-0 bg-cover bg-center md:bg-left bg-no-repeat parallax-bg"
-      style="background-image: url('{{ $invitation->data['h_img'] ?? 'https://csssofttech.com/wedding/assets/hero.png' }}'); filter: opacity(0.9) sepia(0.1);">
+    <div id="hero-bg" class="absolute inset-0 z-0 bg-cover bg-center md:bg-left bg-no-repeat parallax-bg"
+      style="background-image: url('https://csssofttech.com/wedding/assets/hero.png'); filter: opacity(0.9) sepia(0.1);">
     </div>
     
     <!-- Light Vignette -->
     <div class="absolute inset-0 z-1 bg-gradient-to-t from-white via-white/40 to-transparent md:bg-gradient-to-r md:from-transparent md:via-white/60 md:to-white"></div>
 
-    <div class="relative z-10 h-full w-full max-w-7xl mx-auto flex flex-col md:grid md:grid-cols-2 px-4 md:px-12 items-center">
+    <div class="relative z-10 h-full w-full max-w-7xl mx-auto flex flex-col md:grid md:grid-cols-2 pt-12 pb-8 px-4 md:py-0 md:px-12 items-center">
       <div class="hidden md:block"></div>
       
-      <div class="flex flex-col items-center w-full h-full justify-end md:justify-center text-center pb-24 md:pb-0">
+      <div class="flex flex-col items-center w-full h-full md:h-auto md:justify-center text-center">
          
-         <div class="flex flex-col items-center justify-center w-full gap-4 p-8 bg-white/90 backdrop-blur-md rounded-t-[200px] shadow-2xl border border-white/50 animate-fade-in-up">
-            <p class="font-sans text-xs tracking-[0.3em] text-sage-500 uppercase mt-4">Together with their parents</p>
+         <div class="flex flex-col items-center justify-end h-[35%] md:h-auto w-full gap-4 p-8 bg-white/80 backdrop-blur-sm rounded-t-[200px] shadow-xl border border-white">
+            <p class="font-sans text-xs tracking-[0.3em] text-sage-500 uppercase mt-8">Together with their parents</p>
 
-            <h1 class="font-script text-[4rem] md:text-8xl text-sage-800 leading-[0.9] py-4">
-               <span class="preview-bride">{{ $invitation->data['bride'] }}</span> <br class="md:hidden"/> <span class="text-3xl align-middle font-serif text-blush-400">&</span> <br class="md:hidden"/> <span class="preview-groom">{{ $invitation->data['groom'] }}</span>
+            <h1 class="font-script text-7xl md:text-8xl text-sage-800 leading-[0.9] py-2 animate-fade-in-up">
+               Dipika <span class="text-3xl align-middle font-serif text-blush-400">&</span> Sagar
             </h1>
 
             <div class="w-12 h-12 border-t border-b border-sage-300 my-2 flex items-center justify-center">
                 <i data-lucide="infinity" class="w-6 h-6 text-sage-400"></i>
             </div>
             
-            <div class="flex flex-col items-center gap-1 mb-4">
-                <p id="preview-hero-date" class="font-serif text-2xl text-sage-900 font-bold italic">{{ \Carbon\Carbon::parse($invitation->data['date'])->format('F d, Y') }}</p>
-                <div class="flex items-center gap-2 text-sage-600 uppercase tracking-widest text-[10px] font-bold mt-1 bg-sage-50 px-3 py-1 rounded-full">
-                    <i data-lucide="map-pin" class="w-3 h-3"></i>
-                    <span id="preview-hero-location">{{ $invitation->data['location'] ?? 'The Oberoi Udaivilas, Udaipur' }}</span>
-                </div>
+            <div class="flex flex-col items-center gap-1 animate-fade-in-up delay-100">
+                <p class="font-serif text-2xl text-sage-900 font-bold italic">December 12th, 2026</p>
+                <p class="font-sans text-[10px] uppercase tracking-widest text-sage-600">The Oberoi Udaivilas, Udaipur</p>
             </div>
          </div>
 
-         <!-- Scroll Indicator (Inside container for mobile to save space) -->
-         <div class="absolute bottom-28 md:hidden animate-bounce text-sage-800/70 z-20">
-            <i data-lucide="chevron-down" class="w-6 h-6"></i>
+         <!-- Mobile Spacer -->
+         <div class="h-[55%] md:hidden w-full"></div>
+         
+         <div class="flex flex-col items-center justify-center h-[10%] md:h-auto gap-2 animate-bounce-slow opacity-60">
+            <span class="text-[9px] uppercase tracking-widest text-sage-800 font-bold">Scroll Down</span>
+            <i data-lucide="arrow-down" class="w-4 h-4 text-sage-800"></i>
          </div>
       </div>
     </div>
@@ -232,22 +232,22 @@
         <!-- Changed font-serif to font-script and increased size for better visibility -->
         <h2 class="font-script text-5xl md:text-7xl text-sage-800 mb-12">Countdown to Forever</h2>
 
-        <div class="grid grid-cols-4 gap-2 md:flex md:justify-center md:gap-12 mb-12" id="countdown-container">
-            <div class="bg-white px-2 py-4 md:px-4 md:py-6 w-full md:w-28 rounded-t-full rounded-b-lg shadow-md border-b-4 border-blush-300">
-                <span id="days" class="block font-serif text-2xl md:text-5xl text-sage-800 leading-none">00</span>
-                <span class="text-[8px] md:text-[9px] uppercase tracking-widest text-sage-400">Days</span>
+        <div class="flex justify-center gap-4 md:gap-12 mb-12 flex-wrap" id="countdown-container">
+            <div class="bg-white px-4 py-6 w-20 md:w-28 rounded-t-full rounded-b-lg shadow-md border-b-4 border-blush-300">
+                <span id="days" class="block font-serif text-3xl md:text-5xl text-sage-800 leading-none">00</span>
+                <span class="text-[9px] uppercase tracking-widest text-sage-400">Days</span>
             </div>
-            <div class="bg-white px-2 py-4 md:px-4 md:py-6 w-full md:w-28 rounded-t-full rounded-b-lg shadow-md border-b-4 border-blush-300">
-                <span id="hours" class="block font-serif text-2xl md:text-5xl text-sage-800 leading-none">00</span>
-                <span class="text-[8px] md:text-[9px] uppercase tracking-widest text-sage-400">Hrs</span>
+            <div class="bg-white px-4 py-6 w-20 md:w-28 rounded-t-full rounded-b-lg shadow-md border-b-4 border-blush-300">
+                <span id="hours" class="block font-serif text-3xl md:text-5xl text-sage-800 leading-none">00</span>
+                <span class="text-[9px] uppercase tracking-widest text-sage-400">Hrs</span>
             </div>
-            <div class="bg-white px-2 py-4 md:px-4 md:py-6 w-full md:w-28 rounded-t-full rounded-b-lg shadow-md border-b-4 border-blush-300">
-                <span id="minutes" class="block font-serif text-2xl md:text-5xl text-sage-800 leading-none">00</span>
-                <span class="text-[8px] md:text-[9px] uppercase tracking-widest text-sage-400">Mins</span>
+            <div class="bg-white px-4 py-6 w-20 md:w-28 rounded-t-full rounded-b-lg shadow-md border-b-4 border-blush-300">
+                <span id="minutes" class="block font-serif text-3xl md:text-5xl text-sage-800 leading-none">00</span>
+                <span class="text-[9px] uppercase tracking-widest text-sage-400">Mins</span>
             </div>
-            <div class="bg-white px-2 py-4 md:px-4 md:py-6 w-full md:w-28 rounded-t-full rounded-b-lg shadow-md border-b-4 border-blush-300">
-                <span id="seconds" class="block font-serif text-2xl md:text-5xl text-sage-800 leading-none">00</span>
-                <span class="text-[8px] md:text-[9px] uppercase tracking-widest text-sage-400">Secs</span>
+            <div class="bg-white px-4 py-6 w-20 md:w-28 rounded-t-full rounded-b-lg shadow-md border-b-4 border-blush-300">
+                <span id="seconds" class="block font-serif text-3xl md:text-5xl text-sage-800 leading-none">00</span>
+                <span class="text-[9px] uppercase tracking-widest text-sage-400">Secs</span>
             </div>
         </div>
         
@@ -276,9 +276,9 @@
             <div class="group relative w-full max-w-sm z-10 md:translate-x-12 hover:z-30 transition-all duration-500">
                 <div class="bg-white p-4 shadow-xl border border-sage-100 rotate-[-2deg] group-hover:rotate-0 transition-transform duration-500">
                     <div class="relative h-[450px] overflow-hidden">
-                        <img id="preview-bride-img" src="{{ isset($invitation->data['gallery']) && isset($invitation->data['gallery'][0]) ? $invitation->data['gallery'][0] : 'https://images.unsplash.com/photo-1549333321-22f83d9f1583?auto=format&fit=crop&q=80&w=800' }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 filter sepia-[.1]">
+                        <img src="https://csssofttech.com/wedding/assets/bride.png" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 filter sepia-[.1]">
                         <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-white via-white/80 to-transparent p-6 pt-12">
-                            <h3 class="font-script text-5xl text-sage-800 preview-bride">{{ $invitation->data['bride'] }}</h3>
+                            <h3 class="font-script text-5xl text-sage-800">Dipika</h3>
                             <p class="font-sans text-[10px] tracking-[0.2em] uppercase text-sage-500">The Beautiful Bride</p>
                         </div>
                     </div>
@@ -289,9 +289,9 @@
             <div class="group relative w-full max-w-sm z-20 md:-translate-x-12 hover:z-30 transition-all duration-500 mt-8 md:mt-24">
                  <div class="bg-white p-4 shadow-xl border border-sage-100 rotate-[2deg] group-hover:rotate-0 transition-transform duration-500">
                     <div class="relative h-[450px] overflow-hidden">
-                        <img id="preview-groom-img" src="{{ isset($invitation->data['gallery']) && isset($invitation->data['gallery'][1]) ? $invitation->data['gallery'][1] : 'https://images.unsplash.com/photo-1594463750939-ebb28c3f7f75?auto=format&fit=crop&q=80&w=800' }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 filter sepia-[.1]">
+                        <img src="https://csssofttech.com/wedding/assets/groom.png" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 filter sepia-[.1]">
                         <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-white via-white/80 to-transparent p-6 pt-12 text-right">
-                            <h3 class="font-script text-5xl text-sage-800 preview-groom">{{ $invitation->data['groom'] }}</h3>
+                            <h3 class="font-script text-5xl text-sage-800">Sagar</h3>
                             <p class="font-sans text-[10px] tracking-[0.2em] uppercase text-sage-500">The Charming Groom</p>
                         </div>
                     </div>
@@ -311,31 +311,54 @@
               <div class="h-px w-24 bg-sage-300 mx-auto"></div>
           </div>
           
-          <div class="grid gap-8" id="timeline-items">
-              @php
-                  $defaultEvents = [
-                      ['name' => 'Rehearsal Dinner', 'date' => '2026-12-10', 'time' => '7:00 PM', 'location' => 'The Garden View', 'desc' => 'Join us for an intimate dinner.'],
-                      ['name' => 'Wedding Ceremony', 'date' => '2026-12-12', 'time' => '4:00 PM', 'location' => 'Main Chapel', 'desc' => 'The moment we say I do.'],
-                      ['name' => 'Reception', 'date' => '2026-12-12', 'time' => '6:00 PM', 'location' => 'Grand Hall', 'desc' => 'Dinner, drinks and dancing to follow.']
-                  ];
-                  $events = $invitation->data['events'] ?? $defaultEvents;
-              @endphp
-              @foreach($events as $index => $event)
-              <div class="elegant-card p-6 md:p-8 rounded-lg flex flex-col md:flex-row gap-8 items-center {{ $index == 2 ? 'border-l-4 border-l-blush-300' : '' }}">
+          <div class="grid gap-8">
+              <!-- Event -->
+              <div class="elegant-card p-6 md:p-8 rounded-lg flex flex-col md:flex-row gap-8 items-center">
                   <div class="text-center md:text-right w-full md:w-32 flex-shrink-0">
-                      <span class="block text-5xl font-script text-blush-400">{{ \Carbon\Carbon::parse($event['date'] ?? 'now')->format('d') }}</span>
-                      <span class="text-xs uppercase tracking-widest text-sage-500">{{ \Carbon\Carbon::parse($event['date'] ?? 'now')->format('M') }}</span>
+                      <span class="block text-5xl font-script text-blush-400">11</span>
+                      <span class="text-xs uppercase tracking-widest text-sage-500">Dec</span>
+                  </div>
+                  <div class="w-full md:w-px h-px md:h-16 bg-sage-200"></div>
+                  <div class="flex-grow text-center md:text-left">
+                      <!-- Changed font-serif to font-script for event name -->
+                      <h4 class="font-script text-4xl text-sage-800 mb-1">Mehendi Ceremony</h4>
+                      <p class="text-sage-500 text-sm italic mb-2">04:00 PM • Poolside Lawns</p>
+                      <p class="text-sage-400 text-xs font-light">A colorful afternoon of henna, music and dance.</p>
+                  </div>
+                  <a href="https://maps.google.com" target="_blank" class="w-12 h-12 flex items-center justify-center rounded-full bg-sage-100 text-sage-600 hover:bg-sage-600 hover:text-white transition-all shadow-sm"><i data-lucide="map-pin" class="w-5 h-5"></i></a>
+              </div>
+
+              <!-- Event -->
+              <div class="elegant-card p-6 md:p-8 rounded-lg flex flex-col md:flex-row gap-8 items-center">
+                  <div class="text-center md:text-right w-full md:w-32 flex-shrink-0">
+                      <span class="block text-5xl font-script text-blush-400">12</span>
+                      <span class="text-xs uppercase tracking-widest text-sage-500">Dec</span>
                   </div>
                   <div class="w-full md:w-px h-px md:h-16 bg-sage-200"></div>
                   <div class="flex-grow text-center md:text-left">
                        <!-- Changed font-serif to font-script for event name -->
-                      <h4 class="font-script text-4xl text-sage-800 mb-1">{{ $event['name'] ?? 'Event Name' }}</h4>
-                      <p class="text-sage-500 text-sm italic mb-2">{{ $event['time'] ?? 'Time' }} • {{ $event['location'] ?? 'Location' }}</p>
-                      <p class="text-sage-400 text-xs font-light">{{ $event['desc'] ?? 'Description' }}</p>
+                      <h4 class="font-script text-4xl text-sage-800 mb-1">Haldi & Wedding</h4>
+                      <p class="text-sage-500 text-sm italic mb-2">09:00 AM • The Courtyard & Mandap</p>
+                      <p class="text-sage-400 text-xs font-light">A golden morning followed by the sacred union.</p>
                   </div>
                   <a href="https://maps.google.com" target="_blank" class="w-12 h-12 flex items-center justify-center rounded-full bg-sage-100 text-sage-600 hover:bg-sage-600 hover:text-white transition-all shadow-sm"><i data-lucide="map-pin" class="w-5 h-5"></i></a>
               </div>
-              @endforeach
+
+              <!-- Event -->
+              <div class="elegant-card p-6 md:p-8 rounded-lg flex flex-col md:flex-row gap-8 items-center border-l-4 border-l-blush-300">
+                  <div class="text-center md:text-right w-full md:w-32 flex-shrink-0">
+                      <span class="block text-5xl font-script text-blush-400">12</span>
+                      <span class="text-xs uppercase tracking-widest text-sage-500">Dec</span>
+                  </div>
+                  <div class="w-full md:w-px h-px md:h-16 bg-sage-200"></div>
+                  <div class="flex-grow text-center md:text-left">
+                       <!-- Changed font-serif to font-script for event name -->
+                      <h4 class="font-script text-4xl text-sage-800 mb-1">Reception</h4>
+                      <p class="text-sage-500 text-sm italic mb-2">07:00 PM • Grand Ballroom</p>
+                      <p class="text-sage-400 text-xs font-light">Join us for dinner, drinks, and celebration.</p>
+                  </div>
+                  <a href="https://maps.google.com" target="_blank" class="w-12 h-12 flex items-center justify-center rounded-full bg-sage-100 text-sage-600 hover:bg-sage-600 hover:text-white transition-all shadow-sm"><i data-lucide="map-pin" class="w-5 h-5"></i></a>
+              </div>
           </div>
       </div>
   </section>
@@ -350,7 +373,7 @@
           <!-- Video Player -->
           <div class="max-w-4xl mx-auto mb-16">
             <div class="relative aspect-video rounded-lg overflow-hidden shadow-2xl group cursor-pointer border-8 border-sage-50">
-                <img src="{{ isset($invitation->data['gallery']) && isset($invitation->data['gallery'][2]) ? $invitation->data['gallery'][2] : 'https://csssofttech.com/wedding/assets/gallery1.png' }}" class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-700">
+                <img src="https://csssofttech.com/wedding/assets/gallery1.png" class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-700">
                 <div class="absolute inset-0 bg-sage-900/10 flex items-center justify-center">
                     <button class="w-20 h-20 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center text-sage-800 hover:scale-110 transition-transform shadow-lg">
                         <i data-lucide="play" class="w-8 h-8 fill-current ml-1"></i>
@@ -360,29 +383,28 @@
           </div>
 
           <!-- Gallery (Polaroid Style) -->
-          <div class="grid grid-cols-2 md:grid-cols-3 gap-6" id="preview-gallery-grid">
-              @if(!empty($invitation->data['gallery']) && is_array($invitation->data['gallery']))
-                  @foreach($invitation->data['gallery'] as $index => $img)
-                     @if($index > 2) <!-- Skip first 3 used in other places if logic requires, but here we just list them all or subset -->
-                      <div class="bg-white p-3 pb-8 shadow-lg hover:rotate-0 transition-transform duration-500 {{ $index % 2 == 0 ? 'rotate-1' : '-rotate-1' }}">
-                         <div class="aspect-[4/5] overflow-hidden bg-gray-100"><img src="{{ $img }}" class="w-full h-full object-cover"></div>
-                      </div>
-                     @endif
-                  @endforeach
-              @else
-                  <div class="bg-white p-3 pb-8 shadow-lg rotate-2 hover:rotate-0 transition-transform duration-500">
-                     <div class="aspect-[4/5] overflow-hidden bg-gray-100"><img src="https://csssofttech.com/wedding/assets/gallery1.png" class="w-full h-full object-cover"></div>
-                     <p class="text-center font-script text-2xl text-sage-600 mt-4">Love</p>
-                  </div>
-                  <div class="bg-white p-3 pb-8 shadow-lg -rotate-1 hover:rotate-0 transition-transform duration-500 mt-8 md:mt-0">
-                     <div class="aspect-[4/5] overflow-hidden bg-gray-100"><img src="https://csssofttech.com/wedding/assets/gallery2.png" class="w-full h-full object-cover"></div>
-                     <p class="text-center font-script text-2xl text-sage-600 mt-4">Joy</p>
-                  </div>
-                  <div class="bg-white p-3 pb-8 shadow-lg rotate-3 hover:rotate-0 transition-transform duration-500">
-                     <div class="aspect-[4/5] overflow-hidden bg-gray-100"><img src="https://csssofttech.com/wedding/assets/gallery3.png" class="w-full h-full object-cover"></div>
-                     <p class="text-center font-script text-2xl text-sage-600 mt-4">Forever</p>
-                  </div>
-              @endif
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+              <div class="bg-white p-3 pb-8 shadow-lg rotate-2 hover:rotate-0 transition-transform duration-500">
+                 <div class="aspect-[4/5] overflow-hidden bg-gray-100"><img src="https://csssofttech.com/wedding/assets/gallery1.png" class="w-full h-full object-cover"></div>
+                 <p class="text-center font-script text-2xl text-sage-600 mt-4">Love</p>
+              </div>
+              <div class="bg-white p-3 pb-8 shadow-lg -rotate-1 hover:rotate-0 transition-transform duration-500 mt-8 md:mt-0">
+                 <div class="aspect-[4/5] overflow-hidden bg-gray-100"><img src="https://csssofttech.com/wedding/assets/gallery2.png" class="w-full h-full object-cover"></div>
+                 <p class="text-center font-script text-2xl text-sage-600 mt-4">Joy</p>
+              </div>
+              <div class="bg-white p-3 pb-8 shadow-lg rotate-3 hover:rotate-0 transition-transform duration-500">
+                 <div class="aspect-[4/5] overflow-hidden bg-gray-100"><img src="https://csssofttech.com/wedding/assets/gallery3.png" class="w-full h-full object-cover"></div>
+                 <p class="text-center font-script text-2xl text-sage-600 mt-4">Forever</p>
+              </div>
+              <div class="bg-white p-3 pb-8 shadow-lg -rotate-2 hover:rotate-0 transition-transform duration-500">
+                 <div class="aspect-[4/5] overflow-hidden bg-gray-100"><img src="https://csssofttech.com/wedding/assets/gallery4.png" class="w-full h-full object-cover"></div>
+              </div>
+              <div class="bg-white p-3 pb-8 shadow-lg rotate-1 hover:rotate-0 transition-transform duration-500 mt-8 md:mt-0">
+                 <div class="aspect-[4/5] overflow-hidden bg-gray-100"><img src="https://csssofttech.com/wedding/assets/gallery5.png" class="w-full h-full object-cover"></div>
+              </div>
+              <div class="bg-white p-3 pb-8 shadow-lg -rotate-3 hover:rotate-0 transition-transform duration-500">
+                 <div class="aspect-[4/5] overflow-hidden bg-gray-100"><img src="https://csssofttech.com/wedding/assets/gallery6.png" class="w-full h-full object-cover"></div>
+              </div>
           </div>
       </div>
   </section>
@@ -394,7 +416,7 @@
               <i data-lucide="bed-double" class="w-8 h-8 text-sage-600 mx-auto mb-4"></i>
                <!-- Changed font-serif to font-script -->
               <h4 class="font-script text-4xl text-sage-900 mb-2">Accommodation</h4>
-              <p class="text-sm text-sage-600 font-sans">The Trident Hotel, {{ $invitation->data['location'] ?? 'Udaipur' }}</p>
+              <p class="text-sm text-sage-600 font-sans">The Trident Hotel, Udaipur</p>
           </div>
           <div class="bg-white p-10 rounded-lg shadow-sm border-t-4 border-blush-400">
               <i data-lucide="shirt" class="w-8 h-8 text-sage-600 mx-auto mb-4"></i>
@@ -451,18 +473,17 @@
           <a href="#" class="hover:text-white transition-colors"><i data-lucide="instagram"></i></a>
           <a href="#" class="hover:text-white transition-colors"><i data-lucide="facebook"></i></a>
       </div>
-      <p class="text-[10px] uppercase tracking-widest mb-4">Designed for {{ $invitation->data['bride'] }} & {{ $invitation->data['groom'] }}</p>
+      <p class="text-[10px] uppercase tracking-widest mb-4">Designed for Dipika & Sagar</p>
       <div class="inline-flex items-center gap-2 bg-sage-800 px-3 py-1 rounded-full border border-sage-700 text-[10px] uppercase font-bold text-sage-300">
           <i data-lucide="camera" class="w-3 h-3"></i> Lens Magic
       </div>
   </footer>
 
   <!-- MOBILE NAV -->
-  <div class="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-sage-100 px-4 py-3 md:hidden shadow-[0_-5px_20px_rgba(0,0,0,0.05)] w-full max-w-full safe-pb">
+  <div class="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-sage-100 px-4 py-3 md:hidden shadow-[0_-5px_20px_rgba(0,0,0,0.05)]">
       <div class="grid grid-cols-5 gap-2 text-center text-sage-600">
-          <a id="preview-mobile-call" href="tel:{{ $invitation->data['phone'] ?? '' }}" class="flex flex-col items-center gap-1 hover:text-sage-900"><i data-lucide="phone" class="w-5 h-5"></i><span class="text-[9px]">Call</span></a>
-          <a id="preview-mobile-whatsapp" href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $invitation->data['whatsapp'] ?? '') }}" class="flex flex-col items-center gap-1 hover:text-sage-900"><i data-lucide="message-circle" class="w-5 h-5"></i><span class="text-[9px]">Chat</span></a>
-
+          <a href="tel:+" class="flex flex-col items-center gap-1 hover:text-sage-900"><i data-lucide="phone" class="w-5 h-5"></i><span class="text-[9px]">Call</span></a>
+          <a href="#" class="flex flex-col items-center gap-1 hover:text-sage-900"><i data-lucide="message-circle" class="w-5 h-5"></i><span class="text-[9px]">Chat</span></a>
           <button onclick="downloadVCard()" class="flex flex-col items-center gap-1 text-blush-400"><div class="bg-sage-50 p-2 rounded-full -mt-6 border-4 border-white shadow-sm"><i data-lucide="user-plus" class="w-5 h-5"></i></div><span class="text-[9px] font-bold text-sage-800">Save</span></button>
           <a href="#" class="flex flex-col items-center gap-1 hover:text-sage-900"><i data-lucide="download" class="w-5 h-5"></i><span class="text-[9px]">Invite</span></a>
           <button onclick="shareInvite()" class="flex flex-col items-center gap-1 hover:text-sage-900"><i data-lucide="share-2" class="w-5 h-5"></i><span class="text-[9px]">Share</span></button>
@@ -583,7 +604,7 @@
       });
 
       // --- Countdown ---
-      const date = new Date("{{ $invitation->data['date'] }}T10:00:00").getTime();
+      const date = new Date("2026-12-10T10:00:00").getTime();
       const ids = ['days', 'hours', 'minutes', 'seconds'];
       const els = ids.map(id => document.getElementById(id));
       
@@ -599,82 +620,6 @@
       }, 1000);
 
       // --- RSVP ---
-
-    // --- Builder Integration ---
-    window.updateEventsList = function(events) {
-        const container = document.getElementById('timeline-items');
-        if(!container) return;
-        
-        let html = '';
-        events.forEach((event, index) => {
-            // Safely parse date for Day/Month display
-            let day = '12';
-            let month = 'DEC';
-            
-            if(event.date) {
-                // Try parsing standard YYYY-MM-DD
-                const d = new Date(event.date);
-                if(!isNaN(d.getTime())) {
-                    day = d.getDate();
-                    month = d.toLocaleString('default', { month: 'short' }).toUpperCase();
-                } else {
-                     // Fallback for non-standard calculation if needed
-                    console.warn("Invalid date format:", event.date);
-                }
-            }
-            
-            html += `
-              <div class="elegant-card p-6 md:p-8 rounded-lg flex flex-col md:flex-row gap-8 items-center ${index === 2 ? 'border-l-4 border-l-blush-300' : ''}">
-                  <div class="text-center md:text-right w-full md:w-32 flex-shrink-0">
-                      <span class="block text-5xl font-script text-blush-400">${day}</span>
-                      <span class="text-xs uppercase tracking-widest text-sage-500">${month}</span>
-                  </div>
-                  <div class="w-full md:w-px h-px md:h-16 bg-sage-200"></div>
-                  <div class="flex-grow text-center md:text-left">
-                      <h4 class="font-script text-4xl text-sage-800 mb-1">${event.title || event.name}</h4>
-                      <p class="text-sage-500 text-sm italic mb-2">${event.time} • ${event.location}</p>
-                      <p class="text-sage-400 text-xs font-light">${event.description || event.desc}</p>
-                  </div>
-                  <a href="#" class="w-12 h-12 flex items-center justify-center rounded-full bg-sage-100 text-sage-600 hover:bg-sage-600 hover:text-white transition-all shadow-sm"><i data-lucide="map-pin" class="w-5 h-5"></i></a>
-              </div>
-            `;
-        });
-        container.innerHTML = html;
-        if(window.lucide) window.lucide.createIcons();
-    };
-
-    window.updateGallery = function(urls) {
-         const grid = document.getElementById('preview-gallery-grid');
-         if(grid) {
-             grid.innerHTML = '';
-             urls.forEach((url, i) => {
-                 let rotateClass = (i % 2 === 0) ? 'rotate-1' : '-rotate-1';
-                 if(i === 0) rotateClass = 'rotate-2';
-                 
-                 const div = document.createElement('div');
-                 div.className = `bg-white p-3 pb-8 shadow-lg hover:rotate-0 transition-transform duration-500 ${rotateClass}`;
-                 div.innerHTML = `<div class="aspect-[4/5] overflow-hidden bg-gray-100"><img src="${url}" class="w-full h-full object-cover"></div>`;
-                 grid.appendChild(div);
-             });
-         }
-    };
-
-    window.updatePreview = function(type, id, value) {
-        if(type === 'text') { 
-            const el = document.getElementById(id); if(el) el.innerText = value;
-            const els = document.getElementsByClassName(id); Array.from(els).forEach(e => e.innerText = value);
-        }
-        if(type === 'src') { 
-            const el = document.getElementById(id); if(el) el.src = value; 
-            const els = document.getElementsByClassName(id); Array.from(els).forEach(e => e.src = value);
-        }
-        if(type === 'bg') { const el = document.getElementById(id); if(el) el.style.backgroundImage = `url('${value}')`; }
-    };
-    
-    window.toggleSection = function(id, visible) { 
-         const el = document.getElementById(id); 
-         if(el) visible ? el.classList.remove('hidden') : el.classList.add('hidden'); 
-    }
       const form = document.getElementById('rsvp-form');
       if(form) {
           form.addEventListener('submit', (e) => {
@@ -691,88 +636,7 @@
     // Global
     function shareInvite() { if(navigator.share) navigator.share({title:'Wedding', url:window.location.href}); else alert('Copy URL'); }
     function downloadVCard() { /* vCard Logic */ }
-    function addToCalendar() { window.open('https://calendar.google.com/calendar/render?action=TEMPLATE&text={{ $invitation->data['bride'] }}%20%26%20{{ $invitation->data['groom'] }}%20Wedding&dates={{ \Carbon\Carbon::parse($invitation->data['date'])->format('Ymd') }}T100000/{{ \Carbon\Carbon::parse($invitation->data['date'])->addDays(1)->format('Ymd') }}T230000&location={{ $invitation->data['location'] ?? 'Venue' }}', '_blank'); }
-    
-    // --- Live Hooks (Standardized) ---
-    window.updateCountdown = function(dateStr) { window.location.reload(); }
-    window.updateAudioSource = function(src, type) { 
-        const audio = document.getElementById('wedding-audio');
-        if(audio) { audio.src = src; if(isMusicPlaying) audio.play(); }
-    }
-    window.toggleSection = function(id, visible) { 
-        const el = document.getElementById(id); 
-        if(el) visible ? el.classList.remove('hidden') : el.classList.add('hidden'); 
-    }
-    window.updateEvents = function(events) { window.updateEventsList(events); };
-    window.updateEventsList = function(events) {
-         const container = document.getElementById('timeline-items');
-         if(!container) return;
-         container.innerHTML = '';
-         
-         events.forEach(event => {
-             // Safe Date Parsing
-             let day = '12';
-             let month = 'DEC';
-             if(event.date) {
-                 const d = new Date(event.date);
-                 if(!isNaN(d.getTime())) {
-                     day = d.getDate();
-                     month = d.toLocaleString('default', { month: 'short' });
-                 }
-             }
-
-             const html = `
-              <div class="elegant-card p-6 md:p-8 rounded-lg flex flex-col md:flex-row gap-8 items-center border-l-4 border-l-blush-300">
-                  <div class="text-center md:text-right w-full md:w-32 flex-shrink-0">
-                      <span class="block text-5xl font-script text-blush-400">${day}</span>
-                      <span class="text-xs uppercase tracking-widest text-sage-500">${month}</span>
-                  </div>
-                  <div class="w-full md:w-px h-px md:h-16 bg-sage-200"></div>
-                  <div class="flex-grow text-center md:text-left">
-                      <h4 class="font-script text-4xl text-sage-800 mb-1">${event.title}</h4>
-                      <p class="text-sage-500 text-sm italic mb-2">${event.time} • ${event.location}</p>
-                      <p class="text-sage-400 text-xs font-light">${event.description}</p>
-                  </div>
-                  <a href="#" class="w-12 h-12 flex items-center justify-center rounded-full bg-sage-100 text-sage-600 hover:bg-sage-600 hover:text-white transition-all shadow-sm"><i data-lucide="map-pin" class="w-5 h-5"></i></a>
-              </div>
-             `;
-             container.insertAdjacentHTML('beforeend', html);
-         });
-         if(window.lucide) window.lucide.createIcons();
-    };
-    window.updateGallery = function(urls) {
-        const grid = document.getElementById('preview-gallery-grid');
-        if(grid) {
-            grid.innerHTML = '';
-            urls.forEach((url, i) => {
-                 const div = document.createElement('div');
-                 div.className = "bg-white p-3 pb-8 shadow-lg hover:rotate-0 transition-transform duration-500 rotate-1";
-                 div.innerHTML = `<div class="aspect-[4/5] overflow-hidden bg-gray-100"><img src="${url}" class="w-full h-full object-cover"></div>`;
-                 grid.appendChild(div);
-            });
-        }
-    };
-    window.updatePreview = function(type, id, value) {
-        if(type === 'text') { 
-            const el = document.getElementById(id); if(el) el.innerText = value;
-            const els = document.getElementsByClassName(id); Array.from(els).forEach(e => e.innerText = value);
-        }
-        if(type === 'src') { 
-            const el = document.getElementById(id); if(el) el.src = value;
-            const els = document.getElementsByClassName(id); Array.from(els).forEach(e => e.src = value);
-        }
-        if(type === 'bg') { const el = document.getElementById(id); if(el) el.style.backgroundImage = `url('${value}')`; }
-        
-        // Mobile Nav Updates
-        if(type === 'link_tel') {
-            const el = document.getElementById('preview-mobile-call');
-            if(el) el.href = 'tel:' + value;
-        }
-        if(type === 'link_whatsapp') {
-            const el = document.getElementById('preview-mobile-whatsapp');
-            if(el) el.href = 'https://wa.me/' + value;
-        }
-    };
+    function addToCalendar() { window.open('https://calendar.google.com/calendar/render?action=TEMPLATE&text=Dipika%20%26%20Sagar%20Wedding&dates=20261210T100000/20261212T230000&location=Udaipur', '_blank'); }
   </script>
 </body>
 </html>

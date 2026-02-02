@@ -5,7 +5,7 @@
 @section('content')
 <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4 animate-fade-in">
     <div>
-        <h2 class="text-3xl font-serif font-bold text-primary-dark dark:text-primary mb-2">Namaste, {{ explode(' ', Auth::user()->name)[0] }}</h2>
+        <h2 class="text-3xl font-serif font-bold text-primary-dark dark:text-primary mb-2">Namaste, {{ explode(' ', Auth::user()->name ?? 'User')[0] }}</h2>
         <p class="text-text-muted dark:text-gray-400">Welcome back to your wedding journey!</p>
     </div>
     <!-- Calendar Toggle -->
@@ -124,9 +124,9 @@
                     <div class="w-8 h-8 rounded-full border-2 border-white dark:border-surface-dark bg-gray-300"></div>
                     <div class="w-8 h-8 rounded-full border-2 border-white dark:border-surface-dark bg-primary text-white flex items-center justify-center text-[10px] font-bold">+{{ $invitation['rsvps'] }}</div>
                 </div>
-                <button class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 text-text-muted hover:text-primary transition-colors">
+                <a href="{{ route('builder', ['invitation_id' => $invitation['id']]) }}" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 text-text-muted hover:text-primary transition-colors">
                     <span class="material-symbols-outlined">edit</span>
-                </button>
+                </a>
             </div>
         </div>
     </div>

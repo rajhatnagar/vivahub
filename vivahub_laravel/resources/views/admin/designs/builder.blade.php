@@ -60,11 +60,18 @@
                    <input type="text" value="We are getting married" class="w-full rounded-xl border-gray-200 bg-white p-3.5 text-sm font-medium text-gray-900 outline-none focus:border-black focus:ring-4 focus:ring-black/5 transition-all dark:bg-white/5 dark:border-white/10 dark:text-white" oninput="updatePreview('text', 'preview-tagline', this.value)">
                 </div>
                 
-                <!-- Phone Number -->
-                <div>
-                   <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2 ml-1">Call Number</label>
-                   <input type="tel" placeholder="+91 9876543210" class="w-full rounded-xl border-gray-200 bg-white p-3.5 text-sm font-medium text-gray-900 outline-none focus:border-black focus:ring-4 focus:ring-black/5 transition-all dark:bg-white/5 dark:border-white/10 dark:text-white" oninput="updatePreview('href', 'preview-call-btn', 'tel:' + this.value)">
+                <!-- Phone & WhatsApp Numbers -->
+                <div class="grid grid-cols-2 gap-4">
+                     <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2 ml-1">Call Number</label>
+                        <input type="tel" id="input-phone" placeholder="+91 9876543210" class="w-full rounded-xl border-gray-200 bg-white p-3.5 text-sm font-medium text-gray-900 outline-none focus:border-black focus:ring-4 focus:ring-black/5 transition-all dark:bg-white/5 dark:border-white/10 dark:text-white" oninput="updatePreview('href', 'preview-call-btn', 'tel:' + this.value); updatePreview('href', 'preview-mobile-call', 'tel:' + this.value)">
+                     </div>
+                     <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2 ml-1">WhatsApp Number</label>
+                        <input type="tel" id="input-whatsapp" placeholder="+91 9876543210" class="w-full rounded-xl border-gray-200 bg-white p-3.5 text-sm font-medium text-gray-900 outline-none focus:border-black focus:ring-4 focus:ring-black/5 transition-all dark:bg-white/5 dark:border-white/10 dark:text-white" oninput="updatePreview('href', 'preview-wa-btn', 'https://wa.me/' + this.value.replace(/[^0-9]/g, '')); updatePreview('href', 'preview-mobile-whatsapp', 'https://wa.me/' + this.value.replace(/[^0-9]/g, ''))">
+                     </div>
                 </div>
+
 
                 <!-- Names -->
                 <div class="grid grid-cols-2 gap-4">
@@ -376,9 +383,11 @@
         if(data.bride) setVal('input[oninput*="preview-bride"]', data.bride);
         if(data.date) setVal('input[type="date"]', data.date);
         if(data.location) setVal('input[oninput*="preview-hero-location"]', data.location);
-        if(data.phone) setVal('input[type="tel"]', data.phone);
+        if(data.phone) setVal('#input-phone', data.phone);
+        if(data.whatsapp) setVal('#input-whatsapp', data.whatsapp);
         if(data.groomBio) setVal('input[oninput*="preview-groom-bio"]', data.groomBio);
         if(data.brideBio) setVal('input[oninput*="preview-bride-bio"]', data.brideBio);
+
 
         // Events
         if(data.eventDates && data.eventDates.length > 0) {
@@ -406,7 +415,8 @@
             groom: getVal('input[oninput*="preview-groom"]'),
             date: getVal('input[type="date"]'),
             location: getVal('input[oninput*="preview-hero-location"]'),
-            phone: getVal('input[type="tel"]'),
+            phone: getVal('#input-phone'),
+            whatsapp: getVal('#input-whatsapp'),
             groomBio: getVal('input[oninput*="preview-groom-bio"]'),
             brideBio: getVal('input[oninput*="preview-bride-bio"]'),
             eventDates: []
@@ -480,7 +490,8 @@
             groom: getVal('input[oninput*="preview-groom"]'),
             date: getVal('input[type="date"]'),
             location: getVal('input[oninput*="preview-hero-location"]'),
-            phone: getVal('input[type="tel"]'),
+            phone: getVal('#input-phone'),
+            whatsapp: getVal('#input-whatsapp'),
             groomBio: getVal('input[oninput*="preview-groom-bio"]'),
             brideBio: getVal('input[oninput*="preview-bride-bio"]'),
             eventDates: []

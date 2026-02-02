@@ -265,7 +265,22 @@
     <script>
         function toggleDarkMode() {
             document.documentElement.classList.toggle('dark');
-            localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+            const isDark = document.documentElement.classList.contains('dark');
+            localStorage.theme = isDark ? 'dark' : 'light';
+            
+            // Sync with Builder Frames if present
+            ['preview-frame', 'mobile-preview-frame'].forEach(id => {
+                const frame = document.getElementById(id);
+                if(frame) {
+                    try {
+                        const doc = frame.contentDocument || frame.contentWindow.document;
+                        if(doc) {
+                             if(isDark) doc.documentElement.classList.add('dark');
+                             else doc.documentElement.classList.remove('dark');
+                        }
+                    } catch(e) { console.log('Cannot access frame for dark mode sync'); }
+                }
+            });
         }
 
         function toggleMobileSidebar() {

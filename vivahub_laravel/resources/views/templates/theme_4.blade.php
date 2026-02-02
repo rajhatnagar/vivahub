@@ -85,7 +85,7 @@
             <div class="w-16 h-16 mx-auto botanical-leaf bg-contain opacity-50 mb-4"></div>
             <p class="uppercase tracking-[0.3em] text-xs text-sage-600 font-bold">The Wedding Of</p>
             <h1 class="font-serif text-4xl md:text-6xl text-sage-900 mb-6">
-                {{ $invitation->data['bride_name'] ?? ($invitation->data['bride'] ?? 'Elena') }} <span class="text-blush-400">&</span> {{ $invitation->data['groom_name'] ?? ($invitation->data['groom'] ?? 'Julian') }}
+                <span class="preview-bride">{{ $invitation->data['bride_name'] ?? ($invitation->data['bride'] ?? 'Elena') }}</span> <span class="text-blush-400">&</span> <span class="preview-groom">{{ $invitation->data['groom_name'] ?? ($invitation->data['groom'] ?? 'Julian') }}</span>
             </h1>
             <button id="enter-btn" class="px-8 py-3 bg-sage-800 text-white font-serif uppercase tracking-widest text-xs hover:bg-sage-700 transition-all shadow-lg rounded-sm mt-4">
                 Open Invitation
@@ -96,7 +96,7 @@
     <!-- Hero Section -->
     <header class="relative min-h-screen flex flex-col items-center justify-center p-4 md:p-6 text-center overflow-hidden">
         <!-- Bg Image with Sage Overlay -->
-        <div class="absolute inset-0 z-0">
+        <div class="absolute inset-0 z-0" id="preview-hero-bg">
             <img src="{{ $invitation->data['hero_image'] ?? ($invitation->data['h_img'] ?? 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format') }}" 
                  class="w-full h-full object-cover opacity-80 animate-fade-in" alt="Background">
             <div class="absolute inset-0 bg-sage-50/70 mix-blend-overlay"></div>
@@ -111,16 +111,16 @@
              <p class="uppercase tracking-[0.3em] text-[10px] md:text-xs text-sage-600 mb-6 font-bold">The Wedding Of</p>
              
              <div class="space-y-2">
-                 <span class="block font-serif text-5xl md:text-7xl text-sage-800 leading-none preview-bride-name">{{ $invitation->data['bride_name'] ?? ($invitation->data['bride'] ?? 'Elena') }}</span>
+                 <span class="block font-serif text-5xl md:text-7xl text-sage-800 leading-none preview-bride-name preview-bride">{{ $invitation->data['bride_name'] ?? ($invitation->data['bride'] ?? 'Elena') }}</span>
                  <span class="font-script text-3xl md:text-4xl text-blush-600 block">&</span>
-                 <span class="block font-serif text-5xl md:text-7xl text-sage-800 leading-none preview-groom-name">{{ $invitation->data['groom_name'] ?? ($invitation->data['groom'] ?? 'Julian') }}</span>
+                 <span class="block font-serif text-5xl md:text-7xl text-sage-800 leading-none preview-groom-name preview-groom">{{ $invitation->data['groom_name'] ?? ($invitation->data['groom'] ?? 'Julian') }}</span>
              </div>
              
              <div class="w-12 h-px bg-sage-300 mx-auto my-6"></div>
              
              <div class="font-serif text-lg md:text-xl text-sage-800">
-                 <p class="preview-date tracking-wide">{{ \Carbon\Carbon::parse($invitation->data['date'] ?? '2026-12-12')->format('F d, Y') }}</p>
-                 <p class="text-xs md:text-sm italic mt-1 text-sage-600 preview-location">{{ $invitation->data['venue_city'] ?? ($invitation->data['location'] ?? 'Udaipur, India') }}</p>
+                 <p class="preview-hero-date tracking-wide">{{ \Carbon\Carbon::parse($invitation->data['date'] ?? '2026-12-12')->format('F d, Y') }}</p>
+                 <p class="text-xs md:text-sm italic mt-1 text-sage-600 preview-hero-location">{{ $invitation->data['venue_city'] ?? ($invitation->data['location'] ?? 'Udaipur, India') }}</p>
              </div>
              
              <!-- Decorative Leaf Bottom -->
@@ -169,26 +169,26 @@
         <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-16 items-center">
              <div class="text-center order-2 md:order-1">
                      <div class="relative w-64 h-80 mx-auto transform -rotate-2 border-4 border-sage-100 p-2 shadow-lg transition-transform duration-500 hover:scale-105 hover:rotate-0">
-                         <img src="{{ $invitation->data['bride_image'] ?? ($invitation->data['gallery'][0] ?? 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format') }}" class="w-full h-full object-cover">
+                         <img id="preview-bride-img" src="{{ $invitation->data['bride_image'] ?? ($invitation->data['gallery'][0] ?? 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format') }}" class="w-full h-full object-cover">
                      </div>
                  <h2 class="font-serif text-3xl mt-6 text-sage-800 preview-bride-name">{{ $invitation->data['bride_name'] ?? ($invitation->data['bride'] ?? 'Elena') }}</h2>
              </div>
              <div class="text-center order-1 md:order-2">
                  <div class="relative w-64 h-80 mx-auto transform rotate-2 border-4 border-sage-100 p-2 shadow-lg transition-transform duration-500 hover:scale-105 hover:rotate-0">
-                     <img src="{{ $invitation->data['groom_image'] ?? ($invitation->data['gallery'][1] ?? 'https://images.unsplash.com/photo-1594463750939-ebb28c3f7f75') }}" class="w-full h-full object-cover">
+                     <img id="preview-groom-img" src="{{ $invitation->data['groom_image'] ?? ($invitation->data['gallery'][1] ?? 'https://images.unsplash.com/photo-1594463750939-ebb28c3f7f75') }}" class="w-full h-full object-cover">
                  </div>
                  <h2 class="font-serif text-3xl mt-6 text-sage-800 preview-groom-name">{{ $invitation->data['groom_name'] ?? ($invitation->data['groom'] ?? 'Julian') }}</h2>
              </div>
         </div>
         <div class="text-center mt-12 max-w-2xl mx-auto">
-            <p class="font-script text-3xl text-blush-600 mb-4">"{{ $invitation->data['tagline'] ?? 'A celebration of love, life, and laughter' }}"</p>
+            <p id="preview-tagline" class="font-script text-3xl text-blush-600 mb-4">"{{ $invitation->data['tagline'] ?? 'A celebration of love, life, and laughter' }}"</p>
         </div>
     </section>
 
     <!-- Events Timeline -->
     <section class="py-24 px-6 bg-sage-50">
         <h2 class="font-serif text-4xl text-center text-sage-800 mb-16">Itinerary</h2>
-        <div class="max-w-4xl mx-auto relative">
+        <div class="max-w-4xl mx-auto relative" id="timeline-items">
             <!-- Central Line (Desktop) / Left Line (Mobile) -->
             <div class="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-sage-300 transform md:-translate-x-1/2"></div>
 
@@ -345,9 +345,84 @@
         }
 
         // --- Live Preview Hooks ---
+        // --- Live Preview Hooks (Standardized for Theme 4) ---
         window.updateCountdown = function(dateStr) { window.location.reload(); }
         window.updateAudioSource = function(src, type) { console.log('Audio update not implemented for this theme'); }
-        window.toggleSection = function(id, visible) { window.location.reload(); }
+        window.toggleSection = function(id, visible) { 
+            const el = document.getElementById(id); 
+            if(el) visible ? el.classList.remove('hidden') : el.classList.add('hidden'); 
+            else window.location.reload(); 
+        }
+        window.updateEvents = function(events) { window.updateEventsList(events); };
+        window.updateEventsList = function(events) {
+             const container = document.getElementById('timeline-items');
+             if(!container) return;
+             // Rebuild inner structure: Line + Events
+             const line = '<div class="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-sage-300 transform md:-translate-x-1/2"></div>';
+             let html = line;
+             events.forEach((event, index) => {
+                 const isEven = index % 2 !== 0; // index 0 (1st) is Odd visually in logic? 
+                 // Theme 4 Logic: Index 0 (Even in PHP) -> Content Left, Index 1 -> Content Right
+                 // Code: Index % 2 == 0 ? md:order-1 (Left) : md:order-3 (Right)
+                 
+                 const alignLeft = (index % 2 === 0);
+                 
+                 // Classes for alignment
+                 const contentLeftClasses = alignLeft ? "md:order-1" : "md:order-3";
+                 const contentRightClasses = alignLeft ? "md:order-3" : "md:order-1";
+                 
+                 // Content Blocks
+                 const contentBlock = `
+                    <div class="bg-white p-6 rounded-sm shadow-sm border-l-4 border-sage-400 ${alignLeft ? 'md:border-l-0 md:border-r-4' : ''}">
+                        <h3 class="font-serif text-2xl text-sage-800">${event.title}</h3>
+                        <p class="text-sage-600 font-bold text-sm mt-1">${event.time}</p>
+                        <p class="text-sage-500 italic text-sm">${event.location}</p>
+                        <p class="text-gray-500 text-xs mt-2">${event.description}</p>
+                    </div>`;
+
+                 html += `
+                 <div class="relative flex flex-col md:flex-row items-center justify-between mb-12 group last:mb-0">
+                     <div class="absolute left-6 md:left-1/2 w-4 h-4 bg-sage-500 rounded-full border-2 border-white transform -translate-x-1/2 z-10"></div>
+                     
+                     <div class="w-full md:w-5/12 pl-16 md:pl-0 md:pr-12 md:text-right ${contentLeftClasses}">
+                         ${alignLeft ? contentBlock : ''}
+                     </div>
+
+                     <div class="hidden md:block md:w-2/12 md:order-2"></div>
+
+                     <div class="w-full md:w-5/12 pl-16 md:pl-0 md:pl-12 md:text-left ${contentRightClasses}">
+                         ${!alignLeft ? contentBlock : ''}
+                     </div>
+                 </div>`;
+             });
+             container.innerHTML = html;
+        };
+        window.updateGallery = function(urls) { console.log('No gallery in Theme 4'); };
+        window.updatePreview = function(type, id, value) {
+            if(type === 'text') { 
+                const el = document.getElementById(id); if(el) el.innerText = value;
+                const els = document.getElementsByClassName(id); Array.from(els).forEach(e => e.innerText = value);
+            }
+            if(type === 'src') { const el = document.getElementById(id); if(el) el.src = value; }
+            if(type === 'bg') { 
+                const el = document.getElementById(id); 
+                if(el) {
+                   // Theme 4: "absolute inset-0 z-0 bg-cover..." img is inside?
+                   // No, theme 4 uses an IMG tag inside #preview-hero-bg div.
+                   // Line 100: <img src... class="opacity-80">
+                   // If id points to DIV, we should find IMG child?
+                   // But builder typically updates src of passed ID.
+                   // I should change logic to allow ID on the IMG tag itself if 'src'.
+                   if(el.tagName === 'IMG') el.src = value;
+                   else {
+                       // Try finding img inside
+                       const img = el.querySelector('img');
+                       if(img) img.src = value;
+                       else el.style.backgroundImage = `url('${value}')`;
+                   }
+                }
+            }
+        };
     </script>
 </body>
 </html>

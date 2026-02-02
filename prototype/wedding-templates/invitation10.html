@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Wedding of {{ $invitation->data['bride'] }} & {{ $invitation->data['groom'] }} | VivaHub</title>
+    <title>The Wedding of Elena & Julian | VivaHub</title>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -196,7 +196,7 @@
                     <p class="font-regal tracking-[0.4em] text-[10px] text-amber-200 uppercase">Royal Invitation</p>
                     
                     <div class="py-4">
-                        <h1 class="font-regal text-5xl md:text-7xl text-gold leading-tight drop-shadow-lg"><span class="preview-bride">{{ $invitation->data['bride'] }}</span> & <span class="preview-groom">{{ $invitation->data['groom'] }}</span></h1>
+                        <h1 class="font-regal text-5xl md:text-7xl text-gold leading-tight drop-shadow-lg">Elena & Julian</h1>
                     </div>
                     
                     <div class="w-full h-[1px] bg-gradient-to-r from-transparent via-amber-600 to-transparent"></div>
@@ -219,9 +219,8 @@
         <i data-lucide="music" class="w-5 h-5 -rotate-45"></i>
     </button>
     <audio id="bg-music" loop>
-        <source src="https://csssofttech.com/wedding/assets/music.mp3" type="audio/mpeg">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-16.mp3" type="audio/mpeg">
     </audio>
-
 
     <!-- Family Msg FAB -->
     <button id="family-msg-toggle" class="fixed top-6 left-6 z-50 w-12 h-12 glass-ruby rounded-none rotate-45 flex items-center justify-center text-amber-400 hover:text-white transition-all shadow-lg border border-amber-500/50 hover:bg-amber-900 group animate-pulse">
@@ -242,7 +241,7 @@
         <!-- Background Image -->
         <div class="absolute inset-0 z-0">
             <!-- Main Image with Ken Burns Zoom -->
-            <img id="preview-hero-bg" src="{{ $invitation->data['h_img'] ?? 'https://images.unsplash.com/photo-1519225495810-758831c93e44?auto=format&fit=crop&q=80&w=2070' }}" 
+            <img id="hero-bg" src="https://images.unsplash.com/photo-1519225495810-758831c93e44?auto=format&fit=crop&q=80&w=2070" 
                  alt="Royal Wedding" 
                  class="w-full h-full object-cover object-center animate-ken-burns opacity-60">
             
@@ -257,31 +256,26 @@
             <div class="absolute inset-0 bg-golden-dust opacity-30 mix-blend-overlay"></div>
         </div>
 
-        <div class="relative z-10 text-center max-w-4xl mx-auto animate-fade-in-up px-4">
-            <div class="glass-ruby p-6 sm:p-12 md:p-20 border border-amber-500/30 shadow-2xl relative">
-                <!-- Ornate Border Frame -->
-                <div class="absolute inset-2 border border-amber-500/20"></div>
-                <div class="absolute inset-0 border-[0.5px] border-amber-500/10 m-1"></div>
-
-                <p class="font-regal text-amber-400 tracking-[0.2em] sm:tracking-[0.3em] md:tracking-[0.5em] text-[10px] sm:text-xs md:text-sm uppercase mb-4 md:mb-6">The Wedding Celebration Of</p>
+        <!-- Content Overlay -->
+        <div class="relative z-10 text-center w-full mt-20 animate-fade-in-up">
+            <div class="glass-ruby p-10 md:p-16 mx-auto max-w-3xl backdrop-blur-md border border-amber-500/20 shadow-2xl relative">
+                <!-- Diamond Border Overlay -->
+                <div class="absolute inset-2 border border-amber-500/10 pointer-events-none"></div>
                 
-                <h1 class="font-regal text-4xl sm:text-6xl md:text-8xl lg:text-9xl mb-4 sm:mb-8 text-gold drop-shadow-2xl leading-none">
-                    <span class="preview-bride block">{{ $invitation->data['bride'] ?? 'Aarav' }}</span> 
-                    <span class="font-script text-3xl sm:text-4xl md:text-5xl text-rose-200 my-2 md:mx-4 align-middle block md:inline">&</span> 
-                    <span class="preview-groom block">{{ $invitation->data['groom'] ?? 'Sanya' }}</span>
-                </h1>
-
-                <div class="flex items-center justify-center gap-3 sm:gap-6 my-4 sm:my-8">
-                    <div class="h-[1px] w-12 sm:w-20 bg-gradient-to-r from-transparent to-amber-500"></div>
-                    <p id="preview-hero-date" class="font-regal text-sm sm:text-lg md:text-xl text-rose-100 preview-hero-date">{{ \Carbon\Carbon::parse($invitation->data['date'] ?? '2026-12-12')->format('F jS, Y') }}</p>
-                    <div class="h-[1px] w-12 sm:w-20 bg-gradient-to-l from-transparent to-amber-500"></div>
+                <h2 class="font-script text-5xl md:text-7xl text-rose-200 mb-2">Elena & Julian</h2>
+                <div class="flex items-center justify-center gap-4 my-6">
+                    <div class="h-[1px] w-20 bg-amber-500/50"></div>
+                    <span class="text-gold font-regal text-xl tracking-widest uppercase">Dec 12, 2026</span>
+                    <div class="h-[1px] w-20 bg-amber-500/50"></div>
                 </div>
-
-                <p id="preview-hero-location" class="font-regal text-xs sm:text-sm tracking-[0.1em] sm:tracking-[0.2em] md:tracking-[0.3em] uppercase text-rose-100/70 preview-hero-location">{{ $invitation->data['location'] ?? 'Udaipur • Rajasthan • India' }}</p>
+                <p class="font-regal text-sm tracking-[0.3em] uppercase text-rose-100/70">Udaipur • Rajasthan • India</p>
+                
+                <div class="mt-12 flex justify-center">
+                    <div class="w-[1px] h-16 bg-gradient-to-b from-amber-500 to-transparent"></div>
+                </div>
             </div>
         </div>
     </section>
-
 
     <!-- Countdown Section (Texture: Gold Dust) -->
     <section class="py-24 px-6 relative bg-golden-dust">
@@ -290,30 +284,30 @@
                 <h2 class="font-regal text-4xl md:text-5xl text-rose-100 uppercase tracking-widest">Countdown</h2>
             </div>
             
-            <div id="countdown" class="grid grid-cols-4 gap-4 md:flex md:justify-center md:gap-8 mb-16">
+            <div id="countdown" class="flex flex-wrap justify-center gap-8 mb-16">
                 <!-- Diamond Counters -->
-                <div class="tilt-card relative w-14 h-14 md:w-32 md:h-32 rotate-45 border border-amber-700 bg-[#450a0a]/80 flex items-center justify-center group hover:bg-[#450a0a] transition-all shadow-[0_0_15px_rgba(0,0,0,0.5)] mx-auto">
+                <div class="tilt-card relative w-24 h-24 md:w-32 md:h-32 rotate-45 border border-amber-700 bg-[#450a0a]/80 flex items-center justify-center group hover:bg-[#450a0a] transition-all shadow-[0_0_15px_rgba(0,0,0,0.5)]">
                     <div class="-rotate-45 text-center">
-                        <span id="days" class="block font-regal text-xl md:text-4xl text-amber-400 font-bold">00</span>
-                        <span class="text-[7px] md:text-[9px] uppercase tracking-widest text-rose-200/60 block">Days</span>
+                        <span id="days" class="block font-regal text-3xl md:text-4xl text-amber-400 font-bold">00</span>
+                        <span class="text-[9px] uppercase tracking-widest text-rose-200/60">Days</span>
                     </div>
                 </div>
-                <div class="tilt-card relative w-14 h-14 md:w-32 md:h-32 rotate-45 border border-amber-700 bg-[#450a0a]/80 flex items-center justify-center group hover:bg-[#450a0a] transition-all shadow-[0_0_15px_rgba(0,0,0,0.5)] mx-auto">
+                <div class="tilt-card relative w-24 h-24 md:w-32 md:h-32 rotate-45 border border-amber-700 bg-[#450a0a]/80 flex items-center justify-center group hover:bg-[#450a0a] transition-all shadow-[0_0_15px_rgba(0,0,0,0.5)]">
                     <div class="-rotate-45 text-center">
-                        <span id="hours" class="block font-regal text-xl md:text-4xl text-amber-400 font-bold">00</span>
-                        <span class="text-[7px] md:text-[9px] uppercase tracking-widest text-rose-200/60 block">Hrs</span>
+                        <span id="hours" class="block font-regal text-3xl md:text-4xl text-amber-400 font-bold">00</span>
+                        <span class="text-[9px] uppercase tracking-widest text-rose-200/60">Hrs</span>
                     </div>
                 </div>
-                <div class="tilt-card relative w-14 h-14 md:w-32 md:h-32 rotate-45 border border-amber-700 bg-[#450a0a]/80 flex items-center justify-center group hover:bg-[#450a0a] transition-all shadow-[0_0_15px_rgba(0,0,0,0.5)] mx-auto">
+                <div class="tilt-card relative w-24 h-24 md:w-32 md:h-32 rotate-45 border border-amber-700 bg-[#450a0a]/80 flex items-center justify-center group hover:bg-[#450a0a] transition-all shadow-[0_0_15px_rgba(0,0,0,0.5)]">
                     <div class="-rotate-45 text-center">
-                        <span id="minutes" class="block font-regal text-xl md:text-4xl text-amber-400 font-bold">00</span>
-                        <span class="text-[7px] md:text-[9px] uppercase tracking-widest text-rose-200/60 block">Mins</span>
+                        <span id="minutes" class="block font-regal text-3xl md:text-4xl text-amber-400 font-bold">00</span>
+                        <span class="text-[9px] uppercase tracking-widest text-rose-200/60">Mins</span>
                     </div>
                 </div>
-                <div class="tilt-card relative w-14 h-14 md:w-32 md:h-32 rotate-45 border border-amber-700 bg-[#450a0a]/80 flex items-center justify-center group hover:bg-[#450a0a] transition-all shadow-[0_0_15px_rgba(0,0,0,0.5)] mx-auto">
+                <div class="tilt-card relative w-24 h-24 md:w-32 md:h-32 rotate-45 border border-amber-700 bg-[#450a0a]/80 flex items-center justify-center group hover:bg-[#450a0a] transition-all shadow-[0_0_15px_rgba(0,0,0,0.5)]">
                     <div class="-rotate-45 text-center">
-                        <span id="seconds" class="block font-regal text-xl md:text-4xl text-amber-400 font-bold">00</span>
-                        <span class="text-[7px] md:text-[9px] uppercase tracking-widest text-rose-200/60 block">Secs</span>
+                        <span id="seconds" class="block font-regal text-3xl md:text-4xl text-amber-400 font-bold">00</span>
+                        <span class="text-[9px] uppercase tracking-widest text-rose-200/60">Secs</span>
                     </div>
                 </div>
             </div>
@@ -337,10 +331,10 @@
                 <div class="reveal reveal-left group relative">
                     <div class="absolute inset-0 border-2 border-amber-600/40 translate-x-4 translate-y-4 group-hover:translate-x-2 group-hover:translate-y-2 transition-transform duration-500"></div>
                     <div class="tilt-card relative z-10 aspect-[3/4] overflow-hidden border border-amber-900 shadow-2xl">
-                        <img id="preview-bride-img" src="{{ isset($invitation->data['gallery']) && isset($invitation->data['gallery'][0]) ? $invitation->data['gallery'][0] : 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800' }}" 
+                        <img src="https://images.unsplash.com/photo-1549333321-22f83d9f1583?auto=format&fit=crop&q=80&w=800" 
                              class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 sepia-[20%]" alt="Bride">
                         <div class="absolute bottom-0 inset-x-0 p-6 bg-gradient-to-t from-[#2a0a12] to-transparent">
-                            <h3 id="preview-bride-name" class="font-regal text-3xl text-amber-100 preview-bride">{{ $invitation->data['bride'] }}</h3>
+                            <h3 class="font-regal text-3xl text-amber-100">Elena Rossi</h3>
                             <div class="w-10 h-[2px] bg-amber-500 mt-2 mb-3"></div>
                             <a href="https://instagram.com" target="_blank" class="text-amber-500 hover:text-white transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></a>
                         </div>
@@ -351,10 +345,10 @@
                 <div class="reveal reveal-right group relative">
                     <div class="absolute inset-0 border-2 border-amber-600/40 -translate-x-4 translate-y-4 group-hover:-translate-x-2 group-hover:translate-y-2 transition-transform duration-500"></div>
                     <div class="tilt-card relative z-10 aspect-[3/4] overflow-hidden border border-amber-900 shadow-2xl">
-                        <img id="preview-groom-img" src="{{ isset($invitation->data['gallery']) && isset($invitation->data['gallery'][1]) ? $invitation->data['gallery'][1] : 'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&q=80&w=800' }}" 
+                        <img src="https://images.unsplash.com/photo-1594463750939-ebb28c3f7f75?auto=format&fit=crop&q=80&w=800" 
                              class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 sepia-[20%]" alt="Groom">
                         <div class="absolute bottom-0 inset-x-0 p-6 bg-gradient-to-t from-[#2a0a12] to-transparent">
-                            <h3 id="preview-groom-name" class="font-regal text-3xl text-amber-100 preview-groom">{{ $invitation->data['groom'] }}</h3>
+                            <h3 class="font-regal text-3xl text-amber-100">Julian Vance</h3>
                             <div class="w-10 h-[2px] bg-amber-500 mt-2 mb-3"></div>
                             <a href="https://instagram.com" target="_blank" class="text-amber-500 hover:text-white transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></a>
                         </div>
@@ -371,31 +365,39 @@
         <div class="max-w-4xl mx-auto relative z-10">
             <h2 class="font-regal text-4xl text-center mb-20 text-rose-100 uppercase tracking-widest reveal">Itinerary</h2>
             
-            <div class="space-y-20" id="timeline-items">
-                @php
-                    $defaultEvents = [
-                      ['name' => 'Haldi Ceremony', 'date' => '11 Dec', 'time' => '10:00 AM', 'location' => 'Poolside Lawns', 'desc' => 'Music, Dance & Henna.'],
-                      ['name' => 'Sangeet Night', 'date' => '11 Dec', 'time' => '07:00 PM', 'location' => 'Grand Ballroom', 'desc' => 'Golden glow followed by the Pheras.'],
-                      ['name' => 'The Wedding', 'date' => '12 Dec', 'time' => '04:00 PM', 'location' => 'Royal Gardens', 'desc' => 'Dinner, Cocktails & Celebration.']
-                  ];
-                  $events = $invitation->data['events'] ?? $defaultEvents;
-                @endphp
-
-                @foreach($events as $index => $event)
-                <div class="relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-16 reveal {{ $index % 2 == 0 ? 'reveal-left' : 'reveal-right' }} items-center group">
-                    @if($index % 2 != 0) <div class="hidden md:block"></div> @endif
-                    
-                    <div class="{{ $index % 2 == 0 ? 'md:text-right' : '' }}">
-                        <span class="text-amber-500 font-bold text-xs uppercase mb-2 block tracking-widest">{{ $event['date'] }} • {{ $event['time'] }}</span>
-                        <h4 class="font-regal text-2xl text-rose-100 mb-2 group-hover:text-amber-400 transition-colors">{{ $event['name'] }}</h4>
-                        <p class="text-sm text-rose-200/60 font-light">{{ $event['location'] }}</p>
+            <div class="space-y-20">
+                <!-- Event 1 -->
+                <div class="relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-16 reveal reveal-left items-center group">
+                    <div class="md:text-right">
+                        <span class="text-amber-500 font-bold text-xs uppercase mb-2 block tracking-widest">Dec 11th • 10:00 AM</span>
+                        <h4 class="font-regal text-2xl text-rose-100 mb-2 group-hover:text-amber-400 transition-colors">Haldi Ceremony</h4>
+                        <p class="text-sm text-rose-200/60 font-light">Poolside Lawns</p>
                     </div>
-                    
-                    @if($index % 2 == 0) <div class="hidden md:block"></div> @endif
-
+                    <div class="hidden md:block"></div>
                     <div class="absolute left-[20px] md:left-1/2 md:-ml-[7px] w-[14px] h-[14px] bg-[#450a0a] rotate-45 border border-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)] z-10 group-hover:bg-amber-600 transition-colors"></div>
                 </div>
-                @endforeach
+
+                <!-- Event 2 -->
+                <div class="relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-16 reveal reveal-right items-center group">
+                    <div class="hidden md:block"></div>
+                    <div>
+                        <span class="text-amber-500 font-bold text-xs uppercase mb-2 block tracking-widest">Dec 11th • 07:00 PM</span>
+                        <h4 class="font-regal text-2xl text-rose-100 mb-2 group-hover:text-amber-400 transition-colors">Sangeet Night</h4>
+                        <p class="text-sm text-rose-200/60 font-light">Grand Ballroom</p>
+                    </div>
+                    <div class="absolute left-[20px] md:left-1/2 md:-ml-[7px] w-[14px] h-[14px] bg-[#450a0a] rotate-45 border border-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)] z-10 group-hover:bg-amber-600 transition-colors"></div>
+                </div>
+
+                <!-- Event 3 -->
+                <div class="relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-16 reveal reveal-left items-center group">
+                    <div class="md:text-right">
+                        <span class="text-amber-500 font-bold text-xs uppercase mb-2 block tracking-widest">Dec 12th • 04:00 PM</span>
+                        <h4 class="font-regal text-2xl text-rose-100 mb-2 group-hover:text-amber-400 transition-colors">The Wedding</h4>
+                        <p class="text-sm text-rose-200/60 font-light">Royal Gardens</p>
+                    </div>
+                    <div class="hidden md:block"></div>
+                    <div class="absolute left-[20px] md:left-1/2 md:-ml-[7px] w-[14px] h-[14px] bg-[#450a0a] rotate-45 border border-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)] z-10 group-hover:bg-amber-600 transition-colors"></div>
+                </div>
             </div>
         </div>
     </section>
@@ -405,19 +407,12 @@
         <div class="max-w-6xl mx-auto relative z-10">
             <h2 class="font-regal text-4xl text-center mb-16 text-rose-100 uppercase tracking-widest reveal">Memories</h2>
             
-            <div class="columns-1 md:columns-3 gap-6 space-y-6" id="preview-gallery-grid">
-                @php
-                    $gallery = $invitation->data['gallery'] ?? [];
-                    // Ensure we have enough placeholders if gallery is empty
-                    while(count($gallery) < 6) {
-                        $gallery[] = 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800';
-                    }
-                @endphp
+            <div class="columns-1 md:columns-3 gap-6 space-y-6">
                 <div class="gallery-item reveal reveal-up">
-                    <img src="{{ $gallery[2] ?? 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800' }}" class="w-full border border-amber-900/50 hover:border-amber-500 transition-all duration-500 shadow-xl" alt="Gallery">
+                    <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800" class="w-full border border-amber-900/50 hover:border-amber-500 transition-all duration-500 shadow-xl" alt="Gallery">
                 </div>
                 <div class="gallery-item reveal reveal-up" style="transition-delay: 100ms;">
-                    <img src="{{ $gallery[3] ?? 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800' }}" class="w-full border border-amber-900/50 hover:border-amber-500 transition-all duration-500 shadow-xl" alt="Gallery">
+                    <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800" class="w-full border border-amber-900/50 hover:border-amber-500 transition-all duration-500 shadow-xl" alt="Gallery">
                 </div>
                 <div class="gallery-item reveal reveal-up" style="transition-delay: 200ms;">
                     <div class="border border-amber-500/30 p-8 flex items-center justify-center text-center h-full min-h-[200px] bg-[#2a0a12]/80 backdrop-blur-sm">
@@ -425,10 +420,10 @@
                     </div>
                 </div>
                 <div class="gallery-item reveal reveal-up">
-                    <img src="{{ $gallery[4] ?? 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800' }}" class="w-full border border-amber-900/50 hover:border-amber-500 transition-all duration-500 shadow-xl" alt="Gallery">
+                    <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800" class="w-full border border-amber-900/50 hover:border-amber-500 transition-all duration-500 shadow-xl" alt="Gallery">
                 </div>
                  <div class="gallery-item reveal reveal-up" style="transition-delay: 150ms;">
-                    <img src="{{ $gallery[5] ?? 'https://images.unsplash.com/photo-1610173824052-a56b3e71d378?auto=format&fit=crop&q=80&w=800' }}" class="w-full border border-amber-900/50 hover:border-amber-500 transition-all duration-500 shadow-xl" alt="Gallery">
+                    <img src="https://images.unsplash.com/photo-1610173824052-a56b3e71d378?auto=format&fit=crop&q=80&w=800" class="w-full border border-amber-900/50 hover:border-amber-500 transition-all duration-500 shadow-xl" alt="Gallery">
                 </div>
             </div>
         </div>
@@ -439,7 +434,7 @@
         <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center relative z-10">
             <div class="reveal reveal-left">
                 <span class="text-amber-500 tracking-[0.2em] uppercase text-xs font-bold mb-4 block">Destination</span>
-                <h2 class="font-regal text-5xl mb-6 text-rose-100" id="preview-hero-location">{{ $invitation->data['location'] ?? 'Udaipur, Rajasthan' }}</h2>
+                <h2 class="font-regal text-5xl mb-6 text-rose-100">Udaipur, Rajasthan</h2>
                 <div class="w-20 h-[1px] bg-amber-600 mb-8"></div>
                 <p class="text-rose-200/60 mb-8 leading-relaxed font-light">Join us in the City of Lakes for a royal celebration under the stars.</p>
                 
@@ -450,7 +445,7 @@
                     </div>
                     <div class="p-6 border border-amber-900 hover:border-amber-500 transition-colors bg-[#2a0a12]/90">
                         <i data-lucide="plane" class="w-6 h-6 text-amber-500 mb-2"></i>
-                        <span class="text-sm font-bold block text-rose-100">Airport (UDR)</span>
+                        <span class="text-sm font-bold block text-rose-100">Maharana Pratap (UDR)</span>
                     </div>
                 </div>
             </div>
@@ -540,24 +535,23 @@
     </footer>
 
     <!-- Mobile Nav -->
-    <nav class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#2a0a12]/95 backdrop-blur-md grid grid-cols-5 gap-1 px-2 py-2 pb-4 border-t border-amber-900/30 w-full safe-pb">
-        <button id="preview-mobile-call" onclick="window.open('tel:{{ $invitation->data['phone'] ?? '' }}')" class="flex flex-col items-center justify-center text-amber-700 hover:text-amber-500 transition-colors">
-            <i data-lucide="phone" class="w-4 h-4"></i><span class="text-[8px] mt-0.5 font-medium uppercase">Call</span>
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#2a0a12]/95 backdrop-blur-md flex justify-around items-center px-4 py-3 pb-6 border-t border-amber-900/30">
+        <button onclick="window.open('tel:+123456789')" class="flex flex-col items-center text-amber-700 hover:text-amber-500 transition-colors">
+            <i data-lucide="phone" class="w-5 h-5"></i><span class="text-[9px] mt-1 font-medium uppercase">Call</span>
         </button>
-        <button id="preview-mobile-whatsapp" onclick="window.open('https://wa.me/{{ preg_replace('/[^0-9]/', '', $invitation->data['whatsapp'] ?? '') }}')" class="flex flex-col items-center justify-center text-amber-700 hover:text-amber-500 transition-colors">
-            <i data-lucide="message-circle" class="w-4 h-4"></i><span class="text-[8px] mt-0.5 font-medium uppercase">Chat</span>
+        <button onclick="window.open('https://wa.me/123456789')" class="flex flex-col items-center text-amber-700 hover:text-amber-500 transition-colors">
+            <i data-lucide="message-circle" class="w-5 h-5"></i><span class="text-[9px] mt-1 font-medium uppercase">Chat</span>
         </button>
-        <button onclick="downloadVCard()" class="flex items-center justify-center w-12 h-12 mx-auto bg-amber-700 text-white -mt-6 shadow-[0_0_20px_rgba(217,119,6,0.3)] hover:scale-105 transition-transform rotate-45 border-4 border-[#2a0a12]">
-            <i data-lucide="user-plus" class="w-5 h-5 -rotate-45"></i>
+        <button onclick="downloadVCard()" class="w-14 h-14 bg-amber-700 text-white flex items-center justify-center -mt-8 shadow-[0_0_20px_rgba(217,119,6,0.3)] hover:scale-105 transition-transform rotate-45 border-4 border-[#2a0a12]">
+            <i data-lucide="user-plus" class="w-6 h-6 -rotate-45"></i>
         </button>
-        <button onclick="window.print()" class="flex flex-col items-center justify-center text-amber-700 hover:text-amber-500 transition-colors">
-            <i data-lucide="download" class="w-4 h-4"></i><span class="text-[8px] mt-0.5 font-medium uppercase">Invite</span>
+        <button onclick="window.print()" class="flex flex-col items-center text-amber-700 hover:text-amber-500 transition-colors">
+            <i data-lucide="download" class="w-5 h-5"></i><span class="text-[9px] mt-1 font-medium uppercase">Invite</span>
         </button>
-        <button onclick="shareInvite()" class="flex flex-col items-center justify-center text-amber-700 hover:text-amber-500 transition-colors">
-            <i data-lucide="share-2" class="w-4 h-4"></i><span class="text-[8px] mt-0.5 font-medium uppercase">Share</span>
+        <button onclick="shareInvite()" class="flex flex-col items-center text-amber-700 hover:text-amber-500 transition-colors">
+            <i data-lucide="share-2" class="w-5 h-5"></i><span class="text-[9px] mt-1 font-medium uppercase">Share</span>
         </button>
     </nav>
-
 
     <script>
         lucide.createIcons();
@@ -624,7 +618,7 @@
         });
 
         // Countdown
-        const weddingDate = new Date("{{ $invitation->data['date'] }}T16:00:00").getTime();
+        const weddingDate = new Date("Dec 12, 2026 16:00:00").getTime();
         setInterval(() => {
             const now = new Date().getTime();
             const distance = weddingDate - now;
@@ -681,124 +675,12 @@
         });
 
         // Utils
-        function addToCalendar() { window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text={{ $invitation->data['bride'] }}%20%26%20{{ $invitation->data['groom'] }}%20Wedding&dates={{ \Carbon\Carbon::parse($invitation->data['date'])->format('Ymd') }}T160000Z/{{ \Carbon\Carbon::parse($invitation->data['date'])->addDays(1)->format('Ymd') }}T020000Z`, '_blank'); }
-        function shareInvite() { if(navigator.share) navigator.share({ title: '{{ $invitation->data['bride'] }} & {{ $invitation->data['groom'] }} Wedding', url: window.location.href }); else alert('Link copied!'); }
+        function addToCalendar() { window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=Elena%20%26%20Julian%20Wedding&dates=20261212T160000Z/20261213T020000Z`, '_blank'); }
+        function shareInvite() { if(navigator.share) navigator.share({ title: 'Elena & Julian Wedding', url: window.location.href }); else alert('Link copied!'); }
         function downloadVCard() {
-            const blob = new Blob([`BEGIN:VCARD\nVERSION:3.0\nFN:{{ $invitation->data['bride'] }} & {{ $invitation->data['groom'] }} Wedding\nURL:${window.location.href}\nEND:VCARD`], { type: 'text/vcard' });
+            const blob = new Blob([`BEGIN:VCARD\nVERSION:3.0\nFN:Elena & Julian Wedding\nURL:${window.location.href}\nEND:VCARD`], { type: 'text/vcard' });
             const a = document.createElement('a'); a.href = window.URL.createObjectURL(blob); a.download = 'wedding.vcf'; a.click();
         }
-
-        // --- Live Preview Hooks ---
-        window.updateAudioSource = function(src, type) {
-            // Theme 10 might separate wish/bg audio if implemented, otherwise generic
-            const audio = document.getElementById('bg-music');
-            if(audio) { audio.src = src; if(isMusicPlaying) audio.play(); }
-        }
-        
-        window.updateAudio = function(res) {
-            const audio = document.getElementById('bg-music');
-            if(audio) { audio.src = res; if(isMusicPlaying) audio.play(); }
-        }
-
-        window.toggleSection = function(section, isEnabled) {
-            // Map sections if IDs differ
-            const el = document.getElementById(section);
-            if(el) { if(isEnabled) el.classList.remove('hidden'); else el.classList.add('hidden'); }
-        }
-
-        window.updateCountdown = function(dateStr) {
-             // dateStr is YYYY-MM-DD
-            const newDate = new Date(dateStr + "T16:00:00").getTime();
-            // We need to update the interval logic, primarily by updating a global var if we had one
-            // Ideally we re-run the interval. For now, let's reload or just set a global override if accessible.
-            // Since the interval captures 'weddingDate', we might need to reload the iframe or expose weddingDate.
-            // DO NOTHING effectively requires a reload or exposing the var.
-            // Let's try to reload the frame for date changes in builder or better:
-            window.location.reload(); 
-        }
-
-        window.toggleSection = function(id, visible) { 
-             const el = document.getElementById(id); 
-             if(el) visible ? el.classList.remove('hidden') : el.classList.add('hidden'); 
-        }
-        window.updateEvents = function(events) { window.updateEventsList(events); };
-        window.updateEventsList = function(events) {
-             const container = document.getElementById('timeline-items');
-             if(!container) return;
-             
-             let html = '';
-             events.forEach((event, index) => {
-                 const isEven = index % 2 === 0;
-                 const alignRight = isEven; 
-                 
-                 // Date Parsing
-                 let dateStr = event.time;
-                 if(event.date) {
-                      const d = new Date(event.date);
-                      if(!isNaN(d.getTime())) {
-                          const options = { month: 'short', day: 'numeric' };
-                          const datePart = d.toLocaleDateString('en-US', options);
-                          dateStr = `${datePart} • ${event.time}`;
-                      }
-                 }
-                 
-                 const contentHtml = `
-                    <span class="text-amber-500 font-bold text-xs uppercase mb-2 block tracking-widest">${dateStr}</span>
-                    <h4 class="font-regal text-2xl text-rose-100 mb-2 group-hover:text-amber-400 transition-colors">${event.title}</h4>
-                    <p class="text-sm text-rose-200/60 font-light">${event.location}</p>
-                 `;
-                 
-                 const dotHtml = `<div class="absolute left-[20px] md:left-1/2 md:-ml-[7px] w-[14px] h-[14px] bg-[#450a0a] rotate-45 border border-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)] z-10 group-hover:bg-amber-600 transition-colors"></div>`;
-
-                 if(alignRight) {
-                     html += `
-                     <div class="relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-16 reveal reveal-left items-center group">
-                        <div class="md:text-right">${contentHtml}</div>
-                        <div class="hidden md:block"></div>
-                        ${dotHtml}
-                     </div>`;
-                 } else {
-                     html += `
-                     <div class="relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-16 reveal reveal-right items-center group">
-                        <div class="hidden md:block"></div>
-                        <div>${contentHtml}</div>
-                        ${dotHtml}
-                     </div>`;
-                 }
-             });
-             container.innerHTML = html;
-             if(window.lucide) window.lucide.createIcons();
-        };
-        window.updateGallery = function(urls) {
-            const grid = document.getElementById('preview-gallery-grid');
-            if(grid) {
-                grid.innerHTML = '';
-                urls.forEach((url, i) => {
-                     const div = document.createElement('div');
-                     div.className = "gallery-item reveal reveal-up";
-                     div.innerHTML = `<img src="${url}" class="w-full border border-amber-900/50 hover:border-amber-500 transition-all duration-500 shadow-xl">`;
-                     grid.appendChild(div);
-                });
-            }
-        };
-        window.updatePreview = function(type, id, value) {
-            if(type === 'text') { 
-                const el = document.getElementById(id); if(el) el.innerText = value;
-                const els = document.getElementsByClassName(id); Array.from(els).forEach(e => e.innerText = value);
-            }
-            if(type === 'src') { const el = document.getElementById(id); if(el) el.src = value; }
-            if(type === 'bg') { const el = document.getElementById(id); if(el) el.style.backgroundImage = `url('${value}')`; }
-            
-            // Mobile Nav Updates
-            if(type === 'link_tel') {
-                const el = document.getElementById('preview-mobile-call');
-                if(el) el.setAttribute('onclick', `window.open('tel:${value}')`);
-            }
-            if(type === 'link_whatsapp') {
-                const el = document.getElementById('preview-mobile-whatsapp');
-                if(el) el.setAttribute('onclick', `window.open('https://wa.me/${value}')`);
-            }
-        }; 
     </script>
 </body>
 </html>

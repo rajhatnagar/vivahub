@@ -11,6 +11,7 @@ class Rsvp extends Model
 
     protected $fillable = [
         'user_id',
+        'invitation_id',
         'guest_name',
         'guests_count',
         'phone',

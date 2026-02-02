@@ -102,9 +102,9 @@
 
         <!-- Middle: Names -->
         <div class="text-center relative z-10 animate-float">
-            <h1 class="font-script text-6xl md:text-8xl text-gold-200 drop-shadow-lg mb-2" id="preview-bride">{{ $bride_name ?? 'Dipika' }}</h1>
+            <h1 class="font-script text-6xl md:text-8xl text-gold-200 drop-shadow-lg mb-2 preview-bride" id="preview-bride">{{ $bride_name ?? 'Dipika' }}</h1>
             <span class="font-cinzel text-xl text-white block my-2">&</span>
-            <h1 class="font-script text-6xl md:text-8xl text-gold-200 drop-shadow-lg" id="preview-groom">{{ $groom_name ?? 'Sagar' }}</h1>
+            <h1 class="font-script text-6xl md:text-8xl text-gold-200 drop-shadow-lg preview-groom" id="preview-groom">{{ $groom_name ?? 'Sagar' }}</h1>
         </div>
 
         <!-- Bottom: Open Button -->
@@ -136,10 +136,10 @@
                 <div class="animate-slide-up" style="animation-delay: 0.5s;">
                     <p class="font-cinzel tracking-[0.4em] text-xs uppercase text-gold-300 mb-4">We Are Getting Married</p>
                     <h2 class="font-serif text-5xl md:text-7xl mb-2">
-                        <span id="preview-bride-hero">{{ $bride_name ?? 'Dipika' }}</span> & <span id="preview-groom-hero">{{ $groom_name ?? 'Sagar' }}</span>
+                        <span id="preview-bride-hero" class="preview-bride">{{ $bride_name ?? 'Dipika' }}</span> & <span id="preview-groom-hero" class="preview-groom">{{ $groom_name ?? 'Sagar' }}</span>
                     </h2>
                     <div class="flex items-center justify-center gap-4 mt-6 text-sm font-medium tracking-wide font-sans">
-                        <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-4 h-4 text-gold-400"></i> <span id="preview-date">Dec 12, 2026</span></span>
+                        <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-4 h-4 text-gold-400"></i> <span id="preview-hero-date">Dec 12, 2026</span></span>
                         <span class="w-1 h-1 bg-gold-400 rounded-full"></span>
                         <span class="flex items-center gap-1"><i data-lucide="map-pin" class="w-4 h-4 text-gold-400"></i> <span id="preview-hero-location">Udaipur</span></span>
                     </div>
@@ -166,7 +166,7 @@
                     <div class="w-48 h-48 md:w-64 md:h-64 rounded-full border-4 border-gold-200 p-1 shadow-xl overflow-hidden mb-6">
                         <img id="preview-groom-img" src="https://csssofttech.com/wedding/assets/groom.png" class="w-full h-full object-cover rounded-full hover:scale-110 transition-transform duration-700" alt="Groom">
                     </div>
-                    <h3 class="font-serif text-2xl text-gray-900 font-bold" id="preview-groom-card">{{ $groom_name ?? 'Sagar' }}</h3>
+                    <h3 class="font-serif text-2xl text-gray-900 font-bold preview-groom" id="preview-groom-card">{{ $groom_name ?? 'Sagar' }}</h3>
                     <p class="text-gray-500 text-sm mt-2 italic font-serif" id="preview-groom-bio">Son of Satyamurti</p>
                     <div class="mt-4 flex gap-3">
                         <a href="#" class="p-2 bg-gray-100 rounded-full text-gray-600 hover:text-royal-800 hover:bg-gold-100 transition-colors"><i data-lucide="instagram" class="w-4 h-4"></i></a>
@@ -178,7 +178,7 @@
                     <div class="w-48 h-48 md:w-64 md:h-64 rounded-full border-4 border-gold-200 p-1 shadow-xl overflow-hidden mb-6">
                         <img id="preview-bride-img" src="https://csssofttech.com/wedding/assets/bride.png" class="w-full h-full object-cover rounded-full hover:scale-110 transition-transform duration-700" alt="Bride">
                     </div>
-                    <h3 class="font-serif text-2xl text-gray-900 font-bold" id="preview-bride-card">{{ $bride_name ?? 'Dipika' }}</h3>
+                    <h3 class="font-serif text-2xl text-gray-900 font-bold preview-bride" id="preview-bride-card">{{ $bride_name ?? 'Dipika' }}</h3>
                     <p class="text-gray-500 text-sm mt-2 italic font-serif" id="preview-bride-bio">Daughter of Shivaji Hire</p>
                     <div class="mt-4 flex gap-3">
                          <a href="#" class="p-2 bg-gray-100 rounded-full text-gray-600 hover:text-royal-800 hover:bg-gold-100 transition-colors"><i data-lucide="instagram" class="w-4 h-4"></i></a>
@@ -197,7 +197,7 @@
                 <div class="w-20 h-px bg-gold-400 mx-auto mt-4"></div>
             </div>
 
-            <div class="max-w-3xl mx-auto relative z-10">
+            <div class="max-w-3xl mx-auto relative z-10" id="timeline-items">
                 <!-- Vertical Line -->
                 <div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gold-300 md:-translate-x-1/2"></div>
 
@@ -255,7 +255,7 @@
             </div>
 
             <!-- Masonry Layout CSS Grid -->
-            <div class="columns-2 md:columns-3 gap-4 space-y-4 max-w-5xl mx-auto px-2">
+            <div class="columns-2 md:columns-3 gap-4 space-y-4 max-w-5xl mx-auto px-2" id="preview-gallery-grid">
                 <!-- Img 1 -->
                 <div class="break-inside-avoid rounded-xl overflow-hidden shadow-lg group">
                     <img src="https://csssofttech.com/wedding/assets/gallery1.png" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
@@ -401,7 +401,7 @@
 
         // --- Builder Integration ---
         window.updateEventsList = function(events) {
-            const container = document.querySelector('#timeline .max-w-3xl');
+            const container = document.getElementById('timeline-items');
             if(!container) return;
 
             // Keep the vertical line
@@ -409,17 +409,29 @@
 
             events.forEach((event, index) => {
                 const isEven = index % 2 === 0;
+                
+                 // Date Parsing
+                 let dateStr = event.time;
+                 if(event.date) {
+                      const d = new Date(event.date);
+                      if(!isNaN(d.getTime())) {
+                          const options = { month: 'short', day: 'numeric' };
+                          const datePart = d.toLocaleDateString('en-US', options);
+                          dateStr = `${datePart} • ${event.time}`;
+                      }
+                 }
+                
                 // Timeline Item
                 html += `
                 <div class="relative flex flex-col md:flex-row gap-8 mb-12 group">
                     <div class="absolute left-4 md:left-1/2 w-3 h-3 bg-royal-800 rounded-full border-2 border-white shadow-lg -translate-x-[5px] md:-translate-x-[6px] top-6 z-20"></div>
                     
                     <div class="${isEven ? 'pl-12 md:pl-0 md:w-1/2 md:text-right md:pr-12' : 'hidden md:block md:w-1/2'}">
-                        ${isEven ? eventCard(event) : ''}
+                        ${isEven ? eventCard(event, dateStr) : ''}
                     </div>
                     
                     <div class="${!isEven ? 'pl-12 md:pl-0 md:w-1/2 md:pl-12' : 'hidden md:block md:w-1/2'}">
-                         ${!isEven ? eventCard(event) : ''}
+                         ${!isEven ? eventCard(event, dateStr) : ''}
                     </div>
                 </div>`;
             });
@@ -427,26 +439,42 @@
             container.innerHTML = html;
         };
 
-        function eventCard(event) {
+        function eventCard(event, dateStr) {
             return `
             <div class="bg-[#FDFBF7] p-6 rounded-xl border border-gold-200 shadow-md hover:shadow-xl transition-shadow duration-300">
-                <span class="inline-block px-3 py-1 bg-gold-100 text-royal-800 text-xs font-bold uppercase tracking-widest rounded-full mb-3">${event.time || 'Date'}</span>
+                <span class="inline-block px-3 py-1 bg-gold-100 text-royal-800 text-xs font-bold uppercase tracking-widest rounded-full mb-3">${dateStr || event.time || 'Date'}</span>
                 <h3 class="font-serif text-xl font-bold text-gray-800 mb-2">${event.title || 'Event Title'}</h3>
                 <p class="text-gray-600 text-sm leading-relaxed">${event.description || 'Description'}</p>
                 <p class="text-gray-500 text-xs mt-2 italic flex items-center gap-1 ${event.time ? '' : 'hidden'}"><i data-lucide="map-pin" class="w-3 h-3"></i> ${event.location}</p>
             </div>`;
         }
         
-        window.toggleSection = function(feature, isEnabled) {
-            if(feature === 'bg_music') {
-                 const player = document.querySelector('.fixed.bottom-24.right-4');
-                 if(player) player.style.display = isEnabled ? 'flex' : 'none';
-            }
-            if(feature === 'rsvp') {
-                const rsvp = document.getElementById('rsvp');
-                if(rsvp) rsvp.style.display = isEnabled ? 'block' : 'none';
+        window.updateGallery = function(urls) {
+            const grid = document.getElementById('preview-gallery-grid');
+            if(grid) {
+                grid.innerHTML = '';
+                urls.forEach((url, i) => {
+                     const div = document.createElement('div');
+                     div.className = "break-inside-avoid rounded-xl overflow-hidden shadow-lg group";
+                     div.innerHTML = `<img src="${url}" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">`;
+                     grid.appendChild(div);
+                });
             }
         };
+
+        window.updatePreview = function(type, id, value) {
+            if(type === 'text') { 
+                const el = document.getElementById(id); if(el) el.innerText = value;
+                const els = document.getElementsByClassName(id); Array.from(els).forEach(e => e.innerText = value);
+            }
+            if(type === 'src') { const el = document.getElementById(id); if(el) el.src = value; }
+            if(type === 'bg') { const el = document.getElementById(id); if(el) el.style.backgroundImage = `url('${value}')`; }
+        };
+
+        window.toggleSection = function(id, visible) { 
+             const el = document.getElementById(id); 
+             if(el) visible ? el.classList.remove('hidden') : el.classList.add('hidden'); 
+        }
     </script>
 </body>
 </html>

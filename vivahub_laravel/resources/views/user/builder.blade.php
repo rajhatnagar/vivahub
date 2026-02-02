@@ -43,24 +43,31 @@
                 <!-- Tagline -->
                 <div>
                    <label class="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2 ml-1">Tagline</label>
-                   <input type="text" value="We are getting married" class="w-full rounded-xl border-gray-200 bg-white p-3.5 text-sm font-medium text-text-dark outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all dark:bg-white/5 dark:border-white/10 dark:text-white" oninput="updatePreview('text', 'preview-tagline', this.value)">
+                   <input type="text" id="input-tagline" value="We are getting married" class="w-full rounded-xl border-gray-200 bg-white p-3.5 text-sm font-medium text-text-dark outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all dark:bg-white/5 dark:border-white/10 dark:text-white" oninput="updatePreview('text', 'preview-tagline', this.value)">
                 </div>
                 
                 <!-- Phone Number -->
-                <div>
-                   <label class="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2 ml-1">Call Number</label>
-                   <input type="tel" placeholder="+91 9876543210" class="w-full rounded-xl border-gray-200 bg-white p-3.5 text-sm font-medium text-text-dark outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all dark:bg-white/5 dark:border-white/10 dark:text-white" oninput="updatePreview('href', 'preview-call-btn', 'tel:' + this.value)">
+                <div class="grid grid-cols-2 gap-4">
+                     <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2 ml-1">Call Number</label>
+                        <input type="tel" id="input-phone" placeholder="+91 9876543210" class="w-full rounded-xl border-gray-200 bg-white p-3.5 text-sm font-medium text-text-dark outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all dark:bg-white/5 dark:border-white/10 dark:text-white" oninput="updatePreview('href', 'preview-call-btn', 'tel:' + this.value); updatePreview('href', 'preview-mobile-call', 'tel:' + this.value)">
+                     </div>
+                     <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2 ml-1">WhatsApp Number</label>
+                        <input type="tel" id="input-whatsapp" placeholder="+91 9876543210" class="w-full rounded-xl border-gray-200 bg-white p-3.5 text-sm font-medium text-text-dark outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all dark:bg-white/5 dark:border-white/10 dark:text-white" oninput="updatePreview('href', 'preview-wa-btn', 'https://wa.me/' + this.value.replace(/[^0-9]/g, '')); updatePreview('href', 'preview-mobile-whatsapp', 'https://wa.me/' + this.value.replace(/[^0-9]/g, ''))">
+                     </div>
                 </div>
+
 
                 <!-- Names -->
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2 ml-1">Bride's Name</label>
-                        <input type="text" value="Dipika" class="w-full rounded-xl border-gray-200 bg-white p-3.5 text-sm font-medium text-text-dark outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all dark:bg-white/5 dark:border-white/10 dark:text-white" oninput="updatePreview('text', 'preview-bride', this.value)">
+                        <input type="text" id="input-bride-name" value="Dipika" class="w-full rounded-xl border-gray-200 bg-white p-3.5 text-sm font-medium text-text-dark outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all dark:bg-white/5 dark:border-white/10 dark:text-white" oninput="updatePreview('text', 'preview-bride', this.value); updatePreview('text', 'preview-bride-name', this.value)">
                     </div>
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2 ml-1">Groom's Name</label>
-                        <input type="text" value="Sagar" class="w-full rounded-xl border-gray-200 bg-white p-3.5 text-sm font-medium text-text-dark outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all dark:bg-white/5 dark:border-white/10 dark:text-white" oninput="updatePreview('text', 'preview-groom', this.value)">
+                        <input type="text" id="input-groom-name" value="Sagar" class="w-full rounded-xl border-gray-200 bg-white p-3.5 text-sm font-medium text-text-dark outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all dark:bg-white/5 dark:border-white/10 dark:text-white" oninput="updatePreview('text', 'preview-groom', this.value); updatePreview('text', 'preview-groom-name', this.value)">
                     </div>
                 </div>
 
@@ -68,11 +75,11 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2 ml-1">Wedding Date</label>
-                        <input type="date" value="2026-12-12" class="w-full rounded-xl border-gray-200 bg-white p-3.5 text-sm font-medium text-text-dark outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all dark:bg-white/5 dark:border-white/10 dark:text-white text-gray-400" oninput="updateDate(this.value)">
+                        <input type="date" id="input-date" value="2026-12-12" class="w-full rounded-xl border-gray-200 bg-white p-3.5 text-sm font-medium text-text-dark outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all dark:bg-white/5 dark:border-white/10 dark:text-white text-gray-400" oninput="updateDate(this.value)">
                     </div>
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2 ml-1">Location</label>
-                        <input type="text" value="Udaipur" class="w-full rounded-xl border-gray-200 bg-white p-3.5 text-sm font-medium text-text-dark outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all dark:bg-white/5 dark:border-white/10 dark:text-white" oninput="updatePreview('text', 'preview-hero-location', this.value)">
+                        <input type="text" id="input-location" value="Udaipur" class="w-full rounded-xl border-gray-200 bg-white p-3.5 text-sm font-medium text-text-dark outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all dark:bg-white/5 dark:border-white/10 dark:text-white" oninput="updatePreview('text', 'preview-hero-location', this.value)">
                     </div>
                 </div>
             </div>
@@ -92,7 +99,11 @@
                     </div>
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2 ml-1">Description / Family</label>
-                        <input type="text" value="Daughter of Sagar Shivaji Hire" class="w-full rounded-xl border-gray-200 bg-white p-3.5 text-sm font-medium text-text-dark outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all dark:bg-white/5 dark:border-white/10 dark:text-white" oninput="updatePreview('text', 'preview-bride-bio', this.value)">
+                        <input type="text" id="input-bride-bio" value="Daughter of Sagar Shivaji Hire" class="w-full rounded-xl border-gray-200 bg-white p-3.5 text-sm font-medium text-text-dark outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all dark:bg-white/5 dark:border-white/10 dark:text-white" oninput="updatePreview('text', 'preview-bride-bio', this.value)">
+                    </div>
+                    <div>
+                         <label class="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2 ml-1">Instagram Profile</label>
+                         <input type="text" id="input-bride-insta" placeholder="https://instagram.com/..." class="w-full rounded-xl border-gray-200 bg-white p-3.5 text-sm font-medium text-text-dark outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all dark:bg-white/5 dark:border-white/10 dark:text-white" oninput="updatePreview('href', 'preview-bride-insta', this.value)">
                     </div>
                  </div>
 
@@ -107,7 +118,11 @@
                     </div>
                      <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2 ml-1">Description / Family</label>
-                        <input type="text" value="Son of Satyamurti" class="w-full rounded-xl border-gray-200 bg-white p-3.5 text-sm font-medium text-text-dark outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all dark:bg-white/5 dark:border-white/10 dark:text-white" oninput="updatePreview('text', 'preview-groom-bio', this.value)">
+                        <input type="text" id="input-groom-bio" value="Son of Satyamurti" class="w-full rounded-xl border-gray-200 bg-white p-3.5 text-sm font-medium text-text-dark outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all dark:bg-white/5 dark:border-white/10 dark:text-white" oninput="updatePreview('text', 'preview-groom-bio', this.value)">
+                    </div>
+                    <div>
+                         <label class="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2 ml-1">Instagram Profile</label>
+                         <input type="text" id="input-groom-insta" placeholder="https://instagram.com/..." class="w-full rounded-xl border-gray-200 bg-white p-3.5 text-sm font-medium text-text-dark outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all dark:bg-white/5 dark:border-white/10 dark:text-white" oninput="updatePreview('href', 'preview-groom-insta', this.value)">
                     </div>
                  </div>
             </div>
@@ -211,29 +226,54 @@
                         <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                     </label>
                 </div>
+
+                <!-- Map URL (Moved from Step 6) -->
+                 <div>
+                    <div class="flex items-center gap-2 mb-3 pt-4 border-t border-gray-100 dark:border-white/10">
+                         <span class="material-symbols-outlined text-primary">pin_drop</span>
+                         <label class="text-sm font-bold uppercase tracking-wider text-text-dark dark:text-white">Google Map Location</label>
+                    </div>
+                    
+                    <div class="bg-gray-50 dark:bg-white/5 p-5 rounded-2xl border border-gray-100 dark:border-white/5 hover:border-primary/30 transition-colors">
+                        <p class="text-xs text-text-muted mb-3 font-medium">Paste the "Embed a map" HTML or Link from Google Maps.</p>
+                        <input type="text" id="input-map-url" placeholder='<iframe src="https://www.google.com/maps/embed?..."></iframe>' class="w-full rounded-xl border-gray-200 bg-white p-4 text-sm font-medium text-text-dark outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all dark:bg-white/5 dark:border-white/10 dark:text-white shadow-sm">
+                        
+                        <div class="mt-3 flex items-start gap-2 text-yellow-600 bg-yellow-50 dark:bg-yellow-900/10 p-3 rounded-lg">
+                            <span class="material-symbols-outlined text-sm mt-0.5">lightbulb</span> 
+                            <p class="text-[10px] leading-relaxed"><strong>Tip:</strong> Go to Google Maps selected location -> Click Share -> Embed a map -> Copy HTML. Paste the whole code here.</p>
+                        </div>
+                    </div>
+                 </div>
             </div>
 
             <!-- Step 6: Finish -->
-            <div id="step-6" class="space-y-6 animate-fade-in hidden text-center pt-10">
-                 <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce-soft">
-                     <span class="material-symbols-outlined text-4xl text-green-600">check_circle</span>
+            <div id="step-6" class="space-y-8 animate-fade-in hidden">
+                 <h3 class="text-xl font-bold text-text-dark dark:text-white border-b border-gray-100 dark:border-white/10 pb-2">Final Touches</h3>
+
+
+
+                 <!-- Publish Section -->
+                 <div class="text-center pt-8 border-t border-gray-100 dark:border-white/10">
+                     <div class="w-20 h-20 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce-soft">
+                         <span class="material-symbols-outlined text-4xl text-green-600 dark:text-green-400">check_circle</span>
+                     </div>
+                     <h3 class="text-2xl font-bold text-text-dark dark:text-white mb-2">Ready to Publish!</h3>
+                     <p class="text-text-muted">Your invitation looks amazing. Click publish to go live.</p>
                  </div>
-                 <h3 class="text-2xl font-bold text-text-dark dark:text-white">Ready to Publish!</h3>
-                 <p class="text-text-muted">Your invitation looks amazing. Click publish to go live.</p>
             </div>
 
         </div>
 
         <!-- Form Footer -->
         <div class="p-5 border-t border-gray-100 dark:border-white/5 flex gap-4 bg-white dark:bg-[#1a0b0b]">
-             <button onclick="changeStep(-1)" id="btn-back" class="px-6 py-3 rounded-xl border border-gray-200 font-bold text-text-dark dark:text-white dark:border-white/20 hover:bg-gray-50 hidden">Back</button>
+             <button onclick="changeStep(-1)" id="btn-back" class="hidden flex-1 px-6 py-3 rounded-xl border border-gray-200 font-bold text-text-dark dark:text-white dark:border-white/20 hover:bg-gray-50 transition-colors">Back</button>
              
              <!-- Mobile Preview Button -->
-             <button onclick="openMobilePreview()" class="lg:hidden px-4 py-3 rounded-xl bg-gray-100 text-text-dark font-bold hover:bg-gray-200 dark:bg-white/10 dark:text-white"><span class="material-symbols-outlined">visibility</span></button>
+             <button onclick="openMobilePreview()" class="lg:hidden px-4 py-3 rounded-xl bg-gray-100 text-text-dark font-bold hover:bg-gray-200 dark:bg-white/10 dark:text-white"><span class="material-symbols-outlined align-middle">visibility</span></button>
              
              <button onclick="changeStep(1)" id="btn-next" class="flex-1 bg-primary text-white font-bold py-3 rounded-xl hover:bg-primary-dark shadow-lg transition-colors">Next Step</button>
              <button onclick="saveDraft()" id="btn-draft" class="hidden flex-1 bg-gray-100 text-text-dark font-bold py-3 rounded-xl hover:bg-gray-200 dark:bg-white/10 dark:text-white dark:hover:bg-white/20 transition-colors">Save Draft</button>
-             <button onclick="showCheckout()" id="btn-publish" class="flex-1 bg-accent-gold text-white font-bold py-3 rounded-xl hover:bg-yellow-600 shadow-lg animate-pulse hidden">Publish Now</button>
+             <button onclick="showCheckout()" id="btn-publish" class="hidden flex-1 bg-accent-gold text-white font-bold py-3 rounded-xl hover:bg-yellow-600 shadow-lg animate-pulse">Publish Now</button>
         </div>
     </div>
 
@@ -247,7 +287,7 @@
             <div id="preview-notch" class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-[#1b0d12] dark:bg-[#2a2a2a] rounded-b-2xl z-20"></div>
             
             <!-- Iframe Preview -->
-            <iframe id="preview-frame" src="{{ route('builder.preview', ['template' => $templateId]) }}" class="w-full h-full bg-white" style="border:none;"></iframe>
+            <iframe id="preview-frame" src="{{ route('builder.preview', ['template' => $templateId, 'invitation_id' => $invitation->id ?? null]) }}" class="w-full h-full bg-white" style="border:none;"></iframe>
         </div>
 
         <!-- Preview Toggle -->
@@ -422,159 +462,225 @@
     </div>
 </div>
 
-<script>
-    // ... (existing helper functions) ...
-
-    // --- Checkout Logic ---
-    let selectedPlan = null;
-    let appliedCoupon = null;
-
-    function showCheckout() {
-        document.getElementById('checkout-modal').classList.remove('hidden');
-        loadPlans();
-    }
-    
-    function hideCheckout() {
-        document.getElementById('checkout-modal').classList.add('hidden');
-    }
-
-    function loadPlans() {
-        const list = document.getElementById('plans-list');
-        const loader = document.getElementById('plans-loader');
-        
-        list.innerHTML = '';
-        loader.classList.remove('hidden');
-        
-        fetch('{{ route("plans.get") }}')
-        .then(res => res.json())
-        .then(data => {
-            loader.classList.add('hidden');
-            if(data.success && data.plans.length > 0) {
-                data.plans.forEach(plan => {
-                    // Features list
-                    const featuresHtml = plan.features.map(f => `<li class="flex items-center gap-1"><span class="material-symbols-outlined text-xs text-green-500">check</span> ${f}</li>`).join('');
-                    
-                    const html = `
-                        <div data-id="${plan.id}" onclick="selectPlan(${plan.id}, '${plan.name}', ${plan.price})" class="plan-card cursor-pointer bg-white dark:bg-white/5 p-4 rounded-xl border-2 transition-all group border-gray-100 dark:border-white/10 hover:border-primary/50">
-                            <div class="flex justify-between items-center mb-2">
-                                <h4 class="font-bold text-text-dark dark:text-white">${plan.name}</h4>
-                                <span class="bg-gray-100 dark:bg-white/10 text-xs font-bold px-2 py-1 rounded-md">₹${plan.price}</span>
-                            </div>
-                            <ul class="text-xs text-text-muted space-y-1 mb-2">
-                                ${featuresHtml}
-                            </ul>
-                            <div class="text-[10px] text-text-muted uppercase tracking-wider">${plan.validity} Validity</div>
-                        </div>
-                    `;
-                    list.insertAdjacentHTML('beforeend', html);
-                });
-                
-                // Auto select first
-                if(!selectedPlan) selectPlan(data.plans[0].id, data.plans[0].name, data.plans[0].price);
-                else {
-                    // Re-highlight if keeping selection (ensure visual consistency)
-                    highlightSelectedPlan(selectedPlan.id);
-                }
-            } else {
-                list.innerHTML = '<p class="text-center text-sm text-text-muted">No plans available.</p>';
-            }
-        })
-        .catch(err => {
-            console.error(err);
-            loader.classList.add('hidden');
-            list.innerHTML = '<p class="text-center text-sm text-red-400">Error loading plans.</p>';
-        });
-    }
-
-    function selectPlan(id, name, price) {
-        selectedPlan = { id, name, price };
-        appliedCoupon = null; // Reset coupon on plan change
-        document.getElementById('coupon-input').value = '';
-        document.getElementById('coupon-message').classList.add('hidden');
-        
-        updateCheckoutSummary();
-        highlightSelectedPlan(id);
-    }
-
-    function highlightSelectedPlan(id) {
-        // Visual highlighting removed as per user request
-        // We only keep the internal state active (selectedPlan variable)
-    }
+@endsection
 
 @push('scripts')
+
 <script>
+
     let currentStep = 1;
     const totalSteps = 6;
     let eventCount = 0;
 
     // Load initial events
     // --- Persistence & Edit Logic ---
-    const invitationData = @json($invitation ?? null);
-    const saveRoute = "{{ $saveRoute ?? route('builder.save') }}";
-    const isPartner = @json($isPartner ?? false);
-    const isAdmin = @json($isAdmin ?? false);
+    // Assign to window for global access and debugging
+    window.invitationData = @json($invitation ?? null);
+    window.saveRoute = "{{ $saveRoute ?? route('builder.save') }}";
+    window.isPartner = @json($isPartner ?? false);
+    window.isAdmin = @json($isAdmin ?? false);
 
-    document.addEventListener('DOMContentLoaded', () => {
-        // Init UI
-        if(isPartner || isAdmin) {
-            document.getElementById('btn-publish').remove(); // Remove publish completely for partners/admin
-            const draftBtn = document.getElementById('btn-draft');
-            draftBtn.innerText = isAdmin ? "Save Design" : "Save to Library";
-            draftBtn.classList.remove('hidden');
-        }
 
-        if(invitationData && invitationData.data) {
-             populateFields(invitationData.data);
-        } else {
-             // Add default events if new
-             addNewEvent('Mehendi', 'Dec 11, 04:00 PM', 'Music, Dance & Henna.', 'Poolside Lawns');
-             addNewEvent('Haldi', 'Dec 12, 09:00 AM', 'A golden glow.', 'The Courtyard');
+
+    function initBuilder() {
+        try {
+            console.log("Builder Init Started.");
+            
+            // Init UI
+            if(window.isPartner || window.isAdmin) {
+                const btnPub = document.getElementById('btn-publish');
+                if(btnPub) btnPub.remove(); 
+                const draftBtn = document.getElementById('btn-draft');
+                if(draftBtn) {
+                    draftBtn.innerText = window.isAdmin ? "Save Design" : "Save to Library";
+                    draftBtn.classList.remove('hidden');
+                }
+            }
+    
+            if(window.invitationData) {
+                 const data = window.invitationData.data || window.invitationData;
+                 console.log("Calling populateFields with:", data);
+                 populateFields(data);
+            } else {
+                 console.log("No invitation data found. Using defaults.");
+                 // Add default events if new
+                 if(typeof addNewEvent === 'function') {
+                    addNewEvent('Mehendi', 'Dec 11, 04:00 PM', 'Music, Dance & Henna.', 'Poolside Lawns');
+                    addNewEvent('Haldi', 'Dec 12, 09:00 AM', 'A golden glow.', 'The Courtyard');
+                 }
+            }
+        } catch(e) {
+            console.error("Builder Init Error:", e);
         }
-    });
+    }
+
+    // Run immediately if ready, else wait
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initBuilder);
+    } else {
+        initBuilder();
+    }
+
+    // Global State for Images
+    let imageState = {
+        hero_bg: '',
+        bride_image: '',
+        groom_image: '',
+        gallery: []
+    };
 
     function populateFields(data) {
+
+
         // Helper to set value and trigger input event for preview update
         const setVal = (selector, val) => {
             const el = document.querySelector(selector);
-            if(el) { el.value = val; el.dispatchEvent(new Event('input')); }
+            if(el && val) { 
+                el.value = val; 
+                el.dispatchEvent(new Event('input')); 
+            }
         };
+        
+        // 1. Basic Fields
+        if(data.tagline) setVal('#input-tagline', data.tagline);
+        if(data.groom_name || data.groom) setVal('#input-groom-name', data.groom_name || data.groom);
+        if(data.bride_name || data.bride) setVal('#input-bride-name', data.bride_name || data.bride);
+        
+        // Date Fix: Ensure YYYY-MM-DD
+        if(data.date) {
+            try {
+                // Handle various formats (e.g. Dec 12, 2026 or 2026-12-12)
+                const d = new Date(data.date);
+                if(!isNaN(d.getTime())) {
+                    const iso = d.toISOString().split('T')[0];
+                    setVal('#input-date', iso);
+                }
+            } catch(e) { console.error("Date parse error", e); }
+        }
 
-        if(data.tagline) setVal('input[oninput*="preview-tagline"]', data.tagline);
-        if(data.groom) setVal('input[oninput*="preview-groom"]', data.groom);
-        if(data.bride) setVal('input[oninput*="preview-bride"]', data.bride);
-        if(data.date) setVal('input[type="date"]', data.date);
-        if(data.location) setVal('input[oninput*="preview-hero-location"]', data.location);
-        if(data.phone) setVal('input[type="tel"]', data.phone);
-        if(data.groomBio) setVal('input[oninput*="preview-groom-bio"]', data.groomBio);
-        if(data.brideBio) setVal('input[oninput*="preview-bride-bio"]', data.brideBio);
+        if(data.venue_city || data.location) setVal('#input-location', data.venue_city || data.location);
+        if(data.map_url) setVal('#input-map-url', data.map_url);
+        if(data.phone) setVal('#input-phone', data.phone);
+        if(data.whatsapp) setVal('#input-whatsapp', data.whatsapp);
+        
+        // 2. Social & Bio
+        if(data.bride_insta) setVal('#input-bride-insta', data.bride_insta);
+        if(data.groom_insta) setVal('#input-groom-insta', data.groom_insta);
+        if(data.groom_bio || data.groomBio) setVal('#input-groom-bio', data.groom_bio || data.groomBio);
+        if(data.bride_bio || data.brideBio) setVal('#input-bride-bio', data.bride_bio || data.brideBio);
 
-        // Events
-        if(data.eventDates && data.eventDates.length > 0) {
-            document.getElementById('events-container').innerHTML = ''; // Clear default
-            data.eventDates.forEach(e => {
-                addNewEvent(e.title, e.time, e.description, e.location);
+        // 3. Images - Trigger preview update if present & Update State
+        if(data.bride_image) {
+            imageState.bride_image = data.bride_image;
+            updatePreview('src', 'preview-bride-img', data.bride_image);
+        } else updatePreview('src', 'preview-bride-img', 'https://csssofttech.com/wedding/assets/bride.png');
+
+        if(data.groom_image) {
+            imageState.groom_image = data.groom_image;
+            updatePreview('src', 'preview-groom-img', data.groom_image);
+        } else updatePreview('src', 'preview-groom-img', 'https://csssofttech.com/wedding/assets/groom.png');
+        
+        if(data.hero_bg || data.h_img) {
+            imageState.hero_bg = data.hero_bg || data.h_img;
+            updatePreview('bg', 'preview-hero-bg', imageState.hero_bg);
+        } else updatePreview('bg', 'preview-hero-bg', "{{ asset('assets/hero-background.png') }}");
+        
+        // Gallery
+        if(data.gallery && Array.isArray(data.gallery)) {
+            imageState.gallery = data.gallery;
+            // Trigger gallery update if possible (requires waiting for iframe or ensuring it's ready)
+             setTimeout(() => {
+                const frame = document.getElementById('preview-frame');
+                if(frame.contentWindow.updateGallery) frame.contentWindow.updateGallery(data.gallery);
+            }, 1000);
+        }
+
+        // 4. Events (Handle both formats)
+        // Clear default
+        document.getElementById('events-container').innerHTML = '';
+        
+        const events = data.eventDates || data.events || [];
+        if(events.length > 0) {
+            events.forEach(e => {
+                // Normalize keys
+                const title = e.title || e.name || 'Event';
+                const time = e.time || (e.date ? e.date.split(',')[1] : '') || ''; // Try to extract time if mixed
+                const desc = e.description || e.desc || '';
+                const loc = e.location || '';
+                addNewEvent(title, time, desc, loc);
             });
+        } else {
+             // Fallback if empty array but not null
+             addNewEvent('Mehendi', 'Dec 11, 04:00 PM', 'Music, Dance & Henna.', 'Poolside Lawns');
+             addNewEvent('Haldi', 'Dec 12, 09:00 AM', 'A golden glow.', 'The Courtyard');
+        }
+
+        // 5. Update UI for Edit Mode (Bypass Payment)
+        if(invitationData && invitationData.id) {
+            const btnPublish = document.getElementById('btn-publish');
+            btnPublish.innerText = "Update Invitation";
+            btnPublish.classList.remove('bg-accent-gold','animate-pulse'); // Remove gold/pulse
+            btnPublish.classList.add('bg-green-600', 'hover:bg-green-700');
+            
+            // Override onclick to skip checkout
+            btnPublish.onclick = function() {
+                saveInvitation('published').then(success => {
+                    if(success) {
+                        alert('Invitation updated successfully!');
+                        window.location.href = "{{ route('dashboard') }}";
+                    }
+                });
+            };
+            
+            // Also update Step 6 Text
+            const finishHeader = document.querySelector('#step-6 h3.text-2xl');
+            if(finishHeader) finishHeader.innerText = "Ready to Update!";
+            const finishSub = document.querySelector('#step-6 p.text-text-muted');
+            if(finishSub) finishSub.innerText = "Click Update to save your changes.";
         }
     }
 
     function changeStep(dir) {
-        document.getElementById(`step-${currentStep}`).classList.add('hidden');
         currentStep += dir;
-        document.getElementById(`step-${currentStep}`).classList.remove('hidden');
+        updateStepUI();
+    }
 
+    function updateStepUI() {
+        // Toggle Sections
+        for(let i=1; i<=totalSteps; i++) {
+            const el = document.getElementById('step-'+i);
+            if(el) {
+                if(i === currentStep) el.classList.remove('hidden');
+                else el.classList.add('hidden');
+            }
+        }
+
+        // Progress Bar
+        const progress = ((currentStep / totalSteps) * 100) + '%';
+        document.getElementById('progress-bar').style.width = progress;
         document.getElementById('step-indicator').innerText = `Step ${currentStep}/${totalSteps}`;
-        document.getElementById('progress-bar').style.width = `${(currentStep/totalSteps)*100}%`;
 
-        document.getElementById('btn-back').classList.toggle('hidden', currentStep === 1);
-        
+        // Buttons
+        const btnBack = document.getElementById('btn-back');
+        const btnNext = document.getElementById('btn-next');
+        const btnDraft = document.getElementById('btn-draft');
+        const btnPublish = document.getElementById('btn-publish');
+
+        if(currentStep === 1) btnBack.classList.add('hidden');
+        else btnBack.classList.remove('hidden');
+
         if(currentStep === totalSteps) {
-            document.getElementById('btn-next').classList.add('hidden');
-            document.getElementById('btn-publish').classList.remove('hidden');
-            document.getElementById('btn-draft').classList.remove('hidden');
+            btnNext.classList.add('hidden');
+            if(isPartner || isAdmin) {
+                 btnDraft.classList.remove('hidden');
+            } else {
+                 btnPublish.classList.remove('hidden');
+                 if(!isAdmin) btnDraft.classList.remove('hidden'); // Allow draft for users too as secondary
+            }
         } else {
-            document.getElementById('btn-next').classList.remove('hidden');
-            document.getElementById('btn-publish').classList.add('hidden');
-            document.getElementById('btn-draft').classList.add('hidden');
+            btnNext.classList.remove('hidden');
+            btnDraft.classList.add('hidden');
+            btnPublish.classList.add('hidden');
         }
     }
 
@@ -589,23 +695,37 @@
         }
 
         // Gather Data
+        // Gather Data
         const data = {
             id: invitationData ? invitationData.id : null, // Include ID if editing
             templateId: '{{ $templateId }}',
             status: status,
-            tagline: document.querySelector('input[oninput*="preview-tagline"]').value,
-            bride: document.querySelector('input[oninput*="preview-bride"]').value,
-            groom: document.querySelector('input[oninput*="preview-groom"]').value,
-            date: document.querySelector('input[type="date"]').value,
-            location: document.querySelector('input[oninput*="preview-hero-location"]').value,
-            phone: document.querySelector('input[type="tel"]').value,
-            groomBio: document.querySelector('input[oninput*="preview-groom-bio"]')?.value || '',
-            brideBio: document.querySelector('input[oninput*="preview-bride-bio"]')?.value || '',
-            // Compatibility mappings
-            bride_name: document.querySelector('input[oninput*="preview-bride"]').value,
-            groom_name: document.querySelector('input[oninput*="preview-groom"]').value,
-            location_name: document.querySelector('input[oninput*="preview-hero-location"]').value,
-            venue_city: document.querySelector('input[oninput*="preview-hero-location"]').value,
+            tagline: document.getElementById('input-tagline').value,
+            bride_name: document.getElementById('input-bride-name').value,
+            groom_name: document.getElementById('input-groom-name').value,
+            date: document.getElementById('input-date').value,
+            venue_city: document.getElementById('input-location').value,
+            // Keep legacy keys
+            groom: document.getElementById('input-groom-name').value, 
+            bride: document.getElementById('input-bride-name').value,
+            bride: document.getElementById('input-bride-name').value,
+            location: document.getElementById('input-location').value,
+            map_url: document.getElementById('input-map-url').value,
+
+            phone: document.getElementById('input-phone').value,
+            whatsapp: document.getElementById('input-whatsapp').value,
+            groom_bio: document.getElementById('input-groom-bio').value,
+            bride_bio: document.getElementById('input-bride-bio').value,
+            bride_insta: document.getElementById('input-bride-insta').value,
+            groom_insta: document.getElementById('input-groom-insta').value,
+            
+            // Images from State
+            bride_image: imageState.bride_image,
+            groom_image: imageState.groom_image,
+            hero_bg: imageState.hero_bg,
+            h_img: imageState.hero_bg, // Legacy support
+            gallery: imageState.gallery, 
+            
             // JSON of events
             eventDates: [],
             events: [],
@@ -802,11 +922,8 @@
         frame.addEventListener('load', injectStyle);
     }
 
-    // Apply to both frames on load
-    document.addEventListener('DOMContentLoaded', () => {
-        hideScrollbar('preview-frame');
-        hideScrollbar('mobile-preview-frame');
-    });
+    // Scrollbar logic moved to syncAllToPreview area
+
     
     // --- Features Logic ---
     function toggleFeature(feature, isEnabled) {
@@ -859,7 +976,13 @@
         if (input.files && input.files[0]) {
             const reader = new FileReader();
             reader.onload = function(e) {
-                 updatePreview(type, targetId, e.target.result);
+                 const res = e.target.result;
+                 updatePreview(type, targetId, res);
+                 
+                 // Update State for Persistence
+                 if(targetId === 'preview-bride-img') imageState.bride_image = res;
+                 if(targetId === 'preview-groom-img') imageState.groom_image = res;
+                 if(targetId === 'preview-hero-bg') imageState.hero_bg = res;
             }
             reader.readAsDataURL(input.files[0]);
         }
@@ -897,13 +1020,17 @@
             
             const urls = [];
             let processed = 0;
+            imageState.gallery = []; // Reset gallery state on new upload
 
             Array.from(input.files).forEach(file => {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    urls.push(e.target.result);
+                    const res = e.target.result;
+                    urls.push(res);
                     processed++;
                     if(processed === input.files.length) {
+                        imageState.gallery = urls; // Save to state
+                        
                         const frame = document.getElementById('preview-frame');
                         if(frame.contentWindow.updateGallery) frame.contentWindow.updateGallery(urls);
                         
@@ -916,7 +1043,39 @@
         }
     }
 
-    // --- Date Logic ---
+    // --- Sync Logic (New) ---
+    function syncAllToPreview() {
+        console.log("Syncing all data to preview...");
+        // 1. Inputs with oninput="updatePreview(...)"
+        const inputs = document.querySelectorAll('input[oninput*="updatePreview"]');
+        inputs.forEach(input => {
+             input.dispatchEvent(new Event('input'));
+        });
+        
+        // 2. Events & Images
+        syncAllEvents();
+        
+        // 3. Images State
+        if(imageState.hero_bg) updatePreview('bg', 'preview-hero-bg', imageState.hero_bg);
+        if(imageState.bride_image) updatePreview('src', 'preview-bride-img', imageState.bride_image);
+        if(imageState.groom_image) updatePreview('src', 'preview-groom-img', imageState.groom_image);
+        if(imageState.gallery.length > 0) {
+             const frame = document.getElementById('preview-frame');
+             if(frame.contentWindow.updateGallery) frame.contentWindow.updateGallery(imageState.gallery);
+        }
+    }
+
+    // Apply to both frames on load
+    document.addEventListener('DOMContentLoaded', () => {
+        hideScrollbar('preview-frame');
+        hideScrollbar('mobile-preview-frame');
+        
+        // Sync when frame loads
+        const frame = document.getElementById('preview-frame');
+        frame.onload = () => {
+            setTimeout(syncAllToPreview, 500); // Small delay to ensure frame JS Init
+        };
+    });
     function updateDate(val) {
         const d = new Date(val);
         const niceDate = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
@@ -1150,7 +1309,7 @@
         
         // Sync source if not already set or needs refresh (optional, but good)
         if(frame.src === "about:blank" || frame.src === "") {
-             frame.src = "{{ route('builder.preview', ['template' => $templateId]) }}";
+             frame.src = "{{ route('builder.preview', ['template' => $templateId, 'invitation_id' => $invitation->id ?? null]) }}";
              
              // Sync when loaded
              frame.onload = function() {
@@ -1177,4 +1336,3 @@
     }
 </script>
 @endpush
-@endsection
