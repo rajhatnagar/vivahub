@@ -298,9 +298,16 @@ class UserPanelController extends Controller
 
     public function showInvitation($id)
     {
-        $invitation = \App\Models\Invitation::findOrFail($id);
-        $templateId = $invitation->template_id ?? 'wedding-1';
-        return $this->renderTemplateView($templateId, ['invitation' => $invitation, 'isPublic' => true]);
+        try {
+            // Select only needed columns to avoid memory issues with large JSON data
+            $invitation = \App\Models\Invitation::select('id', 'user_id', 'template_id', 'title', 'data', 'status')
+                ->findOrFail($id);
+            $templateId = $invitation->template_id ?? 'wedding-1';
+            return $this->renderTemplateView($templateId, ['invitation' => $invitation, 'isPublic' => true]);
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Show Invitation Error: ' . $e->getMessage());
+            return response("Error loading invitation: " . $e->getMessage(), 500);
+        }
     }
 
     public function previewTemplate($template, Request $request)
@@ -309,8 +316,10 @@ class UserPanelController extends Controller
             $data = ['isPreview' => true];
             
             // If invitation ID provided, fetch it to show real data in preview
+            // Select only needed columns to avoid memory issues
             if ($request->has('invitation_id')) {
-                $invitation = \App\Models\Invitation::find($request->invitation_id);
+                $invitation = \App\Models\Invitation::select('id', 'user_id', 'template_id', 'title', 'data', 'status')
+                    ->find($request->invitation_id);
                 if ($invitation) {
                     $data['invitation'] = $invitation;
                 }
@@ -318,6 +327,7 @@ class UserPanelController extends Controller
             
             return $this->renderTemplateView($template, $data);
         } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Preview Template Error: ' . $e->getMessage());
             return response("Error loading template: " . $e->getMessage(), 500);
         }
     }
