@@ -90,7 +90,7 @@
     <aside class="w-72 shrink-0 h-full glass-panel flex flex-col z-50 hidden lg:flex transition-all duration-300 border-r border-gray-200 dark:border-white/10">
         <div class="p-8 pb-6 border-b border-gray-100 dark:border-white/5">
             <div class="flex flex-col items-center gap-3 mb-6">
-                 <img src="{{ $partner->logo_url ?? 'https://csssofttech.com/wedding/assets/VivaHub.png' }}" alt="VivaHub" class="h-10 w-auto object-contain">
+                 <img src="{{ $partner->logo_url ?? asset('VivaHub-logo.png') }}" alt="VivaHub" class="h-10 w-auto object-contain">
                  <span class="text-[10px] uppercase tracking-[0.2em] text-accent-gold font-bold bg-accent-gold/10 px-2 py-1 rounded">Partner Agency</span>
             </div>
             <button onclick="app.toggleClientModal(true)" class="w-full bg-gradient-to-r from-primary to-primary-dark hover:shadow-lg hover:shadow-primary/30 text-white font-bold py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 group transition-all duration-300 transform hover:-translate-y-0.5">
@@ -143,7 +143,7 @@
         <!-- Header -->
         <header class="flex items-center justify-between px-4 lg:px-8 py-4 bg-white/60 dark:bg-black/20 backdrop-blur-md border-b border-gray-100 dark:border-white/5 sticky top-0 z-30">
             <div class="flex items-center gap-3 lg:hidden">
-                 <img src="{{ $partner->logo_url ?? 'https://csssofttech.com/wedding/assets/VivaHub.png' }}" alt="Logo" class="h-8 w-auto">
+                 <img src="{{ $partner->logo_url ?? asset('VivaHub-logo.png') }}" alt="Logo" class="h-8 w-auto">
             </div>
             
             <div class="hidden lg:block w-full max-w-md">
@@ -751,7 +751,7 @@
                                     <div class="flex items-center gap-6 mb-6">
                                         <div class="relative group cursor-pointer">
                                             <div class="w-24 h-24 rounded-2xl bg-gray-50 dark:bg-white/5 flex items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-600 overflow-hidden">
-                                                <img src="{{ $partner->logo_url ?? 'https://csssofttech.com/wedding/assets/VivaHub.png' }}" class="w-16 h-auto opacity-50 group-hover:opacity-100 transition-opacity">
+                                                <img src="{{ $partner->logo_url ?? asset('VivaHub-logo.png') }}" class="w-16 h-auto opacity-50 group-hover:opacity-100 transition-opacity">
                                             </div>
                                             <div class="absolute -bottom-2 -right-2 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform">
                                                 <span class="material-symbols-outlined text-sm">edit</span>

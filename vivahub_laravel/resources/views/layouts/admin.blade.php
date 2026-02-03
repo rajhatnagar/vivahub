@@ -126,7 +126,7 @@
         <div class="flex flex-col h-full">
             <!-- Brand Centered -->
             <div class="flex flex-col items-center justify-center py-6 border-b border-border-light dark:border-border-dark">
-                <img src="https://csssofttech.com/wedding/assets/VivaHub.png" alt="VivaHub Logo" class="h-10 w-auto object-contain">
+                <img src="{{ asset('VivaHub-logo.png') }}" alt="VivaHub Logo" class="h-10 w-auto object-contain">
             </div>
             
             <!-- Navigation -->
@@ -196,7 +196,7 @@
             <div class="flex items-center gap-4">
                 <!-- Mobile Logo -->
                 <div class="md:hidden flex items-center gap-2">
-                     <img src="https://csssofttech.com/wedding/assets/VivaHub.png" alt="VivaHub Logo" class="h-8 w-auto">
+                     <img src="{{ asset('VivaHub-logo.png') }}" alt="VivaHub Logo" class="h-8 w-auto">
                 </div>
                 <h2 id="page-title" class="hidden md:block text-lg font-bold tracking-tight text-gray-800 dark:text-white">@yield('title', 'Admin Overview')</h2>
             </div>
