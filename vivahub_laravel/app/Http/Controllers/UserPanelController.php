@@ -31,7 +31,13 @@ class UserPanelController extends Controller
     {
         // Real Data
         $userId = Auth::id();
-        $invitations = Invitation::where('user_id', $userId)->latest()->take(6)->get();
+        // Optimized: Get IDs first to avoid sorting large JSON data in memory
+        $invitationIds = Invitation::where('user_id', $userId)
+            ->select('id')
+            ->orderBy('id', 'desc')
+            ->take(6)
+            ->pluck('id');
+        $invitations = Invitation::whereIn('id', $invitationIds)->orderBy('id', 'desc')->get();
         
         $templates = collect($this->getTemplatesList())->keyBy('id');
 
@@ -74,7 +80,15 @@ class UserPanelController extends Controller
 
     public function invitations()
     {
-        $invitations = \App\Models\Invitation::where('user_id', Auth::id())->latest()->get()->map(function($inv) {
+        // Optimized: Get IDs first to avoid sorting large JSON data in memory
+        $invitationIds = \App\Models\Invitation::where('user_id', Auth::id())
+            ->select('id')
+            ->orderBy('id', 'desc')
+            ->pluck('id');
+        $invitations = \App\Models\Invitation::whereIn('id', $invitationIds)
+            ->orderBy('id', 'desc')
+            ->get()
+            ->map(function($inv) {
              $data = $inv->data;
              if (!is_array($data)) $data = [];
              

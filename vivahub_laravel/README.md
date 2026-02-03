@@ -27,6 +27,8 @@ VivaHub is a modern Laravel-based platform for creating and managing wedding inv
 - **Google Login**: Enabled via Socialite.
 - **Email/Password**: Standard Laravel Auth.
 
+
+URL: https://vivahub.in/beta/
 ## Test Credentials
 
 | Role        | Email                 | Password   |
