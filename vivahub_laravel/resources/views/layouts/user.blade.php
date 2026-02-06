@@ -198,7 +198,7 @@
                  <a href="{{ route('invitations') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold {{ request()->routeIs('invitations') ? 'bg-primary/10 text-primary' : 'text-text-muted dark:text-gray-200' }}">
                     <span class="material-symbols-outlined">mail</span> My Invitations
                  </a>
-                 <a href="{{ route('templates') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold {{ request()->routeIs('templates') ? 'bg-primary/10 text-primary' : 'text-text-muted dark:text-gray-200' }}">
+                 <a href="{{ route('dashboard.templates') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold {{ request()->routeIs('dashboard.templates') ? 'bg-primary/10 text-primary' : 'text-text-muted dark:text-gray-200' }}">
                     <span class="material-symbols-outlined">grid_view</span> Templates
                  </a>
                  <a href="{{ route('rsvps') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold {{ request()->routeIs('rsvps') ? 'bg-primary/10 text-primary' : 'text-text-muted dark:text-gray-200' }}">
@@ -210,6 +210,15 @@
                  <a href="{{ route('settings') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold {{ request()->routeIs('settings') ? 'bg-primary/10 text-primary' : 'text-text-muted dark:text-gray-200' }}">
                     <span class="material-symbols-outlined">settings</span> Settings
                  </a>
+                 <!-- Logout Button for Mobile -->
+                 <div class="pt-4 mt-2 border-t border-gray-100 dark:border-white/5">
+                     <form method="POST" action="{{ route('logout') }}">
+                         @csrf
+                         <button type="submit" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 w-full">
+                             <span class="material-symbols-outlined">logout</span> Log Out
+                         </button>
+                     </form>
+                 </div>
             </nav>
 
             <div class="p-6 border-t border-gray-100 dark:border-white/5">
@@ -239,7 +248,7 @@
             
             <!-- Floating Main Action -->
             <div class="relative -top-6">
-                <a href="{{ route('templates') }}" class="h-14 w-14 bg-gradient-to-br from-primary to-primary-dark rounded-full shadow-lg shadow-primary/40 flex items-center justify-center text-white transform transition-transform active:scale-90 border-4 border-[#fdfbfb] dark:border-[#120505]">
+                <a href="{{ route('dashboard.templates') }}" class="h-14 w-14 bg-gradient-to-br from-primary to-primary-dark rounded-full shadow-lg shadow-primary/40 flex items-center justify-center text-white transform transition-transform active:scale-90 border-4 border-[#fdfbfb] dark:border-[#120505]">
                     <span class="material-symbols-outlined text-[28px]">add</span>
                 </a>
             </div>

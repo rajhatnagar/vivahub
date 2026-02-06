@@ -607,7 +607,8 @@
                 const time = e.time || (e.date ? e.date.split(',')[1] : '') || ''; // Try to extract time if mixed
                 const desc = e.description || e.desc || '';
                 const loc = e.location || '';
-                addNewEvent(title, time, desc, loc);
+                const mapUrl = e.mapUrl || e.map_url || ''; // Google Maps URL
+                addNewEvent(title, time, desc, loc, mapUrl);
             });
         } else {
              // Fallback if empty array but not null
@@ -743,6 +744,7 @@
                 time: inputs[1].value,
                 description: inputs[2].value,
                 location: inputs[3].value,
+                mapUrl: inputs[4] ? inputs[4].value : '', // Google Maps URL
                 // Variants
                 name: inputs[0].value,
                 date: inputs[1].value, // Some templates use date/time in one or separate
@@ -840,7 +842,7 @@
     }
 
     // --- Dynamic Events Logic ---
-    function addNewEvent(title = 'New Event', time = '', desc = '', loc = '') {
+    function addNewEvent(title = 'New Event', time = '', desc = '', loc = '', mapUrl = '') {
         eventCount++;
         const id = eventCount;
         
@@ -855,7 +857,11 @@
                      <input type="text" value="${time}" placeholder="Date & Time" class="col-span-1 rounded-xl border-gray-200 bg-white p-3 text-sm font-medium outline-none dark:bg-white/5 dark:border-white/10 dark:text-white" oninput="updateEvent(${id})">
                 </div>
                  <input type="text" value="${desc}" placeholder="Description" class="w-full rounded-xl border-gray-200 bg-white p-3 text-sm font-medium outline-none dark:bg-white/5 dark:border-white/10 dark:text-white" oninput="updateEvent(${id})">
-                 <input type="text" value="${loc}" placeholder="Location" class="w-full rounded-xl border-gray-200 bg-white p-3 text-sm font-medium outline-none dark:bg-white/5 dark:border-white/10 dark:text-white" oninput="updateEvent(${id})">
+                 <input type="text" value="${loc}" placeholder="Location Name" class="w-full rounded-xl border-gray-200 bg-white p-3 text-sm font-medium outline-none dark:bg-white/5 dark:border-white/10 dark:text-white" oninput="updateEvent(${id})">
+                 <div class="flex items-center gap-2">
+                     <span class="material-symbols-outlined text-primary text-lg">pin_drop</span>
+                     <input type="text" value="${mapUrl}" placeholder="Google Maps URL (paste link here)" class="flex-1 rounded-xl border-gray-200 bg-white p-3 text-sm font-medium outline-none dark:bg-white/5 dark:border-white/10 dark:text-white" oninput="updateEvent(${id})">
+                 </div>
             </div>
         `;
         
@@ -884,7 +890,8 @@
                 title: inputs[0].value,
                 time: inputs[1].value,
                 description: inputs[2].value,
-                location: inputs[3].value
+                location: inputs[3].value,
+                mapUrl: inputs[4] ? inputs[4].value : '' // Google Maps URL
             });
         });
 

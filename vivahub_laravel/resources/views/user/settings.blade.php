@@ -28,18 +28,18 @@
             </div>
 
             <!-- Form -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-                <div class="col-span-2">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+                <div class="col-span-1 lg:col-span-2">
                     <label class="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2 ml-1">Full Name</label>
                     <input type="text" name="name" value="{{ Auth::user()->name }}" class="w-full rounded-xl border-gray-200 bg-white p-3.5 text-sm font-medium text-text-dark outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all dark:bg-white/5 dark:border-white/10 dark:text-white">
                 </div>
                 
-                <div class="col-span-2">
+                <div class="col-span-1 lg:col-span-2">
                     <label class="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2 ml-1">Email Address</label>
                     <input type="email" name="email" value="{{ Auth::user()->email }}" class="w-full rounded-xl border-gray-200 bg-white p-3.5 text-sm font-medium text-text-dark outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all dark:bg-white/5 dark:border-white/10 dark:text-white">
                 </div>
 
-                <div class="col-span-2 pt-4 border-t border-gray-100 dark:border-white/5">
+                <div class="col-span-1 lg:col-span-2 pt-4 border-t border-gray-100 dark:border-white/5">
                     <h3 class="font-bold text-lg mb-4 text-text-dark dark:text-white">Wedding Details</h3>
                 </div>
 

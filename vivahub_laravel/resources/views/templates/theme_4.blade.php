@@ -240,6 +240,47 @@
         </div>
     </section>
 
+    <!-- Gallery -->
+    <section id="gallery" class="py-24 px-6 bg-white border-t border-sage-100">
+        <h2 class="font-serif text-4xl text-center text-sage-800 mb-16">Captured Moments</h2>
+        
+        <!-- Compact 2x2 Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-2 gap-4 max-w-2xl mx-auto" id="preview-gallery-grid">
+             @if(!empty($invitation->data['gallery']) && is_array($invitation->data['gallery']))
+                  @foreach($invitation->data['gallery'] as $index => $img)
+                    @if($index < 6)
+                    <div class="aspect-square overflow-hidden rounded-sm shadow-md cursor-pointer group relative" onclick="openLightbox('{{ $img }}')">
+                        <img src="{{ $img }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-sage-900/0 group-hover:bg-sage-900/10 transition-colors duration-300"></div>
+                    </div>
+                    @endif
+                  @endforeach
+             @else
+                  <!-- Default Placeholders -->
+                  <div class="aspect-square overflow-hidden rounded-sm shadow-md cursor-pointer group" onclick="openLightbox('https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80')">
+                      <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                  </div>
+                  <div class="aspect-square overflow-hidden rounded-sm shadow-md cursor-pointer group" onclick="openLightbox('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80')">
+                      <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                  </div>
+                  <div class="aspect-square overflow-hidden rounded-sm shadow-md cursor-pointer group" onclick="openLightbox('https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80')">
+                      <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                  </div>
+                  <div class="aspect-square overflow-hidden rounded-sm shadow-md cursor-pointer group" onclick="openLightbox('https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&q=80')">
+                      <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&q=80" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                  </div>
+             @endif
+        </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div id="gallery-lightbox" class="fixed inset-0 z-[200] bg-sage-900/95 hidden items-center justify-center p-4 backdrop-blur-sm" onclick="closeLightbox()">
+        <button class="absolute top-6 right-6 text-white hover:text-sage-200 transition-colors" onclick="closeLightbox()">
+            <i data-lucide="x" class="w-10 h-10"></i>
+        </button>
+        <img id="lightbox-img" src="" class="max-w-full max-h-[90vh] object-contain rounded shadow-2xl border-4 border-white" onclick="event.stopPropagation()">
+    </div>
+
     <!-- RSVP -->
     <section class="py-24 px-6 bg-white text-center">
         <div class="max-w-xl mx-auto border border-sage-200 p-8 md:p-12 shadow-lg rounded-sm bg-sage-50/50 relative overflow-hidden">
@@ -397,7 +438,42 @@
              });
              container.innerHTML = html;
         };
-        window.updateGallery = function(urls) { console.log('No gallery in Theme 4'); };
+        window.updateGallery = function(urls) {
+             const grid = document.getElementById('preview-gallery-grid');
+             if(grid) {
+                 grid.innerHTML = '';
+                 urls.slice(0, 6).forEach((url, i) => {
+                      const div = document.createElement('div');
+                      div.className = "aspect-square overflow-hidden rounded-sm shadow-md cursor-pointer group relative";
+                      div.onclick = () => openLightbox(url);
+                      div.innerHTML = `
+                        <img src="${url}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-sage-900/0 group-hover:bg-sage-900/10 transition-colors duration-300"></div>
+                      `;
+                      grid.appendChild(div);
+                 });
+             }
+        };
+
+        function openLightbox(src) {
+            const lightbox = document.getElementById('gallery-lightbox');
+            const img = document.getElementById('lightbox-img');
+            if(lightbox && img) {
+                img.src = src;
+                lightbox.classList.remove('hidden');
+                lightbox.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('gallery-lightbox');
+            if(lightbox) {
+                lightbox.classList.add('hidden');
+                lightbox.classList.remove('flex');
+                document.body.style.overflow = '';
+            }
+        }
         window.updatePreview = function(type, id, value) {
             if(type === 'text') { 
                 const el = document.getElementById(id); if(el) el.innerText = value;

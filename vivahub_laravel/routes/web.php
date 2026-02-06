@@ -42,6 +42,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/billing', 'billing')->name('billing');
         Route::get('/settings', 'settings')->name('settings');
         Route::post('/settings', 'updateSettings')->name('settings.update');
+        Route::get('/rsvps/export', 'exportRsvps')->name('rsvps.export');
+        Route::post('/rsvps/add', 'addGuest')->name('rsvps.add');
+        Route::get('/invoice/{id}', 'invoice')->name('invoice.show');
     });
 });
 

@@ -1,0 +1,7 @@
+open 103.191.208.202
+whlmstql
+P(;OY0dQ3jt10t
+binary
+cd vivahub.in/beta/public
+put clear-all.php
+bye

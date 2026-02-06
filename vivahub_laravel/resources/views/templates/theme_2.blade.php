@@ -359,33 +359,39 @@
             </div>
           </div>
 
-          <!-- Gallery (Polaroid Style) -->
-          <div class="grid grid-cols-2 md:grid-cols-3 gap-6" id="preview-gallery-grid">
+          <!-- Compact 2x2 Gallery Grid -->
+          <div class="grid grid-cols-2 gap-2 max-w-lg mx-auto" id="preview-gallery-grid">
               @if(!empty($invitation->data['gallery']) && is_array($invitation->data['gallery']))
                   @foreach($invitation->data['gallery'] as $index => $img)
-                     @if($index > 2) <!-- Skip first 3 used in other places if logic requires, but here we just list them all or subset -->
-                      <div class="bg-white p-3 pb-8 shadow-lg hover:rotate-0 transition-transform duration-500 {{ $index % 2 == 0 ? 'rotate-1' : '-rotate-1' }}">
-                         <div class="aspect-[4/5] overflow-hidden bg-gray-100"><img src="{{ $img }}" class="w-full h-full object-cover"></div>
-                      </div>
-                     @endif
+                  @if($index < 6)
+                  <div class="gallery-item aspect-square overflow-hidden rounded-xl cursor-pointer group shadow-lg" onclick="openLightbox('{{ $img }}')">
+                      <img src="{{ $img }}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" alt="Gallery {{ $index + 1 }}">
+                  </div>
+                  @endif
                   @endforeach
               @else
-                  <div class="bg-white p-3 pb-8 shadow-lg rotate-2 hover:rotate-0 transition-transform duration-500">
-                     <div class="aspect-[4/5] overflow-hidden bg-gray-100"><img src="https://csssofttech.com/wedding/assets/gallery1.png" class="w-full h-full object-cover"></div>
-                     <p class="text-center font-script text-2xl text-sage-600 mt-4">Love</p>
+                  <div class="gallery-item aspect-square overflow-hidden rounded-xl cursor-pointer group shadow-lg" onclick="openLightbox('https://csssofttech.com/wedding/assets/gallery1.png')">
+                      <img src="https://csssofttech.com/wedding/assets/gallery1.png" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" alt="Gallery 1">
                   </div>
-                  <div class="bg-white p-3 pb-8 shadow-lg -rotate-1 hover:rotate-0 transition-transform duration-500 mt-8 md:mt-0">
-                     <div class="aspect-[4/5] overflow-hidden bg-gray-100"><img src="https://csssofttech.com/wedding/assets/gallery2.png" class="w-full h-full object-cover"></div>
-                     <p class="text-center font-script text-2xl text-sage-600 mt-4">Joy</p>
+                  <div class="gallery-item aspect-square overflow-hidden rounded-xl cursor-pointer group shadow-lg" onclick="openLightbox('https://csssofttech.com/wedding/assets/gallery2.png')">
+                      <img src="https://csssofttech.com/wedding/assets/gallery2.png" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" alt="Gallery 2">
                   </div>
-                  <div class="bg-white p-3 pb-8 shadow-lg rotate-3 hover:rotate-0 transition-transform duration-500">
-                     <div class="aspect-[4/5] overflow-hidden bg-gray-100"><img src="https://csssofttech.com/wedding/assets/gallery3.png" class="w-full h-full object-cover"></div>
-                     <p class="text-center font-script text-2xl text-sage-600 mt-4">Forever</p>
+                  <div class="gallery-item aspect-square overflow-hidden rounded-xl cursor-pointer group shadow-lg" onclick="openLightbox('https://csssofttech.com/wedding/assets/gallery3.png')">
+                      <img src="https://csssofttech.com/wedding/assets/gallery3.png" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" alt="Gallery 3">
+                  </div>
+                  <div class="gallery-item aspect-square overflow-hidden rounded-xl cursor-pointer group shadow-lg" onclick="openLightbox('https://csssofttech.com/wedding/assets/gallery4.png')">
+                      <img src="https://csssofttech.com/wedding/assets/gallery4.png" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" alt="Gallery 4">
                   </div>
               @endif
           </div>
       </div>
   </section>
+
+  <!-- Gallery Lightbox Modal -->
+  <div id="gallery-lightbox" class="fixed inset-0 z-[200] bg-black/95 hidden items-center justify-center p-4" onclick="closeLightbox()">
+      <button class="absolute top-4 right-4 text-white text-4xl hover:text-sage-400 transition-colors z-10" onclick="closeLightbox()">&times;</button>
+      <img id="lightbox-img" src="" class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl" onclick="event.stopPropagation()">
+  </div>
 
   <!-- DETAILS -->
   <section class="py-24 px-4 bg-sage-50 text-center">
@@ -740,14 +746,37 @@
          });
          if(window.lucide) window.lucide.createIcons();
     };
+
+    // Lightbox Functions
+    function openLightbox(src) {
+        const lightbox = document.getElementById('gallery-lightbox');
+        const img = document.getElementById('lightbox-img');
+        if(lightbox && img) {
+            img.src = src;
+            lightbox.classList.remove('hidden');
+            lightbox.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    function closeLightbox() {
+        const lightbox = document.getElementById('gallery-lightbox');
+        if(lightbox) {
+            lightbox.classList.add('hidden');
+            lightbox.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+    }
+
     window.updateGallery = function(urls) {
         const grid = document.getElementById('preview-gallery-grid');
         if(grid) {
             grid.innerHTML = '';
-            urls.forEach((url, i) => {
+            urls.slice(0, 6).forEach((url, i) => {
                  const div = document.createElement('div');
-                 div.className = "bg-white p-3 pb-8 shadow-lg hover:rotate-0 transition-transform duration-500 rotate-1";
-                 div.innerHTML = `<div class="aspect-[4/5] overflow-hidden bg-gray-100"><img src="${url}" class="w-full h-full object-cover"></div>`;
+                 div.className = "gallery-item aspect-square overflow-hidden rounded-xl cursor-pointer group shadow-lg";
+                 div.onclick = () => openLightbox(url);
+                 div.innerHTML = `<img src="${url}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" alt="Gallery ${i + 1}">`;
                  grid.appendChild(div);
             });
         }

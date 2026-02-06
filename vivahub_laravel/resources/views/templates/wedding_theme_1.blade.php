@@ -271,7 +271,7 @@
           <div
             class="inline-block px-3 py-0.5 mb-0.5 rounded-full bg-[rgba(93,46,46,0.9)] backdrop-blur-sm border border-white/10 shadow-lg animate-fade-in-down">
             <p id="preview-tagline" class="text-white/95 font-cinzel text-[7px] md:text-sm tracking-[0.2em] uppercase font-bold text-center">
-              {{ $invitation->data['tagline'] ?: 'We are getting married' }}
+              {{ $invitation->data['tagline'] ?? 'We are getting married' }}
             </p>
           </div>
 

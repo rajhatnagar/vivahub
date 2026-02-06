@@ -118,16 +118,16 @@
                 <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">calendar_month</span> {{ $invitation['date'] }}</span>
                 <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">location_on</span> {{ $invitation['location'] }}</span>
             </div>
-            <div class="flex items-center justify-between pt-4 border-t border-gray-50 dark:border-white/5">
-                <div class="flex -space-x-2">
-                    <div class="w-8 h-8 rounded-full border-2 border-white dark:border-surface-dark bg-gray-200"></div>
-                    <div class="w-8 h-8 rounded-full border-2 border-white dark:border-surface-dark bg-gray-300"></div>
-                    <div class="w-8 h-8 rounded-full border-2 border-white dark:border-surface-dark bg-primary text-white flex items-center justify-center text-[10px] font-bold">+{{ $invitation['rsvps'] }}</div>
+                <div class="flex items-center justify-between pt-4 border-t border-gray-50 dark:border-white/5 relative z-10">
+                    <div class="flex -space-x-2">
+                        <div class="w-8 h-8 rounded-full border-2 border-white dark:border-surface-dark bg-gray-200"></div>
+                        <div class="w-8 h-8 rounded-full border-2 border-white dark:border-surface-dark bg-gray-300"></div>
+                        <div class="w-8 h-8 rounded-full border-2 border-white dark:border-surface-dark bg-primary text-white flex items-center justify-center text-[10px] font-bold">+{{ $invitation['rsvps'] }}</div>
+                    </div>
+                    <a href="{{ route('builder', ['invitation_id' => $invitation['id']]) }}" class="p-4 -m-2 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 text-text-muted hover:text-primary transition-colors relative z-20">
+                        <span class="material-symbols-outlined">edit</span>
+                    </a>
                 </div>
-                <a href="{{ route('builder', ['invitation_id' => $invitation['id']]) }}" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 text-text-muted hover:text-primary transition-colors">
-                    <span class="material-symbols-outlined">edit</span>
-                </a>
-            </div>
         </div>
     </div>
     @endforeach

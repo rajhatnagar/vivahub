@@ -241,29 +241,39 @@
               <p class="text-rose-200/60 uppercase tracking-widest text-xs">Our Journey Together</p>
           </div>
 
-          <div class="grid grid-cols-2 md:grid-cols-3 gap-4" id="preview-gallery-grid">
+          <!-- Compact 2x2 Gallery Grid -->
+          <div class="grid grid-cols-2 gap-2 max-w-lg mx-auto" id="preview-gallery-grid">
               @if(!empty($invitation->data['gallery']) && is_array($invitation->data['gallery']))
                   @foreach($invitation->data['gallery'] as $index => $img)
-                  <div class="group relative h-64 md:h-80 overflow-hidden rounded-lg glass-card cursor-pointer {{ $index % 3 == 1 ? 'md:mt-12' : ($index % 3 == 0 && $index != 0 ? 'md:-mt-12 top-0' : '') }}">
-                      <img src="{{ $img }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100">
-                      <div class="absolute inset-0 bg-gradient-to-t from-midnight-950 via-transparent to-transparent opacity-60"></div>
+                  @if($index < 6)
+                  <div class="gallery-item aspect-square overflow-hidden rounded-xl cursor-pointer group" onclick="openLightbox('{{ $img }}')">
+                      <img src="{{ $img }}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" alt="Gallery {{ $index + 1 }}">
                   </div>
+                  @endif
                   @endforeach
               @else
-                  <!-- Default Gallery if empty -->
-                  <div class="group relative h-64 md:h-80 overflow-hidden rounded-lg glass-card cursor-pointer">
-                      <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100">
+                  <div class="gallery-item aspect-square overflow-hidden rounded-xl cursor-pointer group" onclick="openLightbox('https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80')">
+                      <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" alt="Gallery 1">
                   </div>
-                  <div class="group relative h-64 md:h-80 overflow-hidden rounded-lg glass-card cursor-pointer md:mt-12">
-                      <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100">
+                  <div class="gallery-item aspect-square overflow-hidden rounded-xl cursor-pointer group" onclick="openLightbox('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80')">
+                      <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" alt="Gallery 2">
                   </div>
-                  <div class="group relative h-64 md:h-80 overflow-hidden rounded-lg glass-card cursor-pointer">
-                      <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100">
+                  <div class="gallery-item aspect-square overflow-hidden rounded-xl cursor-pointer group" onclick="openLightbox('https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80')">
+                      <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" alt="Gallery 3">
+                  </div>
+                  <div class="gallery-item aspect-square overflow-hidden rounded-xl cursor-pointer group" onclick="openLightbox('https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&q=80')">
+                      <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&q=80" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" alt="Gallery 4">
                   </div>
               @endif
           </div>
       </div>
   </section>
+
+  <!-- Gallery Lightbox Modal -->
+  <div id="gallery-lightbox" class="fixed inset-0 z-[200] bg-black/95 hidden items-center justify-center p-4" onclick="closeLightbox()">
+      <button class="absolute top-4 right-4 text-white text-4xl hover:text-rose-400 transition-colors z-10" onclick="closeLightbox()">&times;</button>
+      <img id="lightbox-img" src="" class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl" onclick="event.stopPropagation()">
+  </div>
 
   <!-- RSVP -->
   <section id="rsvp" class="py-24 px-4 relative bg-[#050b1f]">
@@ -504,6 +514,27 @@
            window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${dates}&location=${encodeURIComponent(loc)}`, '_blank');
       }
 
+      // Lightbox Functions
+      function openLightbox(src) {
+          const lightbox = document.getElementById('gallery-lightbox');
+          const img = document.getElementById('lightbox-img');
+          if(lightbox && img) {
+              img.src = src;
+              lightbox.classList.remove('hidden');
+              lightbox.classList.add('flex');
+              document.body.style.overflow = 'hidden';
+          }
+      }
+
+      function closeLightbox() {
+          const lightbox = document.getElementById('gallery-lightbox');
+          if(lightbox) {
+              lightbox.classList.add('hidden');
+              lightbox.classList.remove('flex');
+              document.body.style.overflow = '';
+          }
+      }
+
       // --- Live Preview Hooks (Standardized) ---
       window.updateCountdown = function(dateStr) { window.location.reload(); }
       window.updateAudioSource = function(src, type) { /* ... */ }
@@ -540,16 +571,11 @@
           const grid = document.getElementById('preview-gallery-grid');
           if(grid) {
               grid.innerHTML = '';
-              urls.forEach((url, i) => {
+              urls.slice(0, 6).forEach((url, i) => {
                    const div = document.createElement('div');
-                   div.className = "group relative h-64 md:h-80 overflow-hidden rounded-lg glass-card cursor-pointer";
-                   if(i % 3 === 1) div.classList.add('md:mt-12');
-                   else if(i % 3 === 0 && i !== 0) div.classList.add('md:-mt-12', 'top-0');
-                   
-                   div.innerHTML = `
-                      <img src="${url}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100">
-                      <div class="absolute inset-0 bg-gradient-to-t from-midnight-950 via-transparent to-transparent opacity-60"></div>
-                   `;
+                   div.className = "gallery-item aspect-square overflow-hidden rounded-xl cursor-pointer group";
+                   div.onclick = () => openLightbox(url);
+                   div.innerHTML = `<img src="${url}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" alt="Gallery ${i + 1}">`;
                    grid.appendChild(div);
               });
           }

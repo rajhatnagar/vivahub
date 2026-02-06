@@ -401,35 +401,40 @@
     </section>
 
     <!-- Gallery (Texture: Diamonds Gradient) -->
-    <section class="py-24 px-6 bg-golden-diamonds">
+    <section id="gallery" class="py-24 px-6 bg-golden-diamonds">
         <div class="max-w-6xl mx-auto relative z-10">
             <h2 class="font-regal text-4xl text-center mb-16 text-rose-100 uppercase tracking-widest reveal">Memories</h2>
             
-            <div class="columns-1 md:columns-3 gap-6 space-y-6" id="preview-gallery-grid">
-                @php
-                    $gallery = $invitation->data['gallery'] ?? [];
-                    // Ensure we have enough placeholders if gallery is empty
-                    while(count($gallery) < 6) {
-                        $gallery[] = 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800';
-                    }
-                @endphp
-                <div class="gallery-item reveal reveal-up">
-                    <img src="{{ $gallery[2] ?? 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800' }}" class="w-full border border-amber-900/50 hover:border-amber-500 transition-all duration-500 shadow-xl" alt="Gallery">
-                </div>
-                <div class="gallery-item reveal reveal-up" style="transition-delay: 100ms;">
-                    <img src="{{ $gallery[3] ?? 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800' }}" class="w-full border border-amber-900/50 hover:border-amber-500 transition-all duration-500 shadow-xl" alt="Gallery">
-                </div>
-                <div class="gallery-item reveal reveal-up" style="transition-delay: 200ms;">
-                    <div class="border border-amber-500/30 p-8 flex items-center justify-center text-center h-full min-h-[200px] bg-[#2a0a12]/80 backdrop-blur-sm">
-                        <p class="font-script text-4xl text-amber-500">"A love for eternity"</p>
+            <!-- Standardized 2x2 Grid -->
+            <div class="grid grid-cols-2 gap-4 max-w-2xl mx-auto" id="preview-gallery-grid">
+                @if(isset($invitation->data['gallery']) && is_array($invitation->data['gallery']))
+                    @foreach($invitation->data['gallery'] as $index => $img)
+                        @if($index < 6)
+                        <div class="aspect-square overflow-hidden border border-amber-900/50 hover:border-amber-500 shadow-xl cursor-pointer group relative reveal reveal-up" onclick="openLightbox('{{ $img }}')">
+                            <img src="{{ $img }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-[#2a0a12]/0 group-hover:bg-[#2a0a12]/10 transition-colors duration-300"></div>
+                        </div>
+                        @endif
+                    @endforeach
+                @else
+                    <!-- Placeholders -->
+                    <div class="aspect-square overflow-hidden border border-amber-900/50 hover:border-amber-500 shadow-xl cursor-pointer group relative reveal reveal-up" onclick="openLightbox('https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800')">
+                        <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-[#2a0a12]/0 group-hover:bg-[#2a0a12]/10 transition-colors duration-300"></div>
                     </div>
-                </div>
-                <div class="gallery-item reveal reveal-up">
-                    <img src="{{ $gallery[4] ?? 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800' }}" class="w-full border border-amber-900/50 hover:border-amber-500 transition-all duration-500 shadow-xl" alt="Gallery">
-                </div>
-                 <div class="gallery-item reveal reveal-up" style="transition-delay: 150ms;">
-                    <img src="{{ $gallery[5] ?? 'https://images.unsplash.com/photo-1610173824052-a56b3e71d378?auto=format&fit=crop&q=80&w=800' }}" class="w-full border border-amber-900/50 hover:border-amber-500 transition-all duration-500 shadow-xl" alt="Gallery">
-                </div>
+                    <div class="aspect-square overflow-hidden border border-amber-900/50 hover:border-amber-500 shadow-xl cursor-pointer group relative reveal reveal-up" onclick="openLightbox('https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800')">
+                        <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-[#2a0a12]/0 group-hover:bg-[#2a0a12]/10 transition-colors duration-300"></div>
+                    </div>
+                    <div class="aspect-square overflow-hidden border border-amber-900/50 hover:border-amber-500 shadow-xl cursor-pointer group relative reveal reveal-up" onclick="openLightbox('https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800')">
+                         <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-[#2a0a12]/0 group-hover:bg-[#2a0a12]/10 transition-colors duration-300"></div>
+                    </div>
+                     <div class="aspect-square overflow-hidden border border-amber-900/50 hover:border-amber-500 shadow-xl cursor-pointer group relative reveal reveal-up" onclick="openLightbox('https://images.unsplash.com/photo-1610173824052-a56b3e71d378?auto=format&fit=crop&q=80&w=800')">
+                        <img src="https://images.unsplash.com/photo-1610173824052-a56b3e71d378?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-[#2a0a12]/0 group-hover:bg-[#2a0a12]/10 transition-colors duration-300"></div>
+                    </div>
+                @endif
             </div>
         </div>
     </section>
@@ -523,6 +528,14 @@
             </div>
         </div>
     </section>
+
+    <!-- Lightbox -->
+    <div id="gallery-lightbox" class="fixed inset-0 z-[200] bg-[#2a0a12]/95 hidden items-center justify-center p-4 backdrop-blur-sm" onclick="closeLightbox()">
+        <button class="absolute top-6 right-6 text-white hover:text-amber-500 transition-colors" onclick="closeLightbox()">
+            <i data-lucide="x" class="w-10 h-10"></i>
+        </button>
+        <img id="lightbox-img" src="" class="max-w-full max-h-[90vh] object-contain shadow-2xl border-4 border-amber-500/50" onclick="event.stopPropagation()">
+    </div>
 
     <!-- Footer (Texture: Diamonds) -->
     <footer class="py-16 text-center bg-golden-diamonds border-t border-amber-900/30">
@@ -700,11 +713,7 @@
             if(audio) { audio.src = res; if(isMusicPlaying) audio.play(); }
         }
 
-        window.toggleSection = function(section, isEnabled) {
-            // Map sections if IDs differ
-            const el = document.getElementById(section);
-            if(el) { if(isEnabled) el.classList.remove('hidden'); else el.classList.add('hidden'); }
-        }
+
 
         window.updateCountdown = function(dateStr) {
              // dateStr is YYYY-MM-DD
@@ -770,17 +779,41 @@
              if(window.lucide) window.lucide.createIcons();
         };
         window.updateGallery = function(urls) {
-            const grid = document.getElementById('preview-gallery-grid');
-            if(grid) {
-                grid.innerHTML = '';
-                urls.forEach((url, i) => {
-                     const div = document.createElement('div');
-                     div.className = "gallery-item reveal reveal-up";
-                     div.innerHTML = `<img src="${url}" class="w-full border border-amber-900/50 hover:border-amber-500 transition-all duration-500 shadow-xl">`;
-                     grid.appendChild(div);
-                });
-            }
+             const grid = document.getElementById('preview-gallery-grid');
+             if(grid) {
+                 grid.innerHTML = '';
+                 urls.slice(0, 6).forEach((url, i) => {
+                      const div = document.createElement('div');
+                      div.className = "aspect-square overflow-hidden border border-amber-900/50 hover:border-amber-500 shadow-xl cursor-pointer group relative reveal reveal-up active transition-colors duration-500";
+                      div.onclick = () => openLightbox(url);
+                      div.innerHTML = `
+                        <img src="${url}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-[#2a0a12]/0 group-hover:bg-[#2a0a12]/10 transition-colors duration-300"></div>
+                      `;
+                      grid.appendChild(div);
+                 });
+             }
         };
+
+        function openLightbox(src) {
+            const lightbox = document.getElementById('gallery-lightbox');
+            const img = document.getElementById('lightbox-img');
+            if(lightbox && img) {
+                img.src = src;
+                lightbox.classList.remove('hidden');
+                lightbox.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('gallery-lightbox');
+            if(lightbox) {
+                lightbox.classList.add('hidden');
+                lightbox.classList.remove('flex');
+                document.body.style.overflow = '';
+            }
+        }
         window.updatePreview = function(type, id, value) {
             if(type === 'text') { 
                 const el = document.getElementById(id); if(el) el.innerText = value;

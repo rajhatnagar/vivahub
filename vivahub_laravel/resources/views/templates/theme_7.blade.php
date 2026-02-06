@@ -443,29 +443,39 @@
                 </div>
             </div>
 
-            <!-- Masonry Grid -->
-            <!-- REMOVED GRAYSCALE FROM ALL IMAGES -->
-            <div class="columns-1 md:columns-3 gap-6 space-y-6" id="preview-gallery-grid">
+            <!-- Compact 2x2 Gallery Grid -->
+            <div class="grid grid-cols-2 gap-2 max-w-lg mx-auto" id="preview-gallery-grid">
                 @if(isset($invitation->data['gallery']) && is_array($invitation->data['gallery']))
-                    @foreach($invitation->data['gallery'] as $img)
-                    <div class="gallery-item reveal reveal-up">
-                        <img src="{{ $img }}" class="w-full rounded-lg shadow-lg hover:shadow-amber-500/20 transition-all duration-500 hover:scale-[1.02]">
+                    @foreach($invitation->data['gallery'] as $index => $img)
+                    @if($index < 6)
+                    <div class="gallery-item aspect-square overflow-hidden rounded-xl cursor-pointer group" onclick="openLightbox('{{ $img }}')">
+                        <img src="{{ $img }}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" alt="Gallery {{ $index + 1 }}">
                     </div>
+                    @endif
                     @endforeach
                 @else
-                    <div class="gallery-item reveal reveal-up">
-                        <img src="https://images.unsplash.com/photo-1621621667797-e06afc217fb0?auto=format&fit=crop&q=80&w=800" class="w-full rounded-lg shadow-lg hover:shadow-amber-500/20 transition-all duration-500 hover:scale-[1.02]" alt="Gallery Image">
+                    <div class="gallery-item aspect-square overflow-hidden rounded-xl cursor-pointer group" onclick="openLightbox('https://images.unsplash.com/photo-1621621667797-e06afc217fb0?auto=format&fit=crop&q=80&w=800')">
+                        <img src="https://images.unsplash.com/photo-1621621667797-e06afc217fb0?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" alt="Gallery 1">
                     </div>
-                    <div class="gallery-item reveal reveal-up" style="transition-delay: 100ms;">
-                        <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800" class="w-full rounded-lg shadow-lg hover:shadow-amber-500/20 transition-all duration-500 hover:scale-[1.02]" alt="Gallery Image">
+                    <div class="gallery-item aspect-square overflow-hidden rounded-xl cursor-pointer group" onclick="openLightbox('https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800')">
+                        <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" alt="Gallery 2">
                     </div>
-                    <div class="gallery-item reveal reveal-up" style="transition-delay: 200ms;">
-                        <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&q=80&w=800" class="w-full rounded-lg shadow-lg hover:shadow-amber-500/20 transition-all duration-500 hover:scale-[1.02]" alt="Gallery Image">
+                    <div class="gallery-item aspect-square overflow-hidden rounded-xl cursor-pointer group" onclick="openLightbox('https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&q=80&w=800')">
+                        <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" alt="Gallery 3">
+                    </div>
+                    <div class="gallery-item aspect-square overflow-hidden rounded-xl cursor-pointer group" onclick="openLightbox('https://images.unsplash.com/photo-1610173824052-a56b3e71d378?auto=format&fit=crop&q=80&w=800')">
+                        <img src="https://images.unsplash.com/photo-1610173824052-a56b3e71d378?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" alt="Gallery 4">
                     </div>
                 @endif
             </div>
         </div>
     </section>
+
+    <!-- Gallery Lightbox Modal -->
+    <div id="gallery-lightbox" class="fixed inset-0 z-[200] bg-black/95 hidden items-center justify-center p-4" onclick="closeLightbox()">
+        <button class="absolute top-4 right-4 text-white text-4xl hover:text-amber-400 transition-colors z-10" onclick="closeLightbox()">&times;</button>
+        <img id="lightbox-img" src="" class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl" onclick="event.stopPropagation()">
+    </div>
 
     <!-- Details/Venue Section -->
     <section class="py-24 px-6 bg-slate-950 text-white border-t border-slate-900">
@@ -941,6 +951,27 @@
             };
             const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${event.start}/${event.end}&details=${encodeURIComponent(event.details)}&location=${encodeURIComponent(event.location)}`;
             window.open(googleUrl, '_blank');
+        }
+
+        // Lightbox Functions
+        function openLightbox(src) {
+            const lightbox = document.getElementById('gallery-lightbox');
+            const img = document.getElementById('lightbox-img');
+            if(lightbox && img) {
+                img.src = src;
+                lightbox.classList.remove('hidden');
+                lightbox.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('gallery-lightbox');
+            if(lightbox) {
+                lightbox.classList.add('hidden');
+                lightbox.classList.remove('flex');
+                document.body.style.overflow = '';
+            }
         }
 
         // Share Invite

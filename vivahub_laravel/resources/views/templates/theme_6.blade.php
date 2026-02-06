@@ -465,7 +465,7 @@
     </section>
 
     <!-- Gallery Section -->
-    <section class="py-24 px-6 bg-white">
+    <section id="gallery" class="py-24 px-6 bg-white">
         <div class="max-w-6xl mx-auto">
             <h2 class="font-cinzel text-3xl text-center mb-4 text-emerald-900 reveal reveal-up">Pre-Wedding Memories</h2>
             <p class="text-center text-emerald-600 mb-16 reveal reveal-up">Captured moments of our journey together</p>
@@ -482,23 +482,34 @@
                 </div>
             </div>
 
-            <!-- Masonry Grid -->
-            <div class="columns-1 md:columns-2 gap-6 space-y-6" id="preview-gallery-grid">
+            <!-- Standardized 2x2 Grid -->
+            <div class="grid grid-cols-2 gap-4 max-w-2xl mx-auto" id="preview-gallery-grid">
                 @if(isset($invitation->data['gallery']) && is_array($invitation->data['gallery']))
-                    @foreach($invitation->data['gallery'] as $img)
-                    <div class="gallery-item reveal reveal-up">
-                        <img src="{{ $img }}" class="w-full rounded-3xl shadow-lg hover:shadow-2xl transition-shadow duration-300">
-                    </div>
+                    @foreach($invitation->data['gallery'] as $index => $img)
+                        @if($index < 6)
+                        <div class="aspect-square overflow-hidden rounded-3xl shadow-lg cursor-pointer group relative reveal reveal-up" onclick="openLightbox('{{ $img }}')">
+                            <img src="{{ $img }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-emerald-900/0 group-hover:bg-emerald-900/20 transition-colors duration-300"></div>
+                        </div>
+                        @endif
                     @endforeach
                 @else
-                    <div class="gallery-item reveal reveal-up">
-                        <img src="https://images.unsplash.com/photo-1621621667797-e06afc217fb0?auto=format&fit=crop&q=80&w=800" class="w-full rounded-3xl shadow-lg hover:shadow-2xl transition-shadow duration-300" alt="Gallery Image 1">
+                    <!-- Placeholders -->
+                    <div class="aspect-square overflow-hidden rounded-3xl shadow-lg cursor-pointer group relative reveal reveal-up" onclick="openLightbox('https://images.unsplash.com/photo-1621621667797-e06afc217fb0?auto=format&fit=crop&q=80&w=800')">
+                        <img src="https://images.unsplash.com/photo-1621621667797-e06afc217fb0?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-emerald-900/0 group-hover:bg-emerald-900/20 transition-colors duration-300"></div>
                     </div>
-                    <div class="gallery-item reveal reveal-up" style="transition-delay: 100ms;">
-                        <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800" class="w-full rounded-3xl shadow-lg hover:shadow-2xl transition-shadow duration-300" alt="Gallery Image 2">
+                    <div class="aspect-square overflow-hidden rounded-3xl shadow-lg cursor-pointer group relative reveal reveal-up" onclick="openLightbox('https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800')">
+                        <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-emerald-900/0 group-hover:bg-emerald-900/20 transition-colors duration-300"></div>
                     </div>
-                    <div class="gallery-item reveal reveal-up" style="transition-delay: 200ms;">
-                        <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&q=80&w=800" class="w-full rounded-3xl shadow-lg hover:shadow-2xl transition-shadow duration-300" alt="Gallery Image 3">
+                    <div class="aspect-square overflow-hidden rounded-3xl shadow-lg cursor-pointer group relative reveal reveal-up" onclick="openLightbox('https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&q=80&w=800')">
+                        <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-emerald-900/0 group-hover:bg-emerald-900/20 transition-colors duration-300"></div>
+                    </div>
+                    <div class="aspect-square overflow-hidden rounded-3xl shadow-lg cursor-pointer group relative reveal reveal-up" onclick="openLightbox('https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=800')">
+                        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-emerald-900/0 group-hover:bg-emerald-900/20 transition-colors duration-300"></div>
                     </div>
                 @endif
             </div>
@@ -595,6 +606,14 @@
             </div>
         </div>
     </section>
+
+    <!-- Lightbox -->
+    <div id="gallery-lightbox" class="fixed inset-0 z-[200] bg-emerald-950/95 hidden items-center justify-center p-4 backdrop-blur-sm" onclick="closeLightbox()">
+        <button class="absolute top-6 right-6 text-white hover:text-emerald-400 transition-colors" onclick="closeLightbox()">
+            <i data-lucide="x" class="w-10 h-10"></i>
+        </button>
+        <img id="lightbox-img" src="" class="max-w-full max-h-[90vh] object-contain rounded-2xl shadow-2xl border-4 border-emerald-900" onclick="event.stopPropagation()">
+    </div>
 
     <!-- Footer -->
     <footer class="py-16 text-center bg-white border-t border-emerald-50">
@@ -948,6 +967,43 @@ END:VCARD`;
         window.toggleSection = function(id, visible) {
             // Mapping for Theme 6 sections if needed, or reload
              window.location.reload(); 
+        }
+
+        window.updateGallery = function(urls) {
+             const grid = document.getElementById('preview-gallery-grid');
+             if(grid) {
+                 grid.innerHTML = '';
+                 urls.slice(0, 6).forEach((url, i) => {
+                      const div = document.createElement('div');
+                      div.className = "aspect-square overflow-hidden rounded-3xl shadow-lg cursor-pointer group relative reveal reveal-up active";
+                      div.onclick = () => openLightbox(url);
+                      div.innerHTML = `
+                        <img src="${url}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-emerald-900/0 group-hover:bg-emerald-900/20 transition-colors duration-300"></div>
+                      `;
+                      grid.appendChild(div);
+                 });
+             }
+        };
+
+        function openLightbox(src) {
+            const lightbox = document.getElementById('gallery-lightbox');
+            const img = document.getElementById('lightbox-img');
+            if(lightbox && img) {
+                img.src = src;
+                lightbox.classList.remove('hidden');
+                lightbox.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('gallery-lightbox');
+            if(lightbox) {
+                lightbox.classList.add('hidden');
+                lightbox.classList.remove('flex');
+                document.body.style.overflow = '';
+            }
         }
     </script>
 </body>

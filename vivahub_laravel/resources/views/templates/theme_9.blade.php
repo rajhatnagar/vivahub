@@ -402,35 +402,38 @@
     </section>
 
     <!-- Gallery -->
-    <section class="py-24 px-6 bg-[#042f2e]">
+    <section id="gallery" class="py-24 px-6 bg-[#042f2e]">
         <div class="max-w-6xl mx-auto">
             <h2 class="font-serif text-5xl text-center mb-16 text-white reveal">Memories</h2>
             
-             <!-- REMOVED GRAYSCALE FROM ALL IMAGES -->
-            <div class="columns-1 md:columns-3 gap-6 space-y-6" id="preview-gallery-grid">
+            <!-- Standardized 2x2 Grid -->
+            <div class="grid grid-cols-2 gap-4 max-w-2xl mx-auto" id="preview-gallery-grid">
                 @if(isset($invitation->data['gallery']) && is_array($invitation->data['gallery']))
-                    @foreach($invitation->data['gallery'] as $img)
-                    <div class="gallery-item reveal reveal-up">
-                        <img src="{{ $img }}" class="w-full transition-all duration-700 hover:scale-[1.02] hover:brightness-110">
-                    </div>
+                    @foreach($invitation->data['gallery'] as $index => $img)
+                        @if($index < 6)
+                        <div class="aspect-square overflow-hidden rounded-sm shadow-md cursor-pointer group relative reveal reveal-up" onclick="openLightbox('{{ $img }}')">
+                            <img src="{{ $img }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-teal-900/0 group-hover:bg-teal-900/10 transition-colors duration-300"></div>
+                        </div>
+                        @endif
                     @endforeach
                 @else
-                    <div class="gallery-item reveal reveal-up">
-                        <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800" class="w-full transition-all duration-700 hover:scale-[1.02] hover:brightness-110" alt="Gallery">
+                    <!-- Placeholders -->
+                    <div class="aspect-square overflow-hidden rounded-sm shadow-md cursor-pointer group relative reveal reveal-up" onclick="openLightbox('https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800')">
+                        <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-teal-900/0 group-hover:bg-teal-900/10 transition-colors duration-300"></div>
                     </div>
-                    <div class="gallery-item reveal reveal-up" style="transition-delay: 100ms;">
-                        <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800" class="w-full transition-all duration-700 hover:scale-[1.02] hover:brightness-110" alt="Gallery">
+                    <div class="aspect-square overflow-hidden rounded-sm shadow-md cursor-pointer group relative reveal reveal-up" onclick="openLightbox('https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800')">
+                        <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-teal-900/0 group-hover:bg-teal-900/10 transition-colors duration-300"></div>
                     </div>
-                    <div class="gallery-item reveal reveal-up" style="transition-delay: 200ms;">
-                        <div class="border border-amber-500/30 p-8 flex items-center justify-center text-center h-full min-h-[200px]">
-                            <p class="font-script text-4xl text-amber-500">"Forever Begins"</p>
-                        </div>
+                    <div class="aspect-square overflow-hidden rounded-sm shadow-md cursor-pointer group relative reveal reveal-up" onclick="openLightbox('https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800')">
+                         <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-teal-900/0 group-hover:bg-teal-900/10 transition-colors duration-300"></div>
                     </div>
-                    <div class="gallery-item reveal reveal-up">
-                        <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800" class="w-full transition-all duration-700 hover:scale-[1.02] hover:brightness-110" alt="Gallery">
-                    </div>
-                     <div class="gallery-item reveal reveal-up" style="transition-delay: 150ms;">
-                        <img src="https://images.unsplash.com/photo-1610173824052-a56b3e71d378?auto=format&fit=crop&q=80&w=800" class="w-full transition-all duration-700 hover:scale-[1.02] hover:brightness-110" alt="Gallery">
+                    <div class="aspect-square overflow-hidden rounded-sm shadow-md cursor-pointer group relative reveal reveal-up" onclick="openLightbox('https://images.unsplash.com/photo-1610173824052-a56b3e71d378?auto=format&fit=crop&q=80&w=800')">
+                        <img src="https://images.unsplash.com/photo-1610173824052-a56b3e71d378?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-teal-900/0 group-hover:bg-teal-900/10 transition-colors duration-300"></div>
                     </div>
                 @endif
             </div>
@@ -522,6 +525,14 @@
             </div>
         </div>
     </section>
+
+    <!-- Lightbox -->
+    <div id="gallery-lightbox" class="fixed inset-0 z-[200] bg-[#022c22]/95 hidden items-center justify-center p-4 backdrop-blur-sm" onclick="closeLightbox()">
+        <button class="absolute top-6 right-6 text-white hover:text-amber-500 transition-colors" onclick="closeLightbox()">
+            <i data-lucide="x" class="w-10 h-10"></i>
+        </button>
+        <img id="lightbox-img" src="" class="max-w-full max-h-[90vh] object-contain shadow-2xl border-4 border-amber-500/50" onclick="event.stopPropagation()">
+    </div>
 
     <!-- Footer -->
     <footer class="py-16 text-center bg-[#022c22] border-t border-teal-900">
@@ -773,17 +784,41 @@ END:VCARD`;
              if(window.lucide) window.lucide.createIcons();
         };
         window.updateGallery = function(urls) {
-            const grid = document.getElementById('preview-gallery-grid');
-            if(grid) {
-                grid.innerHTML = '';
-                urls.forEach((url, i) => {
-                     const div = document.createElement('div');
-                     div.className = "gallery-item reveal reveal-up";
-                     div.innerHTML = `<img src="${url}" class="w-full transition-all duration-700 hover:scale-[1.02] hover:brightness-110">`;
-                     grid.appendChild(div);
-                });
-            }
+             const grid = document.getElementById('preview-gallery-grid');
+             if(grid) {
+                 grid.innerHTML = '';
+                 urls.slice(0, 6).forEach((url, i) => {
+                      const div = document.createElement('div');
+                      div.className = "aspect-square overflow-hidden rounded-sm shadow-md cursor-pointer group relative reveal reveal-up active";
+                      div.onclick = () => openLightbox(url);
+                      div.innerHTML = `
+                        <img src="${url}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-teal-900/0 group-hover:bg-teal-900/10 transition-colors duration-300"></div>
+                      `;
+                      grid.appendChild(div);
+                 });
+             }
         };
+
+        function openLightbox(src) {
+            const lightbox = document.getElementById('gallery-lightbox');
+            const img = document.getElementById('lightbox-img');
+            if(lightbox && img) {
+                img.src = src;
+                lightbox.classList.remove('hidden');
+                lightbox.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('gallery-lightbox');
+            if(lightbox) {
+                lightbox.classList.add('hidden');
+                lightbox.classList.remove('flex');
+                document.body.style.overflow = '';
+            }
+        }
         window.updatePreview = function(type, id, value) {
             if(type === 'text') { 
                 const el = document.getElementById(id); if(el) el.innerText = value;

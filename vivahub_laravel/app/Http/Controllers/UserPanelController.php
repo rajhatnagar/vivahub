@@ -336,6 +336,9 @@ class UserPanelController extends Controller
     {
         // Inject Mock Invitation for Preview if missing
         if (isset($data['isPreview']) && $data['isPreview'] && !isset($data['invitation'])) {
+            // Use test folder images for defaults
+            $testImgPath = asset('test');
+            
             $mockData = [
                 // Common
                 'date' => '2026-12-12',
@@ -348,33 +351,32 @@ class UserPanelController extends Controller
                 'bride_name' => 'Elena', 
                 'groom_name' => 'Julian',
                 'venue_city' => 'Udaipur, India',
-                'hero_image' => 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=2070',
-                'bride_image' => 'https://images.unsplash.com/photo-1549333321-22f83d9f1583?auto=format&fit=crop&q=80&w=800',
-                'groom_image' => 'https://images.unsplash.com/photo-1594463750939-ebb28c3f7f75?auto=format&fit=crop&q=80&w=800',
+                'hero_image' => $testImgPath . '/hero.jpg',
+                'bride_image' => $testImgPath . '/bride.jpg',
+                'groom_image' => $testImgPath . '/groom.jpg',
                 
                 // Legacy/Alternative Themes (2, 4, 5, 10)
                 'bride' => 'Elena',
                 'groom' => 'Julian',
                 'location' => 'Udaipur, India',
-                'h_img' => 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=2070',
+                'h_img' => $testImgPath . '/hero.jpg',
+                'hero_bg' => $testImgPath . '/hero.jpg',
                 
-                // Galleries
+                // Galleries - using all test folder images
                 'gallery' => [
-                    'https://images.unsplash.com/photo-1549333321-22f83d9f1583?auto=format&fit=crop&q=80&w=800', // Bride
-                    'https://images.unsplash.com/photo-1594463750939-ebb28c3f7f75?auto=format&fit=crop&q=80&w=800', // Groom
-                    'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800',
-                    'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800',
-                    'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&q=80&w=800',
-                    'https://images.unsplash.com/photo-1610173824052-a56b3e71d378?auto=format&fit=crop&q=80&w=800',
-                    'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=2070',
-                    'https://images.unsplash.com/photo-1519225495810-758831c93e44?auto=format&fit=crop&q=80&w=2070',
-                    'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800',
+                    $testImgPath . '/bride.jpg',
+                    $testImgPath . '/groom.jpg',
+                    $testImgPath . '/wedding.jpg',
+                    $testImgPath . '/haldi.png',
+                    $testImgPath . '/reception.jpg',
+                    $testImgPath . '/family-photo.jpg',
+                    $testImgPath . '/hero.jpg',
                 ],
-                // Individual gallery keys for legacy compatibility if needed
-                'gallery_1' => 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800',
-                'gallery_2' => 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800', 
-                'gallery_3' => 'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&q=80&w=800',
-                'gallery_4' => 'https://images.unsplash.com/photo-1610173824052-a56b3e71d378?auto=format&fit=crop&q=80&w=800',
+                // Individual gallery keys for legacy compatibility
+                'gallery_1' => $testImgPath . '/wedding.jpg',
+                'gallery_2' => $testImgPath . '/haldi.png', 
+                'gallery_3' => $testImgPath . '/reception.jpg',
+                'gallery_4' => $testImgPath . '/family-photo.jpg',
 
                 // Events
                 'events' => [
@@ -462,5 +464,101 @@ class UserPanelController extends Controller
             'discount_value' => 0, // 0 price
             'code' => $coupon->code
         ]);
+    }
+    
+    public function exportRsvps()
+    {
+        // Fetch ALL RSVPs to match the query used in the 'rsvps' view logic (UserPanelController::rsvps)
+        $guests = \App\Models\Rsvp::latest()->get();
+
+        $filename = "rsvps_export_" . date('Y-m-d') . ".csv";
+        $headers = [
+            "Content-Type" => "text/csv; charset=UTF-8",
+            "Content-Disposition" => "attachment; filename=\"$filename\"",
+            "Pragma" => "no-cache",
+            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+            "Expires" => "0"
+        ];
+
+        $columns = ['Guest Name', 'Phone', 'Guests Count', 'Status', 'Date'];
+
+        $callback = function() use($guests, $columns) {
+            $file = fopen('php://output', 'w');
+            // Add BOM for Excel UTF-8 Compatibility
+            fputs($file, "\xEF\xBB\xBF"); 
+            fputcsv($file, $columns);
+
+            foreach ($guests as $guest) {
+                // Determine status label
+                $status = 'Accepted'; 
+                fputcsv($file, [
+                    $guest->guest_name,
+                    $guest->phone,
+                    $guest->guests_count,
+                    $status,
+                    $guest->created_at->format('Y-m-d H:i')
+                ]);
+            }
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    public function addGuest(Request $request)
+    {
+        $request->validate([
+            'guest_name' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
+            'guests_count' => 'required|integer|min:1',
+            'status' => 'nullable|string'
+        ]);
+
+        $userId = Auth::id();
+        $invitation = Invitation::where('user_id', $userId)->latest()->first();
+
+        if (!$invitation) {
+            return back()->with('error', 'Please create an invitation first.');
+        }
+
+        \App\Models\Rsvp::create([
+            'invitation_id' => $invitation->id,
+            'guest_name' => $request->guest_name,
+            'phone' => $request->phone,
+            'guests_count' => $request->guests_count,
+        ]);
+
+        return back()->with('success', 'Guest added successfully!');
+    }
+
+    public function invoice($id)
+    {
+        // Mock Transactions Matching Billing Page
+        $transactions = collect([
+            ['id' => "INV-24-001", 'date' => "Oct 24, 2023", 'plan' => "Viva Premium", 'amount' => "₹699", 'status' => "Paid"],
+            ['id' => "INV-23-098", 'date' => "Sep 12, 2023", 'plan' => "Aarambh", 'amount' => "₹399", 'status' => "Paid"],
+            ['id' => "INV-23-055", 'date' => "Aug 01, 2023", 'plan' => "Viva Basic", 'amount' => "₹199", 'status' => "Paid"],
+            ['id' => "INV-23-012", 'date' => "Jul 15, 2023", 'plan' => "Custom Domain", 'amount' => "₹499", 'status' => "Paid"]
+        ])->keyBy('id');
+
+        // Extract ID from filename if passed as filename "Invoice_ID.pdf" or just "ID"
+        // The URL params might come in different ways, but assuming typical route param.
+        // Try exact match first
+        $transaction = $transactions->get($id);
+        
+        // If not found, try to search (lazy match)
+        if (!$transaction) {
+            $transaction = $transactions->first(function($item) use ($id) {
+                return str_contains($id, $item['id']);
+            });
+        }
+
+        if (!$transaction) {
+             // Fallback for Demo
+             $transaction = $transactions->first();
+             $transaction['id'] = $id; 
+        }
+
+        return view('user.invoice', compact('transaction'));
     }
 }
