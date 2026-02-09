@@ -1,4 +1,4 @@
-@extends('layouts.user')
+@extends('layouts.admin')
 
 @section('title', 'Invitation Builder')
 
@@ -10,7 +10,7 @@
         <!-- Form Header -->
         <div class="p-5 border-b border-gray-100 dark:border-white/5">
             <div class="flex justify-between items-center mb-3">
-                <a href="{{ route('dashboard.templates') }}" class="text-sm text-text-muted hover:text-primary flex gap-1 font-bold"><span class="material-symbols-outlined text-sm">arrow_back</span> Back</a>
+                <a href="{{ route('admin.templates.index') }}" class="text-sm text-text-muted hover:text-primary flex gap-1 font-bold"><span class="material-symbols-outlined text-sm">arrow_back</span> Back</a>
                 <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold" id="step-indicator">Step 1/7</span>
             </div>
             <div class="w-full bg-gray-100 dark:bg-white/10 rounded-full h-1.5"><div class="bg-primary h-1.5 rounded-full transition-all duration-500" style="width: 14%" id="progress-bar"></div></div>
@@ -287,7 +287,7 @@
             <div id="preview-notch" class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-[#1b0d12] dark:bg-[#2a2a2a] rounded-b-2xl z-20"></div>
             
             <!-- Iframe Preview -->
-            <iframe id="preview-frame" src="{{ route('builder.preview', ['template' => $templateId, 'invitation_id' => $invitation->id ?? null]) }}" class="w-full h-full bg-white" style="border:none;"></iframe>
+            <iframe id="preview-frame" src="{{ route('admin.builder.preview', ['template' => $templateId, 'invitation_id' => $invitation->id ?? null]) }}" class="w-full h-full bg-white" style="border:none;"></iframe>
         </div>
 
         <!-- Preview Toggle -->
@@ -476,7 +476,7 @@
     // --- Persistence & Edit Logic ---
     // Assign to window for global access and debugging
     window.invitationData = @json($invitation ?? null);
-    window.saveRoute = "{{ $saveRoute ?? route('builder.save') }}";
+    window.saveRoute = "{{ $saveRoute ?? route('admin.builder.save') }}";
     window.isPartner = @json($isPartner ?? false);
     window.isAdmin = @json($isAdmin ?? false);
 
@@ -1425,7 +1425,7 @@
         
         // Sync source if not already set or needs refresh (optional, but good)
         if(frame.src === "about:blank" || frame.src === "") {
-             frame.src = "{{ route('builder.preview', ['template' => $templateId, 'invitation_id' => $invitation->id ?? null]) }}";
+             frame.src = "{{ route('admin.builder.preview', ['template' => $templateId, 'invitation_id' => $invitation->id ?? null]) }}";
              
              // Sync when loaded
              frame.onload = function() {

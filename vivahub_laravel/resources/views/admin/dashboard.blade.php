@@ -70,24 +70,103 @@
             </div>
         </div>
     </section>
-    
-    <!-- Chart -->
-    <section class="bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-2xl p-6 shadow-soft-light card-hover">
-        <div class="flex items-center justify-between mb-6">
-            <h3 class="text-slate-800 dark:text-white text-lg font-bold">Revenue Analytics</h3>
-            <select class="bg-gray-50 dark:bg-[#1a0b0b] border border-border-light dark:border-border-dark text-slate-700 dark:text-white text-sm rounded-lg p-2 focus:ring-primary focus:border-primary"><option>This Month</option></select>
-        </div>
-        <!-- Static SVG Chart (Visual Only) -->
-        <div class="w-full h-48 bg-gray-50 dark:bg-[#1a0b0b] rounded-xl relative overflow-hidden flex items-end justify-between px-4 pb-0 pt-8 gap-2 border border-border-light dark:border-border-dark">
-            <div class="w-full bg-gray-200 dark:bg-gray-800 rounded-t-sm hover:bg-primary transition-colors h-[40%]"></div>
-            <div class="w-full bg-gray-200 dark:bg-gray-800 rounded-t-sm hover:bg-primary transition-colors h-[60%]"></div>
-            <div class="w-full bg-gray-200 dark:bg-gray-800 rounded-t-sm hover:bg-primary transition-colors h-[30%]"></div>
-            <div class="w-full bg-gray-200 dark:bg-gray-800 rounded-t-sm hover:bg-primary transition-colors h-[80%]"></div>
-            <div class="w-full bg-gray-200 dark:bg-gray-800 rounded-t-sm hover:bg-primary transition-colors h-[50%]"></div>
-            <div class="w-full bg-primary rounded-t-sm shadow-[0_0_15px_rgba(236,19,19,0.5)] h-[90%] relative group">
-                <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] font-bold px-2 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">₹2.4L</div>
+
+    <!-- Payment Analytics Quick Stats -->
+    <section class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Successful Payments -->
+        <div class="bg-gradient-to-br from-green-500 to-emerald-600 p-5 rounded-2xl relative overflow-hidden shadow-lg">
+            <div class="absolute top-0 right-0 p-3 opacity-20">
+                <span class="material-symbols-outlined text-4xl text-white">check_circle</span>
             </div>
-            <div class="w-full bg-gray-200 dark:bg-gray-800 rounded-t-sm hover:bg-primary transition-colors h-[70%]"></div>
+            <div class="relative z-10">
+                <p class="text-white/80 text-xs font-bold uppercase tracking-wider">Successful</p>
+                <h3 class="text-white text-2xl font-black mt-1">{{ $payment_stats['successful'] ?? 0 }}</h3>
+                <p class="text-white/60 text-xs mt-1">Payments</p>
+            </div>
+        </div>
+
+        <!-- Pending Payments -->
+        <div class="bg-gradient-to-br from-yellow-500 to-amber-600 p-5 rounded-2xl relative overflow-hidden shadow-lg">
+            <div class="absolute top-0 right-0 p-3 opacity-20">
+                <span class="material-symbols-outlined text-4xl text-white">pending</span>
+            </div>
+            <div class="relative z-10">
+                <p class="text-white/80 text-xs font-bold uppercase tracking-wider">Pending</p>
+                <h3 class="text-white text-2xl font-black mt-1">{{ $payment_stats['pending'] ?? 0 }}</h3>
+                <p class="text-white/60 text-xs mt-1">Awaiting</p>
+            </div>
+        </div>
+
+        <!-- Failed Payments -->
+        <div class="bg-gradient-to-br from-red-500 to-rose-600 p-5 rounded-2xl relative overflow-hidden shadow-lg">
+            <div class="absolute top-0 right-0 p-3 opacity-20">
+                <span class="material-symbols-outlined text-4xl text-white">cancel</span>
+            </div>
+            <div class="relative z-10">
+                <p class="text-white/80 text-xs font-bold uppercase tracking-wider">Failed</p>
+                <h3 class="text-white text-2xl font-black mt-1">{{ $payment_stats['failed'] ?? 0 }}</h3>
+                <p class="text-white/60 text-xs mt-1">Transactions</p>
+            </div>
+        </div>
+
+        <!-- Today's Revenue -->
+        <div class="bg-gradient-to-br from-blue-500 to-indigo-600 p-5 rounded-2xl relative overflow-hidden shadow-lg">
+            <div class="absolute top-0 right-0 p-3 opacity-20">
+                <span class="material-symbols-outlined text-4xl text-white">today</span>
+            </div>
+            <div class="relative z-10">
+                <p class="text-white/80 text-xs font-bold uppercase tracking-wider">Today</p>
+                <h3 class="text-white text-2xl font-black mt-1">₹{{ number_format($payment_stats['today_revenue'] ?? 0) }}</h3>
+                <p class="text-white/60 text-xs mt-1">Revenue</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Revenue & Gateway Analytics -->
+    <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Revenue Chart -->
+        <div class="lg:col-span-2 bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-2xl p-6 shadow-soft-light card-hover">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-slate-800 dark:text-white text-lg font-bold">Revenue Analytics</h3>
+                <select class="bg-gray-50 dark:bg-[#1a0b0b] border border-border-light dark:border-border-dark text-slate-700 dark:text-white text-sm rounded-lg p-2 focus:ring-primary focus:border-primary"><option>Last 30 Days</option></select>
+            </div>
+            <div class="w-full h-64 relative">
+                <canvas id="revenueChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Gateway Performance -->
+        <div class="bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-2xl p-6 shadow-soft-light card-hover">
+            <h3 class="text-slate-800 dark:text-white text-lg font-bold mb-6">Gateway Performance</h3>
+            <div class="space-y-4">
+                @forelse($gateway_stats_data as $gw)
+                <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-white/5 border border-transparent hover:border-border-light dark:hover:border-border-dark transition-colors">
+                    <div class="flex items-center gap-3">
+                        <div class="size-10 rounded-lg bg-white dark:bg-black/20 flex items-center justify-center p-2 shadow-sm">
+                            <!-- Simple Icon/Logo Placeholder based on name -->
+                            @if(Str::contains(strtolower($gw->gateway), 'razorpay'))
+                                <span class="text-blue-500 font-bold text-xs">RZP</span>
+                            @elseif(Str::contains(strtolower($gw->gateway), 'paypal'))
+                                <span class="text-blue-800 font-bold text-xs">PPL</span>
+                            @elseif(Str::contains(strtolower($gw->gateway), 'phonepe'))
+                                <span class="text-purple-600 font-bold text-xs">Pe</span>
+                            @else
+                                <span class="text-gray-500 font-bold text-xs">GW</span>
+                            @endif
+                        </div>
+                        <div>
+                            <p class="text-slate-800 dark:text-white text-sm font-bold capitalize">{{ $gw->gateway }}</p>
+                            <p class="text-xs text-gray-500">{{ $gw->count }} Transactions</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-slate-800 dark:text-white text-sm font-bold">₹{{ number_format($gw->total) }}</p>
+                    </div>
+                </div>
+                @empty
+                <p class="text-sm text-gray-500 text-center py-4">No data available.</p>
+                @endforelse
+            </div>
         </div>
     </section>
 
@@ -148,3 +227,89 @@
     </section>
 </div>
 @endsection
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check for dark mode to adjust chart colors
+        const isDark = document.documentElement.classList.contains('dark');
+        const gridColor = isDark ? '#333' : '#f0f0f0';
+        const textColor = isDark ? '#9ca3af' : '#6b7280';
+
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        const trendData = @json($revenue_trend);
+        
+        // Prepare Data
+        const labels = trendData.map(item => {
+            const date = new Date(item.date);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        });
+        const data = trendData.map(item => item.total);
+
+        // Gradient
+        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, '{{ $themeColor }}50'); // 30% opacity
+        gradient.addColorStop(1, '{{ $themeColor }}00'); // 0% opacity
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Revenue',
+                    data: data,
+                    borderColor: '{{ $themeColor }}',
+                    backgroundColor: gradient,
+                    borderWidth: 3,
+                    tension: 0.4,
+                    fill: true,
+                    pointBackgroundColor: '{{ $themeColor }}',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: isDark ? '#1e0b0b' : '#fff',
+                        titleColor: isDark ? '#fff' : '#1f2937',
+                        bodyColor: isDark ? '#fff' : '#1f2937',
+                        borderColor: isDark ? '#3d1e1e' : '#e5e7eb',
+                        borderWidth: 1,
+                        padding: 10,
+                        displayColors: false,
+                        callbacks: {
+                            label: function(context) {
+                                return 'Revenue: ₹' + context.parsed.y.toLocaleString();
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: gridColor, borderDash: [5, 5] },
+                        ticks: { color: textColor, callback: function(value) { return '₹' + value; } },
+                        border: { display: false }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: textColor },
+                        border: { display: false }
+                    }
+                }
+            }
+        });
+    });
+</script>
+@endpush

@@ -46,6 +46,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/rsvps/add', 'addGuest')->name('rsvps.add');
         Route::get('/invoice/{id}', 'invoice')->name('invoice.show');
     });
+    
+    // User Payment Routes (Razorpay)
+    Route::post('/payment/create-order', [App\Http\Controllers\PaymentController::class, 'createUserOrder'])->name('user.payment.createOrder');
+    Route::post('/payment/verify', [App\Http\Controllers\PaymentController::class, 'verifyUserPayment'])->name('user.payment.verify');
 });
 
 
@@ -106,11 +110,32 @@ Route::middleware(['auth', 'can:admin'])->prefix('admin')->name('admin.')->group
     // Settings
     Route::get('/settings', [App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
+    
+    // Admin Templates & Builder (same as user, admin gets charged)
+    Route::get('/templates', [App\Http\Controllers\Admin\AdminTemplateController::class, 'templates'])->name('templates.index');
+    Route::post('/templates/{id}/toggle', [App\Http\Controllers\Admin\AdminTemplateController::class, 'toggleTemplateStatus'])->name('templates.toggle');
+    Route::get('/builder', [App\Http\Controllers\Admin\AdminTemplateController::class, 'builder'])->name('builder');
+    Route::get('/builder/preview/{template}', [App\Http\Controllers\Admin\AdminTemplateController::class, 'previewTemplate'])->name('builder.preview');
+    Route::post('/builder/save', [App\Http\Controllers\Admin\AdminTemplateController::class, 'saveDraft'])->name('builder.save');
+    
+    // Admin Invitations (own published/drafted)
+    Route::get('/my-invitations', [App\Http\Controllers\Admin\AdminTemplateController::class, 'invitations'])->name('invitations.index');
+    
+    // Admin Coupons Management (no credits required)
+    Route::get('/coupons', [App\Http\Controllers\Admin\AdminCouponController::class, 'index'])->name('coupons.index');
+    Route::post('/coupons', [App\Http\Controllers\Admin\AdminCouponController::class, 'store'])->name('coupons.store');
+    Route::delete('/coupons/{id}', [App\Http\Controllers\Admin\AdminCouponController::class, 'destroy'])->name('coupons.destroy');
+    
+    // Admin Payment Routes (uses same as user)
+    Route::post('/payment/create-order', [App\Http\Controllers\PaymentController::class, 'createUserOrder'])->name('payment.createOrder');
+    Route::post('/payment/verify', [App\Http\Controllers\PaymentController::class, 'verifyUserPayment'])->name('payment.verify');
 });
 
 // Partner Routes
 Route::middleware(['auth', 'verified', 'partner'])->prefix('partner')->name('partner.')->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\PartnerController::class, 'index'])->name('dashboard');
+    Route::get('/templates', [App\Http\Controllers\PartnerController::class, 'templates'])->name('templates');
+    Route::get('/templates/preview/{template}', [App\Http\Controllers\PartnerController::class, 'previewTemplate'])->name('templates.preview');
     Route::post('/clients', [App\Http\Controllers\PartnerController::class, 'storeClient'])->name('clients.store');
     Route::post('/coupons', [App\Http\Controllers\PartnerController::class, 'generateCoupon'])->name('coupons.store');
     Route::post('/coupons/{id}/delete', [App\Http\Controllers\PartnerController::class, 'deleteCoupon'])->name('coupons.delete');
@@ -123,4 +148,10 @@ Route::middleware(['auth', 'verified', 'partner'])->prefix('partner')->name('par
     Route::get('/invoices/{id}/download', [App\Http\Controllers\PartnerController::class, 'downloadInvoice'])->name('invoices.download');
     Route::post('/clients/{id}/update', [App\Http\Controllers\PartnerController::class, 'updateClient'])->name('clients.update');
     Route::post('/invitations/{id}/delete', [App\Http\Controllers\PartnerController::class, 'deleteInvitation'])->name('invitations.delete');
+    
+    // Payment Routes (Razorpay)
+    Route::post('/payment/create-order', [App\Http\Controllers\PaymentController::class, 'createOrder'])->name('payment.createOrder');
+    Route::post('/payment/verify', [App\Http\Controllers\PaymentController::class, 'verifyPayment'])->name('payment.verify');
+    Route::get('/payment/packages', [App\Http\Controllers\PaymentController::class, 'getPackages'])->name('payment.packages');
 });
+

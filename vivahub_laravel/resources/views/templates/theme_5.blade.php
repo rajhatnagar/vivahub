@@ -419,8 +419,14 @@
 
   <!-- FOOTER -->
   <footer class="bg-rust-900 py-16 text-center text-rust-100/60">
-      <!-- White Logo -->
-      <img src="https://csssofttech.com/wedding/assets/VivaHub.png" class="w-48 mx-auto mb-8 opacity-80 filter brightness-0 invert">
+      @if(isset($partnerBranding) && $partnerBranding->logo_url)
+          <img src="{{ $partnerBranding->logo_url }}" alt="{{ $partnerBranding->agency_name }}" class="w-32 mx-auto mb-4 object-contain">
+          <p class="mb-2 text-[10px] uppercase tracking-widest opacity-70">Planned by</p>
+          <h3 class="mb-8 font-serif text-xl text-rust-100">{{ $partnerBranding->agency_name }}</h3>
+      @else
+          <!-- White Logo -->
+          <img src="https://csssofttech.com/wedding/assets/VivaHub.png" class="w-48 mx-auto mb-8 opacity-80 filter brightness-0 invert">
+      @endif
       
       <div class="flex justify-center gap-6 mb-8">
           <a href="#" class="hover:text-white transition-colors"><i data-lucide="instagram"></i></a>

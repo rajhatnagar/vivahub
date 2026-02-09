@@ -313,8 +313,14 @@
     </section>
 
     <footer class="bg-sage-900 text-sage-200 py-12 text-center pb-24 md:pb-12 border-t border-sage-800">
-        <p class="uppercase tracking-widest text-xs mb-2 opacity-60">Made with Love</p>
-        <p class="font-serif text-xl tracking-wide">VivaHub</p>
+        @if(isset($partnerBranding) && $partnerBranding->logo_url)
+             <img src="{{ $partnerBranding->logo_url }}" class="w-24 mx-auto mb-4 object-contain opacity-80">
+             <p class="uppercase tracking-widest text-xs mb-2 opacity-60">Planned by</p>
+             <p class="font-serif text-xl tracking-wide text-sage-100">{{ $partnerBranding->agency_name }}</p>
+        @else
+             <p class="uppercase tracking-widest text-xs mb-2 opacity-60">Made with Love</p>
+             <p class="font-serif text-xl tracking-wide">VivaHub</p>
+        @endif
     </footer>
 
     <!-- MOBILE NAV -->

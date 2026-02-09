@@ -539,17 +539,25 @@
 
     <!-- Footer (Texture: Diamonds) -->
     <footer class="py-16 text-center bg-golden-diamonds border-t border-amber-900/30">
-        <div class="flex flex-col items-center justify-center gap-4 mb-8 relative z-10">
-            <h2 class="font-regal tracking-widest uppercase text-2xl text-rose-100">VivaHub</h2>
-            <div class="flex items-center gap-6">
-                <a href="#" class="text-amber-700 hover:text-amber-500 transition-all"><i data-lucide="instagram" class="w-5 h-5"></i></a>
-                <a href="#" class="text-amber-700 hover:text-amber-500 transition-all"><i data-lucide="facebook" class="w-5 h-5"></i></a>
+        @if(isset($partnerBranding) && $partnerBranding->logo_url)
+             <div class="flex flex-col items-center justify-center gap-4 mb-8">
+                 <img src="{{ $partnerBranding->logo_url }}" alt="{{ $partnerBranding->agency_name }}" class="w-24 h-auto object-contain mb-2 opacity-90">
+                 <p class="text-xs text-amber-700/60 tracking-widest uppercase">Planned by</p>
+                 <h3 class="font-regal text-xl text-rose-100">{{ $partnerBranding->agency_name }}</h3>
+             </div>
+        @else
+            <div class="flex flex-col items-center justify-center gap-4 mb-8 relative z-10">
+                <h2 class="font-regal tracking-widest uppercase text-2xl text-rose-100">VivaHub</h2>
+                <div class="flex items-center gap-6">
+                    <a href="#" class="text-amber-700 hover:text-amber-500 transition-all"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                    <a href="#" class="text-amber-700 hover:text-amber-500 transition-all"><i data-lucide="facebook" class="w-5 h-5"></i></a>
+                </div>
             </div>
-        </div>
-        <div class="flex items-center justify-center gap-2 mb-8 group cursor-default relative z-10">
-            <span class="text-xs text-amber-700/60 font-sans tracking-wide uppercase">Moments by <span class="text-amber-600 border-b border-amber-800 pb-1">Rahul Verma</span></span>
-        </div>
-        <p class="text-[10px] text-amber-900 uppercase tracking-widest relative z-10">© 2026 VivaHub</p>
+            <div class="flex items-center justify-center gap-2 mb-8 group cursor-default relative z-10">
+                <span class="text-xs text-amber-700/60 font-sans tracking-wide uppercase">Moments by <span class="text-amber-600 border-b border-amber-800 pb-1">Rahul Verma</span></span>
+            </div>
+            <p class="text-[10px] text-amber-900 uppercase tracking-widest relative z-10">© 2026 VivaHub</p>
+        @endif
     </footer>
 
     <!-- Mobile Nav -->

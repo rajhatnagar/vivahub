@@ -354,12 +354,20 @@
 
   <!-- Footer (Standardized) -->
   <footer class="py-16 text-center bg-midnight-950 border-t border-rose-900/20 safe-pb">
-      <div class="flex items-center justify-center gap-2 mb-4 opacity-70">
-          <span class="text-rose-500 text-lg">✦</span>
-          <h2 class="font-serif tracking-widest uppercase text-xl text-white">VivaHub</h2>
-          <span class="text-rose-500 text-lg">✦</span>
-      </div>
-      <p class="text-xs text-slate-500 tracking-[0.3em] uppercase mb-8">Elevating Royal Unions</p>
+      @if(isset($partnerBranding) && $partnerBranding->logo_url)
+         <div class="flex flex-col items-center justify-center gap-4 mb-8">
+             <img src="{{ $partnerBranding->logo_url }}" alt="{{ $partnerBranding->agency_name }}" class="w-24 h-auto object-contain mb-2 opacity-90">
+             <p class="text-xs text-rose-200/60 tracking-[0.2em] uppercase">Planned by</p>
+             <h3 class="font-serif text-xl text-white">{{ $partnerBranding->agency_name }}</h3>
+         </div>
+      @else
+          <div class="flex items-center justify-center gap-2 mb-4 opacity-70">
+              <span class="text-rose-500 text-lg">✦</span>
+              <h2 class="font-serif tracking-widest uppercase text-xl text-white">VivaHub</h2>
+              <span class="text-rose-500 text-lg">✦</span>
+          </div>
+          <p class="text-xs text-slate-500 tracking-[0.3em] uppercase mb-8">Elevating Royal Unions</p>
+      @endif
       
       <!-- Photographer Credit -->
       <div class="flex items-center justify-center gap-2 mb-8 group cursor-default">

@@ -12,6 +12,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Great+Vibes&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
     
+    <!-- Razorpay Checkout -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script>
@@ -109,9 +112,9 @@
             <button onclick="app.navigateTo('coupons')" id="nav-coupons" class="nav-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-medium text-text-muted dark:text-gray-400 hover:bg-white/50 dark:hover:bg-white/5 hover:text-primary dark:hover:text-white transition-all w-full text-left border-l-4 border-transparent">
                 <span class="material-symbols-outlined text-[22px]">local_activity</span> Coupons & Codes
             </button>
-            <button onclick="app.navigateTo('templates')" id="nav-templates" class="nav-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-medium text-text-muted dark:text-gray-400 hover:bg-white/50 dark:hover:bg-white/5 hover:text-primary dark:hover:text-white transition-all w-full text-left border-l-4 border-transparent">
+            <a href="{{ route('partner.templates') }}" id="nav-templates" class="nav-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-medium text-text-muted dark:text-gray-400 hover:bg-white/50 dark:hover:bg-white/5 hover:text-primary dark:hover:text-white transition-all w-full text-left border-l-4 border-transparent">
                 <span class="material-symbols-outlined text-[22px]">grid_view</span> Template Library
-            </button>
+            </a>
             <button onclick="app.navigateTo('history')" id="nav-history" class="nav-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-medium text-text-muted dark:text-gray-400 hover:bg-white/50 dark:hover:bg-white/5 hover:text-primary dark:hover:text-white transition-all w-full text-left border-l-4 border-transparent">
                 <span class="material-symbols-outlined text-[22px]">history</span> Usage History
             </button>
@@ -211,6 +214,63 @@
             </button>
         </div>
     </nav>
+
+    <!-- Mobile Menu Slideout -->
+    <div id="mobile-menu" class="fixed inset-0 z-[60] hidden lg:hidden">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="app.toggleMobileMenu(false)"></div>
+        <aside class="absolute top-0 right-0 h-full w-72 bg-white dark:bg-surface-dark shadow-2xl flex flex-col transform transition-transform duration-300">
+            <!-- Header -->
+            <div class="p-6 border-b border-gray-100 dark:border-white/10 flex items-center justify-between">
+                <img src="{{ $partner->logo_url ?? asset('VivaHub-logo.png') }}" alt="Logo" class="h-8 w-auto">
+                <button onclick="app.toggleMobileMenu(false)" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-white/10">
+                    <span class="material-symbols-outlined text-gray-500">close</span>
+                </button>
+            </div>
+
+            <!-- Partner Profile -->
+            <div class="p-4 border-b border-gray-100 dark:border-white/10 bg-gradient-to-r from-primary/5 to-transparent">
+                <div class="flex items-center gap-3">
+                    <div class="h-12 w-12 rounded-full bg-primary text-white flex items-center justify-center font-bold text-lg">{{ substr($partner->agency_name ?? 'A', 0, 2) }}</div>
+                    <div class="flex-1 min-w-0">
+                        <p class="font-bold text-text-dark dark:text-white truncate">{{ $partner->agency_name ?? 'Agency' }}</p>
+                        <p class="text-xs text-accent-gold font-bold uppercase tracking-wide">Gold Partner</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
+                <button onclick="app.navigateTo('dashboard'); app.toggleMobileMenu(false);" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-left text-sm font-medium text-text-muted dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors">
+                    <span class="material-symbols-outlined">dashboard</span> Dashboard
+                </button>
+                <button onclick="app.navigateTo('clients'); app.toggleMobileMenu(false);" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-left text-sm font-medium text-text-muted dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors">
+                    <span class="material-symbols-outlined">groups</span> My Clients
+                </button>
+                <button onclick="app.navigateTo('templates'); app.toggleMobileMenu(false);" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-left text-sm font-medium text-text-muted dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors">
+                    <span class="material-symbols-outlined">grid_view</span> Templates
+                </button>
+                <button onclick="app.navigateTo('coupons'); app.toggleMobileMenu(false);" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-left text-sm font-medium text-text-muted dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors">
+                    <span class="material-symbols-outlined">local_activity</span> Coupon Codes
+                </button>
+                <button onclick="app.navigateTo('billing'); app.toggleMobileMenu(false);" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-left text-sm font-medium text-text-muted dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors">
+                    <span class="material-symbols-outlined">receipt_long</span> Billing
+                </button>
+                <button onclick="app.navigateTo('settings'); app.toggleMobileMenu(false);" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-left text-sm font-medium text-text-muted dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors">
+                    <span class="material-symbols-outlined">settings</span> Settings
+                </button>
+            </nav>
+
+            <!-- Logout -->
+            <div class="p-4 border-t border-gray-100 dark:border-white/10">
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-left text-sm font-medium text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+                        <span class="material-symbols-outlined">logout</span> Sign Out
+                    </button>
+                </form>
+            </div>
+        </aside>
+    </div>
 
     <!-- Create Coupon Modal -->
     <div id="coupon-modal" class="fixed inset-0 z-[70] hidden flex items-center justify-center p-4">
@@ -524,26 +584,81 @@
                 }
             },
 
-            buyCredits: function() {
-                if(!confirm('Mock Payment: Buy 10 Credits for ₹5000?')) return;
-                
-                fetch('{{ route("partner.credits.buy") }}', {
+            buyCredits: function(packageId = 'pack_10') {
+                // Create order via backend
+                fetch('{{ route("partner.payment.createOrder") }}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    }
+                    },
+                    body: JSON.stringify({ package_id: packageId })
                 })
                 .then(r => r.json())
-                .then(res => {
-                    if(res.success) {
-                        alert(res.message);
-                        location.reload(); // Simple reload to update UI/Credits
-                    } else {
-                        alert('Error: ' + res.message);
+                .then(orderData => {
+                    if(!orderData.success) {
+                        alert('Error: ' + orderData.message);
+                        return;
                     }
+                    
+                    // Open Razorpay Checkout
+                    const options = {
+                        key: orderData.key,
+                        amount: orderData.amount,
+                        currency: orderData.currency,
+                        name: orderData.name,
+                        description: orderData.description,
+                        order_id: orderData.order_id,
+                        prefill: orderData.prefill,
+                        theme: {
+                            color: '{{ $partner->primary_color ?? "#800020" }}'
+                        },
+                        handler: function(response) {
+                            // Verify payment on backend
+                            fetch('{{ route("partner.payment.verify") }}', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                },
+                                body: JSON.stringify({
+                                    razorpay_order_id: response.razorpay_order_id,
+                                    razorpay_payment_id: response.razorpay_payment_id,
+                                    razorpay_signature: response.razorpay_signature,
+                                    package_id: packageId
+                                })
+                            })
+                            .then(r => r.json())
+                            .then(verifyRes => {
+                                if(verifyRes.success) {
+                                    alert(verifyRes.message);
+                                    location.reload();
+                                } else {
+                                    alert('Verification failed: ' + verifyRes.message);
+                                }
+                            })
+                            .catch(e => {
+                                console.error(e);
+                                alert('Payment verification error. Please contact support.');
+                            });
+                        },
+                        modal: {
+                            ondismiss: function() {
+                                console.log('Payment cancelled by user');
+                            }
+                        }
+                    };
+                    
+                    const rzp = new Razorpay(options);
+                    rzp.on('payment.failed', function(response) {
+                        alert('Payment failed: ' + response.error.description);
+                    });
+                    rzp.open();
                 })
-                .catch(e => console.error(e));
+                .catch(e => {
+                    console.error(e);
+                    alert('Failed to initiate payment. Please try again.');
+                });
             },
 
             updateNavUI: function(view) {
@@ -740,7 +855,7 @@
                         <div class="max-w-4xl mx-auto animate-fade-in pb-20">
                             <h2 class="text-3xl font-serif font-bold text-text-dark dark:text-white mb-8">Agency Settings</h2>
                             
-                            <form action="{{ route('partner.settings.update') }}" method="POST" class="space-y-8">
+                            <form action="{{ route('partner.settings.update') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
                                 @csrf
                                 <!-- Profile Section -->
                                 <div class="bg-white dark:bg-surface-dark rounded-2xl p-6 shadow-card border border-primary/5 dark:border-white/5">
@@ -749,14 +864,15 @@
                                     </h3>
                                     
                                     <div class="flex items-center gap-6 mb-6">
-                                        <div class="relative group cursor-pointer">
+                                        <label for="logo_file" class="relative group cursor-pointer">
                                             <div class="w-24 h-24 rounded-2xl bg-gray-50 dark:bg-white/5 flex items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-600 overflow-hidden">
-                                                <img src="{{ $partner->logo_url ?? asset('VivaHub-logo.png') }}" class="w-16 h-auto opacity-50 group-hover:opacity-100 transition-opacity">
+                                                <img id="logo-preview" src="{{ $partner->logo_url ?? asset('VivaHub-logo.png') }}" class="w-16 h-auto transition-opacity object-contain">
                                             </div>
                                             <div class="absolute -bottom-2 -right-2 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform">
                                                 <span class="material-symbols-outlined text-sm">edit</span>
                                             </div>
-                                        </div>
+                                            <input type="file" name="logo_file" id="logo_file" class="hidden" accept="image/*" onchange="document.getElementById('logo-preview').src = window.URL.createObjectURL(this.files[0])">
+                                        </label>
                                         <div>
                                             <p class="text-sm font-bold text-text-dark dark:text-white">Agency Logo</p>
                                             <p class="text-xs text-text-muted mt-1">Recommended: 400x400px, PNG</p>
@@ -999,5 +1115,12 @@
              app.navigateTo('dashboard');
         });
     </script>
+    
+    @if(session('impersonator_id'))
+        <a href="{{ route('impersonate.stop') }}" class="fixed bottom-6 right-6 z-[100] bg-gray-900 border-2 border-red-500 text-white px-6 py-3 rounded-full font-bold shadow-[0_0_20px_rgba(236,19,19,0.5)] hover:bg-black transition-all flex items-center gap-2 hover:scale-105">
+            <span class="material-symbols-outlined text-red-500">shield_person</span> 
+            <span class="text-red-500">Back to Admin</span>
+        </a>
+    @endif
 </body>
 </html>

@@ -335,6 +335,27 @@
             </div>
         </section>
 
+    <!-- BRANDING FOOTER -->
+        <footer class="py-12 bg-royal-900 text-center relative overflow-hidden">
+            <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]"></div>
+             <div class="relative z-10">
+                @if(isset($partnerBranding) && $partnerBranding->logo_url)
+                     <div class="flex flex-col items-center justify-center gap-4 mb-4">
+                         <img src="{{ $partnerBranding->logo_url }}" alt="{{ $partnerBranding->agency_name }}" class="w-20 h-auto object-contain mb-2 opacity-90 mx-auto">
+                         <p class="text-[10px] text-gold-300 tracking-widest uppercase">Planned by</p>
+                         <h3 class="font-serif text-lg text-white">{{ $partnerBranding->agency_name }}</h3>
+                     </div>
+                @else
+                    <div class="flex items-center justify-center gap-2 mb-2 opacity-80">
+                        <span class="text-gold-400 text-lg">✦</span>
+                        <h2 class="font-cinzel tracking-widest uppercase text-lg text-white">VivaHub</h2>
+                        <span class="text-gold-400 text-lg">✦</span>
+                    </div>
+                    <p class="text-[10px] text-gold-200/60 tracking-[0.2em] uppercase">Royal Unions</p>
+                @endif
+            </div>
+        </footer>
+
     </main>
 
     <!-- 3. FLOATING MUSIC PLAYER -->

@@ -15,6 +15,32 @@
 </div>
 
 <!-- Compact Stats for Mobile -->
+<!-- 50% OFF Promotional Banner -->
+<a href="{{ route('templates') }}?promo=50OFF" class="block mb-8 animate-fade-in group">
+    <div class="bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-400 rounded-2xl p-5 md:p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] cursor-pointer overflow-hidden relative">
+        <!-- Decorative elements -->
+        <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+        <div class="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+        
+        <div class="flex items-center justify-between relative z-10">
+            <div class="flex items-center gap-4">
+                <div class="bg-white/20 backdrop-blur-sm p-3 rounded-xl">
+                    <span class="material-symbols-outlined text-white text-3xl">celebration</span>
+                </div>
+                <div>
+                    <p class="text-white/90 text-xs md:text-sm font-bold uppercase tracking-wider">New Invitation</p>
+                    <h3 class="text-white text-2xl md:text-3xl font-bold">50% OFF</h3>
+                    <p class="text-white/80 text-xs md:text-sm">Invitation Validity as per Plan</p>
+                </div>
+            </div>
+            <div class="hidden md:flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-xl text-white font-bold group-hover:bg-white group-hover:text-amber-600 transition-all">
+                <span>Create Now</span>
+                <span class="material-symbols-outlined">arrow_forward</span>
+            </div>
+        </div>
+    </div>
+</a>
+
 <div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6 mb-8 md:mb-12 animate-fade-in">
     <!-- Stat Card 1 -->
     <div class="bg-white dark:bg-surface-dark p-4 md:p-6 rounded-2xl shadow-card hover:shadow-card-hover transition-all duration-300 border border-primary/5 dark:border-white/5 group">

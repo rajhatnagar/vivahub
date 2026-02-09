@@ -11,6 +11,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Great+Vibes&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
     
+    <!-- Razorpay Checkout -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script>
@@ -210,18 +213,16 @@
                  <a href="{{ route('settings') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold {{ request()->routeIs('settings') ? 'bg-primary/10 text-primary' : 'text-text-muted dark:text-gray-200' }}">
                     <span class="material-symbols-outlined">settings</span> Settings
                  </a>
-                 <!-- Logout Button for Mobile -->
-                 <div class="pt-4 mt-2 border-t border-gray-100 dark:border-white/5">
-                     <form method="POST" action="{{ route('logout') }}">
-                         @csrf
-                         <button type="submit" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 w-full">
-                             <span class="material-symbols-outlined">logout</span> Log Out
-                         </button>
-                     </form>
-                 </div>
             </nav>
 
-            <div class="p-6 border-t border-gray-100 dark:border-white/5">
+            <div class="p-6 border-t border-gray-100 dark:border-white/5 space-y-2">
+                 <form method="POST" action="{{ route('logout') }}">
+                     @csrf
+                     <button type="submit" class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-bold text-red-600 bg-red-50 dark:bg-red-900/10 hover:bg-red-100 dark:hover:bg-red-900/30 w-full transition-colors mb-2">
+                         <span class="material-symbols-outlined">logout</span> Log Out
+                     </button>
+                 </form>
+
                 <a href="{{ route('builder') }}" class="w-full bg-primary text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg hover:bg-primary-dark transition-colors">
                     <span class="material-symbols-outlined">add_circle</span> Create New
                 </a>

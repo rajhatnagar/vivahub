@@ -98,6 +98,122 @@ class PartnerController extends Controller
 
         return view('partner.dashboard', compact('user', 'partner', 'coupons', 'clients', 'stats', 'history', 'invoices', 'templates', 'drafts'));
     }
+    
+    /**
+     * Templates gallery for partner - uses credits to publish
+     */
+    public function templates()
+    {
+        $partner = Auth::user()->partnerDetails;
+        $templates = $this->getTemplatesList();
+        
+        // Filter out disabled templates
+        $disabledSetting = \App\Models\Setting::where('key', 'disabled_templates')->first();
+        if ($disabledSetting && $disabledSetting->value) {
+            $disabledIds = json_decode($disabledSetting->value, true) ?? [];
+            $templates = array_filter($templates, fn($t) => !in_array($t['id'], $disabledIds));
+            $templates = array_values($templates);
+        }
+        
+        return view('partner.templates', [
+            'templates' => $templates,
+            'credits' => $partner->credits ?? 0,
+            'creditCost' => 1, // 1 credit per invitation
+        ]);
+    }
+    
+    /**
+     * Template preview for partner
+     */
+    public function previewTemplate($template, Request $request)
+    {
+        try {
+            $data = ['isPreview' => true];
+            
+            if ($request->has('invitation_id') && $request->invitation_id) {
+                $invitation = \App\Models\Invitation::select('id', 'user_id', 'template_id', 'title', 'data', 'status')
+                    ->find($request->invitation_id);
+                if ($invitation) {
+                    $data['invitation'] = $invitation;
+                }
+            }
+            
+            return $this->renderTemplateView($template, $data);
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Partner Preview Error: ' . $e->getMessage());
+            return response("Error loading template: " . $e->getMessage(), 500);
+        }
+    }
+    
+    /**
+     * Templates list - matching user/admin
+     */
+    private function getTemplatesList() 
+    {
+        return [
+            ['name' => "Classic Elegant", 'style' => "Indian Traditional", 'color' => "Red/Gold", 'img' => asset('assets/hero-background.png'), 'id' => 'wedding-1'],
+            ['name' => "Minimalist Chic", 'style' => "Modern Clean", 'color' => "White/Black", 'img' => asset('assets/thumbnails/thumb_modern_minimal_1769914243192.png'), 'id' => 'theme_2'],
+            ['name' => "Midnight Rose", 'style' => "Dark Romantic", 'color' => "Black/Rose", 'img' => asset('assets/thumbnails/thumb_luxury_dark_1769914285194.png'), 'id' => 'theme_3'],
+            ['name' => "Sage & Blush", 'style' => "Botanical Minimal", 'color' => "Sage/Pink", 'img' => asset('assets/thumbnails/thumb_floral_pastel_1769914259626.png'), 'id' => 'theme_4'],
+            ['name' => "Boho Rust", 'style' => "Bohemian Rustic", 'color' => "Rust/Beige", 'img' => asset('assets/thumbnails/thumb_rustic_boho_1769914300003.png'), 'id' => 'theme_5'],
+            ['name' => "Majestic Garden", 'style' => "Vintage Floral", 'color' => "Pastel/Floral", 'img' => asset('assets/thumbnails/thumb_vintage_retro_1769914405735.png'), 'id' => 'theme_6'],
+            ['name' => "Royal Heritage", 'style' => "Luxury Traditional", 'color' => "Gold/Cream", 'img' => asset('assets/thumbnails/thumb_royal_gold_1769914222427.png'), 'id' => 'theme_7'],
+            ['name' => "Boho Sunshine", 'style' => "Bohemian Rustic", 'color' => "Rust/Orange", 'img' => asset('assets/thumbnails/thumb_beach_tropical_1769914370611.png'), 'id' => 'theme_8'],
+            ['name' => "Teal Harmony", 'style' => "Modern Minimal", 'color' => "Teal/Gold", 'img' => asset('assets/thumbnails/thumb_modern_minimal_1769914243192.png'), 'id' => 'theme_9'],
+            ['name' => "Royal Ruby", 'style' => "Luxury Dark", 'color' => "Ruby/Gold", 'img' => asset('assets/thumbnails/thumb_traditional_red_1769914314829.png'), 'id' => 'theme_10'],
+        ];
+    }
+    
+    /**
+     * Render template view with mock data for preview
+     */
+    private function renderTemplateView($templateId, $data = [])
+    {
+        if (isset($data['isPreview']) && $data['isPreview'] && !isset($data['invitation'])) {
+            $testImgPath = asset('test');
+            
+            $mockData = [
+                'date' => '2026-12-12',
+                'rsvp_date' => '2026-10-01',
+                'tagline' => 'A celebration of love',
+                'bride_name' => 'Elena', 
+                'groom_name' => 'Julian',
+                'venue_city' => 'Udaipur, India',
+                'hero_image' => $testImgPath . '/hero.jpg',
+                'bride_image' => $testImgPath . '/bride.jpg',
+                'groom_image' => $testImgPath . '/groom.jpg',
+                'bride' => 'Elena',
+                'groom' => 'Julian',
+                'location' => 'Udaipur, India',
+                'h_img' => $testImgPath . '/hero.jpg',
+                'hero_bg' => $testImgPath . '/hero.jpg',
+                'gallery' => [
+                    $testImgPath . '/bride.jpg',
+                    $testImgPath . '/groom.jpg',
+                    $testImgPath . '/wedding.jpg',
+                ],
+                'events' => [
+                     ['name' => 'Mehendi', 'date' => 'Dec 11', 'time' => '04:00 PM', 'location' => 'Poolside', 'desc' => 'Henna'],
+                     ['name' => 'Wedding', 'date' => 'Dec 12', 'time' => '09:00 AM', 'location' => 'Mandap', 'desc' => 'Pheras'],
+                ],
+            ];
+            
+            $invitation = new \stdClass();
+            $invitation->data = $mockData;
+            $invitation->id = 0;
+            $data['invitation'] = $invitation;
+        }
+
+        if ($templateId === 'wedding-1') {
+             return view('templates.wedding_theme_1', $data);
+        }
+
+        if (in_array($templateId, ['theme_2', 'theme_3', 'theme_4', 'theme_5', 'theme_6', 'theme_7', 'theme_8', 'theme_9', 'theme_10'])) {
+             return view('templates.' . $templateId, $data);
+        }
+
+        return view('templates.wedding_theme_1', $data);
+    }
 
     public function generateCoupon(Request $request)
     {
@@ -127,7 +243,7 @@ class PartnerController extends Controller
         $coupon = $partner->coupons()->findOrFail($id);
         $coupon->delete();
 
-        return back()->with('success', 'Coupon deleted successfully.');
+        return response()->json(['success' => true, 'message' => 'Coupon deleted successfully.']);
     }
 
     public function updateSettings(Request $request)
@@ -137,10 +253,17 @@ class PartnerController extends Controller
             'phone' => 'nullable|string|max:20',
             'primary_color' => 'nullable|string|max:7',
             'logo_url' => 'nullable|url',
+            'logo_file' => 'nullable|image|max:2048',
             'gst_number' => 'nullable|string',
             'currency' => 'nullable|string',
             'billing_address' => 'nullable|string'
         ]);
+
+        if ($request->hasFile('logo_file')) {
+             $path = $request->file('logo_file')->store('partner-logos', 'public');
+             $validated['logo_url'] = asset('storage/' . $path);
+        }
+        unset($validated['logo_file']);
         
         if($request->has('footer_branding')) {
             $validated['footer_branding'] = $request->footer_branding === 'on';
@@ -272,47 +395,9 @@ class PartnerController extends Controller
     }
     public function buyCredits(Request $request)
     {
-        // Mock Implementation
-        // In real world, this would verify Stripe/Razorpay payment
-        
-        try {
-            $user = Auth::user();
-            $partner = $user->partnerDetails;
-            
-            $amount = 10; // Default pack
-            $cost = 5000; // Mock cost in currency
-            
-            DB::transaction(function () use ($partner, $amount, $cost) {
-                // 1. Add Credits
-                $partner->increment('credits', $amount);
-                
-                // 2. Create Invoice
-                $partner->invoices()->create([
-                    'invoice_number' => 'INV-' . strtoupper(uniqid()),
-                    'amount' => $cost,
-                    'description' => 'Credit Pack (10 Credits)',
-                    'status' => 'Paid',
-                    'date' => now()
-                ]);
-                
-                // 3. Log Credit History
-                $partner->creditLogs()->create([
-                    'amount' => $amount,
-                    'description' => 'Purchased Credit Pack',
-                    'type' => 'credit'
-                ]);
-            });
-
-            return response()->json([
-                'success' => true, 
-                'new_credits' => $partner->refresh()->credits,
-                'message' => 'Credits purchased successfully!'
-            ]);
-
-        } catch (\Exception $e) {
-             \Illuminate\Support\Facades\Log::error('Buy Credits Error: ' . $e->getMessage());
-             return response()->json(['success' => false, 'message' => 'Transaction failed'], 500);
-        }
+        // Delegate to PaymentController for Razorpay integration
+        $paymentController = new \App\Http\Controllers\PaymentController();
+        return $paymentController->createOrder($request);
     }
 
     public function deleteInvitation($id)

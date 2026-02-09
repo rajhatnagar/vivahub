@@ -561,11 +561,19 @@
     <!-- Footer -->
     <footer class="py-16 text-center bg-[#fff8f0] border-t border-orange-900/10">
         <div class="flex flex-col items-center justify-center gap-4 mb-8">
+        @if(isset($partnerBranding) && $partnerBranding->logo_url)
+             <div class="flex flex-col items-center justify-center gap-4 mb-8">
+                 <img src="{{ $partnerBranding->logo_url }}" alt="{{ $partnerBranding->agency_name }}" class="w-24 h-auto object-contain mb-2 opacity-90">
+                 <p class="text-xs text-orange-900/60 tracking-widest uppercase">Planned by</p>
+                 <h3 class="font-serif text-2xl text-orange-950">{{ $partnerBranding->agency_name }}</h3>
+             </div>
+        @else
             <div class="flex items-center justify-center gap-2 opacity-70">
                 <span class="text-orange-900 text-lg">~</span>
                 <h2 class="font-serif tracking-widest uppercase text-xl text-orange-950">VivaHub</h2>
                 <span class="text-orange-900 text-lg">~</span>
             </div>
+        @endif
             
             <!-- VivaHub Socials -->
             <div class="flex items-center gap-6">

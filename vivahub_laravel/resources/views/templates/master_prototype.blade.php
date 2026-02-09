@@ -654,8 +654,16 @@
   <footer class="bg-gradient-to-br from-secondary-900 to-primary-900 text-primary-50 py-12 relative overflow-hidden" 
     style="background-image: url('{{ $theme['assets']['footer_bg'] ?? '' }}'); background-size: cover; background-blend-mode: multiply;">
     <div class="max-w-6xl mx-auto px-4 text-center relative z-10">
-      <img src="https://csssofttech.com/wedding/assets/VivaHub.png" alt="@VivaHub" width="20%" class="mx-auto d-block opacity-80 hover:opacity-100 transition-opacity">
-      <p class="mb-8 font-light tracking-wider text-lg opacity-80">Thank you for being part of our journey.</p>
+        @if(isset($partnerBranding) && $partnerBranding->logo_url)
+             <div class="flex flex-col items-center justify-center gap-4 mb-8">
+                 <img src="{{ $partnerBranding->logo_url }}" alt="{{ $partnerBranding->agency_name }}" class="w-24 h-auto object-contain mb-2 opacity-90 mx-auto">
+                 <p class="text-xs text-primary-200 tracking-widest uppercase">Planned by</p>
+                 <h3 class="font-serif text-xl text-white">{{ $partnerBranding->agency_name }}</h3>
+             </div>
+        @else
+            <img src="https://csssofttech.com/wedding/assets/VivaHub.png" alt="@VivaHub" width="20%" class="mx-auto d-block opacity-80 hover:opacity-100 transition-opacity">
+            <p class="mb-8 font-light tracking-wider text-lg opacity-80">Thank you for being part of our journey.</p>
+        @endif
     </div>
   </footer>
 

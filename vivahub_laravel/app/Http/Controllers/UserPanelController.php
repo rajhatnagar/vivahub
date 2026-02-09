@@ -184,8 +184,25 @@ class UserPanelController extends Controller
     public function templates()
     {
         $templates = $this->getTemplatesList();
-        return view('user.templates', compact('templates'));
+        
+        // Filter out disabled templates (admin can disable templates from admin panel)
+        $disabledSetting = \App\Models\Setting::where('key', 'disabled_templates')->first();
+        if ($disabledSetting && $disabledSetting->value) {
+            $disabledIds = json_decode($disabledSetting->value, true) ?? [];
+            $templates = array_filter($templates, fn($t) => !in_array($t['id'], $disabledIds));
+            $templates = array_values($templates); // Re-index array
+        }
+        
+        // Check for 50% OFF promo from dashboard button
+        if (request()->has('promo') && request('promo') === '50OFF') {
+            session(['promo_discount' => '50OFF']);
+        }
+        
+        $hasPromo = session('promo_discount') === '50OFF';
+        
+        return view('user.templates', compact('templates', 'hasPromo'));
     }
+
 
     public function builder(Request $request)
     {
@@ -218,14 +235,28 @@ class UserPanelController extends Controller
 
     public function billing()
     {
-        $transactions = [
-            ['id' => "INV-24-001", 'date' => "Oct 24, 2023", 'plan' => "Viva Premium", 'amount' => "₹699", 'status' => "Paid"],
-            ['id' => "INV-23-098", 'date' => "Sep 12, 2023", 'plan' => "Aarambh", 'amount' => "₹399", 'status' => "Paid"],
-            ['id' => "INV-23-055", 'date' => "Aug 01, 2023", 'plan' => "Viva Basic", 'amount' => "₹199", 'status' => "Paid"],
-            ['id' => "INV-23-012", 'date' => "Jul 15, 2023", 'plan' => "Custom Domain", 'amount' => "₹499", 'status' => "Paid"]
-        ];
+        $userId = Auth::id();
+        
+        // Fetch real transactions from database
+        $transactions = \App\Models\Transaction::where('user_id', $userId)
+            ->with('plan')
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function ($transaction) {
+                return [
+                    'id' => 'INV-' . str_pad($transaction->id, 5, '0', STR_PAD_LEFT),
+                    'date' => $transaction->created_at->format('M d, Y'),
+                    'plan' => $transaction->plan ? $transaction->plan->name : 'N/A',
+                    'amount' => '₹' . number_format($transaction->amount, 0),
+                    'status' => ucfirst($transaction->status),
+                    'transaction_id' => $transaction->transaction_id,
+                    'raw_id' => $transaction->id,
+                ];
+            });
+        
         return view('user.billing', compact('transactions'));
     }
+
 
     public function settings()
     {
@@ -302,8 +333,33 @@ class UserPanelController extends Controller
             // Select only needed columns to avoid memory issues with large JSON data
             $invitation = \App\Models\Invitation::select('id', 'user_id', 'template_id', 'title', 'data', 'status')
                 ->findOrFail($id);
+
+            // Partner Branding Logic
+            $partnerBranding = null;
+            $client = \App\Models\PartnerClient::where('invitation_id', $invitation->id)->with('partner')->first();
+            if ($client && $client->partner) {
+                $partnerBranding = $client->partner;
+            } else {
+                // Check for Partner Coupon Usage
+                 $coupon = \App\Models\Coupon::where('used_by', $invitation->user_id)
+                     ->whereNotNull('partner_id')
+                     ->latest('used_at')
+                     ->with('partner')
+                     ->first();
+                 
+                 if ($coupon && $coupon->partner) {
+                     $partnerBranding = $coupon->partner;
+                 } else {
+                    // Check if Owner is Partner
+                    $owner = \App\Models\User::with('partnerDetails')->find($invitation->user_id);
+                    if ($owner && $owner->role === 'partner' && $owner->partnerDetails) {
+                        $partnerBranding = $owner->partnerDetails;
+                    }
+                 }
+            }
+
             $templateId = $invitation->template_id ?? 'wedding-1';
-            return $this->renderTemplateView($templateId, ['invitation' => $invitation, 'isPublic' => true]);
+            return $this->renderTemplateView($templateId, ['invitation' => $invitation, 'isPublic' => true, 'partnerBranding' => $partnerBranding]);
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error('Show Invitation Error: ' . $e->getMessage());
             return response("Error loading invitation: " . $e->getMessage(), 500);

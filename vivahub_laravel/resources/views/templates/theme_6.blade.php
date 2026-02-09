@@ -617,10 +617,18 @@
 
     <!-- Footer -->
     <footer class="py-16 text-center bg-white border-t border-emerald-50">
+        @if(isset($partnerBranding) && $partnerBranding->logo_url)
+           <div class="flex flex-col items-center justify-center gap-4 mb-8">
+               <img src="{{ $partnerBranding->logo_url }}" alt="{{ $partnerBranding->agency_name }}" class="w-24 h-auto object-contain mb-2 opacity-90">
+               <p class="text-xs text-emerald-600 tracking-widest uppercase">Planned by</p>
+               <h3 class="font-cinzel text-2xl text-emerald-900">{{ $partnerBranding->agency_name }}</h3>
+           </div>
+        @else
         <h2 class="font-cinzel text-2xl text-emerald-900 mb-2 flex items-center justify-center gap-2">
             <span class="text-rose-500">❀</span> VivaHub
         </h2>
         <p class="text-sm text-emerald-600 tracking-widest uppercase mb-6">Elevating Wedding Experiences</p>
+        @endif
         
         <!-- Photographer Credit -->
         <div class="flex items-center justify-center gap-2 mb-8 group cursor-default">

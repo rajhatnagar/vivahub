@@ -1,0 +1,10 @@
+open 103.191.208.202
+whlmstql
+P(;OY0dQ3jt10t
+binary
+cd vivahub.in/beta/resources/views/templates
+lcd vivahub_laravel/resources/views/templates
+mput *.blade.php
+cd /vivahub.in/beta
+lcd ../../..
+bye

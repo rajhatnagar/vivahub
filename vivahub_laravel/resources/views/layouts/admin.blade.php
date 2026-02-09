@@ -140,10 +140,7 @@
                     <span class="material-symbols-outlined text-[22px]">group</span>
                     Users & Partners
                 </a>
-                <a href="{{ route('admin.designs.index') }}" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl transition-all group w-full text-left text-sm font-medium {{ request()->routeIs('admin.designs.*') ? 'bg-primary text-white shadow-md shadow-primary/30' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5' }}">
-                    <span class="material-symbols-outlined text-[22px]">palette</span>
-                    Designs
-                </a>
+
                 <a href="{{ route('admin.plans.index') }}" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl transition-all group w-full text-left text-sm font-medium {{ request()->routeIs('admin.plans.*') ? 'bg-primary text-white shadow-md shadow-primary/30' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5' }}">
                     <span class="material-symbols-outlined text-[22px]">sell</span>
                     Plans
@@ -151,6 +148,20 @@
                 <a href="{{ route('admin.transactions.index') }}" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl transition-all group w-full text-left text-sm font-medium {{ request()->routeIs('admin.transactions.*') ? 'bg-primary text-white shadow-md shadow-primary/30' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5' }}">
                     <span class="material-symbols-outlined text-[22px]">payments</span>
                     Transactions
+                </a>
+
+                <p class="px-4 text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2 mt-4">Create</p>
+                <a href="{{ route('admin.templates.index') }}" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl transition-all group w-full text-left text-sm font-medium {{ request()->routeIs('admin.templates.*') || request()->routeIs('admin.builder*') ? 'bg-primary text-white shadow-md shadow-primary/30' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5' }}">
+                    <span class="material-symbols-outlined text-[22px]">auto_awesome</span>
+                    Templates
+                </a>
+                <a href="{{ route('admin.invitations.index') }}" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl transition-all group w-full text-left text-sm font-medium {{ request()->routeIs('admin.invitations.*') ? 'bg-primary text-white shadow-md shadow-primary/30' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5' }}">
+                    <span class="material-symbols-outlined text-[22px]">mail</span>
+                    My Invitations
+                </a>
+                <a href="{{ route('admin.coupons.index') }}" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl transition-all group w-full text-left text-sm font-medium {{ request()->routeIs('admin.coupons.*') ? 'bg-primary text-white shadow-md shadow-primary/30' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5' }}">
+                    <span class="material-symbols-outlined text-[22px]">confirmation_number</span>
+                    Coupons & Codes
                 </a>
 
                 <p class="px-4 text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2 mt-4">System</p>
@@ -303,10 +314,7 @@
             <span class="material-symbols-outlined text-2xl">add</span>
         </div>
     </div>
-    <a href="{{ route('admin.designs.index') }}" class="mobile-nav-item flex flex-col items-center justify-center w-full h-full {{ request()->routeIs('admin.designs.*') ? 'text-primary' : 'text-gray-400' }}">
-        <span class="material-symbols-outlined text-2xl mb-0.5">palette</span>
-        <span class="text-[10px] font-medium">Design</span>
-    </a>
+
     <a href="{{ route('admin.settings.index') }}" class="mobile-nav-item flex flex-col items-center justify-center w-full h-full {{ request()->routeIs('admin.settings.*') ? 'text-primary' : 'text-gray-400' }}">
         <span class="material-symbols-outlined text-2xl mb-0.5">settings</span>
         <span class="text-[10px] font-medium">Settings</span>

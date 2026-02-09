@@ -4,10 +4,25 @@
 
 @section('content')
 <div class="animate-fade-in">
-    <div class="text-center max-w-2xl mx-auto mb-10">
+    <div class="text-center max-w-2xl mx-auto mb-6">
         <h2 class="text-3xl font-serif font-bold text-text-dark dark:text-white mb-3">Choose Your Style</h2>
         <p class="text-text-muted dark:text-gray-400">Select a design template to start customizing your invitation.</p>
     </div>
+    
+    @if(isset($hasPromo) && $hasPromo)
+    <div class="max-w-2xl mx-auto mb-8">
+        <div class="bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-400 rounded-xl p-4 shadow-lg text-center">
+            <div class="flex items-center justify-center gap-3">
+                <span class="material-symbols-outlined text-white text-2xl">celebration</span>
+                <div>
+                    <p class="text-white font-bold text-lg">🎉 50% OFF Applied!</p>
+                    <p class="text-white/80 text-sm">Your promo discount will be applied at checkout</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
 
     <!-- Filters -->
     <div class="flex flex-wrap justify-center gap-3 mb-10">
@@ -30,7 +45,7 @@
             <div class="h-64 overflow-hidden relative">
                 <img src="{{ $t['img'] }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                 <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-3 z-20">
-                    <button onclick="event.stopPropagation(); openPreview('{{ $t['id'] ?? 'wedding-1' }}')" class="bg-white/90 hover:bg-white text-text-dark font-bold py-2 px-6 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 delay-75 shadow-lg flex items-center gap-2">
+                    <button onclick="event.stopPropagation(); openPreview('{{ $t['id'] ?? 'wedding-1' }}')" class="bg-white hover:bg-gray-100 text-gray-800 font-bold py-2.5 px-6 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 delay-75 shadow-xl flex items-center gap-2 border border-gray-200">
                         <span class="material-symbols-outlined text-sm">visibility</span> Preview
                     </button>
                     <span class="bg-primary text-white font-bold py-2 px-6 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 shadow-lg">Use Template</span>

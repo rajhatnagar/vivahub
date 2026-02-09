@@ -22,3 +22,29 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Deployment & Temporary Files
+deployment.zip
+*.zip
+debug_output.txt
+debug-*.ps1
+deploy-*.ps1
+prepare-deployment.ps1
+manual-deploy.ps1
+check_config.php
+
+# Laravel Cache & Logs
+/bootstrap/cache/*.php
+!/bootstrap/cache/.gitkeep
+/storage/framework/cache/*
+!/storage/framework/cache/.gitkeep
+/storage/framework/sessions/*
+!/storage/framework/sessions/.gitkeep
+/storage/framework/views/*
+!/storage/framework/views/.gitkeep
+/storage/logs/*
+!/storage/logs/.gitkeep
+
+# NPM/Yarn
+package-lock.json
+yarn.lock

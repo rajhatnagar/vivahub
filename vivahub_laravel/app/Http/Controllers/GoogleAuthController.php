@@ -51,7 +51,10 @@ class GoogleAuthController extends Controller
             }
 
         } catch (Exception $e) {
-            return redirect('login')->with('error', 'Something went wrong with Google Login. Please try again.');
+            \Log::error('Google Login Error: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString()
+            ]);
+            return redirect('login')->with('error', 'Google Login failed: ' . $e->getMessage());
         }
     }
 }
