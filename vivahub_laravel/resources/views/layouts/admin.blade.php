@@ -149,6 +149,10 @@
                     <span class="material-symbols-outlined text-[22px]">payments</span>
                     Transactions
                 </a>
+                <a href="{{ route('admin.orders.index') }}" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl transition-all group w-full text-left text-sm font-medium {{ request()->routeIs('admin.orders.*') ? 'bg-primary text-white shadow-md shadow-primary/30' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5' }}">
+                    <span class="material-symbols-outlined text-[22px]">shopping_cart</span>
+                    NFC Orders
+                </a>
 
                 <p class="px-4 text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2 mt-4">Create</p>
                 <a href="{{ route('admin.templates.index') }}" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl transition-all group w-full text-left text-sm font-medium {{ request()->routeIs('admin.templates.*') || request()->routeIs('admin.builder*') ? 'bg-primary text-white shadow-md shadow-primary/30' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5' }}">
@@ -309,11 +313,20 @@
         <span class="material-symbols-outlined text-2xl mb-0.5">group</span>
         <span class="text-[10px] font-medium">Users</span>
     </a>
-    <div class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 -mt-6">
-        <div class="size-12 bg-primary rounded-xl flex items-center justify-center shadow-lg shadow-primary/30 text-white">
-            <span class="material-symbols-outlined text-2xl">add</span>
-        </div>
-    </div>
+    <a href="{{ route('admin.coupons.index') }}" class="mobile-nav-item flex flex-col items-center justify-center w-full h-full {{ request()->routeIs('admin.coupons.*') ? 'text-primary' : 'text-gray-400' }}">
+        <span class="material-symbols-outlined text-2xl mb-0.5">confirmation_number</span>
+        <span class="text-[10px] font-medium">Coupons</span>
+    </a>
+
+    <a href="{{ route('admin.logs.index') }}" class="mobile-nav-item flex flex-col items-center justify-center w-full h-full {{ request()->routeIs('admin.logs.*') ? 'text-primary' : 'text-gray-400' }}">
+        <span class="material-symbols-outlined text-2xl mb-0.5">history</span>
+        <span class="text-[10px] font-medium">Logs</span>
+    </a>
+
+    <a href="{{ route('admin.orders.index') }}" class="mobile-nav-item flex flex-col items-center justify-center w-full h-full {{ request()->routeIs('admin.orders.*') ? 'text-primary' : 'text-gray-400' }}">
+        <span class="material-symbols-outlined text-2xl mb-0.5">contactless</span>
+        <span class="text-[10px] font-medium">Orders</span>
+    </a>
 
     <a href="{{ route('admin.settings.index') }}" class="mobile-nav-item flex flex-col items-center justify-center w-full h-full {{ request()->routeIs('admin.settings.*') ? 'text-primary' : 'text-gray-400' }}">
         <span class="material-symbols-outlined text-2xl mb-0.5">settings</span>

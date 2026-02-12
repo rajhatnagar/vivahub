@@ -160,6 +160,45 @@
                      </div>
                  </div>
              </div>
+             </div>
+        </div>
+
+        <!-- Invoicing & Tax -->
+        <div class="bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-2xl p-6 shadow-soft-light">
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-4 border-b border-border-light dark:border-border-dark pb-2 flex items-center gap-2">
+                <span class="material-symbols-outlined text-indigo-500">receipt</span> Invoicing & Tax
+            </h3>
+            
+            <div class="flex items-center justify-between mb-6 p-4 bg-gray-50 dark:bg-[#1a0b0b] rounded-xl border border-border-light dark:border-border-dark">
+                <div class="flex items-center gap-3">
+                    <div class="size-10 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                        <span class="material-symbols-outlined">percent</span>
+                    </div>
+                    <div>
+                        <p class="text-slate-800 dark:text-white text-sm font-bold">Enable GST</p>
+                        <p class="text-gray-500 text-xs">Apply GST to User plan & Partner credit purchases</p>
+                    </div>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" name="gst_enabled" value="1" class="sr-only peer toggle-checkbox" {{ ($settings['gst_enabled'] ?? '0') == '1' ? 'checked' : '' }}>
+                    <div class="w-11 h-6 bg-gray-300 dark:bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary toggle-label"></div>
+                </label>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                 <div>
+                     <label class="block text-gray-500 dark:text-gray-400 text-xs font-bold uppercase mb-1">GST Percentage (%)</label>
+                     <input type="number" name="gst_percentage" value="{{ $settings['gst_percentage'] ?? '18' }}" class="w-full bg-gray-50 dark:bg-[#1a0b0b] border border-border-light dark:border-border-dark rounded-xl text-slate-800 dark:text-white p-2.5 text-sm focus:ring-primary focus:border-primary">
+                 </div>
+                 <div>
+                     <label class="block text-gray-500 dark:text-gray-400 text-xs font-bold uppercase mb-1">Company GSTIN</label>
+                     <input type="text" name="company_gstin" value="{{ $settings['company_gstin'] ?? '' }}" class="w-full bg-gray-50 dark:bg-[#1a0b0b] border border-border-light dark:border-border-dark rounded-xl text-slate-800 dark:text-white p-2.5 text-sm focus:ring-primary focus:border-primary">
+                 </div>
+                 <div class="md:col-span-2">
+                     <label class="block text-gray-500 dark:text-gray-400 text-xs font-bold uppercase mb-1">Company Address (for Invoice)</label>
+                     <textarea name="company_address" rows="2" class="w-full bg-gray-50 dark:bg-[#1a0b0b] border border-border-light dark:border-border-dark rounded-xl text-slate-800 dark:text-white p-2.5 text-sm focus:ring-primary focus:border-primary">{{ $settings['company_address'] ?? '' }}</textarea>
+                 </div>
+            </div>
         </div>
         
         <div class="flex justify-end">

@@ -16,6 +16,10 @@ class PartnerDetail extends Model
         'logo_url',
         'phone',
         'primary_color',
+        'gst_number',
+        'currency',
+        'billing_address',
+        'footer_branding' // Also saw this in controller update logic
     ];
 
     public function user()

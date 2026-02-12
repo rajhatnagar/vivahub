@@ -591,10 +591,88 @@
       }
     });
 
-    // Global
-    function shareInvite() { if(navigator.share) navigator.share({title:'Wedding', url:window.location.href}); else alert('Copy URL'); }
-    function downloadVCard() { /* vCard Logic */ }
-    function addToCalendar() { window.open('https://calendar.google.com/calendar/render?action=TEMPLATE&text={{ $invitation->data['bride'] }}%20%26%20{{ $invitation->data['groom'] }}%20Wedding&dates={{ \Carbon\Carbon::parse($invitation->data['date'])->format('Ymd') }}T100000/{{ \Carbon\Carbon::parse($invitation->data['date'])->addDays(1)->format('Ymd') }}T230000&location={{ $invitation->data['location'] ?? 'Venue' }}', '_blank'); }
+    // Global Actions
+    function downloadVCard() {
+        const groom = "{{ $invitation->data['groom_name'] ?? $invitation->data['groom'] ?? 'Groom' }}";
+        const bride = "{{ $invitation->data['bride_name'] ?? $invitation->data['bride'] ?? 'Bride' }}";
+        const date = "{{ $invitation->data['date'] ?? '2026-12-12' }}";
+        const city = "{{ $invitation->data['venue_city'] ?? $invitation->data['location'] ?? 'Wedding' }}";
+        
+        const vCardData = [
+            'BEGIN:VCARD',
+            'VERSION:3.0',
+            `N:${groom} & ${bride};;;;`,
+            `FN:${groom} & ${bride} Wedding`,
+            `ORG:Wedding Invitation`,
+            `URL:${window.location.href}`,
+            `BDAY:${date}`,
+            `ADR;TYPE=WORK,PREF:;;${city}`,
+            'END:VCARD'
+        ].join('\n');
+
+        const blob = new Blob([vCardData], { type: 'text/vcard' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${groom}_${bride}_Wedding.vcf`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+
+    function shareInvite() {
+        if (navigator.share) {
+            navigator.share({
+                title: '{{ $invitation->data["groom_name"] ?? $invitation->data["groom"] ?? "Groom" }} & {{ $invitation->data["bride_name"] ?? $invitation->data["bride"] ?? "Bride" }} Wedding',
+                text: 'You are cordially invited to our wedding celebration.',
+                url: window.location.href
+            }).catch(console.error);
+        } else {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                alert('Link copied to clipboard!');
+            });
+        }
+    }
+
+    function downloadInvitation() {
+        const imageUrl = "{{ $invitation->data['hero_image'] ?? $invitation->data['h_img'] ?? asset('assets/hero-background.png') }}";
+        fetch(imageUrl)
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.blob();
+            })
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = "Wedding_Invitation.jpg";
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            })
+            .catch((error) => {
+                console.error('Download failed:', error);
+                window.open(imageUrl, '_blank');
+            });
+    }
+    
+    function addToCalendar() {
+        const title = "Wedding: {{ $invitation->data['groom_name'] ?? $invitation->data['groom'] ?? 'Groom' }} & {{ $invitation->data['bride_name'] ?? $invitation->data['bride'] ?? 'Bride' }}";
+        const rawDate = "{{ $invitation->data['date'] ?? '2026-12-12' }}";
+        const loc = "{{ $invitation->data['venue_city'] ?? $invitation->data['location'] ?? 'Venue' }}";
+        
+        let dateStr = rawDate.replace(/-/g, '');
+        if (isNaN(new Date(rawDate).getTime())) {
+             dateStr = new Date().toISOString().slice(0,10).replace(/-/g, '');
+        }
+
+        const start = dateStr + 'T090000';
+        const end = dateStr + 'T230000';
+        const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${start}/${end}&details=We%20are%20getting%20married!&location=${encodeURIComponent(loc)}`;
+        window.open(googleUrl, '_blank');
+    }
 
     // --- Live Hooks (Standardized) ---
     window.updateCountdown = function(dateStr) { window.location.reload(); }

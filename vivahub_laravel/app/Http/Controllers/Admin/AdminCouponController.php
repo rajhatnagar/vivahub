@@ -15,7 +15,8 @@ class AdminCouponController extends Controller
      */
     public function index()
     {
-        $coupons = Coupon::latest()->paginate(20);
+        // Only show System Coupons (Admin created, no partner_id)
+        $coupons = Coupon::whereNull('partner_id')->latest()->paginate(20);
         $themeColor = Setting::where('key', 'theme_color')->value('value') ?? '#ec1313';
         
         return view('admin.coupons.index', compact('coupons', 'themeColor'));
@@ -51,12 +52,34 @@ class AdminCouponController extends Controller
     /**
      * Delete a coupon
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        $coupon = Coupon::findOrFail($id);
-        $coupon->delete();
-        
-        return redirect()->route('admin.coupons.index')
-            ->with('success', 'Coupon deleted successfully!');
+        try {
+            $coupon = Coupon::findOrFail($id);
+            $coupon->delete();
+            
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json(['success' => true, 'message' => 'Coupon deleted successfully!']);
+            }
+
+            return redirect()->route('admin.coupons.index')
+                ->with('success', 'Coupon deleted successfully!');
+        } catch (\Illuminate\Database\QueryException $e) {
+            $message = 'Database error: ' . $e->getMessage();
+            if ($e->getCode() == "23000") {
+                $message = 'Cannot delete this coupon because it has been used in invitations.';
+            }
+
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json(['success' => false, 'message' => $message]);
+            }
+
+            return back()->with('error', $message);
+        } catch (\Exception $e) {
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
+            }
+            return back()->with('error', 'Error: ' . $e->getMessage());
+        }
     }
 }

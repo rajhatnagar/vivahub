@@ -48,8 +48,10 @@ return new class extends Migration
             // $table->foreign('partner_id')->references('id')->on('partner_details')->onDelete('cascade');
             $table->string('code')->unique();
             $table->string('discount_type')->default('100% OFF');
-            $table->enum('status', ['active', 'redeemed', 'expired'])->default('active');
+            $table->enum('status', ['Active', 'Used', 'Expired'])->default('Active');
             $table->string('client_email')->nullable();
+            $table->unsignedBigInteger('used_by')->nullable(); // Add used_by
+            $table->timestamp('used_at')->nullable(); // Add used_at
             $table->timestamps();
         });
     }

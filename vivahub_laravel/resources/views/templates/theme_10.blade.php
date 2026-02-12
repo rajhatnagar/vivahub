@@ -568,10 +568,10 @@
         <button id="preview-mobile-whatsapp" onclick="window.open('https://wa.me/{{ preg_replace('/[^0-9]/', '', $invitation->data['whatsapp'] ?? '') }}')" class="flex flex-col items-center justify-center text-amber-700 hover:text-amber-500 transition-colors">
             <i data-lucide="message-circle" class="w-4 h-4"></i><span class="text-[8px] mt-0.5 font-medium uppercase">Chat</span>
         </button>
-        <button onclick="downloadVCard()" class="flex items-center justify-center w-12 h-12 mx-auto bg-amber-700 text-white -mt-6 shadow-[0_0_20px_rgba(217,119,6,0.3)] hover:scale-105 transition-transform rotate-45 border-4 border-[#2a0a12]">
-            <i data-lucide="user-plus" class="w-5 h-5 -rotate-45"></i>
+        <button onclick="addToCalendar()" class="flex items-center justify-center w-12 h-12 mx-auto bg-amber-700 text-white -mt-6 shadow-[0_0_20px_rgba(217,119,6,0.3)] hover:scale-105 transition-transform rotate-45 border-4 border-[#2a0a12]">
+            <i data-lucide="calendar-plus" class="w-5 h-5 -rotate-45"></i>
         </button>
-        <button onclick="window.print()" class="flex flex-col items-center justify-center text-amber-700 hover:text-amber-500 transition-colors">
+        <button onclick="downloadInvitation()" class="flex flex-col items-center text-slate-400 hover:text-amber-400 transition-colors">
             <i data-lucide="download" class="w-4 h-4"></i><span class="text-[8px] mt-0.5 font-medium uppercase">Invite</span>
         </button>
         <button onclick="shareInvite()" class="flex flex-col items-center justify-center text-amber-700 hover:text-amber-500 transition-colors">
@@ -702,11 +702,48 @@
         });
 
         // Utils
-        function addToCalendar() { window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text={{ $invitation->data['bride'] }}%20%26%20{{ $invitation->data['groom'] }}%20Wedding&dates={{ \Carbon\Carbon::parse($invitation->data['date'])->format('Ymd') }}T160000Z/{{ \Carbon\Carbon::parse($invitation->data['date'])->addDays(1)->format('Ymd') }}T020000Z`, '_blank'); }
+        function addToCalendar() {
+            const title = "Wedding: {{ $invitation->data['groom_name'] ?? $invitation->data['groom'] ?? 'Groom' }} & {{ $invitation->data['bride_name'] ?? $invitation->data['bride'] ?? 'Bride' }}";
+            const rawDate = "{{ $invitation->data['date'] ?? '2026-12-12' }}";
+            const loc = "{{ $invitation->data['venue_city'] ?? $invitation->data['location'] ?? 'Venue' }}";
+            
+            let dateStr = rawDate.replace(/-/g, '');
+            if (isNaN(new Date(rawDate).getTime())) {
+                 dateStr = new Date().toISOString().slice(0,10).replace(/-/g, '');
+            }
+
+            const start = dateStr + 'T090000';
+            const end = dateStr + 'T230000';
+            const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${start}/${end}&details=We%20are%20getting%20married!&location=${encodeURIComponent(loc)}`;
+            window.open(googleUrl, '_blank');
+        }
         function shareInvite() { if(navigator.share) navigator.share({ title: '{{ $invitation->data['bride'] }} & {{ $invitation->data['groom'] }} Wedding', url: window.location.href }); else alert('Link copied!'); }
         function downloadVCard() {
             const blob = new Blob([`BEGIN:VCARD\nVERSION:3.0\nFN:{{ $invitation->data['bride'] }} & {{ $invitation->data['groom'] }} Wedding\nURL:${window.location.href}\nEND:VCARD`], { type: 'text/vcard' });
             const a = document.createElement('a'); a.href = window.URL.createObjectURL(blob); a.download = 'wedding.vcf'; a.click();
+        }
+        function downloadInvitation() {
+            const imageUrl = "{{ $invitation->data['hero_image'] ?? $invitation->data['h_img'] ?? asset('assets/hero-background.png') }}";
+            fetch(imageUrl)
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.blob();
+                })
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                     a.style.display = 'none';
+                    a.href = url;
+                    a.download = "Wedding_Invitation.jpg";
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                })
+                .catch((error) => {
+                    console.error('Download failed:', error);
+                    window.open(imageUrl, '_blank');
+                });
         }
 
         // --- Live Preview Hooks ---

@@ -59,13 +59,9 @@
                             @endif
                         </td>
                         <td class="p-4 text-center">
-                            <form action="{{ route($deleteRoute, $coupon->id) }}" method="POST" class="inline" onsubmit="return confirm('Delete this coupon?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-red-500 hover:text-red-700 p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
-                                    <span class="material-symbols-outlined text-sm">delete</span>
-                                </button>
-                            </form>
+                            <button class="text-red-500 hover:text-red-700 p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors js-delete-admin-coupon" data-url="{{ route($deleteRoute, $coupon->id) }}" title="Delete Coupon">
+                                <span class="material-symbols-outlined text-sm">delete</span>
+                            </button>
                         </td>
                     </tr>
                     @empty
@@ -145,8 +141,63 @@
 </div>
 
 <script>
-function toggleCouponModal() {
-    const modal = document.getElementById('coupon-modal');
-    modal.classList.toggle('hidden');
-}
+    function toggleCouponModal() {
+        const modal = document.getElementById('coupon-modal');
+        modal.classList.toggle('hidden');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Global Delegation for Admin Coupon Deletion
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('.js-delete-admin-coupon');
+            if (btn) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const url = btn.dataset.url;
+                if(!confirm('Are you sure you want to permanently delete this coupon?')) return;
+                
+                // Visual feedback
+                const originalContent = btn.innerHTML;
+                btn.innerHTML = '<span class="material-symbols-outlined text-sm animate-spin">refresh</span>';
+                btn.disabled = true;
+
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ _method: 'DELETE' })
+                })
+                .then(async response => {
+                    const contentType = response.headers.get("content-type");
+                    if (contentType && contentType.indexOf("application/json") !== -1) {
+                        return response.json();
+                    } else {
+                        if(response.ok) return { success: true };
+                        const text = await response.text();
+                        throw new Error('Server returned non-JSON response');
+                    }
+                })
+                .then(data => {
+                    if(data.success) {
+                        const row = btn.closest('tr');
+                        row.style.opacity = '0';
+                        setTimeout(() => row.remove(), 300);
+                    } else {
+                        alert('Error: ' + (data.message || 'Could not delete coupon.'));
+                        btn.innerHTML = originalContent;
+                        btn.disabled = false;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again.');
+                    btn.innerHTML = originalContent;
+                    btn.disabled = false;
+                });
+            }
+        });
+    });
 </script>

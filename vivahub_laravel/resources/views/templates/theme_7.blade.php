@@ -622,10 +622,10 @@
             <span class="text-[9px] mt-1 font-medium uppercase tracking-wider">Chat</span>
         </button>
 
-        <button onclick="downloadVCard()" class="w-14 h-14 bg-gradient-to-tr from-amber-500 to-yellow-600 text-white rounded-full flex items-center justify-center -mt-8 shadow-[0_0_15px_rgba(251,191,36,0.4)] border-4 border-slate-900 hover:scale-105 transition-transform">
-            <i data-lucide="user-plus" class="w-6 h-6"></i>
+        <button onclick="addToCalendar()" class="w-14 h-14 bg-gradient-to-tr from-amber-500 to-yellow-600 text-white rounded-full flex items-center justify-center -mt-8 shadow-[0_0_15px_rgba(251,191,36,0.4)] border-4 border-slate-900 hover:scale-105 transition-transform">
+            <i data-lucide="calendar-plus" class="w-6 h-6"></i>
         </button>
-        <button onclick="window.print()" class="flex flex-col items-center text-slate-400 hover:text-amber-400 transition-colors">
+        <button onclick="downloadInvitation()" class="flex flex-col items-center text-slate-400 hover:text-amber-400 transition-colors">
             <i data-lucide="download" class="w-5 h-5"></i>
             <span class="text-[9px] mt-1 font-medium uppercase tracking-wider">Invite</span>
         </button>
@@ -948,18 +948,21 @@
             successMsg.classList.add('block');
         });
 
-        // Add to Calendar Logic
-        function addToCalendar() {
-            const event = {
-                title: '{{ $invitation->data["bride_name"] ?? "Elena" }} and {{ $invitation->data["groom_name"] ?? "Julian" }} Wedding',
-                start: '{{ \Carbon\Carbon::parse($invitation->data["date"] ?? "2026-12-12")->format("Ymd") }}T160000Z',
-                end: '{{ \Carbon\Carbon::parse($invitation->data["date"] ?? "2026-12-12")->addDay()->format("Ymd") }}T020000Z',
-                details: 'Celebrate the union of {{ $invitation->data["bride_name"] ?? "Elena" }} and {{ $invitation->data["groom_name"] ?? "Julian" }}.',
-                location: '{{ $invitation->data["location"] ?? "The Rosewood Estate, Udaipur, Rajasthan" }}'
-            };
-            const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${event.start}/${event.end}&details=${encodeURIComponent(event.details)}&location=${encodeURIComponent(event.location)}`;
-            window.open(googleUrl, '_blank');
+    function addToCalendar() {
+        const title = "Wedding: {{ $invitation->data['groom_name'] ?? $invitation->data['groom'] ?? 'Groom' }} & {{ $invitation->data['bride_name'] ?? $invitation->data['bride'] ?? 'Bride' }}";
+        const rawDate = "{{ $invitation->data['date'] ?? '2026-12-12' }}";
+        const loc = "{{ $invitation->data['venue_city'] ?? $invitation->data['location'] ?? 'Venue' }}";
+        
+        let dateStr = rawDate.replace(/-/g, '');
+        if (isNaN(new Date(rawDate).getTime())) {
+             dateStr = new Date().toISOString().slice(0,10).replace(/-/g, '');
         }
+
+        const start = dateStr + 'T090000';
+        const end = dateStr + 'T230000';
+        const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${start}/${end}&details=We%20are%20getting%20married!&location=${encodeURIComponent(loc)}`;
+        window.open(googleUrl, '_blank');
+    }
 
         // Lightbox Functions
         function openLightbox(src) {
@@ -982,42 +985,71 @@
             }
         }
 
-        // Share Invite
-        function shareInvite() {
-            if (navigator.share) {
-                navigator.share({
-                    title: 'Royal Union: {{ $invitation->data["bride_name"] ?? "Elena" }} & {{ $invitation->data["groom_name"] ?? "Julian" }}',
-                    text: 'Join us for our special day in {{ $invitation->data["venue_city"] ?? "Udaipur" }}!',
-                    url: window.location.href
-                });
-            } else {
-                alert('Sharing link copied to clipboard!');
-                const dummy = document.createElement('input');
-                document.body.appendChild(dummy);
-                dummy.value = window.location.href;
-                dummy.select();
-                document.execCommand('copy');
-                document.body.removeChild(dummy);
-            }
+    function shareInvite() {
+        if (navigator.share) {
+            navigator.share({
+                title: '{{ $invitation->data["groom_name"] ?? $invitation->data["groom"] ?? "Groom" }} & {{ $invitation->data["bride_name"] ?? $invitation->data["bride"] ?? "Bride" }} Wedding',
+                text: 'You are cordially invited to our wedding celebration.',
+                url: window.location.href
+            }).catch(console.error);
+        } else {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                alert('Link copied to clipboard!');
+            });
         }
+    }
 
-        // vCard Download
-        function downloadVCard() {
-            const vcard = `BEGIN:VCARD
-VERSION:3.0
-FN:{{ $invitation->data["bride_name"] ?? "Elena" }} & {{ $invitation->data["groom_name"] ?? "Julian" }} Wedding
-ORG:VivaHub Wedding Event
-TEL;TYPE=CELL:+123456789
-NOTE:Save the date for {{ $invitation->data["date"] ?? "December 12, 2026" }}
-URL:${window.location.href}
-END:VCARD`;
-            const blob = new Blob([vcard], { type: 'text/vcard' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'wedding_contact.vcf';
-            a.click();
-        }
+    function downloadInvitation() {
+        const imageUrl = "{{ $invitation->data['hero_image'] ?? $invitation->data['h_img'] ?? asset('assets/hero-background.png') }}";
+        fetch(imageUrl)
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.blob();
+            })
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = "Wedding_Invitation.jpg";
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            })
+            .catch((error) => {
+                console.error('Download failed:', error);
+                window.open(imageUrl, '_blank');
+            });
+    }
+
+    function downloadVCard() {
+        const groom = "{{ $invitation->data['groom_name'] ?? $invitation->data['groom'] ?? 'Groom' }}";
+        const bride = "{{ $invitation->data['bride_name'] ?? $invitation->data['bride'] ?? 'Bride' }}";
+        const date = "{{ $invitation->data['date'] ?? '2026-12-12' }}";
+        const city = "{{ $invitation->data['venue_city'] ?? $invitation->data['location'] ?? 'Wedding' }}";
+        
+        const vCardData = [
+            'BEGIN:VCARD',
+            'VERSION:3.0',
+            `N:${groom} & ${bride};;;;`,
+            `FN:${groom} & ${bride} Wedding`,
+            `ORG:Wedding Invitation`,
+            `URL:${window.location.href}`,
+            `bdd:${date}`,
+            `ADR;TYPE=WORK,PREF:;;${city}`,
+            'END:VCARD'
+        ].join('\n');
+
+        const blob = new Blob([vCardData], { type: 'text/vcard' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${groom}_${bride}_Wedding.vcf`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
 
 
     </script>

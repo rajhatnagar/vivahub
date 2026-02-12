@@ -609,10 +609,10 @@
             <span class="text-[9px] mt-1 font-medium uppercase tracking-wider">Chat</span>
         </button>
 
-        <button onclick="downloadVCard()" class="w-14 h-14 bg-[#c2410c] text-white rounded-full flex items-center justify-center -mt-8 shadow-lg border-4 border-[#fff8f0] hover:scale-105 transition-transform">
-            <i data-lucide="user-plus" class="w-6 h-6"></i>
+        <button onclick="addToCalendar()" class="w-14 h-14 bg-[#c2410c] text-white rounded-full flex items-center justify-center -mt-8 shadow-lg border-4 border-[#fff8f0] hover:scale-105 transition-transform">
+            <i data-lucide="calendar-plus" class="w-6 h-6"></i>
         </button>
-        <button onclick="window.print()" class="flex flex-col items-center text-orange-900 hover:text-orange-700 transition-colors">
+        <button onclick="downloadInvitation()" class="flex flex-col items-center text-slate-400 hover:text-amber-400 transition-colors">
             <i data-lucide="download" class="w-5 h-5"></i>
             <span class="text-[9px] mt-1 font-medium uppercase tracking-wider">Invite</span>
         </button>
@@ -933,17 +933,21 @@
         });
 
         // Utils
-        function addToCalendar() {
-             const event = {
-                title: '{{ $invitation->data["bride_name"] ?? "Elena" }} and {{ $invitation->data["groom_name"] ?? "Julian" }} Wedding',
-                start: '{{ \Carbon\Carbon::parse($invitation->data["date"] ?? "2026-12-12")->format("Ymd") }}T160000Z',
-                end: '{{ \Carbon\Carbon::parse($invitation->data["date"] ?? "2026-12-12")->addDay()->format("Ymd") }}T020000Z',
-                details: 'Celebrate the union of {{ $invitation->data["bride_name"] ?? "Elena" }} and {{ $invitation->data["groom_name"] ?? "Julian" }}.',
-                location: '{{ $invitation->data["location"] ?? "Udaipur, Rajasthan" }}'
-            };
-            const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${event.start}/${event.end}&details=${encodeURIComponent(event.details)}&location=${encodeURIComponent(event.location)}`;
-            window.open(googleUrl, '_blank');
+    function addToCalendar() {
+        const title = "Wedding: {{ $invitation->data['groom_name'] ?? $invitation->data['groom'] ?? 'Groom' }} & {{ $invitation->data['bride_name'] ?? $invitation->data['bride'] ?? 'Bride' }}";
+        const rawDate = "{{ $invitation->data['date'] ?? '2026-12-12' }}";
+        const loc = "{{ $invitation->data['venue_city'] ?? $invitation->data['location'] ?? 'Venue' }}";
+        
+        let dateStr = rawDate.replace(/-/g, '');
+        if (isNaN(new Date(rawDate).getTime())) {
+             dateStr = new Date().toISOString().slice(0,10).replace(/-/g, '');
         }
+
+        const start = dateStr + 'T090000';
+        const end = dateStr + 'T230000';
+        const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${start}/${end}&details=We%20are%20getting%20married!&location=${encodeURIComponent(loc)}`;
+        window.open(googleUrl, '_blank');
+    }
         function shareInvite() {
             if(navigator.share) { navigator.share({ title: '{{ $invitation->data["bride_name"] ?? "Elena" }} & {{ $invitation->data["groom_name"] ?? "Julian" }} Wedding', url: window.location.href }); }
             else { 
@@ -966,6 +970,30 @@ END:VCARD`;
             const blob = new Blob([vcard], { type: 'text/vcard' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a'); a.href = url; a.download = 'contact.vcf'; a.click();
+        }
+
+        function downloadInvitation() {
+            const imageUrl = "{{ $invitation->data['hero_image'] ?? $invitation->data['h_img'] ?? asset('assets/hero-background.png') }}";
+            fetch(imageUrl)
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.blob();
+                })
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = "Wedding_Invitation.jpg";
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                })
+                .catch((error) => {
+                    console.error('Download failed:', error);
+                    window.open(imageUrl, '_blank');
+                });
         }
 
 

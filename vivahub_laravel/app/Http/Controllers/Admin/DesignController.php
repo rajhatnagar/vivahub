@@ -138,31 +138,57 @@ class DesignController extends Controller
     public function storeCoupon(Request $request)
     {
         $request->validate([
-            'discount_type' => 'required|string',
+            'discount_type' => 'required|numeric|min:1|max:100',
             'code' => 'nullable|string|unique:coupons,code|max:20',
+            'max_uses' => 'nullable|integer|min:1',
         ]);
 
         $code = $request->code ? strtoupper($request->code) : strtoupper(Str::random(8));
-        $discount = $request->discount_type . '%';
+        $discountValue = $request->discount_type; // Form sends percentage value in this field
 
         Coupon::create([
             'code' => $code,
-            'discount_type' => $discount,
+            'discount_type' => 'percentage',
+            'discount_value' => $discountValue,
+            'max_uses' => $request->max_uses,
             'status' => 'active',
             'partner_id' => null // System Coupon
         ]);
 
-        return redirect()->route('admin.designs.index', ['tab' => 'coupons'])->with('success', 'System Coupon generated: ' . $code);
+        return redirect()->route('admin.designs.index', ['tab' => 'coupons'])->with('success', 'System Coupon generated: ' . $code . ' (' . $discountValue . '% OFF)');
     }
 
     /**
      * Delete Coupon
      */
-    public function deleteCoupon($id)
+    public function deleteCoupon(Request $request, $id)
     {
-        $coupon = Coupon::findOrFail($id);
-        $coupon->delete();
-        return redirect()->route('admin.designs.index', ['tab' => 'coupons'])->with('success', 'Coupon deleted.');
+        try {
+            $coupon = Coupon::findOrFail($id);
+            $coupon->delete();
+            
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json(['success' => true, 'message' => 'Coupon deleted.']);
+            }
+
+            return redirect()->route('admin.designs.index', ['tab' => 'coupons'])->with('success', 'Coupon deleted.');
+        } catch (\Illuminate\Database\QueryException $e) {
+            $message = 'Database error: ' . $e->getMessage();
+            if ($e->getCode() == "23000") {
+                $message = 'Cannot delete this system coupon because it is active or used.';
+            }
+
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json(['success' => false, 'message' => $message]);
+            }
+
+            return back()->with('error', $message);
+        } catch (\Exception $e) {
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
+            }
+            return back()->with('error', 'Error: ' . $e->getMessage());
+        }
     }
 
     /**

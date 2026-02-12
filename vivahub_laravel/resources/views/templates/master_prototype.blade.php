@@ -17,6 +17,9 @@
 
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- PDF Generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <script>
     tailwind.config = {
@@ -680,27 +683,80 @@
 
     // --- Audio Logic ---
     let isPlaying = false;
+    let wishingPlayed = false;
+    
+    // Initialize Sources
+    document.addEventListener('DOMContentLoaded', () => {
+       const wishingAudio = document.getElementById('wishing-audio');
+       const weddingAudio = document.getElementById('wedding-audio');
+       
+       // Get sources from Blade
+       const wishingSrc = "{{ data_get($invitation, 'data.wishing_audio', '') }}";
+       const musicSrc = "{{ data_get($invitation, 'data.bg_music', 'https://csssofttech.com/wedding/assets/music.mp3') }}"; // Default
+
+       if(wishingSrc) wishingAudio.src = wishingSrc;
+       if(musicSrc) weddingAudio.src = musicSrc;
+       
+       // Handle Sequence
+       wishingAudio.onended = function() {
+           wishingPlayed = true;
+           if(musicSrc) {
+               weddingAudio.play()
+               .then(() => console.log("Bg Music Started"))
+               .catch(e => console.log("Bg Music Autoplay prevented"));
+           }
+       };
+    });
+
     function toggleAudio() {
-        const audio = document.getElementById('wedding-audio');
+        const wishingAudio = document.getElementById('wishing-audio');
+        const weddingAudio = document.getElementById('wedding-audio');
         const icon = document.getElementById('music-icon');
+        
         if(isPlaying) {
-            audio.pause();
+            // Pause All
+            wishingAudio.pause();
+            weddingAudio.pause();
             icon.setAttribute('data-lucide', 'volume-x');
             isPlaying = false;
         } else {
-            audio.play().catch(e => console.log("Audio play failed", e));
+            // Play Sequence or Music
             icon.setAttribute('data-lucide', 'volume-2');
             isPlaying = true;
+            
+            if(wishingAudio.src && !wishingPlayed && wishingAudio.src !== window.location.href) {
+                wishingAudio.play().catch(e => {
+                    console.log("Wishing play failed", e);
+                    // Fallback to music if wishing fails
+                    weddingAudio.play().catch(e2 => console.log("Music play failed", e2));
+                });
+            } else {
+                weddingAudio.play().catch(e => console.log("Music play failed", e));
+            }
         }
         if(window.lucide) window.lucide.createIcons();
     }
 
     // --- Dynamic Builder Updates ---
     
+    // Legacy support
     window.updateAudio = function(res) {
-        const audio = document.getElementById('wedding-audio');
-        audio.src = res;
-        if(isPlaying) audio.play();
+        document.getElementById('wedding-audio').src = res;
+        if(isPlaying) document.getElementById('wedding-audio').play();
+    }
+    
+    window.updateAudioSource = function(src, type) {
+        if(type === 'wishing') {
+            const aud = document.getElementById('wishing-audio');
+            aud.src = src;
+            wishingPlayed = false; // Reset to play newly uploaded msg
+            // Optional: Auto play to test?
+            // if(isPlaying) aud.play(); 
+        } else {
+            const aud = document.getElementById('wedding-audio');
+            aud.src = src;
+            if(isPlaying && wishingPlayed) aud.play();
+        }
     }
 
     window.toggleSection = function(section, isEnabled) {
@@ -708,16 +764,15 @@
              const btn = document.getElementById('music-toggle');
              if(isEnabled) btn.classList.remove('hidden'); else btn.classList.add('hidden');
         }
+        if(section === 'wishing_audio') {
+             // Logic if we had a visual element for wishing audio, but it's audio only
+        }
         if(section === 'rsvp') {
              const sec = document.getElementById('rsvp');
              if(isEnabled) sec.classList.remove('hidden'); else sec.classList.add('hidden');
         }
     }
     
-    window.updateAudioSource = function(src, type) {
-        document.getElementById('wedding-audio').src = src;
-    }
-
     window.updateEventsList = function(events) {
         if(!events || events.length === 0) return;
         const container = document.getElementById('timeline-items');
@@ -836,7 +891,6 @@
             grid.appendChild(div);
         });
     }
-    }
 
     // --- Mobile Actions ---
     function downloadVCard() {
@@ -864,8 +918,111 @@
         }
     }
 
+    async function downloadInvitation() {
+         const { jsPDF } = window.jspdf;
+         
+         // Show Loading
+         const loadingDiv = document.createElement('div');
+         loadingDiv.className = 'fixed inset-0 z-[100] bg-black/80 flex flex-col items-center justify-center text-white';
+         loadingDiv.innerHTML = '<div class="w-12 h-12 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mb-4"></div><p>Generating PDF...</p>';
+         document.body.appendChild(loadingDiv);
+
+         try {
+             // 1. Capture full body (use scrollHeight to get full content)
+             const element = document.body;
+             
+             // Temporarily fix height for capture
+             const originalHeight = element.style.height;
+             const originalOverflow = element.style.overflow;
+             element.style.height = 'auto';
+             element.style.overflow = 'visible';
+
+             const canvas = await html2canvas(element, {
+                 scale: 2, // Better quality
+                 useCORS: true, 
+                 logging: false,
+                 windowWidth: element.scrollWidth,
+                 windowHeight: element.scrollHeight,
+                 scrollY: -window.scrollY // Capture from top
+             });
+             
+             // Restore proper styles
+             element.style.height = originalHeight;
+             element.style.overflow = originalOverflow;
+             
+             const imgData = canvas.toDataURL('image/jpeg', 0.8);
+             
+             // 2. Create PDF (Long single page for mobile-like view)
+             const pdf = new jsPDF({
+                 orientation: 'p',
+                 unit: 'px',
+                 format: [canvas.width, canvas.height] 
+             });
+             
+             pdf.addImage(imgData, 'JPEG', 0, 0, canvas.width, canvas.height);
+             pdf.save("Wedding-Invitation.pdf");
+             
+         } catch (err) {
+             console.error("PDF Generation Error:", err);
+             alert("Failed to generate PDF. Note: Some cross-origin images might block this feature.");
+         } finally {
+             document.body.removeChild(loadingDiv);
+         }
+    }
+
+    // --- Global Actions ---
+    function addToCalendar() {
+        const title = "Wedding: {{ $invitation->data['groom_name'] ?? $invitation->data['groom'] ?? 'Groom' }} & {{ $invitation->data['bride_name'] ?? $invitation->data['bride'] ?? 'Bride' }}";
+        const rawDate = "{{ $invitation->data['date'] ?? '2026-12-12' }}";
+        const loc = "{{ $invitation->data['venue_city'] ?? $invitation->data['location'] ?? 'Venue' }}";
+        
+        let dateStr = rawDate.replace(/-/g, '');
+        if (isNaN(new Date(rawDate).getTime())) {
+             dateStr = new Date().toISOString().slice(0,10).replace(/-/g, '');
+        }
+
+        const start = dateStr + 'T090000';
+        const end = dateStr + 'T230000';
+        const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${start}/${end}&details=We%20are%20getting%20married!&location=${encodeURIComponent(loc)}`;
+        window.open(googleUrl, '_blank');
+    }
+
+    function shareInvitation() {
+        if (navigator.share) {
+            navigator.share({
+                title: '{{ $invitation->data["groom_name"] ?? $invitation->data["groom"] ?? "Groom" }} & {{ $invitation->data["bride_name"] ?? $invitation->data["bride"] ?? "Bride" }} Wedding',
+                text: 'You are cordially invited to our wedding celebration.',
+                url: window.location.href
+            }).catch(console.error);
+        } else {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                alert('Link copied to clipboard!');
+            });
+        }
+    }
+
     function downloadInvitation() {
-         alert("Download Feature: In a production app, this would generate a PDF or Image of the invitation.");
+        const imageUrl = "{{ $invitation->data['hero_image'] ?? $invitation->data['h_img'] ?? asset('assets/hero-background.png') }}";
+        fetch(imageUrl)
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.blob();
+            })
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = "Wedding_Invitation.jpg";
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            })
+            .catch((error) => {
+                console.error('Download failed:', error);
+                window.open(imageUrl, '_blank');
+            });
     }
   </script>
 
@@ -895,9 +1052,9 @@
             <span class="text-[9px] tracking-wide font-medium">WhatsApp</span>
         </a>
         <!-- Save -->
-        <button onclick="downloadVCard()" class="flex flex-col items-center justify-center text-white/70 hover:text-white transition-colors">
+        <button onclick="addToCalendar()" class="flex flex-col items-center justify-center text-white/70 hover:text-white transition-colors">
             <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center mb-0.5">
-                <i data-lucide="user-plus" class="w-4 h-4"></i>
+                <i data-lucide="calendar-plus" class="w-4 h-4"></i>
             </div>
             <span class="text-[9px] tracking-wide font-medium">Save</span>
         </button>

@@ -11,6 +11,7 @@ class LogController extends Controller
     public function index()
     {
         $logs = Log::with('user')->latest()->take(50)->get();
-        return view('admin.logs.index', compact('logs'));
+        $couponUsages = \App\Models\CouponUsage::with(['user', 'coupon.partner'])->latest()->take(50)->get();
+        return view('admin.logs.index', compact('logs', 'couponUsages'));
     }
 }

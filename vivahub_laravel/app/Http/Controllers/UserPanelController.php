@@ -134,24 +134,63 @@ class UserPanelController extends Controller
                      return response()->json(['success' => false, 'message' => 'Invalid or expired coupon.'], 400);
                  }
 
-                 $partner = $coupon->partner;
-                 if ($partner->credits < 1) {
+                 $partnerUser = $coupon->partner;
+                 if (!$partnerUser || !$partnerUser->partnerDetails) {
+                      return response()->json(['success' => false, 'message' => 'Invalid Partner Configuration.'], 400);
+                 }
+                 $partner = $partnerUser->partnerDetails;
+
+                 if ($partner->credits < 5) {
                      return response()->json(['success' => false, 'message' => 'This code cannot be redeemed at the moment (Agency Limit Reached).'], 400); 
                  }
                  
+
+                 
                  // Deduct Credit & Mark Redeemed
                  DB::transaction(function() use ($partner, $coupon, $user) {
-                     $partner->decrement('credits');
+                     $partner->decrement('credits', 5);
                      $partner->creditLogs()->create([
-                         'amount' => 1,
+                         'amount' => 5,
                          'description' => 'Coupon Redeemed: ' . $coupon->code,
                          'type' => 'debit'
                      ]);
-                     
-                     $coupon->update([
-                         'status' => 'redeemed',
-                         'client_email' => $user->email
+
+                     // Log Usage
+                     \App\Models\CouponUsage::create([
+                        'coupon_id' => $coupon->id,
+                        'user_id' => $user->id,
+                        'order_id' => 'CREDIT-' . time(),
+                        'original_amount' => 0,
+                        'discount_amount' => 0, 
+                        'final_amount' => 0,
+                        'status' => 'completed'
                      ]);
+                     
+                     // Update Last Used info
+                 $coupon->update([
+                     'used_at' => now()
+                 ]);
+                     // Check Max Uses
+                    if ($coupon->max_uses && $coupon->usages()->count() >= $coupon->max_uses) {
+                         $coupon->update(['status' => 'redeemed']);
+                    } else if (!$coupon->max_uses) {
+                        // If no max_uses set, assume single use for safety or let it remain active? 
+                        // Existing logic marks it redeemed immediately, so let's stick to that if max_uses is null/1.
+                         $coupon->update(['status' => 'redeemed']);
+                    }
+                    
+                    // Admin Log: Coupon Usage
+                    $userName = auth()->user()->name ?? 'Unknown User';
+                    $userPhone = 'N/A';
+                    $couponCode = $coupon->code;
+                    $ownerName = $partner->agency_name ?? 'Unknown Agency';
+
+                    \App\Models\Log::create([
+                        'user_id' => auth()->id(),
+                        'action' => 'Coupon Usage',
+                        'details' => "[{$userName} ({$userPhone}) | {$couponCode} | {$ownerName} | " . now()->toDateTimeString() . "]",
+                        'ip_address' => request()->ip(),
+                    ]);
                  });
             }
 
@@ -338,18 +377,17 @@ class UserPanelController extends Controller
             $partnerBranding = null;
             $client = \App\Models\PartnerClient::where('invitation_id', $invitation->id)->with('partner')->first();
             if ($client && $client->partner) {
-                $partnerBranding = $client->partner;
+                $partnerBranding = $client->partner->partnerDetails;
             } else {
                 // Check for Partner Coupon Usage
-                 $coupon = \App\Models\Coupon::where('used_by', $invitation->user_id)
-                     ->whereNotNull('partner_id')
-                     ->latest('used_at')
-                     ->with('partner')
-                     ->first();
-                 
-                 if ($coupon && $coupon->partner) {
-                     $partnerBranding = $coupon->partner;
-                 } else {
+             $usage = \App\Models\CouponUsage::where('user_id', $invitation->user_id)
+                 ->latest()
+                 ->with('coupon.partner')
+                 ->first();
+             
+             if ($usage && $usage->coupon && $usage->coupon->partner) {
+                 $partnerBranding = $usage->coupon->partner->partnerDetails;
+             } else {
                     // Check if Owner is Partner
                     $owner = \App\Models\User::with('partnerDetails')->find($invitation->user_id);
                     if ($owner && $owner->role === 'partner' && $owner->partnerDetails) {
@@ -500,9 +538,8 @@ class UserPanelController extends Controller
     public function validateCoupon(Request $request)
     {
         $code = $request->input('code');
-        $amount = $request->input('amount'); // Order amount to check min_order_amount
+        $amount = $request->input('amount');
 
-        // Check Partner Coupons
         $coupon = Coupon::where('code', $code)->first();
 
         if (!$coupon) {
@@ -510,14 +547,52 @@ class UserPanelController extends Controller
         }
         
         if ($coupon->status !== 'active') {
-             return response()->json(['success' => false, 'message' => 'This coupon has already been used.']);
+             return response()->json(['success' => false, 'message' => 'This coupon is no longer active.']);
         }
 
-        // Return discount (assuming all partner coupons are 100% OFF for now based on prototype)
+        // Check max uses
+        if ($coupon->max_uses && $coupon->usages()->count() >= $coupon->max_uses) {
+            return response()->json(['success' => false, 'message' => 'This coupon has reached its maximum usage limit.']);
+        }
+
+        // Determine discount type and value from stored data
+        $discountType = 'percentage'; // Default
+        $discountValue = 0;
+
+        if ($coupon->discount_value > 0) {
+            // New format: discount_value column has the actual value
+            $discountValue = $coupon->discount_value;
+            // Check discount_type column for type
+            $dt = strtolower($coupon->discount_type);
+            if (str_contains($dt, 'fixed') || str_contains($dt, '₹') || str_contains($dt, 'flat')) {
+                $discountType = 'fixed';
+            } else {
+                $discountType = 'percentage';
+            }
+        } else {
+            // Legacy format: discount_type stores value like "50%" or "100% OFF"
+            $dt = $coupon->discount_type;
+            if (preg_match('/(\d+)/', $dt, $matches)) {
+                $discountValue = (float) $matches[1];
+            }
+            // Check if it's a fixed amount or percentage
+            if (str_contains(strtolower($dt), 'fixed') || str_contains(strtolower($dt), '₹')) {
+                $discountType = 'fixed';
+            } else {
+                $discountType = 'percentage';
+            }
+        }
+
+        // For partner coupons (100% OFF), make it free
+        if ($coupon->partner_id) {
+            $discountValue = 100;
+            $discountType = 'percentage';
+        }
+
         return response()->json([
             'success' => true, 
-            'discount_type' => '100% OFF',
-            'discount_value' => 0, // 0 price
+            'discount_type' => $discountType,
+            'discount_value' => $discountValue,
             'code' => $coupon->code
         ]);
     }

@@ -741,12 +741,12 @@
         </div>
         <span class="text-[10px] font-bold tracking-wide drop-shadow-md text-white">Save</span>
       </button>
-      <a href="https://csssofttech.com/wedding/assets/hero.png" download class="flex flex-col items-center justify-center p-1 text-orange-100 hover:text-white transition-colors group">
+      <button onclick="downloadInvitation()" class="flex flex-col items-center justify-center p-1 text-orange-100 hover:text-white transition-colors group">
         <div class="p-2 rounded-full bg-black/40 backdrop-blur-md border border-purple-500/30 mb-1 group-hover:bg-purple-600 transition-colors shadow-lg">
           <i data-lucide="download" class="w-5 h-5"></i>
         </div>
         <span class="text-[10px] font-bold tracking-wide drop-shadow-md text-white">Invite</span>
-      </a>
+      </button>
       <button onclick="shareInvite()" class="flex flex-col items-center justify-center p-1 text-orange-100 hover:text-white transition-colors group">
         <div class="p-2 rounded-full bg-black/40 backdrop-blur-md border border-red-500/30 mb-1 group-hover:bg-red-600 transition-colors shadow-lg">
           <i data-lucide="share-2" class="w-5 h-5"></i>
@@ -763,6 +763,16 @@
        window.addEventListener('scroll', () => {
          if(heroBg) heroBg.style.transform = `translateY(${window.scrollY * 0.5}px)`;
        });
+       
+       // Init Audio Sources
+       const wishingAudio = document.getElementById('wishing-audio');
+       const weddingAudio = document.getElementById('wedding-audio');
+       
+       wishingUrl = "{{ data_get($invitation, 'data.wishing_audio', '') }}";
+       const musicSrc = "{{ data_get($invitation, 'data.bg_music', 'https://csssofttech.com/wedding/assets/music.mp3') }}";
+       
+       if(wishingUrl) wishingAudio.src = wishingUrl;
+       if(musicSrc) weddingAudio.src = musicSrc;
        
        // Start Countdown
        startCountdown();
@@ -999,6 +1009,99 @@
         });
     }
 
+    // --- Mobile Navigation Logic ---
+
+    // 1. Save Contact (vCard)
+    window.downloadVCard = function() {
+        const groom = "{{ $invitation->data['groom_name'] ?? 'Groom' }}";
+        const bride = "{{ $invitation->data['bride_name'] ?? 'Bride' }}";
+        const date = "{{ $invitation->data['date'] ?? '2026-12-12' }}";
+        const city = "{{ $invitation->data['venue_city'] ?? 'Wedding Venue' }}";
+        
+        // Construct vCard 3.0
+        const vCardData = [
+            'BEGIN:VCARD',
+            'VERSION:3.0',
+            `N:${groom} & ${bride};;;;`,
+            `FN:${groom} & ${bride} Wedding`,
+            `ORG:Wedding Invitation`,
+            `URL:${window.location.href}`,
+            `bdd:${date}`,
+            `ADR;TYPE=WORK,PREF:;;${city}`,
+            'END:VCARD'
+        ].join('\n');
+
+        const blob = new Blob([vCardData], { type: 'text/vcard' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${groom}_${bride}_Wedding.vcf`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+
+    // 2. Share Invite
+    window.shareInvite = function() {
+        if (navigator.share) {
+            navigator.share({
+                title: '{{ $invitation->data["groom_name"] ?? "Groom" }} & {{ $invitation->data["bride_name"] ?? "Bride" }} Wedding',
+                text: 'You are cordially invited to our wedding celebration.',
+                url: window.location.href
+            }).catch(console.error);
+        } else {
+            // Fallback: Copy to clipboard
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                alert('Link copied to clipboard!');
+            });
+        }
+    }
+
+    // 3. Download Invitation (Hero Image)
+    window.downloadInvitation = function() {
+        const imageUrl = "{{ $invitation->data['hero_bg'] ?? $invitation->data['h_img'] ?? asset('assets/hero-background.png') }}";
+        fetch(imageUrl)
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.blob();
+            })
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = "Wedding_Invitation.jpg";
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            })
+            .catch((error) => {
+                console.error('Download failed:', error);
+                // Fallback: Open in new tab
+                window.open(imageUrl, '_blank');
+            });
+    }
+
+    // 4. Add to Calendar (Google)
+    window.addToCalendar = function() {
+        const title = "Wedding: {{ $invitation->data['groom_name'] ?? 'Groom' }} & {{ $invitation->data['bride_name'] ?? 'Bride' }}";
+        const rawDate = "{{ $invitation->data['date'] ?? '2026-12-12' }}";
+        const loc = "{{ $invitation->data['venue_city'] ?? 'Venue' }}";
+        
+        let dateStr = rawDate.replace(/-/g, '');
+        // Validate date string
+        if (isNaN(new Date(rawDate).getTime())) {
+             // Fallback for invalid dates
+             dateStr = new Date().toISOString().slice(0,10).replace(/-/g, '');
+        }
+
+        const start = dateStr + 'T090000';
+        const end = dateStr + 'T230000';
+        
+        const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${start}/${end}&details=We%20are%20getting%20married!&location=${encodeURIComponent(loc)}`;
+        window.open(googleUrl, '_blank');
+    }
   </script>
 </body>
 </html>

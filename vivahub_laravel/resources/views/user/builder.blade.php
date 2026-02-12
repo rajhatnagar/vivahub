@@ -3,12 +3,12 @@
 @section('title', 'Invitation Builder')
 
 @section('content')
-<div class="flex flex-col lg:flex-row h-[calc(100vh-80px)] overflow-hidden bg-white dark:bg-[#1a0b0b] rounded-2xl shadow-card border border-primary/5 dark:border-white/5">
+<div class="flex flex-col lg:flex-row h-auto lg:h-[calc(100vh-80px)] overflow-visible lg:overflow-hidden bg-white dark:bg-[#1a0b0b] rounded-2xl shadow-card border border-primary/5 dark:border-white/5">
     
     <!-- Left: Form -->
-    <div class="flex-1 flex flex-col h-full border-r border-gray-100 dark:border-white/5 relative z-10 bg-white dark:bg-[#1a0b0b]">
+    <div class="flex-1 flex flex-col h-auto lg:h-full border-r border-gray-100 dark:border-white/5 relative z-10 bg-white dark:bg-[#1a0b0b]">
         <!-- Form Header -->
-        <div class="p-5 border-b border-gray-100 dark:border-white/5">
+        <div class="sticky top-0 z-40 bg-white dark:bg-[#1a0b0b]/95 backdrop-blur-sm p-4 lg:p-5 border-b border-gray-100 dark:border-white/5">
             <div class="flex justify-between items-center mb-3">
                 <a href="{{ route('dashboard.templates') }}" class="text-sm text-text-muted hover:text-primary flex gap-1 font-bold"><span class="material-symbols-outlined text-sm">arrow_back</span> Back</a>
                 <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold" id="step-indicator">Step 1/7</span>
@@ -17,7 +17,7 @@
         </div>
 
         <!-- Form Content -->
-        <div class="flex-1 overflow-y-auto p-6 space-y-8" id="builder-form-container">
+        <div class="flex-1 lg:overflow-y-auto p-4 lg:p-6 space-y-8 pb-24 lg:pb-6" id="builder-form-container">
             
             <!-- Step 1: Basics & Hero -->
             <div id="step-1" class="space-y-6 animate-fade-in">
@@ -259,13 +259,29 @@
                      </div>
                      <h3 class="text-2xl font-bold text-text-dark dark:text-white mb-2">Ready to Publish!</h3>
                      <p class="text-text-muted">Your invitation looks amazing. Click publish to go live.</p>
+                     
+                     <div class="mt-8 p-6 bg-gradient-to-br from-gray-900 to-black rounded-2xl text-white relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 p-3 opacity-10">
+                            <span class="material-symbols-outlined text-9xl">contactless</span>
+                        </div>
+                        <div class="relative z-10 text-left">
+                            <div class="inline-block px-3 py-1 bg-accent-gold text-black text-xs font-bold uppercase tracking-wider rounded-full mb-3">Premium Add-on</div>
+                            <h4 class="text-xl font-bold mb-2">Get a Physical NFC Card</h4>
+                            <p class="text-gray-400 text-sm mb-4 max-w-xs">Tap to share your invitation details instantly with guests. Valid for lifetime.</p>
+                            <button onclick="openNfcModal()" class="px-5 py-2.5 bg-white text-black font-bold rounded-xl hover:bg-gray-200 transition-colors flex items-center gap-2">
+                                Order Now <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                            </button>
+                        </div>
+                     </div>
+
+
                  </div>
             </div>
 
         </div>
 
         <!-- Form Footer -->
-        <div class="p-5 border-t border-gray-100 dark:border-white/5 flex gap-4 bg-white dark:bg-[#1a0b0b]">
+        <div class="sticky bottom-0 z-40 p-4 lg:p-5 border-t border-gray-100 dark:border-white/5 flex gap-4 bg-white dark:bg-[#1a0b0b] shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] lg:shadow-none">
              <button onclick="changeStep(-1)" id="btn-back" class="hidden flex-1 px-6 py-3 rounded-xl border border-gray-200 font-bold text-text-dark dark:text-white dark:border-white/20 hover:bg-gray-50 transition-colors">Back</button>
              
              <!-- Mobile Preview Button -->
@@ -295,6 +311,59 @@
             <button onclick="togglePreviewMode('desktop')" id="btn-desktop-mode" class="p-2.5 rounded-full text-gray-400 hover:text-primary"><span class="material-symbols-outlined">desktop_windows</span></button>
             <button onclick="togglePreviewMode('mobile')" id="btn-mobile-mode" class="p-2.5 rounded-full bg-primary text-white"><span class="material-symbols-outlined">smartphone</span></button>
         </div>
+    </div>
+</div>
+
+<!-- NFC ORDER MODAL -->
+<div id="nfc-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="closeNfcModal()"></div>
+    <div class="relative bg-white dark:bg-surface-dark w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-slide-up p-6">
+        <div class="flex justify-between items-center mb-6">
+             <h3 class="font-bold text-xl text-text-dark dark:text-white flex items-center gap-2">
+                <span class="material-symbols-outlined text-accent-gold">contactless</span> Order NFC Card
+             </h3>
+             <button onclick="closeNfcModal()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-white/10"><span class="material-symbols-outlined">close</span></button>
+        </div>
+        
+        <form id="nfc-order-form" onsubmit="submitNfcOrder(event)" class="space-y-4">
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-text-muted mb-1">Full Name</label>
+                <input type="text" name="name" required class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 outline-none focus:border-primary text-sm">
+            </div>
+            
+             <div class="grid grid-cols-2 gap-4">
+                 <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-text-muted mb-1">Phone Number</label>
+                    <input type="tel" name="phone" required class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 outline-none focus:border-primary text-sm">
+                 </div>
+                 <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-text-muted mb-1">City</label>
+                    <input type="text" name="city" required class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 outline-none focus:border-primary text-sm">
+                 </div>
+             </div>
+
+             <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-text-muted mb-1">Full Address (for Courier)</label>
+                <textarea name="address" rows="3" required class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 outline-none focus:border-primary text-sm"></textarea>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+                 <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-text-muted mb-1">Pincode</label>
+                    <input type="text" name="pincode" required class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 outline-none focus:border-primary text-sm">
+                 </div>
+                 <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-text-muted mb-1">Quantity</label>
+                    <input type="number" name="quantity" value="1" min="1" max="10" class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 outline-none focus:border-primary text-sm">
+                 </div>
+            </div>
+
+            <input type="hidden" name="invitation_id" value="{{ $invitation->id ?? '' }}">
+
+            <button type="submit" id="btn-nfc-submit" class="w-full bg-accent-gold text-white font-bold py-3.5 rounded-xl hover:bg-yellow-600 shadow-lg shadow-yellow-500/20 transition-all mt-4">
+                Place Order
+            </button>
+        </form>
     </div>
 </div>
 
@@ -359,7 +428,22 @@
 
                 <div class="border-t border-dashed border-gray-200 dark:border-white/10 my-4"></div>
 
-                <div class="flex justify-between items-end">
+                <div class="flex justify-between text-sm">
+                    <span class="text-text-muted">Subtotal</span>
+                    <span class="font-bold text-text-dark dark:text-white" id="checkout-subtotal">₹0</span>
+                </div>
+                
+                <div class="flex justify-between text-sm hidden text-green-600" id="row-discount">
+                    <span class="font-medium">Discount <span id="discount-label" class="text-xs"></span></span>
+                    <span class="font-bold" id="checkout-discount">-₹0</span>
+                </div>
+
+                <div class="flex justify-between text-sm">
+                    <span class="text-text-muted">GST (18%)</span>
+                    <span class="font-bold text-text-dark dark:text-white" id="checkout-tax">₹0</span>
+                </div>
+
+                <div class="flex justify-between items-end border-t border-dashed border-gray-200 dark:border-white/10 pt-4 mt-4">
                     <span class="text-sm font-bold text-text-dark dark:text-white">Total Amount</span>
                     <span class="text-2xl font-bold text-primary" id="checkout-total">₹0</span>
                 </div>
@@ -477,10 +561,10 @@
     // Assign to window for global access and debugging
     window.invitationData = @json($invitation ?? null);
     window.saveRoute = "{{ $saveRoute ?? route('builder.save') }}";
+    window.uploadRoute = "{{ $uploadRoute ?? '' }}"; // Upload Route
     window.isPartner = @json($isPartner ?? false);
     window.isAdmin = @json($isAdmin ?? false);
-
-
+    window.credits = {{ $credits ?? 0 }};
 
     function initBuilder() {
         try {
@@ -489,12 +573,46 @@
             // Init UI
             if(window.isPartner || window.isAdmin) {
                 const btnPub = document.getElementById('btn-publish');
-                if(btnPub) btnPub.remove(); 
                 const draftBtn = document.getElementById('btn-draft');
-                if(draftBtn) {
-                    draftBtn.innerText = window.isAdmin ? "Save Design" : "Save to Library";
-                    draftBtn.classList.remove('hidden');
+                
+                if(window.isAdmin) {
+                    if(btnPub) btnPub.remove(); 
+                    if(draftBtn) {
+                        draftBtn.innerText = "Save Design";
+                        draftBtn.classList.remove('hidden');
+                    }
+                } else if (window.isPartner) {
+                    // Partner: Show Draft AND Publish (Credits)
+                    if(draftBtn) {
+                        draftBtn.innerText = "Save Draft";
+                        draftBtn.classList.remove('hidden');
+                    }
+                    if(btnPub) {
+                        btnPub.innerText = `Publish (1 Credit)`;
+                        btnPub.classList.remove('hidden');
+                        btnPub.onclick = function() {
+                             if(window.credits < 1) {
+                                 alert('Insufficient credits! You have ' + window.credits + ' credits. Please buy more from dashboard.');
+                                 return;
+                             }
+                             if(confirm('This will deduct 1 Credit. Continue?')) {
+                                 saveInvitation('published').then(success => {
+                                     if(success) {
+                                         window.credits--; // Optimistic update
+                                         alert('Invitation Published! 1 Credit Deducted.');
+                                         // Show Success Modal
+                                         // We need to manually trigger success modal here because saveInvitation doesn't do it for partners usually
+                                          document.getElementById('success-modal').classList.remove('hidden');
+                                          updateNFCPreview();
+                                     }
+                                 });
+                             }
+                        };
+                    }
                 }
+            } else {
+                // Regular User
+                // ... logic exists in changeStep
             }
     
             if(window.invitationData) {
@@ -529,6 +647,11 @@
         gallery: []
     };
 
+    let audioState = {
+        bg_music: '',
+        wishing_audio: ''
+    };
+
     function populateFields(data) {
 
 
@@ -545,6 +668,10 @@
         if(data.tagline) setVal('#input-tagline', data.tagline);
         if(data.groom_name || data.groom) setVal('#input-groom-name', data.groom_name || data.groom);
         if(data.bride_name || data.bride) setVal('#input-bride-name', data.bride_name || data.bride);
+
+        // Populate Audio State
+        if(data.bg_music) audioState.bg_music = data.bg_music;
+        if(data.wishing_audio) audioState.wishing_audio = data.wishing_audio;
         
         // Date Fix: Ensure YYYY-MM-DD
         if(data.date) {
@@ -709,7 +836,6 @@
             // Keep legacy keys
             groom: document.getElementById('input-groom-name').value, 
             bride: document.getElementById('input-bride-name').value,
-            bride: document.getElementById('input-bride-name').value,
             location: document.getElementById('input-location').value,
             map_url: document.getElementById('input-map-url').value,
 
@@ -726,6 +852,11 @@
             hero_bg: imageState.hero_bg,
             h_img: imageState.hero_bg, // Legacy support
             gallery: imageState.gallery, 
+            
+            // Audio from State
+            bg_music: audioState.bg_music,
+            wishing_audio: audioState.wishing_audio,
+            family_audio: audioState.wishing_audio, // Templates use this key
             
             // JSON of events
             eventDates: [],
@@ -755,8 +886,10 @@
             data.timeline.push(eventObj);
         });
 
+        console.log("Saving invitation...", { status, saveRoute: window.saveRoute, data });
+
         // Send to Server
-        return fetch(saveRoute, {
+        return fetch(window.saveRoute, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -828,8 +961,8 @@
         saveInvitation('draft');
     }
     
-    function finishPayment() {
-        // Save as published
+    function finishPaymentDraft() {
+        // Renamed to avoid conflict - strictly for saving as draft/published without payment if needed internally
         saveInvitation('published').then(success => {
             if(success) {
                 hideCheckout();
@@ -978,75 +1111,200 @@
         Array.from(els).forEach(element => applyUpdate(element));
     }
     
-    // --- File Upload Logic ---
+    // --- File Upload Logic (Updated) ---
     function handleFileUpload(input, type, targetId) {
         if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                 const res = e.target.result;
-                 updatePreview(type, targetId, res);
-                 
-                 // Update State for Persistence
-                 if(targetId === 'preview-bride-img') imageState.bride_image = res;
-                 if(targetId === 'preview-groom-img') imageState.groom_image = res;
-                 if(targetId === 'preview-hero-bg') imageState.hero_bg = res;
+            const file = input.files[0];
+            
+            // If uploadRoute exists (Partner), upload to server
+            if(window.uploadRoute) {
+                const formData = new FormData();
+                formData.append('file', file);
+                
+                // Show loading state?
+                
+                fetch(window.uploadRoute, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: formData
+                })
+                .then(r => r.json())
+                .then(res => {
+                    if(res.url) {
+                        updatePreview(type, targetId, res.url);
+                         // Update State
+                         if(targetId === 'preview-bride-img') imageState.bride_image = res.url;
+                         if(targetId === 'preview-groom-img') imageState.groom_image = res.url;
+                         if(targetId === 'preview-hero-bg') imageState.hero_bg = res.url;
+                    } else {
+                        alert('Upload failed');
+                    }
+                })
+                .catch(e => {
+                    console.error('Upload Error', e);
+                    alert('Upload failed');
+                });
+                
+            } else {
+                // Fallback to Base64 (User / Admin)
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                     const res = e.target.result;
+                     updatePreview(type, targetId, res);
+                     
+                     // Update State for Persistence
+                     if(targetId === 'preview-bride-img') imageState.bride_image = res;
+                     if(targetId === 'preview-groom-img') imageState.groom_image = res;
+                     if(targetId === 'preview-hero-bg') imageState.hero_bg = res;
+                }
+                reader.readAsDataURL(file);
             }
-            reader.readAsDataURL(input.files[0]);
         }
     }
 
     // --- Audio Upload Logic ---
     function handleAudioUpload(input, type = 'bg') {
         if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                 const frame = document.getElementById('preview-frame');
-                 if(frame.contentWindow.updateAudioSource) {
-                     frame.contentWindow.updateAudioSource(e.target.result, type);
-                 } else if(frame.contentWindow.updateAudio) {
-                     // Fallback for older templates if any
-                     frame.contentWindow.updateAudio(e.target.result);
-                 }
-                 
-                 const mobileFrame = document.getElementById('mobile-preview-frame');
-                 if(mobileFrame.contentWindow && mobileFrame.contentWindow.updateAudioSource) {
-                     mobileFrame.contentWindow.updateAudioSource(e.target.result, type);
-                 } else if(mobileFrame.contentWindow && mobileFrame.contentWindow.updateAudio) {
-                     mobileFrame.contentWindow.updateAudio(e.target.result);
-                 }
+            const file = input.files[0];
+            
+            // Server Side Upload (Partner/Admin if route exists)
+            if(window.uploadRoute) {
+                const formData = new FormData();
+                formData.append('file', file);
+                
+                // Show loading state could be added here
+                
+                fetch(window.uploadRoute, {
+                    method: 'POST',
+                    headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'},
+                    body: formData
+                })
+                .then(r => r.json())
+                .then(res => {
+                    if(res.url) {
+                        // Update Preview
+                        updateAudioPreview(res.url, type);
+                        // Update State
+                        if(type === 'bg') audioState.bg_music = res.url;
+                        if(type === 'wishing') audioState.wishing_audio = res.url;
+                    } else {
+                        alert('Audio upload failed');
+                    }
+                })
+                .catch(e => {
+                    console.error('Audio Upload Error', e);
+                    alert('Audio upload failed');
+                });
+            } else {
+                // Client Side Base64 (User)
+                // Check size limit (e.g. 5MB)
+                if(file.size > 5 * 1024 * 1024) {
+                    alert('File too large. Max 5MB.');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                     const res = e.target.result;
+                     // Update Preview
+                     updateAudioPreview(res, type);
+                     // Update State
+                     if(type === 'bg') audioState.bg_music = res;
+                     if(type === 'wishing') audioState.wishing_audio = res;
+                }
+                reader.readAsDataURL(file);
             }
-            reader.readAsDataURL(input.files[0]);
         }
+    }
+    
+    function updateAudioPreview(src, type) {
+         const frame = document.getElementById('preview-frame');
+         // Check if template supports specific audio update
+         if(frame.contentWindow.updateAudioSource) {
+             frame.contentWindow.updateAudioSource(src, type);
+         } else if(frame.contentWindow.updateAudio && type === 'bg') {
+             // Fallback for older templates (Background only)
+             frame.contentWindow.updateAudio(src);
+         }
+         
+         const mobileFrame = document.getElementById('mobile-preview-frame');
+         if(mobileFrame.contentWindow) {
+             if(mobileFrame.contentWindow.updateAudioSource) {
+                 mobileFrame.contentWindow.updateAudioSource(src, type);
+             } else if(mobileFrame.contentWindow.updateAudio && type === 'bg') {
+                 mobileFrame.contentWindow.updateAudio(src);
+             }
+         }
     }
 
     // --- Gallery Logic ---
+    // --- Gallery Logic (Updated) ---
     function handleGalleryUpload(input) {
         if (input.files && input.files.length > 0) {
-            document.getElementById('gallery-preview-count').innerText = `${input.files.length} images selected`;
             document.getElementById('gallery-preview-count').classList.remove('hidden');
             
-            const urls = [];
-            let processed = 0;
-            imageState.gallery = []; // Reset gallery state on new upload
+            // Server Side Upload (Partner)
+            if(window.uploadRoute) {
+                document.getElementById('gallery-preview-count').innerText = `Uploading ${input.files.length} images...`;
+                
+                const uploadPromises = Array.from(input.files).map(file => {
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    return fetch(window.uploadRoute, {
+                        method: 'POST',
+                        headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'},
+                        body: formData
+                    })
+                    .then(r => r.json())
+                    .then(res => res.url)
+                    .catch(e => null);
+                });
 
-            Array.from(input.files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const res = e.target.result;
-                    urls.push(res);
-                    processed++;
-                    if(processed === input.files.length) {
-                        imageState.gallery = urls; // Save to state
-                        
-                        const frame = document.getElementById('preview-frame');
-                        if(frame.contentWindow.updateGallery) frame.contentWindow.updateGallery(urls);
-                        
-                        const mobileFrame = document.getElementById('mobile-preview-frame');
-                        if(mobileFrame.contentWindow && mobileFrame.contentWindow.updateGallery) mobileFrame.contentWindow.updateGallery(urls);
+                Promise.all(uploadPromises).then(urls => {
+                     // Filter out failures
+                     const validUrls = urls.filter(u => u);
+                     imageState.gallery = validUrls;
+                     
+                     document.getElementById('gallery-preview-count').innerText = `${validUrls.length} images selected`;
+                     
+                     const frame = document.getElementById('preview-frame');
+                     if(frame.contentWindow.updateGallery) frame.contentWindow.updateGallery(validUrls);
+                     
+                     const mobileFrame = document.getElementById('mobile-preview-frame');
+                     if(mobileFrame.contentWindow && mobileFrame.contentWindow.updateGallery) mobileFrame.contentWindow.updateGallery(validUrls);
+                }).catch(err => {
+                     console.error("Gallery Upload Error", err);
+                     alert('Gallery upload failed');
+                });
+                
+            } else {
+                // Client Side Base64 (User/Admin)
+                document.getElementById('gallery-preview-count').innerText = `${input.files.length} images selected`;
+                const urls = [];
+                let processed = 0;
+                imageState.gallery = []; // Reset gallery state on new upload
+    
+                Array.from(input.files).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const res = e.target.result;
+                        urls.push(res);
+                        processed++;
+                        if(processed === input.files.length) {
+                            imageState.gallery = urls; // Save to state
+                            
+                            const frame = document.getElementById('preview-frame');
+                            if(frame.contentWindow.updateGallery) frame.contentWindow.updateGallery(urls);
+                            
+                            const mobileFrame = document.getElementById('mobile-preview-frame');
+                            if(mobileFrame.contentWindow && mobileFrame.contentWindow.updateGallery) mobileFrame.contentWindow.updateGallery(urls);
+                        }
                     }
-                }
-                reader.readAsDataURL(file);
-            });
+                    reader.readAsDataURL(file);
+                });
+            }
         }
     }
 
@@ -1226,20 +1484,57 @@
         document.getElementById('selected-plan-name').innerText = selectedPlan.name;
         document.getElementById('selected-plan-price').innerText = '₹' + selectedPlan.price;
         
-        let total = parseFloat(selectedPlan.price);
+        let basePrice = parseFloat(selectedPlan.price);
+        let discountAmount = 0;
         
+        const rowDiscount = document.getElementById('row-discount');
+        const elDiscount = document.getElementById('checkout-discount');
+        const elDiscountLabel = document.getElementById('discount-label');
+
+        // 1. Calculate Discount
         if(appliedCoupon) {
+            // Check discount types from backend (fixed vs percentage)
             if(appliedCoupon.discount_type === 'fixed') {
-                total -= parseFloat(appliedCoupon.discount_value);
+                discountAmount = parseFloat(appliedCoupon.discount_value);
+                elDiscountLabel.innerText = '';
             } else {
-                total -= (total * parseFloat(appliedCoupon.discount_value) / 100);
+                // Percentage
+                discountAmount = (basePrice * parseFloat(appliedCoupon.discount_value) / 100);
+                elDiscountLabel.innerText = `(${appliedCoupon.discount_value}%)`;
             }
+            
+            // Cap discount at base price (no negative)
+            if(discountAmount > basePrice) discountAmount = basePrice;
+            
+            rowDiscount.classList.remove('hidden');
+            elDiscount.innerText = '-₹' + discountAmount.toFixed(2);
+        } else {
+            rowDiscount.classList.add('hidden');
         }
+
+        let taxableAmount = basePrice - discountAmount;
+        
+        // 2. Calculate GST (18%)
+        // GST is typically applied on the transaction amount.
+        // If the coupon logic reduces the taxable base, we tax the result.
+        let taxAmount = taxableAmount * 0.18;
+        
+        // 3. Final Total
+        let total = taxableAmount + taxAmount;
         
         if(total < 0) total = 0;
         
+        document.getElementById('checkout-subtotal').innerText = '₹' + basePrice.toFixed(2);
+        document.getElementById('checkout-tax').innerText = '₹' + taxAmount.toFixed(2);
         document.getElementById('checkout-total').innerText = '₹' + total.toFixed(2);
-        document.getElementById('btn-pay-now').disabled = false;
+        
+        const payBtn = document.getElementById('btn-pay-now');
+        if (total <= 0) {
+            payBtn.innerText = "Activate Plan (Free)";
+        } else {
+            payBtn.innerText = "Pay Now";
+        }
+        payBtn.disabled = false;
     }
 
     function finishPayment() {
@@ -1449,6 +1744,138 @@
 
     function closeMobilePreview() {
         document.getElementById('mobile-preview-modal').classList.add('hidden');
+    }
+
+    // NFC Order Modal Functions
+    function openNfcModal() {
+        document.getElementById('nfc-modal').classList.remove('hidden');
+    }
+
+    function closeNfcModal() {
+        document.getElementById('nfc-modal').classList.add('hidden');
+    }
+
+    function submitNfcOrder(e) {
+        e.preventDefault();
+        const btn = document.getElementById('btn-nfc-submit');
+        const originalText = btn.innerText;
+        btn.innerText = 'Processing...';
+        btn.disabled = true;
+
+        const formData = new FormData(document.getElementById('nfc-order-form'));
+        
+        fetch("{{ route('nfc.store') }}", {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json'
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success) {
+                alert('Order Placed Successfully! We will contact you shortly.');
+                closeNfcModal();
+                document.getElementById('nfc-order-form').reset();
+            } else {
+                alert('Failed to place order. ' + (data.message || ''));
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Something went wrong. Please try again.');
+        })
+        .finally(() => {
+            btn.innerText = originalText;
+            btn.disabled = false;
+        });
+    }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+    // --- Download Invitation as PDF ---
+    function downloadInvitationPDF() {
+        const btn = document.getElementById('btn-download-pdf');
+        const originalText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<span class="material-symbols-outlined text-sm animate-spin">refresh</span> Generating...';
+
+        const invId = invitationData ? invitationData.id : null;
+        if(!invId) {
+            alert('Please save your invitation first before downloading.');
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            return;
+        }
+
+        const printUrl = "{{ url('/invitation') }}/" + invId;
+
+        // Create hidden iframe for capture
+        const captureFrame = document.createElement('iframe');
+        captureFrame.style.cssText = 'position:fixed;left:-9999px;top:0;width:430px;height:932px;border:none;';
+        document.body.appendChild(captureFrame);
+        captureFrame.src = printUrl;
+
+        captureFrame.onload = function() {
+            setTimeout(() => {
+                try {
+                    const doc = captureFrame.contentDocument || captureFrame.contentWindow.document;
+
+                    html2canvas(doc.body, {
+                        scale: 2,
+                        useCORS: true,
+                        allowTaint: true,
+                        scrollY: 0,
+                        windowWidth: 430,
+                        windowHeight: doc.body.scrollHeight
+                    }).then(canvas => {
+                        const imgData = canvas.toDataURL('image/jpeg', 0.95);
+                        const imgWidth = 210;
+                        const pageHeight = 297;
+                        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                        let heightLeft = imgHeight;
+
+                        const { jsPDF } = window.jspdf;
+                        const pdf = new jsPDF('p', 'mm', 'a4');
+                        let position = 0;
+
+                        pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+                        heightLeft -= pageHeight;
+
+                        while (heightLeft > 0) {
+                            position = heightLeft - imgHeight;
+                            pdf.addPage();
+                            pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+                            heightLeft -= pageHeight;
+                        }
+
+                        const brideName = document.getElementById('input-bride-name')?.value || 'Bride';
+                        const groomName = document.getElementById('input-groom-name')?.value || 'Groom';
+                        pdf.save(brideName + '-' + groomName + '-Wedding-Invitation.pdf');
+
+                        btn.innerHTML = originalText;
+                        btn.disabled = false;
+                        document.body.removeChild(captureFrame);
+                    }).catch(err => {
+                        console.error('PDF Generation Error:', err);
+                        window.open(printUrl, '_blank');
+                        alert('Auto-download failed. Use Ctrl+P on the opened page to save as PDF.');
+                        btn.innerHTML = originalText;
+                        btn.disabled = false;
+                        document.body.removeChild(captureFrame);
+                    });
+                } catch(e) {
+                    console.error('Cross-origin PDF Error:', e);
+                    window.open(printUrl, '_blank');
+                    alert('Use Ctrl+P on the opened page to save as PDF.');
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    document.body.removeChild(captureFrame);
+                }
+            }, 2000);
+        };
     }
 </script>
 @endpush

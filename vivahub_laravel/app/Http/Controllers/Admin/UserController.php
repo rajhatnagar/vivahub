@@ -42,7 +42,7 @@ class UserController extends Controller
             \App\Models\PartnerDetail::create([
                 'user_id' => $user->id,
                 'agency_name' => $user->name . ' Agency',
-                'credits' => 5 // Default free credits
+                'credits' => 0 // Default free credits
             ]);
         }
 

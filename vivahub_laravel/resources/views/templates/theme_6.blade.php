@@ -653,10 +653,10 @@
             <i data-lucide="message-circle" class="w-5 h-5"></i>
             <span class="text-[10px] mt-1 font-semibold">WhatsApp</span>
         </button>
-        <button onclick="downloadVCard()" class="w-12 h-12 bg-emerald-800 text-white rounded-full flex items-center justify-center -mt-8 shadow-xl border-4 border-white hover:scale-110 transition-transform">
-            <i data-lucide="user-plus" class="w-5 h-5"></i>
+        <button onclick="addToCalendar()" class="w-12 h-12 bg-emerald-800 text-white rounded-full flex items-center justify-center -mt-8 shadow-xl border-4 border-white hover:scale-110 transition-transform">
+            <i data-lucide="calendar-plus" class="w-5 h-5"></i>
         </button>
-        <button onclick="window.print()" class="flex flex-col items-center text-emerald-800">
+        <button onclick="downloadInvitation()" class="flex flex-col items-center text-emerald-800">
             <i data-lucide="download" class="w-5 h-5"></i>
             <span class="text-[10px] mt-1 font-semibold">Invite</span>
         </button>
@@ -916,20 +916,6 @@
             });
         });
 
-        // Add to Calendar Logic
-        function addToCalendar() {
-            const event = {
-                title: '{{ $invitation->data["bride_name"] ?? "Elena" }} and {{ $invitation->data["groom_name"] ?? "Julian" }} Wedding',
-                start: '{{ \Carbon\Carbon::parse($invitation->data["date"] ?? "2026-12-12")->format("Ymd") }}T160000Z',
-                end: '{{ \Carbon\Carbon::parse($invitation->data["date"] ?? "2026-12-12")->addDay()->format("Ymd") }}T020000Z',
-                details: 'Celebrate the union of {{ $invitation->data["bride_name"] ?? "Elena" }} and {{ $invitation->data["groom_name"] ?? "Julian" }}.',
-                location: '{{ $invitation->data["location"] ?? "The Rosewood Estate, Udaipur, Rajasthan" }}'
-            };
-            const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${event.start}/${event.end}&details=${encodeURIComponent(event.details)}&location=${encodeURIComponent(event.location)}`;
-            window.open(googleUrl, '_blank');
-        }
-
-        // Share Invite
         function shareInvite() {
             if (navigator.share) {
                 navigator.share({
@@ -946,6 +932,46 @@
                 document.execCommand('copy');
                 document.body.removeChild(dummy);
             }
+        }
+
+        function downloadInvitation() {
+            const imageUrl = "{{ $invitation->data['hero_image'] ?? $invitation->data['h_img'] ?? asset('assets/hero-background.png') }}";
+            fetch(imageUrl)
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.blob();
+                })
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = "Wedding_Invitation.jpg";
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                })
+                .catch((error) => {
+                    console.error('Download failed:', error);
+                    window.open(imageUrl, '_blank');
+                });
+        }
+        
+        function addToCalendar() {
+            const title = "Wedding: {{ $invitation->data['groom_name'] ?? $invitation->data['groom'] ?? 'Groom' }} & {{ $invitation->data['bride_name'] ?? $invitation->data['bride'] ?? 'Bride' }}";
+            const rawDate = "{{ $invitation->data['date'] ?? '2026-12-12' }}";
+            const loc = "{{ $invitation->data['venue_city'] ?? $invitation->data['location'] ?? 'Venue' }}";
+            
+            let dateStr = rawDate.replace(/-/g, '');
+            if (isNaN(new Date(rawDate).getTime())) {
+                 dateStr = new Date().toISOString().slice(0,10).replace(/-/g, '');
+            }
+
+            const start = dateStr + 'T090000';
+            const end = dateStr + 'T230000';
+            const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${start}/${end}&details=We%20are%20getting%20married!&location=${encodeURIComponent(loc)}`;
+            window.open(googleUrl, '_blank');
         }
 
         // vCard Download

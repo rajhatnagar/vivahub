@@ -368,27 +368,27 @@
 
     <!-- 4. BOTTOM NAVIGATION -->
     <nav class="fixed bottom-4 left-4 right-4 z-50 bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl border border-white/40 p-1 flex justify-between items-center md:max-w-md md:mx-auto">
-        <a href="#home" class="flex flex-col items-center p-2 text-royal-900/60 hover:text-royal-800 transition-colors">
-            <i data-lucide="home" class="w-5 h-5"></i>
-            <span class="text-[10px] mt-1 font-medium">Home</span>
-        </a>
-        <a href="#couple" class="flex flex-col items-center p-2 text-royal-900/60 hover:text-royal-800 transition-colors">
-            <i data-lucide="heart" class="w-5 h-5"></i>
-            <span class="text-[10px] mt-1 font-medium">Couple</span>
-        </a>
+        <button onclick="window.open('tel:{{ $invitation->data['phone'] ?? '' }}')" class="flex flex-col items-center p-2 text-royal-900/60 hover:text-royal-800 transition-colors">
+            <i data-lucide="phone" class="w-5 h-5"></i>
+            <span class="text-[10px] mt-1 font-medium">Call</span>
+        </button>
+        <button onclick="window.open('https://wa.me/{{ preg_replace('/[^0-9]/', '', $invitation->data['whatsapp'] ?? '') }}')" class="flex flex-col items-center p-2 text-royal-900/60 hover:text-royal-800 transition-colors">
+            <i data-lucide="message-circle" class="w-5 h-5"></i>
+            <span class="text-[10px] mt-1 font-medium">Chat</span>
+        </button>
         <div class="relative -top-6">
-            <div class="w-14 h-14 bg-gradient-to-tr from-gold-400 to-gold-600 rounded-full shadow-lg shadow-gold-500/40 flex items-center justify-center border-4 border-[#FDFBF7]">
-                <i data-lucide="calendar-heart" class="w-6 h-6 text-white"></i>
-            </div>
+            <button onclick="addToCalendar()" class="w-14 h-14 bg-gradient-to-tr from-gold-400 to-gold-600 rounded-full shadow-lg shadow-gold-500/40 flex items-center justify-center border-4 border-[#FDFBF7]">
+                <i data-lucide="calendar-plus" class="w-6 h-6 text-white"></i>
+            </button>
         </div>
-        <a href="#gallery" class="flex flex-col items-center p-2 text-royal-900/60 hover:text-royal-800 transition-colors">
-            <i data-lucide="image" class="w-5 h-5"></i>
-            <span class="text-[10px] mt-1 font-medium">Gallery</span>
-        </a>
-        <a href="#rsvp" class="flex flex-col items-center p-2 text-royal-900/60 hover:text-royal-800 transition-colors">
-            <i data-lucide="mail" class="w-5 h-5"></i>
-            <span class="text-[10px] mt-1 font-medium">RSVP</span>
-        </a>
+        <button onclick="downloadInvitation()" class="flex flex-col items-center p-2 text-royal-900/60 hover:text-royal-800 transition-colors">
+            <i data-lucide="download" class="w-5 h-5"></i>
+            <span class="text-[10px] mt-1 font-medium">Invite</span>
+        </button>
+        <button onclick="shareInvite()" class="flex flex-col items-center p-2 text-royal-900/60 hover:text-royal-800 transition-colors">
+            <i data-lucide="share-2" class="w-5 h-5"></i>
+            <span class="text-[10px] mt-1 font-medium">Share</span>
+        </button>
     </nav>
 
     <script>
@@ -496,6 +496,61 @@
              const el = document.getElementById(id); 
              if(el) visible ? el.classList.remove('hidden') : el.classList.add('hidden'); 
         }
+
+        // --- Global Actions (Outside Alpine) ---
+        window.addToCalendar = function() {
+            const title = "Wedding: {{ $invitation->data['groom_name'] ?? $invitation->data['groom'] ?? 'Groom' }} & {{ $invitation->data['bride_name'] ?? $invitation->data['bride'] ?? 'Bride' }}";
+            const rawDate = "{{ $invitation->data['date'] ?? '2026-12-12' }}";
+            const loc = "{{ $invitation->data['venue_city'] ?? $invitation->data['location'] ?? 'Venue' }}";
+            
+            let dateStr = rawDate.replace(/-/g, '');
+            if (isNaN(new Date(rawDate).getTime())) {
+                 dateStr = new Date().toISOString().slice(0,10).replace(/-/g, '');
+            }
+
+            const start = dateStr + 'T090000';
+            const end = dateStr + 'T230000';
+            const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${start}/${end}&details=We%20are%20getting%20married!&location=${encodeURIComponent(loc)}`;
+            window.open(googleUrl, '_blank');
+        };
+
+        window.shareInvite = function() {
+            if (navigator.share) {
+                navigator.share({
+                    title: '{{ $invitation->data["groom_name"] ?? $invitation->data["groom"] ?? "Groom" }} & {{ $invitation->data["bride_name"] ?? $invitation->data["bride"] ?? "Bride" }} Wedding',
+                    text: 'You are cordially invited to our wedding celebration.',
+                    url: window.location.href
+                }).catch(console.error);
+            } else {
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    alert('Link copied to clipboard!');
+                });
+            }
+        };
+
+        window.downloadInvitation = function() {
+            const imageUrl = "{{ $invitation->data['hero_image'] ?? $invitation->data['h_img'] ?? asset('assets/hero-background.png') }}";
+            fetch(imageUrl)
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.blob();
+                })
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = "Wedding_Invitation.jpg";
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                })
+                .catch((error) => {
+                    console.error('Download failed:', error);
+                    window.open(imageUrl, '_blank');
+                });
+        };
     </script>
 </body>
 </html>

@@ -55,4 +55,10 @@ class PageController extends Controller
 
         return back()->with('success', 'Thank you for contacting us! We will get back to you shortly.');
     }
+
+    public function newHome()
+    {
+        $templates = \App\Models\Template::where('is_active', true)->latest()->get();
+        return view('frontend.new_home', compact('templates'));
+    }
 }

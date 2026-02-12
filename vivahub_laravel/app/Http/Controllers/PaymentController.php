@@ -41,6 +41,19 @@ class PaymentController extends Controller
     }
 
     /**
+     * Get Tax Settings
+     */
+    protected function getTaxSettings(): array
+    {
+        return [
+            'enabled' => Setting::where('key', 'gst_enabled')->value('value') == '1',
+            'percentage' => (float) (Setting::where('key', 'gst_percentage')->value('value') ?? 18),
+            'gstin' => Setting::where('key', 'company_gstin')->value('value'),
+            'address' => Setting::where('key', 'company_address')->value('value'),
+        ];
+    }
+
+    /**
      * Create a Razorpay order for credit purchase
      */
     public function createOrder(Request $request)
@@ -64,28 +77,74 @@ class PaymentController extends Controller
                 ], 400);
             }
 
-            // Get package from request or default
-            $packageId = $request->input('package_id', 'pack_10');
-            $packages = config('razorpay.packages');
-            $selectedPackage = collect($packages)->firstWhere('id', $packageId);
-            
-            if (!$selectedPackage) {
-                $selectedPackage = $packages[0]; // Default to first package
+            $baseAmount = 0;
+            $description = "";
+            $meta = [];
+            $credits = 0;
+
+            if ($request->has('plan_id')) {
+                 $plan = \App\Models\Plan::findOrFail($request->plan_id);
+                 $baseAmount = $plan->price * 100; // In paise
+                 $description = $plan->name;
+                 
+                 // Parse credits for meta
+                 if(is_array($plan->features)) {
+                    foreach($plan->features as $feature) {
+                        if(preg_match('/(\d+)\s+Invitation Credits/i', $feature, $matches)) {
+                            $credits = (int)$matches[1];
+                            break;
+                        }
+                    }
+                 }
+                 
+                 $meta = ['plan_id' => $plan->id, 'credits' => $credits];
+            } else {
+                // Get package from request or default
+                $packageId = $request->input('package_id', 'pack_10');
+                $packages = config('razorpay.packages');
+                $selectedPackage = collect($packages)->firstWhere('id', $packageId);
+                
+                if (!$selectedPackage) {
+                    $selectedPackage = $packages[0]; // Default to first package
+                }
+                $baseAmount = $selectedPackage['price']; // In paise
+                $description = $selectedPackage['name'];
+                $meta = ['package_id' => $selectedPackage['id'], 'credits' => $selectedPackage['credits']];
             }
 
             $api = $this->getRazorpayApi();
             
+            // Calculate Tax
+            $taxSettings = $this->getTaxSettings();
+            $taxAmount = 0;
+            $taxInfo = [];
+
+            if ($taxSettings['enabled']) {
+                $taxAmount = round($baseAmount * ($taxSettings['percentage'] / 100));
+                $halfTax = $taxSettings['percentage'] / 2;
+                $taxInfo = [
+                    'gst_enabled' => true,
+                    'gst_percentage' => $taxSettings['percentage'],
+                    'cgst' => $halfTax,
+                    'sgst' => $halfTax,
+                    'tax_amount' => $taxAmount, // in paise
+                    'base_amount' => $baseAmount // in paise
+                ];
+            } else {
+                $taxInfo = ['gst_enabled' => false];
+            }
+
+            $totalAmount = $baseAmount + $taxAmount;
+
             // Create Razorpay Order
             $orderData = [
                 'receipt' => 'order_' . time() . '_' . $user->id,
-                'amount' => $selectedPackage['price'], // Amount in paise
+                'amount' => $totalAmount, // Amount in paise (Base + Tax)
                 'currency' => config('razorpay.currency', 'INR'),
-                'notes' => [
+                'notes' => array_merge([
                     'user_id' => $user->id,
                     'partner_id' => $partner->id,
-                    'credits' => $selectedPackage['credits'],
-                    'package_id' => $selectedPackage['id'],
-                ]
+                ], $meta, $taxInfo)
             ];
 
             $razorpayOrder = $api->order->create($orderData);
@@ -93,16 +152,17 @@ class PaymentController extends Controller
             return response()->json([
                 'success' => true,
                 'order_id' => $razorpayOrder->id,
-                'amount' => $selectedPackage['price'],
+                'amount' => $totalAmount,
                 'currency' => config('razorpay.currency', 'INR'),
                 'key' => $this->key,
                 'name' => config('app.name', 'VivahHub'),
-                'description' => $selectedPackage['name'],
+                'description' => $description . ($taxSettings['enabled'] ? ' + GST' : ''),
                 'prefill' => [
                     'name' => $user->name,
                     'email' => $user->email,
                 ],
-                'package' => $selectedPackage,
+                'meta' => $meta,
+                'tax' => $taxInfo
             ]);
 
         } catch (\Exception $e) {
@@ -124,7 +184,7 @@ class PaymentController extends Controller
                 'razorpay_order_id' => 'required|string',
                 'razorpay_payment_id' => 'required|string',
                 'razorpay_signature' => 'required|string',
-                'package_id' => 'required|string',
+                // 'package_id' => 'required|string', // Relax validation
             ]);
 
             // Check if Razorpay is enabled
@@ -156,28 +216,65 @@ class PaymentController extends Controller
 
             $api->utility->verifyPaymentSignature($attributes);
 
-            // Get package details
-            $packageId = $request->package_id;
-            $packages = config('razorpay.packages');
-            $selectedPackage = collect($packages)->firstWhere('id', $packageId);
+            $baseAmount = 0;
+            $descriptionSuffix = "";
+            $itemName = "";
+            $creditsToAdd = 0;
             
-            if (!$selectedPackage) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Invalid package selected.'
-                ], 400);
+            if($request->has('plan_id')) {
+                $plan = \App\Models\Plan::findOrFail($request->plan_id);
+                $baseAmount = $plan->price * 100;
+                $itemName = $plan->name;
+                
+                 // Parse credits
+                 if(is_array($plan->features)) {
+                    foreach($plan->features as $feature) {
+                        if(preg_match('/(\d+)\s+Invitation Credits/i', $feature, $matches)) {
+                            $creditsToAdd = (int)$matches[1];
+                            break;
+                        }
+                    }
+                 }
+                
+            } else {
+                 $packageId = $request->package_id;
+                 $packages = config('razorpay.packages');
+                 $selectedPackage = collect($packages)->firstWhere('id', $packageId);
+                 
+                 if (!$selectedPackage) {
+                     return response()->json([
+                         'success' => false,
+                         'message' => 'Invalid package selected.'
+                     ], 400);
+                 }
+                 $baseAmount = $selectedPackage['price']; // In paise
+                 $itemName = $selectedPackage['name'];
+                 $creditsToAdd = $selectedPackage['credits'];
             }
 
+            // Re-calculate Tax for Invoice Record
+            $taxSettings = $this->getTaxSettings();
+            $taxAmount = 0;
+
+            if ($taxSettings['enabled']) {
+                $taxAmount = round($baseAmount * ($taxSettings['percentage'] / 100));
+                $descriptionSuffix = " (Base: ₹" . ($baseAmount/100) . " + " . $taxSettings['percentage'] . "% GST: ₹" . ($taxAmount/100) . ")";
+            }
+
+            $totalAmount = $baseAmount + $taxAmount;
+
             // Payment verified - Add credits in transaction
-            DB::transaction(function () use ($partner, $selectedPackage, $request) {
+            DB::transaction(function () use ($partner, $request, $totalAmount, $itemName, $descriptionSuffix, $creditsToAdd) {
                 // 1. Add Credits
-                $partner->increment('credits', $selectedPackage['credits']);
+                if($creditsToAdd > 0) {
+                    $partner->increment('credits', $creditsToAdd);
+                }
                 
                 // 2. Create Invoice
-                $partner->invoices()->create([
+                $invoice = $partner->invoices()->create([
                     'invoice_number' => 'INV-' . strtoupper(uniqid()),
-                    'amount' => $selectedPackage['price'] / 100, // Convert paise to rupees
-                    'description' => $selectedPackage['name'],
+                    'amount' => $totalAmount / 100, // Convert paise to rupees (Total Charged)
+                    'description' => $itemName . $descriptionSuffix,
                     'status' => 'Paid',
                     'date' => now(),
                     'payment_id' => $request->razorpay_payment_id,
@@ -186,8 +283,8 @@ class PaymentController extends Controller
                 
                 // 3. Log Credit History
                 $partner->creditLogs()->create([
-                    'amount' => $selectedPackage['credits'],
-                    'description' => 'Purchased ' . $selectedPackage['name'] . ' (Payment: ' . $request->razorpay_payment_id . ')',
+                    'amount' => $creditsToAdd,
+                    'description' => 'Purchased ' . $itemName . ' (Invoice: ' . $invoice->invoice_number . ')',
                     'type' => 'credit'
                 ]);
             });
@@ -195,7 +292,7 @@ class PaymentController extends Controller
             return response()->json([
                 'success' => true,
                 'new_credits' => $partner->refresh()->credits,
-                'message' => 'Payment successful! ' . $selectedPackage['credits'] . ' credits added.'
+                'message' => 'Payment successful! Credits added.'
             ]);
 
         } catch (SignatureVerificationError $e) {
@@ -257,24 +354,55 @@ class PaymentController extends Controller
             $promoApplied = false;
 
             // Apply coupon if provided
-            if ($request->coupon_code) {
-                $coupon = \App\Models\Coupon::where('code', $request->coupon_code)
-                    ->where('status', 'Active')
-                    ->whereNull('used_at')
-                    ->first();
-                    
-                if ($coupon) {
-                    if ($coupon->discount_type === '100% OFF') {
-                        $discount = $amount;
-                    } elseif ($coupon->discount_type === '50% OFF') {
-                        $discount = $amount / 2;
+        if ($request->coupon_code) {
+            $coupon = \App\Models\Coupon::where('code', $request->coupon_code)
+                ->where('status', 'Active')
+                ->whereNull('used_at')
+                ->first();
+                
+            if ($coupon) {
+                // Determine discount type and value
+                $discountValue = 0;
+                $isFixed = false;
+
+                if ($coupon->partner_id) {
+                    $discountValue = 100;
+                    $isFixed = false; // Percentage
+                } elseif ($coupon->discount_value > 0) {
+                     $discountValue = $coupon->discount_value;
+                     $dt = strtolower($coupon->discount_type);
+                     if (str_contains($dt, 'fixed') || str_contains($dt, 'flat')) {
+                         $isFixed = true;
+                     }
+                } else {
+                    // Legacy support
+                    $dt = $coupon->discount_type;
+                    if (preg_match('/(\d+)/', $dt, $matches)) {
+                        $discountValue = (float) $matches[1];
                     }
-                    $couponData = [
-                        'code' => $coupon->code,
-                        'discount' => $discount / 100, // In rupees for display
-                    ];
+                    if (str_contains(strtolower($dt), 'fixed') || str_contains(strtolower($dt), '₹')) {
+                        $isFixed = true;
+                    }
                 }
+
+                // Calculate discount in paise
+                if ($isFixed) {
+                    $discount = $discountValue * 100; // Convert to paise
+                } else {
+                    $discount = $amount * ($discountValue / 100);
+                }
+
+                // Cap discount
+                if ($discount > $amount) $discount = $amount;
+
+                $couponData = [
+                    'code' => $coupon->code,
+                    'discount' => $discount / 100, // In rupees for display
+                    'discount_type' => $isFixed ? 'fixed' : 'percentage',
+                    'discount_value' => $discountValue
+                ];
             }
+        }    
             
             // Apply session promo discount (50% OFF from dashboard button)
             if (!$couponData && session('promo_discount') === '50OFF') {
@@ -303,20 +431,42 @@ class PaymentController extends Controller
             }
 
             $api = $this->getRazorpayApi();
+
+            // Calculate GST on discounted amount (same as partner credit purchases)
+            $taxSettings = $this->getTaxSettings();
+            $taxAmount = 0;
+            $taxInfo = [];
+
+            if ($taxSettings['enabled']) {
+                $taxAmount = round($finalAmount * ($taxSettings['percentage'] / 100));
+                $halfTax = $taxSettings['percentage'] / 2;
+                $taxInfo = [
+                    'gst_enabled' => true,
+                    'gst_percentage' => $taxSettings['percentage'],
+                    'cgst' => $halfTax,
+                    'sgst' => $halfTax,
+                    'tax_amount' => $taxAmount,
+                    'base_amount' => $finalAmount,
+                ];
+            } else {
+                $taxInfo = ['gst_enabled' => false];
+            }
+
+            $totalAmount = $finalAmount + $taxAmount;
             
             // Create Razorpay Order
             $orderData = [
                 'receipt' => 'user_order_' . time() . '_' . $user->id,
-                'amount' => $finalAmount,
+                'amount' => $totalAmount,
                 'currency' => config('razorpay.currency', 'INR'),
-                'notes' => [
+                'notes' => array_merge([
                     'user_id' => $user->id,
                     'plan_id' => $plan->id,
                     'plan_name' => $plan->name,
                     'coupon_code' => $request->coupon_code ?? null,
                     'original_amount' => $amount,
                     'discount' => $discount,
-                ]
+                ], $taxInfo)
             ];
 
             $razorpayOrder = $api->order->create($orderData);
@@ -324,17 +474,18 @@ class PaymentController extends Controller
             return response()->json([
                 'success' => true,
                 'order_id' => $razorpayOrder->id,
-                'amount' => $finalAmount,
+                'amount' => $totalAmount,
                 'currency' => config('razorpay.currency', 'INR'),
                 'key' => $this->key,
                 'name' => config('app.name', 'VivahHub'),
-                'description' => 'Plan: ' . $plan->name,
+                'description' => $plan->name . ($taxSettings['enabled'] ? ' + GST' : ''),
                 'prefill' => [
                     'name' => $user->name,
                     'email' => $user->email,
                 ],
                 'plan' => $plan,
                 'coupon' => $couponData,
+                'tax' => $taxInfo,
             ]);
 
         } catch (\Exception $e) {
@@ -392,18 +543,34 @@ class PaymentController extends Controller
                     ->first();
                     
                 if ($coupon) {
-                    $coupon->update([
-                        'used_at' => now(),
-                        'used_by' => $user->id,
-                        'client_email' => $user->email,
-                        'status' => 'Used',
-                    ]);
-                    
-                    // Calculate discount for record
+                    // Calculate discount first
                     if ($coupon->discount_type === '100% OFF') {
                         $discount = $plan->price;
                     } elseif ($coupon->discount_type === '50% OFF') {
                         $discount = $plan->price / 2;
+                    }
+
+                    // Log Usage
+                    \App\Models\CouponUsage::create([
+                        'coupon_id' => $coupon->id,
+                        'user_id' => $user->id,
+                        'order_id' => $request->razorpay_order_id,
+                        'original_amount' => $plan->price,
+                        'discount_amount' => $discount,
+                        'final_amount' => max(0, $plan->price - $discount),
+                        'status' => 'completed'
+                    ]);
+
+                    // Update Coupon stats
+                    $coupon->update([
+                        'used_at' => now(),
+                        'used_by' => $user->id,
+                        'client_email' => $user->email,
+                    ]);
+                    
+                    // Check Max Uses
+                    if ($coupon->max_uses && $coupon->usages()->count() >= $coupon->max_uses) {
+                         $coupon->update(['status' => 'Used']);
                     }
                 }
             } elseif ($request->coupon_code === 'PROMO50') {
@@ -412,12 +579,21 @@ class PaymentController extends Controller
             }
             
             $finalAmount = max(0, $plan->price - $discount);
+
+            // Calculate GST (same logic as createUserOrder)
+            $taxSettings = $this->getTaxSettings();
+            $taxAmount = 0;
+            if ($taxSettings['enabled'] && $finalAmount > 0) {
+                $baseAmountPaise = $finalAmount * 100; // Convert to paise
+                $taxAmount = round($baseAmountPaise * ($taxSettings['percentage'] / 100)) / 100; // Back to rupees
+            }
+            $totalAmountWithTax = $finalAmount + $taxAmount;
             
             // Save transaction to database
             $transaction = \App\Models\Transaction::create([
                 'user_id' => $user->id,
                 'plan_id' => $plan->id,
-                'amount' => $finalAmount,
+                'amount' => $totalAmountWithTax,
                 'gateway' => 'razorpay',
                 'status' => 'success',
                 'transaction_id' => $request->razorpay_payment_id,
@@ -429,6 +605,8 @@ class PaymentController extends Controller
                 'message' => 'Payment successful! Your invitation is now published.',
                 'plan' => $plan,
                 'transaction_id' => $transaction->id,
+                'tax_applied' => $taxSettings['enabled'],
+                'tax_amount' => $taxAmount,
             ]);
 
 

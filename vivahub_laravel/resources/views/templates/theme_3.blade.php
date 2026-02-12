@@ -337,13 +337,13 @@
       <div class="grid grid-cols-5 gap-2 text-center text-rose-200">
           <a href="tel:+" class="flex flex-col items-center gap-1 hover:text-rose-400 transition-colors"><i data-lucide="phone" class="w-5 h-5"></i><span class="text-[9px] uppercase tracking-wider">Call</span></a>
           <a href="#" class="flex flex-col items-center gap-1 hover:text-rose-400 transition-colors"><i data-lucide="message-circle" class="w-5 h-5"></i><span class="text-[9px] uppercase tracking-wider">Chat</span></a>
-          <button onclick="downloadVCard()" class="flex flex-col items-center gap-1 text-white relative group">
+          <button onclick="addToCalendar()" class="flex flex-col items-center gap-1 text-white relative group">
               <div class="absolute -top-8 bg-rose-600 p-3 rounded-full border-4 border-midnight-900 shadow-lg group-hover:bg-rose-500 transition-colors">
-                  <i data-lucide="user-plus" class="w-5 h-5"></i>
+                  <i data-lucide="calendar-plus" class="w-5 h-5"></i>
               </div>
               <span class="text-[9px] font-bold mt-5 uppercase tracking-wider">Save</span>
           </button>
-          <a href="#" class="flex flex-col items-center gap-1 hover:text-rose-400 transition-colors"><i data-lucide="download" class="w-5 h-5"></i><span class="text-[9px] uppercase tracking-wider">Invite</span></a>
+          <button onclick="downloadInvitation()" class="flex flex-col items-center gap-1 hover:text-rose-400 transition-colors"><i data-lucide="download" class="w-5 h-5"></i><span class="text-[9px] uppercase tracking-wider">Invite</span></button>
           <button onclick="shareInvite()" class="flex flex-col items-center gap-1 hover:text-rose-400 transition-colors"><i data-lucide="share-2" class="w-5 h-5"></i><span class="text-[9px] uppercase tracking-wider">Share</span></button>
       </div>
   </div>
@@ -511,16 +511,88 @@
           }, 1000);
       });
 
-      // Global Actions
-      function shareInvite() { if(navigator.share) navigator.share({title:'Wedding Invitation', url:window.location.href}); else alert('Copy URL: ' + window.location.href); }
-      function downloadVCard() { alert('Save Contact functionality would go here.'); }
-      
-      function addToCalendar() {
-           const title = "{{ $invitation->data['bride_name'] ?? 'Bride' }} & {{ $invitation->data['groom_name'] ?? 'Groom' }} Wedding";
-           const dates = "{{ \Carbon\Carbon::parse($invitation->data['date'] ?? 'now')->format('Ymd') }}T160000Z/{{ \Carbon\Carbon::parse($invitation->data['date'] ?? 'now')->addDays(1)->format('Ymd') }}T020000Z";
-           const loc = "{{ $invitation->data['location_name'] ?? 'Venue' }}";
-           window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${dates}&location=${encodeURIComponent(loc)}`, '_blank');
-      }
+    // Global Actions
+    function downloadVCard() {
+        const groom = "{{ $invitation->data['groom_name'] ?? $invitation->data['groom'] ?? 'Groom' }}";
+        const bride = "{{ $invitation->data['bride_name'] ?? $invitation->data['bride'] ?? 'Bride' }}";
+        const date = "{{ $invitation->data['date'] ?? '2026-12-12' }}";
+        const city = "{{ $invitation->data['venue_city'] ?? $invitation->data['location'] ?? 'Wedding' }}";
+        
+        const vCardData = [
+            'BEGIN:VCARD',
+            'VERSION:3.0',
+            `N:${groom} & ${bride};;;;`,
+            `FN:${groom} & ${bride} Wedding`,
+            `ORG:Wedding Invitation`,
+            `URL:${window.location.href}`,
+            `bdd:${date}`,
+            `ADR;TYPE=WORK,PREF:;;${city}`,
+            'END:VCARD'
+        ].join('\n');
+
+        const blob = new Blob([vCardData], { type: 'text/vcard' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${groom}_${bride}_Wedding.vcf`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+
+    function shareInvite() {
+        if (navigator.share) {
+            navigator.share({
+                title: '{{ $invitation->data["groom_name"] ?? $invitation->data["groom"] ?? "Groom" }} & {{ $invitation->data["bride_name"] ?? $invitation->data["bride"] ?? "Bride" }} Wedding',
+                text: 'You are cordially invited to our wedding celebration.',
+                url: window.location.href
+            }).catch(console.error);
+        } else {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                alert('Link copied to clipboard!');
+            });
+        }
+    }
+
+    function downloadInvitation() {
+        const imageUrl = "{{ $invitation->data['hero_image'] ?? $invitation->data['h_img'] ?? asset('assets/hero-background.png') }}";
+        fetch(imageUrl)
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.blob();
+            })
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = "Wedding_Invitation.jpg";
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            })
+            .catch((error) => {
+                console.error('Download failed:', error);
+                window.open(imageUrl, '_blank');
+            });
+    }
+    
+    function addToCalendar() {
+        const title = "Wedding: {{ $invitation->data['groom_name'] ?? $invitation->data['groom'] ?? 'Groom' }} & {{ $invitation->data['bride_name'] ?? $invitation->data['bride'] ?? 'Bride' }}";
+        const rawDate = "{{ $invitation->data['date'] ?? '2026-12-12' }}";
+        const loc = "{{ $invitation->data['venue_city'] ?? $invitation->data['location'] ?? 'Venue' }}";
+        
+        let dateStr = rawDate.replace(/-/g, '');
+        if (isNaN(new Date(rawDate).getTime())) {
+             dateStr = new Date().toISOString().slice(0,10).replace(/-/g, '');
+        }
+
+        const start = dateStr + 'T090000';
+        const end = dateStr + 'T230000';
+        const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${start}/${end}&details=We%20are%20getting%20married!&location=${encodeURIComponent(loc)}`;
+        window.open(googleUrl, '_blank');
+    }
 
       // Lightbox Functions
       function openLightbox(src) {

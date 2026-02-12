@@ -12,6 +12,8 @@ Route::get('/', function () {
 
 Route::get('/invitation/{id}', [App\Http\Controllers\UserPanelController::class, 'showInvitation'])->name('invitation.show');
 
+Route::get('/new-home', [PageController::class, 'newHome'])->name('new.home');
+
 Route::post('/rsvp/submit', [App\Http\Controllers\RsvpController::class, 'store'])->name('rsvp.submit');
 
 Route::controller(PageController::class)->group(function () {
@@ -50,6 +52,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // User Payment Routes (Razorpay)
     Route::post('/payment/create-order', [App\Http\Controllers\PaymentController::class, 'createUserOrder'])->name('user.payment.createOrder');
     Route::post('/payment/verify', [App\Http\Controllers\PaymentController::class, 'verifyUserPayment'])->name('user.payment.verify');
+    
+    // NFC Order
+    Route::post('/order/nfc', [App\Http\Controllers\NfcOrderController::class, 'store'])->name('nfc.store');
 });
 
 
@@ -66,6 +71,9 @@ Route::middleware('guest')->group(function () {
     // Google Auth
     Route::get('auth/google', [App\Http\Controllers\GoogleAuthController::class, 'redirectToGoogle'])->name('google.login');
     Route::get('auth/google/callback', [App\Http\Controllers\GoogleAuthController::class, 'handleGoogleCallback']);
+
+    // Partner Auth
+    Route::post('/partner/register', [App\Http\Controllers\PartnerAuthController::class, 'register'])->name('partner.register');
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -129,6 +137,10 @@ Route::middleware(['auth', 'can:admin'])->prefix('admin')->name('admin.')->group
     // Admin Payment Routes (uses same as user)
     Route::post('/payment/create-order', [App\Http\Controllers\PaymentController::class, 'createUserOrder'])->name('payment.createOrder');
     Route::post('/payment/verify', [App\Http\Controllers\PaymentController::class, 'verifyUserPayment'])->name('payment.verify');
+
+    // NFC Orders
+    Route::get('/orders', [App\Http\Controllers\Admin\NfcOrderController::class, 'index'])->name('orders.index');
+    Route::patch('/orders/{id}', [App\Http\Controllers\Admin\NfcOrderController::class, 'updateStatus'])->name('orders.update');
 });
 
 // Partner Routes
@@ -144,6 +156,7 @@ Route::middleware(['auth', 'verified', 'partner'])->prefix('partner')->name('par
     // Builder Routes
     Route::get('/builder', [App\Http\Controllers\PartnerController::class, 'builder'])->name('builder');
     Route::post('/builder/save', [App\Http\Controllers\PartnerController::class, 'saveBuilder'])->name('builder.save');
+    Route::post('/builder/upload', [App\Http\Controllers\PartnerController::class, 'uploadMedia'])->name('builder.upload');
     Route::post('/buy-credits', [App\Http\Controllers\PartnerController::class, 'buyCredits'])->name('credits.buy');
     Route::get('/invoices/{id}/download', [App\Http\Controllers\PartnerController::class, 'downloadInvoice'])->name('invoices.download');
     Route::post('/clients/{id}/update', [App\Http\Controllers\PartnerController::class, 'updateClient'])->name('clients.update');

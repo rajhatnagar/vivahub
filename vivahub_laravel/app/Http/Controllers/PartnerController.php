@@ -19,7 +19,7 @@ class PartnerController extends Controller
         if (!$partner) {
              $partner = $user->partnerDetails()->create([
                  'agency_name' => $user->name . ' Agency',
-                 'credits' => 5
+                 'credits' => 0
              ]);
         }
         
@@ -82,6 +82,7 @@ class PartnerController extends Controller
             'total_clients' => $clients->count(),
             'active_coupons' => $coupons->where('status', 'active')->count(),
             'credits' => $partner->credits,
+            'used_credits' => $partner->creditLogs()->where('type', 'debit')->sum('amount'),
             'revenue' => 0 // Placeholder
         ];
 
@@ -96,7 +97,23 @@ class PartnerController extends Controller
             ];
         });
 
-        return view('partner.dashboard', compact('user', 'partner', 'coupons', 'clients', 'stats', 'history', 'invoices', 'templates', 'drafts'));
+        // Plans (Partner)
+        $plans = \App\Models\Plan::where('type', 'partner')->where('is_active', true)->get()->map(function($plan) {
+            // Parse credits from features
+            $credits = 0;
+            if(is_array($plan->features)) {
+                foreach($plan->features as $feature) {
+                    if(preg_match('/(\d+)\s+Invitation Credits/i', $feature, $matches)) {
+                        $credits = (int)$matches[1];
+                        break;
+                    }
+                }
+            }
+            $plan->credits_count = $credits;
+            return $plan;
+        });
+
+        return view('partner.dashboard', compact('user', 'partner', 'coupons', 'clients', 'stats', 'history', 'invoices', 'templates', 'drafts', 'plans'));
     }
     
     /**
@@ -228,22 +245,36 @@ class PartnerController extends Controller
         $code = $request->code ? strtoupper($request->code) : strtoupper(Str::random(8));
 
         // Create Coupon (No credit deduction yet, deducted on usage)
-        $partner->coupons()->create([
+        $coupon = $partner->coupons()->create([
             'code' => $code,
             'discount_type' => $request->discount_type,
             'status' => 'active'
         ]);
+
+        if($request->wantsJson()) {
+            return response()->json(['success' => true, 'coupon' => $coupon, 'message' => 'Coupon generated: ' . $code]);
+        }
 
         return back()->with('success', 'Coupon generated: ' . $code);
     }
 
     public function deleteCoupon($id)
     {
-        $partner = Auth::user()->partnerDetails;
-        $coupon = $partner->coupons()->findOrFail($id);
-        $coupon->delete();
-
-        return response()->json(['success' => true, 'message' => 'Coupon deleted successfully.']);
+        try {
+            $partner = Auth::user()->partnerDetails;
+            $coupon = $partner->coupons()->findOrFail($id);
+            $coupon->delete();
+    
+            return response()->json(['success' => true, 'message' => 'Coupon deleted successfully.']);
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Retrieve error code for FK violation (integrity constraint violation)
+            if ($e->getCode() == "23000") {
+                return response()->json(['success' => false, 'message' => 'Cannot delete this coupon because it has been used by a client.']);
+            }
+            return response()->json(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error deleting coupon: ' . $e->getMessage()]);
+        }
     }
 
     public function updateSettings(Request $request)
@@ -308,6 +339,10 @@ class PartnerController extends Controller
             \Illuminate\Support\Facades\Log::error('Mail Send Error: ' . $e->getMessage());
         }
 
+        if($request->wantsJson()) {
+            return response()->json(['success' => true, 'client' => $client, 'message' => 'Client added and invitation sent successfully.']);
+        }
+
         return back()->with('success', 'Client added and invitation sent successfully.');
     }
 
@@ -340,7 +375,10 @@ class PartnerController extends Controller
         $invitationId = $request->query('invitation_id');
         
         $saveRoute = route('partner.builder.save');
+        $uploadRoute = route('partner.builder.upload'); // New route for uploads
         $isPartner = true;
+        $partner = Auth::user()->partnerDetails;
+        $credits = $partner ? $partner->credits : 0;
         
         $invitation = null;
         if($invitationId) {
@@ -350,7 +388,17 @@ class PartnerController extends Controller
             $templateId = $invitation->template_id;
         }
 
-        return view('user.builder', compact('templateId', 'saveRoute', 'isPartner', 'invitation'));
+        return view('user.builder', compact('templateId', 'saveRoute', 'uploadRoute', 'isPartner', 'credits', 'invitation'));
+    }
+
+    public function uploadMedia(Request $request) 
+    {
+        $request->validate([
+            'file' => 'required|image|max:5120', // 5MB max
+        ]);
+
+        $path = $request->file('file')->store('uploads/invitations', 'public');
+        return response()->json(['url' => asset('storage/' . $path)]);
     }
 
     public function saveBuilder(Request $request)
@@ -359,9 +407,28 @@ class PartnerController extends Controller
             $user = Auth::user();
             $data = $request->all();
             $templateId = $data['templateId'] ?? 'wedding-1';
+            $status = $data['status'] ?? 'draft';
             
+            // Partner Logic: Check credits if publishing
+            if($status === 'published') {
+                 // Check if already published (don't deduct again)
+                 $existing = isset($data['id']) ? \App\Models\Invitation::find($data['id']) : null;
+                 if(!$existing || $existing->status !== 'published') {
+                     $partner = $user->partnerDetails;
+                     if($partner->credits < 5) {
+                         return response()->json(['success' => false, 'message' => 'Insufficient credits. You need 5 credits to publish. Please buy more.'], 402);
+                     }
+                     // Deduct Credit
+                     $partner->decrement('credits', 5);
+                     $partner->creditLogs()->create([
+                         'type' => 'debit',
+                         'amount' => 5,
+                         'description' => 'Published Invitation (5 Credits)'
+                     ]);
+                 }
+            }
+
             // If ID exists, update. Else create.
-            // We search by ID and ensure it belongs to user
             $invitation = null;
             if(isset($data['id'])) {
                 $invitation = \App\Models\Invitation::where('user_id', $user->id)
@@ -373,8 +440,7 @@ class PartnerController extends Controller
                 $invitation->update([
                     'title' => ($data['groom'] ?? 'Groom') . ' & ' . ($data['bride'] ?? 'Bride'),
                     'data' => $data,
-                    // Partner always saves as draft
-                    'status' => 'draft'
+                    'status' => $status
                 ]);
             } else {
                 $invitation = \App\Models\Invitation::create([
@@ -382,14 +448,14 @@ class PartnerController extends Controller
                     'template_id' => $templateId,
                     'title' => ($data['groom'] ?? 'Groom') . ' & ' . ($data['bride'] ?? 'Bride'),
                     'content' => 'Wedding Invitation',
-                    'status' => 'draft',
+                    'status' => $status,
                     'data' => $data
                 ]);
             }
 
-            return response()->json(['success' => true, 'id' => $invitation->id]);
+            return response()->json(['success' => true, 'id' => $invitation->id, 'credits_left' => $user->partnerDetails->credits]);
         } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error('Partner Save Draft Error: ' . $e->getMessage());
+            \Illuminate\Support\Facades\Log::error('Partner Save Error: ' . $e->getMessage());
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
@@ -416,40 +482,10 @@ class PartnerController extends Controller
 
     public function downloadInvoice($id)
     {
-        // Simple HTML Invoice Download
         $invoice = \App\Models\PartnerInvoice::where('invoice_number', $id)->firstOrFail();
+        $user = Auth::user();
+        $partner = $user->partnerDetails;
         
-        $html = "
-            <html>
-            <head><title>Invoice {$invoice->invoice_number}</title>
-            <style>body { font-family: sans-serif; padding: 40px; } .header { border-bottom: 2px solid #333; padding-bottom: 20px; margin-bottom: 40px; } table { w-full; border-collapse: collapse; } th, td { padding: 10px; border-bottom: 1px solid #ddd; } </style>
-            </head>
-            <body>
-                <div class='header'>
-                    <h1>INVOICE</h1>
-                    <p>Reference: {$invoice->invoice_number}</p>
-                    <p>Date: {$invoice->date->format('d M Y')}</p>
-                    <p>Status: <strong>{$invoice->status}</strong></p>
-                </div>
-                <h3>Bill To:</h3>
-                <p>" . Auth::user()->name . "<br>" . (Auth::user()->partnerDetails->agency_name ?? 'Agency') . "</p>
-                
-                <table width='100%' style='margin-top: 40px;'>
-                    <thead><tr><th align='left'>Description</th><th align='right'>Amount</th></tr></thead>
-                    <tbody>
-                        <tr>
-                            <td>{$invoice->description}</td>
-                            <td align='right'>₹" . number_format($invoice->amount) . "</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <h2 align='right' style='margin-top: 20px;'>Total: ₹" . number_format($invoice->amount) . "</h2>
-                
-                <script>window.print();</script>
-            </body>
-            </html>
-        ";
-        
-        return response($html);
+        return view('partner.invoice', compact('invoice', 'user', 'partner'));
     }
 }
