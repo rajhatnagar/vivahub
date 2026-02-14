@@ -10,6 +10,7 @@ class Plan extends Model
         'name',
         'slug',
         'price',
+        'credits',
         'type', // User, Partner, Offline
         'validity',
         'features',

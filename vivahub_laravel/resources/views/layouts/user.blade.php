@@ -258,10 +258,10 @@
                 <span class="material-symbols-outlined text-[24px]">group</span>
                 <span class="text-[10px] font-medium">Guests</span>
             </a>
-            <a href="{{ route('settings') }}" class="flex flex-col items-center gap-1 w-14 {{ request()->routeIs('settings') ? 'text-primary' : 'text-text-muted' }} transition-colors">
-                <span class="material-symbols-outlined text-[24px]">settings</span>
-                <span class="text-[10px] font-medium">Settings</span>
-            </a>
+            <button onclick="toggleMobileSidebar()" class="flex flex-col items-center gap-1 w-14 text-text-muted transition-colors">
+                <span class="material-symbols-outlined text-[24px]">menu</span>
+                <span class="text-[10px] font-medium">More</span>
+            </button>
         </div>
     </nav>
     

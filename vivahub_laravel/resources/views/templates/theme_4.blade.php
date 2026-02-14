@@ -317,6 +317,7 @@
              <img src="{{ $partnerBranding->logo_url }}" class="w-24 mx-auto mb-4 object-contain opacity-80">
              <p class="uppercase tracking-widest text-xs mb-2 opacity-60">Planned by</p>
              <p class="font-serif text-xl tracking-wide text-sage-100">{{ $partnerBranding->agency_name }}</p>
+             @include('partials.partner_branding_footer')
         @else
              <p class="uppercase tracking-widest text-xs mb-2 opacity-60">Made with Love</p>
              <p class="font-serif text-xl tracking-wide">VivaHub</p>

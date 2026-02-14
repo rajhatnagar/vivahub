@@ -9,10 +9,18 @@
             <h2 class="text-3xl font-serif font-bold text-text-dark dark:text-white mb-2">Template Gallery</h2>
             <p class="text-text-muted dark:text-gray-400">Manage templates for users and partners. Toggle visibility below.</p>
         </div>
-        <div class="bg-white dark:bg-surface-dark rounded-xl px-4 py-3 border border-gray-100 dark:border-white/10 shadow-sm">
-            <p class="text-sm font-bold text-text-dark dark:text-white flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full bg-green-500"></span> Active: <span id="active-count">{{ count(array_filter($templates, fn($t) => $t['enabled'])) }}</span>
-            </p>
+        <div class="flex gap-3">
+            <a href="{{ route('admin.templates.docs') }}" class="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-text-dark dark:text-white px-4 py-2 rounded-lg font-bold hover:bg-gray-50 dark:hover:bg-white/10 transition-colors flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm">description</span> Docs
+            </a>
+            <button onclick="openUploadModal()" class="bg-primary text-white px-4 py-2 rounded-lg font-bold hover:bg-primary-dark transition-colors flex items-center gap-2 shadow-lg shadow-primary/20">
+                <span class="material-symbols-outlined text-sm">upload</span> Upload Template
+            </button>
+            <div class="bg-white dark:bg-surface-dark rounded-xl px-4 py-3 border border-gray-100 dark:border-white/10 shadow-sm ml-2">
+                <p class="text-sm font-bold text-text-dark dark:text-white flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-green-500"></span> Active: <span id="active-count">{{ count(array_filter($templates, fn($t) => $t['enabled'])) }}</span>
+                </p>
+            </div>
         </div>
     </div>
 
@@ -44,12 +52,23 @@
             <div class="h-64 overflow-hidden relative {{ !$t['enabled'] ? 'opacity-50 grayscale' : '' }} transition-all">
                 <img src="{{ $t['img'] }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                 <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-3 z-20">
-                    <button onclick="event.stopPropagation(); openPreview('{{ $t['id'] ?? 'wedding-1' }}')" class="bg-white hover:bg-gray-100 text-gray-800 font-bold py-2.5 px-6 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 delay-75 shadow-xl flex items-center gap-2 border border-gray-200">
-                        <span class="material-symbols-outlined text-sm">visibility</span> Preview
-                    </button>
-                    <a href="{{ route('admin.builder', ['template' => $t['id'] ?? 'wedding-1']) }}" onclick="event.stopPropagation()" class="bg-primary text-white font-bold py-2 px-6 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 shadow-lg flex items-center gap-2">
-                        <span class="material-symbols-outlined text-sm">edit</span> Use Template
-                    </a>
+                    <div class="flex flex-col gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                        <button onclick="event.stopPropagation(); openPreview('{{ $t['id'] ?? 'wedding-1' }}')" class="bg-white hover:bg-gray-100 text-gray-800 font-bold py-2.5 px-6 rounded-full shadow-xl flex items-center gap-2 border border-gray-200 w-full justify-center">
+                            <span class="material-symbols-outlined text-sm">visibility</span> Preview
+                        </button>
+                        <a href="{{ route('admin.builder', ['template' => $t['id'] ?? 'wedding-1']) }}" onclick="event.stopPropagation()" class="bg-primary text-white font-bold py-2 px-6 rounded-full shadow-lg flex items-center gap-2 w-full justify-center">
+                            <span class="material-symbols-outlined text-sm">edit</span> Use Template
+                        </a>
+                        @if(isset($t['is_custom']) && $t['is_custom'])
+                        <form action="{{ route('admin.templates.destroy', $t['db_id']) }}" method="POST" onsubmit="return confirm('Are you sure? This cannot be undone.')" class="w-full">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" onclick="event.stopPropagation()" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-full shadow-lg flex items-center gap-2 w-full justify-center">
+                                <span class="material-symbols-outlined text-sm">delete</span> Delete
+                            </button>
+                        </form>
+                        @endif
+                    </div>
                 </div>
             </div>
             
@@ -176,4 +195,66 @@
          <span class="material-symbols-outlined">close</span>
     </button>
 </div>
+<!-- Upload Modal -->
+<div id="upload-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeUploadModal()"></div>
+    <div class="relative bg-white dark:bg-surface-dark w-full max-w-lg rounded-2xl p-8 shadow-2xl animate-fade-in-up">
+        <h3 class="text-2xl font-bold font-serif text-maroon dark:text-gold mb-6">Upload New Template</h3>
+        
+        <form action="{{ route('admin.templates.upload') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">Template Name</label>
+                    <input type="text" name="name" required class="w-full rounded-lg border-gray-300 dark:border-white/10 dark:bg-white/5 focus:border-primary focus:ring-primary">
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">Style Tag</label>
+                        <select name="style" class="w-full rounded-lg border-gray-300 dark:border-white/10 dark:bg-white/5 focus:border-primary focus:ring-primary">
+                            <option value="Traditional">Traditional</option>
+                            <option value="Modern">Modern</option>
+                            <option value="Luxury">Luxury</option>
+                            <option value="Minimalist">Minimalist</option>
+                            <option value="Bohemian">Bohemian</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">Color Theme</label>
+                        <input type="text" name="color" placeholder="e.g. Red/Gold" class="w-full rounded-lg border-gray-300 dark:border-white/10 dark:bg-white/5 focus:border-primary focus:ring-primary">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">ZIP File (Max 10MB)</label>
+                    <input type="file" name="zip_file" accept=".zip" required class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20">
+                    <p class="text-xs text-gray-400 mt-1">Must contain <code>index.blade.php</code> at root.</p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">Preview Image (Optional)</label>
+                    <input type="file" name="preview_image" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20">
+                </div>
+            </div>
+
+            <div class="mt-8 flex justify-end gap-3">
+                <button type="button" onclick="closeUploadModal()" class="px-4 py-2 rounded-lg font-bold text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-white/5">Cancel</button>
+                <button type="submit" class="bg-primary text-white px-6 py-2 rounded-lg font-bold hover:bg-primary-dark shadow-lg shadow-primary/20">Upload Now</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openUploadModal() {
+        document.getElementById('upload-modal').classList.remove('hidden');
+    }
+    
+    function closeUploadModal() {
+        document.getElementById('upload-modal').classList.add('hidden');
+    }
+</script>
+
 @endsection

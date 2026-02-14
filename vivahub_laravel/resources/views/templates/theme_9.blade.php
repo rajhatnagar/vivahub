@@ -541,6 +541,7 @@
              <img src="{{ $partnerBranding->logo_url }}" alt="{{ $partnerBranding->agency_name }}" class="w-24 h-auto object-contain mb-2 opacity-90">
              <p class="text-xs text-teal-400 tracking-widest uppercase mb-2">Planned by</p>
              <h2 class="font-serif tracking-widest uppercase text-2xl text-white">{{ $partnerBranding->agency_name }}</h2>
+             @include('partials.partner_branding_footer')
         @else
             <h2 class="font-serif tracking-widest uppercase text-2xl text-white">VivaHub</h2>
         @endif

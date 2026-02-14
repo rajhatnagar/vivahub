@@ -9,19 +9,8 @@
         <p class="text-text-muted dark:text-gray-400">Select a design template to start customizing your invitation.</p>
     </div>
     
-    @if(isset($hasPromo) && $hasPromo)
-    <div class="max-w-2xl mx-auto mb-8">
-        <div class="bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-400 rounded-xl p-4 shadow-lg text-center">
-            <div class="flex items-center justify-center gap-3">
-                <span class="material-symbols-outlined text-white text-2xl">celebration</span>
-                <div>
-                    <p class="text-white font-bold text-lg">🎉 50% OFF Applied!</p>
-                    <p class="text-white/80 text-sm">Your promo discount will be applied at checkout</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endif
+
+
 
 
     <!-- Filters -->

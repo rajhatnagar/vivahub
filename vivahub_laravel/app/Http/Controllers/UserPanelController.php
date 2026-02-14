@@ -8,12 +8,28 @@ use Carbon\Carbon;
 use App\Models\Coupon;
 use App\Models\PartnerDetail;
 use App\Models\Invitation;
+use App\Models\Template;
 use Illuminate\Support\Facades\DB;
 
-class UserPanelController extends Controller
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+
+class UserPanelController extends Controller implements HasMiddleware
 {
-    private function getTemplatesList() {
+    public static function middleware(): array
+    {
         return [
+            function ($request, $next) {
+                if (Auth::check() && Auth::user()->role === 'partner') {
+                    return redirect()->route('partner.dashboard');
+                }
+                return $next($request);
+            },
+        ];
+    }
+
+    private function getTemplatesList() {
+        $defaultTemplates = [
             ['name' => "Classic Elegant", 'style' => "Indian Traditional", 'color' => "Red/Gold", 'img' => asset('assets/hero-background.png'), 'id' => 'wedding-1'],
             ['name' => "Minimalist Chic", 'style' => "Modern Clean", 'color' => "White/Black", 'img' => asset('assets/thumbnails/thumb_modern_minimal_1769914243192.png'), 'id' => 'theme_2'],
             ['name' => "Midnight Rose", 'style' => "Dark Romantic", 'color' => "Black/Rose", 'img' => asset('assets/thumbnails/thumb_luxury_dark_1769914285194.png'), 'id' => 'theme_3'],
@@ -25,6 +41,20 @@ class UserPanelController extends Controller
             ['name' => "Teal Harmony", 'style' => "Modern Minimal", 'color' => "Teal/Gold", 'img' => asset('assets/thumbnails/thumb_modern_minimal_1769914243192.png'), 'id' => 'theme_9'],
             ['name' => "Royal Ruby", 'style' => "Luxury Dark", 'color' => "Ruby/Gold", 'img' => asset('assets/thumbnails/thumb_traditional_red_1769914314829.png'), 'id' => 'theme_10'],
         ];
+
+        // Fetch Custom Templates
+        $customTemplates = Template::where('is_custom', true)->where('is_active', true)->get()->map(function($t) {
+            return [
+                'name' => $t->name,
+                'style' => $t->style ?? 'Custom',
+                'color' => $t->color ?? 'Mixed',
+                'img' => $t->img ? asset($t->img) : asset('assets/hero-background.png'),
+                'id' => $t->slug,
+                'is_custom' => true
+            ];
+        })->toArray();
+
+        return array_merge($defaultTemplates, $customTemplates);
     }
 
     public function dashboard()
@@ -510,7 +540,16 @@ class UserPanelController extends Controller
             return view('templates.master_prototype', $data);
         }
 
-        // 3. Fallback
+        // 3. Custom Templates
+        // Check if template exists in DB (custom)
+        if (strpos($templateId, 'custom_') !== false || !in_array($templateId, ['wedding-1', 'theme_2', 'theme_3', 'theme_4', 'theme_5', 'theme_6', 'theme_7', 'theme_8', 'theme_9', 'theme_10'])) {
+             if (view()->exists('templates.custom.' . $templateId)) {
+                 $data['asset_path'] = asset('templates/custom/' . $templateId);
+                 return view('templates.custom.' . $templateId, $data);
+             }
+        }
+
+        // 4. Fallback
         return view('templates.wedding_theme_1', $data);
     }
 

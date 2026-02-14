@@ -24,7 +24,7 @@ class PartnerController extends Controller
         }
         
         // Eager load relationships for performance
-        $partner->load(['clients', 'coupons', 'creditLogs', 'invoices']);
+        $partner->load(['clients', 'coupons.usages.user', 'creditLogs', 'invoices']);
 
         $coupons = $partner->coupons()->latest()->get();
         
@@ -97,19 +97,9 @@ class PartnerController extends Controller
             ];
         });
 
-        // Plans (Partner)
+        // Plans (Partner) - Use credits column directly
         $plans = \App\Models\Plan::where('type', 'partner')->where('is_active', true)->get()->map(function($plan) {
-            // Parse credits from features
-            $credits = 0;
-            if(is_array($plan->features)) {
-                foreach($plan->features as $feature) {
-                    if(preg_match('/(\d+)\s+Invitation Credits/i', $feature, $matches)) {
-                        $credits = (int)$matches[1];
-                        break;
-                    }
-                }
-            }
-            $plan->credits_count = $credits;
+            $plan->credits_count = $plan->credits ?? 0;
             return $plan;
         });
 
@@ -287,7 +277,11 @@ class PartnerController extends Controller
             'logo_file' => 'nullable|image|max:2048',
             'gst_number' => 'nullable|string',
             'currency' => 'nullable|string',
-            'billing_address' => 'nullable|string'
+            'billing_address' => 'nullable|string',
+            'social_facebook' => 'nullable|url|max:255',
+            'social_instagram' => 'nullable|url|max:255',
+            'social_whatsapp' => 'nullable|string|max:20',
+            'social_website' => 'nullable|url|max:255',
         ]);
 
         if ($request->hasFile('logo_file')) {
@@ -299,10 +293,11 @@ class PartnerController extends Controller
         if($request->has('footer_branding')) {
             $validated['footer_branding'] = $request->footer_branding === 'on';
         } else {
-             // If field exists in form but unchecked, set false. Using 'has' is tricky with checkboxes.
-             // Usually checkboxes only send if checked.
-             // We can assume if request method is POST/PUT and field missing, it's false?
-             // Let's just update strictly what is passed for now or use boolean
+             $validated['footer_branding'] = false;
+        }
+
+        if($request->has('footer_text')) {
+            $validated['footer_text'] = $request->footer_text;
         }
 
         Auth::user()->partnerDetails()->update($validated);

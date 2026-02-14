@@ -454,6 +454,7 @@
           <img src="{{ $partnerBranding->logo_url }}" alt="{{ $partnerBranding->agency_name }}" class="w-32 mx-auto mb-4 object-contain">
           <p class="mb-2 text-[10px] uppercase tracking-widest opacity-70">Planned & Managed by</p>
           <h3 class="mb-8 font-serif text-xl text-sage-100">{{ $partnerBranding->agency_name }}</h3>
+             @include('partials.partner_branding_footer')
       @else
           <!-- White Logo -->
           <img src="https://csssofttech.com/wedding/assets/VivaHub.png" class="w-48 mx-auto mb-8 opacity-80 filter brightness-0 invert">

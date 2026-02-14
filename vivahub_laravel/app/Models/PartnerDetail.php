@@ -19,7 +19,12 @@ class PartnerDetail extends Model
         'gst_number',
         'currency',
         'billing_address',
-        'footer_branding' // Also saw this in controller update logic
+        'footer_branding',
+        'footer_text',
+        'social_facebook',
+        'social_instagram',
+        'social_whatsapp',
+        'social_website'
     ];
 
     public function user()
@@ -29,7 +34,7 @@ class PartnerDetail extends Model
 
     public function coupons()
     {
-        return $this->hasMany(Coupon::class, 'partner_id');
+        return $this->hasMany(Coupon::class, 'partner_id', 'user_id');
     }
 
     public function clients()

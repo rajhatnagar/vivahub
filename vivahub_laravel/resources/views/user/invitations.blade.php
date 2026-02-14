@@ -5,10 +5,9 @@
 @section('content')
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-3xl font-bold text-text-dark dark:text-white">My<br>Invitations</h2>
-        <a href="{{ route('builder') }}" class="relative overflow-hidden bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-400 hover:from-amber-600 hover:via-yellow-600 hover:to-amber-500 text-white font-bold py-3 px-5 rounded-xl flex flex-col items-center gap-0.5 transition-all shadow-lg shadow-amber-500/30 hover:shadow-xl hover:shadow-amber-500/40 transform hover:-translate-y-0.5">
+        <a href="{{ route('builder') }}" class="relative overflow-hidden bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-bold py-3 px-5 rounded-xl flex items-center gap-2 transition-all shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transform hover:-translate-y-0.5">
+            <span class="material-symbols-outlined text-sm">add</span>
             <span class="text-sm font-extrabold uppercase tracking-wide">New Invitation</span>
-            <span class="text-lg font-black">50% OFF</span>
-            <span class="text-[10px] font-medium opacity-90">Invitation Validity as per Plan</span>
         </a>
     </div>
 

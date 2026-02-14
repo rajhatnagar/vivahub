@@ -378,14 +378,8 @@
                 @else
                     <div class="text-center py-4 text-text-muted">No active subscription plans available.</div>
                 @endif
-                
-                 <div class="bg-gray-50 dark:bg-white/5 p-4 rounded-xl border border-gray-200 dark:border-white/10 mt-4">
-                    <h4 class="font-bold text-lg dark:text-white">Credit Top-Up</h4>
-                    <p class="text-2xl font-bold text-text-dark dark:text-white my-2">&#8377;500 <span class="text-sm font-normal text-text-muted">/ credit</span></p>
-                    <p class="text-xs text-text-muted mb-4">Buy credits as you go without a yearly plan.</p>
-                    <button onclick="window.app.buyCredits()" class="w-full border border-primary text-primary py-2 rounded-lg font-bold hover:bg-primary/5 transition-all">Buy Credits</button>
-                </div>
             </div>
+
         </div>
     </div>
 
@@ -876,11 +870,35 @@
                                 <button onclick="window.app.toggleCouponModal(true)" class="bg-accent-gold text-white px-4 py-2 rounded-xl text-sm font-bold shadow-lg flex items-center gap-2"><span class="material-symbols-outlined text-sm">add</span> Create Code</button>
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                ${window.app.data.coupons.map(c => `
+                                ${window.app.data.coupons.map(c => {
+                                    const usages = c.usages || [];
+                                    const usageCount = usages.length;
+                                    return `
                                     <div class="bg-white dark:bg-surface-dark border-2 border-dashed border-accent-gold/30 rounded-2xl p-6 relative overflow-hidden group">
                                          <div class="absolute -right-4 -top-4 bg-accent-gold/10 w-20 h-20 rounded-full group-hover:scale-150 transition-transform duration-500 pointer-events-none"></div>
                                         <h3 class="text-2xl font-mono font-bold text-primary mb-1">${c.code}</h3>
-                                        <p class="text-xs font-bold text-accent-gold uppercase tracking-wider mb-4">${c.discount_type}</p>
+                                        <p class="text-xs font-bold text-accent-gold uppercase tracking-wider mb-2">${c.discount_type}</p>
+                                        <div class="flex items-center gap-2 mb-4">
+                                            <span class="bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded text-xs font-bold">${usageCount} ${usageCount === 1 ? 'use' : 'uses'}</span>
+                                            ${usageCount > 0 ? `<button onclick="document.getElementById('usage-${c.id}').classList.toggle('hidden')" class="text-xs text-primary font-bold hover:underline cursor-pointer">View Usage</button>` : ''}
+                                        </div>
+                                        ${usageCount > 0 ? `
+                                        <div id="usage-${c.id}" class="hidden mb-4 border-t border-gray-100 dark:border-white/10 pt-3 space-y-2 max-h-48 overflow-y-auto">
+                                            <p class="text-xs font-bold text-text-muted uppercase tracking-wider mb-1">Redemption History</p>
+                                            ${usages.map(u => `
+                                                <div class="flex justify-between items-center bg-gray-50 dark:bg-white/5 p-2.5 rounded-lg text-xs">
+                                                    <div>
+                                                        <p class="font-bold text-text-dark dark:text-white">${u.user ? u.user.name : 'Unknown'}</p>
+                                                        <p class="text-text-muted">${u.user ? u.user.email : ''}</p>
+                                                    </div>
+                                                    <div class="text-right">
+                                                        <p class="font-bold text-green-600">-₹${u.discount_amount || 0}</p>
+                                                        <p class="text-text-muted">${u.created_at ? new Date(u.created_at).toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'}) : ''}</p>
+                                                    </div>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                        ` : ''}
                                         <div class="flex justify-between items-end border-t border-gray-100 dark:border-white/10 pt-4 relative z-50">
                                             <div><p class="text-xs text-text-muted">Used by</p><p class="font-bold text-text-dark dark:text-white">${c.client_email || 'Not used'}</p></div>
                                             <div class="flex gap-2 items-center relative z-50">
@@ -895,7 +913,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                `).join('')}
+                                `}).join('')}
                             </div>
                         </div>
                     `;
@@ -1068,12 +1086,53 @@
                                             </div>
                                             <div class="mt-2 p-3 border border-dashed border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-black/20">
                                                 <p class="text-[10px] text-text-muted uppercase tracking-wide mb-1">Footer Preview:</p>
-                                                <p class="text-sm font-serif italic text-text-dark dark:text-white">"Planned & Managed by {{ $partner->agency_name ?? 'Elite Wedding Planners' }}"</p>
+                                                <p class="text-sm font-serif italic text-text-dark dark:text-white">"{{ $partner->footer_text ?? 'Planned & Managed by ' . ($partner->agency_name ?? 'Elite Wedding Planners') }}"</p>
+                                            </div>
+                                            <div class="mt-3">
+                                                 <label class="label-premium">Custom Footer Text</label>
+                                                 <input type="text" name="footer_text" value="{{ $partner->footer_text ?? '' }}" class="input-premium" placeholder="e.g. Planned & Managed by {{ $partner->agency_name }}">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
+                                <!-- Social Media Links -->
+                                <div class="bg-white dark:bg-surface-dark rounded-2xl p-6 shadow-card border border-primary/5 dark:border-white/5">
+                                    <h3 class="text-lg font-bold text-text-dark dark:text-white mb-6 flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-pink-500">share</span> Social Media Links
+                                    </h3>
+                                    <p class="text-xs text-text-muted mb-4">These links will be displayed on your client invitation footers.</p>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                        <div>
+                                            <label class="label-premium">Facebook URL</label>
+                                            <div class="relative">
+                                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500 material-symbols-outlined text-lg">public</span>
+                                                <input type="url" name="social_facebook" value="{{ $partner->social_facebook ?? '' }}" class="input-premium pl-10" placeholder="https://facebook.com/youragency">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class="label-premium">Instagram URL</label>
+                                            <div class="relative">
+                                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-pink-500 material-symbols-outlined text-lg">photo_camera</span>
+                                                <input type="url" name="social_instagram" value="{{ $partner->social_instagram ?? '' }}" class="input-premium pl-10" placeholder="https://instagram.com/youragency">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class="label-premium">WhatsApp Number</label>
+                                            <div class="relative">
+                                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-green-500 material-symbols-outlined text-lg">chat</span>
+                                                <input type="text" name="social_whatsapp" value="{{ $partner->social_whatsapp ?? '' }}" class="input-premium pl-10" placeholder="+919876543210">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class="label-premium">Website URL</label>
+                                            <div class="relative">
+                                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-indigo-500 material-symbols-outlined text-lg">language</span>
+                                                <input type="url" name="social_website" value="{{ $partner->social_website ?? '' }}" class="input-premium pl-10" placeholder="https://youragency.com">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <!-- Billing Information -->
                                 <div class="bg-white dark:bg-surface-dark rounded-2xl p-6 shadow-card border border-primary/5 dark:border-white/5">
                                     <h3 class="text-lg font-bold text-text-dark dark:text-white mb-6 flex items-center gap-2">

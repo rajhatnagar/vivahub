@@ -11,9 +11,20 @@ class Template extends Model
 
     protected $fillable = [
         'name',
+        'slug',
         'style',
         'color',
         'img',
-        'is_active'
+        'description',
+        'version',
+        'is_active',
+        'is_custom',
+        'zip_path',
+        'assets_path'
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
+        'is_custom' => 'boolean',
     ];
 }

@@ -622,6 +622,7 @@
                <img src="{{ $partnerBranding->logo_url }}" alt="{{ $partnerBranding->agency_name }}" class="w-24 h-auto object-contain mb-2 opacity-90">
                <p class="text-xs text-emerald-600 tracking-widest uppercase">Planned by</p>
                <h3 class="font-cinzel text-2xl text-emerald-900">{{ $partnerBranding->agency_name }}</h3>
+             @include('partials.partner_branding_footer')
            </div>
         @else
         <h2 class="font-cinzel text-2xl text-emerald-900 mb-2 flex items-center justify-center gap-2">

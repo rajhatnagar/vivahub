@@ -695,6 +695,7 @@
           <img src="{{ $partnerBranding->logo_url }}" alt="{{ $partnerBranding->agency_name }}" class="mx-auto d-block h-20 w-auto object-contain mb-4">
           <p class="mb-2 font-light tracking-wider text-xs uppercase opacity-70">Planned & Managed by</p>
           <h3 class="mb-8 font-serif text-2xl text-orange-200">{{ $partnerBranding->agency_name }}</h3>
+             @include('partials.partner_branding_footer')
       @else
           <img src="https://csssofttech.com/wedding/assets/VivaHub.png" alt="@VivaHub 2026" width="20%" class="mx-auto d-block">
           <p class="mb-8 font-light tracking-wider text-lg">Thank you for being part of our journey.</p>

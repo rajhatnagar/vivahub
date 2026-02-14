@@ -260,6 +260,7 @@
                      <h3 class="text-2xl font-bold text-text-dark dark:text-white mb-2">Ready to Publish!</h3>
                      <p class="text-text-muted">Your invitation looks amazing. Click publish to go live.</p>
                      
+                     {{-- NFC Card Section - Hidden
                      <div class="mt-8 p-6 bg-gradient-to-br from-gray-900 to-black rounded-2xl text-white relative overflow-hidden group">
                         <div class="absolute top-0 right-0 p-3 opacity-10">
                             <span class="material-symbols-outlined text-9xl">contactless</span>
@@ -273,6 +274,7 @@
                             </button>
                         </div>
                      </div>
+                     --}}
 
 
                  </div>
@@ -315,6 +317,7 @@
 </div>
 
 <!-- NFC ORDER MODAL -->
+{{-- NFC Order Modal - Hidden
 <div id="nfc-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
     <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="closeNfcModal()"></div>
     <div class="relative bg-white dark:bg-surface-dark w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-slide-up p-6">
@@ -366,6 +369,7 @@
         </form>
     </div>
 </div>
+--}}
 
 <!-- MOBILE PREVIEW MODAL -->
 <div id="mobile-preview-modal" class="fixed inset-0 z-[100] hidden flex flex-col bg-white dark:bg-black animate-slide-up">
@@ -410,21 +414,23 @@
                 <p class="text-xs text-text-muted">Review your order before payment.</p>
             </div>
 
+            <!-- Coupon Section (Moved Up) -->
+            <div class="mb-6">
+                <label class="text-xs font-bold text-text-muted uppercase mb-1 block">Have a Coupon?</label>
+                <div class="flex gap-2">
+                    <input type="text" id="coupon-input" placeholder="Enter code" class="flex-1 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm outline-none focus:border-primary">
+                    <button onclick="applyCoupon()" id="btn-apply-coupon" class="bg-gray-100 dark:bg-white/10 text-text-dark dark:text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-gray-200 dark:hover:bg-white/20">Apply</button>
+                </div>
+                <p id="coupon-message" class="text-xs mt-1 hidden"></p>
+            </div>
+
             <div class="flex-1 space-y-4">
                 <div class="flex justify-between text-sm">
                     <span class="text-text-muted" id="selected-plan-name">Select a Plan</span>
                     <span class="font-bold text-text-dark dark:text-white" id="selected-plan-price">₹0</span>
                 </div>
                 
-                <!-- Coupon Section -->
-                <div>
-                    <label class="text-xs font-bold text-text-muted uppercase mb-1 block">Coupon Code</label>
-                    <div class="flex gap-2">
-                        <input type="text" id="coupon-input" placeholder="Enter code" class="flex-1 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm outline-none focus:border-primary">
-                        <button onclick="applyCoupon()" id="btn-apply-coupon" class="bg-gray-100 dark:bg-white/10 text-text-dark dark:text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-gray-200 dark:hover:bg-white/20">Apply</button>
-                    </div>
-                    <p id="coupon-message" class="text-xs mt-1 hidden"></p>
-                </div>
+
 
                 <div class="border-t border-dashed border-gray-200 dark:border-white/10 my-4"></div>
 
@@ -488,22 +494,18 @@
             </div>
         </div>
 
-        <!-- Right: Vertical NFC Flip Card -->
+        {{-- NFC Card Preview - Hidden
         <div class="flex-1 flex flex-col items-center">
              <div class="mb-4 md:mb-6 flex items-center gap-2 text-accent-gold bg-accent-gold/10 px-4 py-1.5 rounded-full border border-accent-gold/20">
                 <span class="material-symbols-outlined text-sm">contactless</span>
                 <span class="text-[10px] md:text-xs font-bold uppercase tracking-widest">Premium NFC Card</span>
              </div>
 
-             <!-- Flip Card Container -->
              <div class="group perspective-1000 w-64 h-[400px] cursor-pointer scale-90 md:scale-100 origin-center transition-transform">
                  <div class="relative w-full h-full text-center transition-transform duration-700 transform-style-3d group-hover:rotate-y-180 shadow-2xl rounded-2xl">
-                     
-                     <!-- Front -->
                      <div class="absolute w-full h-full backface-hidden rounded-2xl overflow-hidden border border-white/10 bg-black">
                         <img src="https://csssofttech.com/wedding/assets/hero.png" id="nfc-front-img" class="absolute inset-0 w-full h-full object-cover opacity-70">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/30"></div>
-                        
                         <div class="absolute bottom-8 left-0 right-0 p-6 text-center">
                             <h4 class="font-serif text-2xl text-white mb-2" id="nfc-names">Dipika & Sagar</h4>
                             <div class="w-10 h-0.5 bg-accent-gold/50 mx-auto mb-3"></div>
@@ -512,29 +514,19 @@
                         <span class="material-symbols-outlined absolute top-6 right-6 text-white/60 text-2xl">contactless</span>
                         <div class="absolute bottom-3 left-0 right-0 text-[10px] text-white/30 uppercase tracking-widest">Flip to Scan</div>
                      </div>
-
-                     <!-- Back -->
-                     <div class="absolute w-full h-full backface-hidden rotate-y-180 rounded-2xl overflow-hidden bg-[#1a0b0b] border border-accent-gold/20 flex flex-col items-center justify-between p-6 relative"> <!-- Changed justify to between -->
+                     <div class="absolute w-full h-full backface-hidden rotate-y-180 rounded-2xl overflow-hidden bg-[#1a0b0b] border border-accent-gold/20 flex flex-col items-center justify-between p-6 relative">
                         <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
-                        
-                        <!-- Top Section -->
                         <div class="w-full flex flex-col items-center pt-2">
-                             <div class="w-4/5 aspect-square bg-white p-2 rounded-xl mb-4 shadow-lg flex items-center justify-center"> <!-- Responsive Width -->
-                                <!-- Placeholder QR -->
-                                <!-- Placeholder QR -->
+                             <div class="w-4/5 aspect-square bg-white p-2 rounded-xl mb-4 shadow-lg flex items-center justify-center">
                                 <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=Example" id="nfc-qr-code" class="w-full h-full object-contain" alt="QR Code">
                             </div>
-                            
                             <h5 class="text-accent-gold font-serif text-xl md:text-2xl mb-1 text-center leading-tight">Scannable Pass</h5>
                             <p class="text-white/60 text-xs text-center px-1 leading-tight">Scan for details</p>
                         </div>
-                        
-                        <!-- Bottom details -->
                         <div class="w-full text-center space-y-2 border-t border-white/10 pt-4">
                              <p class="text-white text-base md:text-lg font-bold tracking-wide break-words" id="nfc-back-location">Udaipur</p>
                              <p class="text-white/70 text-sm md:text-base" id="nfc-back-time">04:00 PM onwards</p>
                         </div>
-                        
                         <div class="pb-2">
                             <span class="text-[10px] text-white/20 uppercase tracking-[0.2em]">VivaHub Premium</span>
                         </div>
@@ -543,6 +535,7 @@
              </div>
              <p class="mt-4 text-xs text-text-muted animate-pulse">Hover card to flip</p>
         </div>
+        --}}
     </div>
 </div>
 
@@ -1437,7 +1430,17 @@
         const msg = document.getElementById('coupon-message');
         const btn = document.getElementById('btn-apply-coupon');
         
-        if(!code || !selectedPlan) return;
+        if(!code) return;
+
+        if(!selectedPlan) {
+            const firstPlan = document.querySelector('.plan-card');
+            if(firstPlan) {
+                firstPlan.click();
+            } else {
+                alert('Please wait for plans to load.');
+                return;
+            }
+        }
         
         btn.disabled = true;
         btn.innerText = '...';

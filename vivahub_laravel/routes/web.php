@@ -121,7 +121,12 @@ Route::middleware(['auth', 'can:admin'])->prefix('admin')->name('admin.')->group
     
     // Admin Templates & Builder (same as user, admin gets charged)
     Route::get('/templates', [App\Http\Controllers\Admin\AdminTemplateController::class, 'templates'])->name('templates.index');
+    Route::post('/templates/upload', [App\Http\Controllers\Admin\AdminTemplateController::class, 'upload'])->name('templates.upload');
     Route::post('/templates/{id}/toggle', [App\Http\Controllers\Admin\AdminTemplateController::class, 'toggleTemplateStatus'])->name('templates.toggle');
+    Route::delete('/templates/{id}', [App\Http\Controllers\Admin\AdminTemplateController::class, 'deleteTemplate'])->name('templates.destroy');
+    Route::get('/templates/docs', function() { return view('admin.templates.docs'); })->name('templates.docs');
+    Route::get('/templates/download-sample', [App\Http\Controllers\Admin\AdminTemplateController::class, 'downloadSample'])->name('templates.sample');
+
     Route::get('/builder', [App\Http\Controllers\Admin\AdminTemplateController::class, 'builder'])->name('builder');
     Route::get('/builder/preview/{template}', [App\Http\Controllers\Admin\AdminTemplateController::class, 'previewTemplate'])->name('builder.preview');
     Route::post('/builder/save', [App\Http\Controllers\Admin\AdminTemplateController::class, 'saveDraft'])->name('builder.save');
