@@ -21,11 +21,45 @@
                 <div>
                     <label class="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 px-4 py-2 rounded-lg text-sm font-bold hover:bg-gray-50 transition-colors cursor-pointer inline-block">
                         Change Photo
-                        <input type="file" name="profile_photo" class="hidden" accept="image/*" onchange="this.form.submit()">
+                        <input type="file" name="profile_photo" class="hidden" accept="image/png, image/gif, image/jpeg" onchange="validateProfilePhoto(this)">
                     </label>
                     <p class="text-xs text-text-muted mt-2">JPG, GIF or PNG. Max size 800K</p>
+                    <p id="photo-error" class="text-xs text-red-500 mt-1 hidden"></p>
                 </div>
             </div>
+
+            @push('scripts')
+            <script>
+                function validateProfilePhoto(input) {
+                    const file = input.files[0];
+                    const errorMsg = document.getElementById('photo-error');
+                    
+                    if (file) {
+                        // Validate File Type
+                        const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                        if (!validTypes.includes(file.type)) {
+                            errorMsg.textContent = 'Invalid file type. Please upload JPG, GIF or PNG.';
+                            errorMsg.classList.remove('hidden');
+                            input.value = ''; // Clear the input
+                            return;
+                        }
+
+                        // Validate File Size (800KB)
+                        const maxSize = 800 * 1024; // 800KB in bytes
+                        if (file.size > maxSize) {
+                            errorMsg.textContent = 'File is too large. Max size is 800KB.';
+                            errorMsg.classList.remove('hidden');
+                            input.value = ''; // Clear the input
+                            return;
+                        }
+
+                        // If valid, submit the form or show preview (currently functionality is auto-submit)
+                        errorMsg.classList.add('hidden');
+                        input.form.submit();
+                    }
+                }
+            </script>
+            @endpush
 
             <!-- Form -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">

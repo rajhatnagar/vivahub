@@ -147,7 +147,7 @@
                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Create system-wide discount coupons.</p>
                 </div>
                 
-                <form action="{{ route('admin.coupons.store') }}" method="POST" class="p-6 space-y-4">
+                <form action="{{ route('admin.designs.coupons.store') }}" method="POST" class="p-6 space-y-4">
                     @csrf
                     <div>
                         <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">Discount Percentage (%)</label>
@@ -192,7 +192,7 @@
                         <span class="text-[10px] text-gray-400">Created {{ $coupon->created_at->format('M d, Y') }}</span>
                         <span class="text-[10px] text-gray-400">Created {{ $coupon->created_at->format('M d, Y') }}</span>
                         <!-- Fixed Form Submission: DELETE Method with Custom Modal -->
-                        <form id="delete-coupon-{{ $coupon->id }}" action="{{ route('admin.coupons.delete', $coupon->id) }}" method="POST" class="inline">
+                        <form id="delete-coupon-{{ $coupon->id }}" action="{{ route('admin.designs.coupons.delete', $coupon->id) }}" method="POST" class="inline">
                             @csrf
                             @method('DELETE')
                             <button type="button" @click="$dispatch('confirm-action', { 

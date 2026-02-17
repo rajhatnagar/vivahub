@@ -238,6 +238,7 @@ class PartnerController extends Controller
         $coupon = $partner->coupons()->create([
             'code' => $code,
             'discount_type' => $request->discount_type,
+            'discount_value' => ($request->discount_type === '100% OFF') ? 100 : 0, // Set default value
             'status' => 'active'
         ]);
 

@@ -216,7 +216,7 @@
     </nav>
 
     <!-- Mobile Menu Slideout -->
-    <div id="mobile-menu" class="fixed inset-0 z-[60] hidden lg:hidden">
+    <div id="mobile-menu" class="fixed inset-0 z-[100] hidden lg:hidden">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="app.toggleMobileMenu(false)"></div>
         <aside class="absolute top-0 right-0 h-full w-72 bg-white dark:bg-surface-dark shadow-2xl flex flex-col transform transition-transform duration-300">
             <!-- Header -->
@@ -347,36 +347,64 @@
     <!-- UPGRADE PLAN MODAL -->
     <div id="upgrade-modal" class="fixed inset-0 z-[70] hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="app.toggleUpgradeModal(false)"></div>
-        <div class="relative bg-white dark:bg-surface-dark w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-slide-up">
+        <div class="relative bg-white dark:bg-surface-dark w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden animate-slide-up">
             <div class="p-6 bg-gradient-to-r from-accent-gold to-yellow-600 text-white flex justify-between items-center">
                 <h3 class="text-xl font-bold flex items-center gap-2"><span class="material-symbols-outlined">diamond</span> Upgrade Plan</h3>
                 <button onclick="app.toggleUpgradeModal(false)" class="text-white/80 hover:text-white"><span class="material-symbols-outlined">close</span></button>
             </div>
-            <div class="p-6 space-y-4">
+            <div class="p-6 overflow-y-auto max-h-[70vh]">
                 @if(isset($plans) && $plans->count() > 0)
-                    @foreach($plans as $plan)
-                    <div class="bg-gray-50 dark:bg-white/5 p-4 rounded-xl border {{ $plan->name === 'Gold Partner' ? 'border-accent-gold/20 relative overflow-hidden' : 'border-gray-200 dark:border-white/10' }}">
-                        @if($plan->name === 'Gold Partner' || $plan->is_popular)
-                        <div class="absolute top-0 right-0 bg-accent-gold text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg">POPULAR</div>
-                        @endif
-                        <h4 class="font-bold text-lg dark:text-white">{{ $plan->name }}</h4>
-                        <!-- Display credits if parsed -->
-                        @if($plan->credits_count > 0)
-                            <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold ml-2">{{ $plan->credits_count }} Credits</span>
-                        @endif
-                        <p class="text-2xl font-bold text-primary my-2">&#8377;{{ number_format($plan->price) }} <span class="text-sm font-normal text-text-muted">/ {{ $plan->validity }}</span></p>
-                        <ul class="text-sm text-text-muted space-y-2 mb-4">
-                            @if(is_array($plan->features))
-                                @foreach($plan->features as $feature)
-                                <li class="flex gap-2"><span class="material-symbols-outlined text-green-500 text-sm">check</span> {{ $feature }}</li>
-                                @endforeach
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        @foreach($plans as $plan)
+                        <div class="bg-gray-50 dark:bg-white/5 p-4 rounded-xl border {{ $plan->name === 'Gold Partner' ? 'border-accent-gold/20 relative overflow-hidden ring-1 ring-accent-gold/10' : 'border-gray-200 dark:border-white/10' }} flex flex-col h-full">
+                            @if($plan->name === 'Gold Partner' || $plan->is_popular)
+                            <div class="absolute top-0 right-0 bg-accent-gold text-white text-[9px] font-bold px-2 py-0.5 rounded-bl-lg">POPULAR</div>
                             @endif
-                        </ul>
-                        <button onclick="window.app.buyPlan({{ $plan->id }})" class="w-full bg-primary text-white py-2 rounded-lg font-bold shadow-md hover:bg-primary-dark transition-all">Select Plan</button>
+                            
+                            <div class="mb-3">
+                                <h4 class="font-bold text-base dark:text-white truncate" title="{{ $plan->name }}">{{ $plan->name }}</h4>
+                                <div class="flex items-baseline gap-1 mt-1">
+                                    <span class="text-xl font-bold text-primary">&#8377;{{ number_format($plan->price) }}</span>
+                                    <span class="text-[10px] text-text-muted">/ {{ $plan->validity }}</span>
+                                </div>
+                            </div>
+
+                            @if($plan->credits > 0)
+                                <div class="mb-4">
+                                    <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-md font-bold flex items-center gap-1 w-fit">
+                                        <span class="material-symbols-outlined text-xs">token</span> {{ $plan->credits }} Credits
+                                    </span>
+                                </div>
+                            @endif
+
+                             <div class="mt-auto space-y-3">
+                                <button onclick="window.app.buyPlan({{ $plan->id }})" class="w-full bg-primary text-white py-2 rounded-lg font-bold text-sm shadow-md hover:bg-primary-dark transition-all">Select Plan</button>
+                                
+                                <div x-data="{ open: false }" class="border-t border-gray-200 dark:border-white/10 pt-2">
+                                    <button @click="open = !open" class="flex items-center justify-between w-full text-xs font-bold text-text-muted hover:text-primary transition-colors">
+                                        <span>View Benefits</span>
+                                        <span class="material-symbols-outlined text-sm transform transition-transform" :class="open ? 'rotate-180' : ''">expand_more</span>
+                                    </button>
+                                    <ul x-show="open" class="mt-2 space-y-1.5 text-[11px] text-text-muted" x-collapse>
+                                        @if(is_array($plan->features))
+                                            @foreach($plan->features as $feature)
+                                            <li class="flex gap-1.5 items-start">
+                                                <span class="material-symbols-outlined text-green-500 text-[14px] shrink-0 mt-0.5">check</span> 
+                                                <span class="leading-tight">{{ $feature }}</span>
+                                            </li>
+                                            @endforeach
+                                        @endif
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
                     </div>
-                    @endforeach
                 @else
-                    <div class="text-center py-4 text-text-muted">No active subscription plans available.</div>
+                    <div class="text-center py-8 text-text-muted flex flex-col items-center">
+                        <span class="material-symbols-outlined text-4xl mb-2 opacity-50">sentiment_dissatisfied</span>
+                        <p>No active subscription plans available.</p>
+                    </div>
                 @endif
             </div>
 
@@ -1086,11 +1114,11 @@
                                             </div>
                                             <div class="mt-2 p-3 border border-dashed border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-black/20">
                                                 <p class="text-[10px] text-text-muted uppercase tracking-wide mb-1">Footer Preview:</p>
-                                                <p class="text-sm font-serif italic text-text-dark dark:text-white">"{{ $partner->footer_text ?? 'Planned & Managed by ' . ($partner->agency_name ?? 'Elite Wedding Planners') }}"</p>
+                                                <p id="footer-preview-text" class="text-sm font-serif italic text-text-dark dark:text-white">"{{ $partner->footer_text ?? 'Planned & Managed by ' . ($partner->agency_name ?? 'Elite Wedding Planners') }}"</p>
                                             </div>
                                             <div class="mt-3">
                                                  <label class="label-premium">Custom Footer Text</label>
-                                                 <input type="text" name="footer_text" value="{{ $partner->footer_text ?? '' }}" class="input-premium" placeholder="e.g. Planned & Managed by {{ $partner->agency_name }}">
+                                                 <input type="text" name="footer_text" value="{{ $partner->footer_text ?? '' }}" class="input-premium" placeholder="e.g. Planned & Managed by {{ $partner->agency_name }}" oninput="document.getElementById('footer-preview-text').innerText = '&quot;' + (this.value || 'Planned & Managed by {{ $partner->agency_name ?? 'Agency Name' }}') + '&quot;'">
                                             </div>
                                         </div>
                                     </div>

@@ -52,8 +52,10 @@
                             {{ $coupon->valid_until ? \Carbon\Carbon::parse($coupon->valid_until)->format('M d, Y') : 'No expiry' }}
                         </td>
                         <td class="p-4 text-center">
-                            @if($coupon->is_active)
+                            @if($coupon->status === 'active')
                                 <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">Active</span>
+                            @elseif($coupon->status === 'used')
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">Used</span>
                             @else
                                 <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400">Inactive</span>
                             @endif

@@ -22,6 +22,7 @@ class PlanController extends Controller
             'price' => 'required|numeric',
             'type' => 'required|string',
             'validity' => 'required|string',
+            'credits' => 'nullable|integer|min:0', // Validate credits
         ]);
 
         $features = $request->features_list 
@@ -36,6 +37,7 @@ class PlanController extends Controller
             'validity' => $validated['validity'],
             'features' => $features,
             'is_active' => true,
+            'credits' => $request->credits, // Add credits column handling
             'description' => $request->description,
         ]);
 
@@ -51,6 +53,7 @@ class PlanController extends Controller
             'price' => 'required|numeric',
             'type' => 'required|string',
             'validity' => 'required|string',
+            'credits' => 'nullable|integer|min:0', // Validate credits
         ]);
 
         $features = $request->features_list 
@@ -64,6 +67,7 @@ class PlanController extends Controller
             'type' => $validated['type'],
             'validity' => $validated['validity'],
             'features' => $features,
+            'credits' => $request->credits, // Add credits column handling
             'description' => $request->description,
         ]);
 

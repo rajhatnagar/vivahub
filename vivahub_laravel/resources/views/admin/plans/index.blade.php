@@ -86,6 +86,12 @@
                             <input type="text" name="validity" id="planValidity" placeholder="e.g. 45 Days" required class="w-full bg-gray-50 dark:bg-[#1a0b0b] border border-border-light dark:border-border-dark rounded-xl text-slate-800 dark:text-white p-3 focus:ring-primary focus:border-primary">
                         </div>
                     </div>
+
+                    <!-- Credits Field (Partner Only) -->
+                    <div id="creditsField" class="hidden">
+                        <label class="block text-gray-500 dark:text-gray-400 text-xs font-bold uppercase mb-1">Credits (Partner Only)</label>
+                        <input type="number" name="credits" id="planCredits" placeholder="e.g. 100" class="w-full bg-gray-50 dark:bg-[#1a0b0b] border border-border-light dark:border-border-dark rounded-xl text-slate-800 dark:text-white p-3 focus:ring-primary focus:border-primary">
+                    </div>
                     
                     <!-- Feature Selection Area -->
                     <div>
@@ -158,6 +164,7 @@
             document.getElementById('modal-title').innerText = "Create New Plan";
             document.getElementById('submitBtn').innerText = "Create Plan";
             document.querySelectorAll('[id$="-count"]').forEach(el => el.classList.add('hidden'));
+            document.getElementById('creditsField').classList.add('hidden'); // Reset visibility
             document.getElementById('createPlanModal').classList.remove('hidden');
         }
 
@@ -172,7 +179,17 @@
             document.getElementById('planName').value = plan.name;
             document.getElementById('planPrice').value = plan.price;
             document.getElementById('planValidity').value = plan.validity;
+            document.getElementById('planValidity').value = plan.validity;
             document.getElementById('planType').value = plan.type;
+            document.getElementById('planCredits').value = plan.credits || ''; // Populate credits
+            
+            // Show credits field if Partner
+            if(plan.type === 'Partner') {
+                document.getElementById('creditsField').classList.remove('hidden');
+            } else {
+                document.getElementById('creditsField').classList.add('hidden');
+            }
+
             document.getElementById('isPopular').checked = plan.is_popular;
             
             // Reset UI
@@ -269,5 +286,15 @@
             // Allow form submission normally
             return true;
         }
+
+        // Toggle Credits Field based on Type
+        document.getElementById('planType').addEventListener('change', function() {
+            const creditsField = document.getElementById('creditsField');
+            if(this.value === 'Partner') {
+                creditsField.classList.remove('hidden');
+            } else {
+                creditsField.classList.add('hidden');
+            }
+        });
     </script>
 @endsection

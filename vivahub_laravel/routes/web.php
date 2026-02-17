@@ -104,8 +104,8 @@ Route::middleware(['auth', 'can:admin'])->prefix('admin')->name('admin.')->group
     Route::delete('/designs/{id}', [App\Http\Controllers\Admin\DesignController::class, 'destroy'])->name('designs.destroy');
     
     // Coupons (Couple Codes)
-    Route::post('/designs/coupons', [App\Http\Controllers\Admin\DesignController::class, 'storeCoupon'])->name('coupons.store');
-    Route::delete('/designs/coupons/{id}', [App\Http\Controllers\Admin\DesignController::class, 'deleteCoupon'])->name('coupons.delete');
+    Route::post('/designs/coupons', [App\Http\Controllers\Admin\DesignController::class, 'storeCoupon'])->name('designs.coupons.store');
+    Route::delete('/designs/coupons/{id}', [App\Http\Controllers\Admin\DesignController::class, 'deleteCoupon'])->name('designs.coupons.delete');
 
     // Partner Credits
     Route::post('/users/{id}/credits', [App\Http\Controllers\Admin\UserController::class, 'manageCredits'])->name('users.credits');

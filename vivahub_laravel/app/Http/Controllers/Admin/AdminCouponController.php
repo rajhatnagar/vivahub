@@ -32,7 +32,6 @@ class AdminCouponController extends Controller
             'discount_type' => 'required|in:percentage,fixed',
             'discount_value' => 'required|numeric|min:1',
             'max_uses' => 'nullable|integer|min:1',
-            'valid_until' => 'nullable|date|after:today',
         ]);
         
         $coupon = new Coupon();
@@ -40,9 +39,7 @@ class AdminCouponController extends Controller
         $coupon->discount_type = $validated['discount_type'];
         $coupon->discount_value = $validated['discount_value'];
         $coupon->max_uses = $validated['max_uses'] ?? null;
-        $coupon->valid_until = $validated['valid_until'] ?? null;
-        $coupon->is_active = true;
-        $coupon->created_by = auth()->id();
+        $coupon->status = 'active';
         $coupon->save();
         
         return redirect()->route('admin.coupons.index')

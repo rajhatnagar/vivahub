@@ -87,15 +87,8 @@ class PaymentController extends Controller
                  $baseAmount = $plan->price * 100; // In paise
                  $description = $plan->name;
                  
-                 // Parse credits for meta
-                 if(is_array($plan->features)) {
-                    foreach($plan->features as $feature) {
-                        if(preg_match('/(\d+)\s+Invitation Credits/i', $feature, $matches)) {
-                            $credits = (int)$matches[1];
-                            break;
-                        }
-                    }
-                 }
+                 // Use credits column directly
+                 $credits = $plan->credits ?? 0;
                  
                  $meta = ['plan_id' => $plan->id, 'credits' => $credits];
             } else {
@@ -226,15 +219,8 @@ class PaymentController extends Controller
                 $baseAmount = $plan->price * 100;
                 $itemName = $plan->name;
                 
-                 // Parse credits
-                 if(is_array($plan->features)) {
-                    foreach($plan->features as $feature) {
-                        if(preg_match('/(\d+)\s+Invitation Credits/i', $feature, $matches)) {
-                            $creditsToAdd = (int)$matches[1];
-                            break;
-                        }
-                    }
-                 }
+                 // Use credits column
+                 $creditsToAdd = $plan->credits ?? 0;
                 
             } else {
                  $packageId = $request->package_id;
@@ -356,8 +342,7 @@ class PaymentController extends Controller
             // Apply coupon if provided
         if ($request->coupon_code) {
             $coupon = \App\Models\Coupon::where('code', $request->coupon_code)
-                ->where('status', 'Active')
-                ->whereNull('used_at')
+                ->whereIn('status', ['active', 'Active'])
                 ->first();
                 
             if ($coupon) {
@@ -538,17 +523,44 @@ class PaymentController extends Controller
             $discount = 0;
             if ($request->coupon_code && $request->coupon_code !== 'PROMO50') {
                 $coupon = \App\Models\Coupon::where('code', $request->coupon_code)
-                    ->where('status', 'Active')
-                    ->whereNull('used_at')
+                    ->whereIn('status', ['active', 'Active'])
                     ->first();
                     
                 if ($coupon) {
-                    // Calculate discount first
-                    if ($coupon->discount_type === '100% OFF') {
-                        $discount = $plan->price;
-                    } elseif ($coupon->discount_type === '50% OFF') {
-                        $discount = $plan->price / 2;
+                    // Calculate discount using same logic as createUserOrder
+                    $discountValue = 0;
+                    $isFixed = false;
+
+                    if ($coupon->partner_id) {
+                        // Partner coupons = 100% free
+                        $discountValue = 100;
+                        $isFixed = false;
+                    } elseif ($coupon->discount_value > 0) {
+                        // New format: discount_value column
+                        $discountValue = $coupon->discount_value;
+                        $dt = strtolower($coupon->discount_type);
+                        if (str_contains($dt, 'fixed') || str_contains($dt, 'flat')) {
+                            $isFixed = true;
+                        }
+                    } else {
+                        // Legacy format: '100% OFF', '50% OFF'
+                        $dt = $coupon->discount_type;
+                        if (preg_match('/(\d+)/', $dt, $matches)) {
+                            $discountValue = (float) $matches[1];
+                        }
+                        if (str_contains(strtolower($dt), 'fixed') || str_contains(strtolower($dt), '₹')) {
+                            $isFixed = true;
+                        }
                     }
+
+                    // Calculate discount in rupees
+                    if ($isFixed) {
+                        $discount = $discountValue;
+                    } else {
+                        $discount = $plan->price * ($discountValue / 100);
+                    }
+                    // Cap discount
+                    if ($discount > $plan->price) $discount = $plan->price;
 
                     // Log Usage
                     \App\Models\CouponUsage::create([
@@ -568,9 +580,9 @@ class PaymentController extends Controller
                         'client_email' => $user->email,
                     ]);
                     
-                    // Check Max Uses
+                    // Check Max Uses — deactivate if limit reached
                     if ($coupon->max_uses && $coupon->usages()->count() >= $coupon->max_uses) {
-                         $coupon->update(['status' => 'Used']);
+                         $coupon->update(['status' => 'used']);
                     }
                 }
             } elseif ($request->coupon_code === 'PROMO50') {
