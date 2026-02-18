@@ -89,7 +89,7 @@
                  <span class="text-[10px] uppercase tracking-[0.2em] text-text-muted font-bold">Wedding CRM</span>
             </div>
             <!-- Create Button -->
-            <a href="{{ route('builder') }}" class="w-full bg-gradient-to-r from-primary to-primary-dark hover:shadow-lg hover:shadow-primary/30 text-white font-bold py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 group transition-all duration-300 transform hover:-translate-y-0.5">
+            <a href="{{ route('dashboard.templates') }}" class="w-full bg-gradient-to-r from-primary to-primary-dark hover:shadow-lg hover:shadow-primary/30 text-white font-bold py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 group transition-all duration-300 transform hover:-translate-y-0.5">
                 <span class="material-symbols-outlined group-hover:rotate-90 transition-transform duration-300">add_circle</span>
                 <span>Create Invitation</span>
             </a>
@@ -182,10 +182,10 @@
         </header>
 
         <!-- MOBILE SIDEBAR OVERLAY -->
-        <div id="mobile-sidebar-overlay" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden backdrop-blur-sm transition-opacity opacity-0"></div>
+        <div id="mobile-sidebar-overlay" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-black/50 z-[90] hidden lg:hidden backdrop-blur-sm transition-opacity opacity-0"></div>
         
         <!-- MOBILE SIDEBAR -->
-        <div id="mobile-sidebar" class="fixed top-0 left-0 bottom-0 w-72 bg-white dark:bg-[#120505] z-50 transform -translate-x-full transition-transform duration-300 lg:hidden flex flex-col shadow-2xl">
+        <div id="mobile-sidebar" class="fixed top-0 left-0 bottom-0 w-72 bg-white dark:bg-[#120505] z-[100] transform -translate-x-full transition-transform duration-300 lg:hidden flex flex-col shadow-2xl">
             <div class="p-6 border-b border-gray-100 dark:border-white/5 flex justify-between items-center">
                 <div class="flex flex-col items-start gap-1">
                      <img src="{{ asset('VivaHub-logo.png') }}" alt="VivaHub" class="h-8 w-auto object-contain dark:hidden">
@@ -223,7 +223,7 @@
                      </button>
                  </form>
 
-                <a href="{{ route('builder') }}" class="w-full bg-primary text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg hover:bg-primary-dark transition-colors">
+                <a href="{{ route('dashboard.templates') }}" class="w-full bg-primary text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg hover:bg-primary-dark transition-colors">
                     <span class="material-symbols-outlined">add_circle</span> Create New
                 </a>
             </div>

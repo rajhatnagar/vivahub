@@ -80,3 +80,61 @@ Here are my answers for your questions & update the plan again
    }
 
 Also add this feature to admin panel {In Admin Access, Admin should be able to Upload new invitation templates in .zip files(give a popup window) which will include all the html, css, js and images files provide a sample to use to understand how it works & add documentation for it do all this in templates section.} Add this in everything in detailed to plan and show me.
+
+And after user uses a coupon the in his invitation the partner footer branding is comming with social logos or not.
+
+
+Create a proper implementation plan for this with proper detailed testings in browser 
+{
+Check all this project according to the all roles in this @file:secu and fix the problems. 
+Unable to create a Coupon In Admin Access.
+Unable to Delete a Coupon In Partner Access.
+Check all Coupon Functionality for admin & partner access. 
+Do a Compleate Coupon code test on user access create coupons on admin & partner access and check the coupon code flow.
+All check the partner plan if the credits are added or not after partner buy the plan.
+Also Check the Coupon Functionality for user access.
+And the coupon flow and logs are working properly or not for partner 'usage history' & admin 'logs'.
+In the admin access Add the Credit Option to the plan section too add the credits to the partner plan.
+}
+
+
+Create a proper implementation plan for this with proper detailed testings in browser {
+Frontend & Backend.
+- Google Login not working
+- If you test the coupon flow then use this card no"5500 6700 0000 1002" & Use a random CVV and any future date. So you can test the payment flow after payment success & fail as well. use this 9860509908 phone no if required and skip otp if asked.
+
+Partner access:
+      - In Generate Coupon Code popup remove the option of discount type only add a message as "5 Credits will be Deducted from your account if this coupon is used by any Cusotner."(Meaning If User uses this coupon he will get 100% discount and no payment will taken from user also the payment setup will skip automatically on continue buttom) and also add a input field for enter the coupon code name and show abilable credits below.
+      - In the top navigation bar there is credit only show total avilable credits of the partner.
+      - When Partner by any plan for his credits the show him a full view of billing before procceding to payment to plan and show how much we are charging him for gst with the total payment cost and also give option to add partners agency GST no. to add this gst number in out invoice.
+      - Show the user/client name & datetime in usage history when anyone uses the partner coupon.
+      - In the usage history section add a filter to filter by date range.
+      - 
+User Access:
+      - In RSVP's section add guest button is not working also check the export button should download the guest list in CSV file.
+}
+
+Create a proper implementation plan for this with proper detailed testings in browser 
+{
+
+}
+
+Admin Access:
+- Sync "Total Revenue" from transactions section in the dashboard in Admin Access.
+- Create a option for Enable/Disablein Setting For Enabling free access to use this User for 7 days for 1st time only (Only 1 Invitation) [After Enable a "Create Now For Free Access" button will be added in the Frontpage hero section "Create Now Just ₹399" this button will be replace also add me more section also remember if the admin disable this then all buttens will also get disabled and hidden].
+- Add a option in admin access top navigation bar to directly access the Webiste Frontend.
+- Add option in setting to manage the credit deduction for partner coupon code. (Meaning if user uses partner coupon code then how much credit will be deducted from partner account) & to create invitation in partner access.
+- Make the admin setting page more user friendly, responcive and easy to navigate.
+
+User Access:
+- In "Billing History", 'Current Plan' & 'Payment Method' this UI is not linked with any functional backend check it and make it real working.
+- In RSVP's section add guest button is not working also check the export button should download the guest list in CSV file.
+
+Partner Access:
+- When we delete a coupon code in partner access then after deletion he should Redirect to coupon section.
+
+Frontend:
+- Add live mobile preview to hero section mobile mockup as we did in the user access - templates section.
+
+Templates:(Admin/Partner/User)
+- When user preview any templates load a sample images as i give you before. (Meaning if user click on preview button then load a sample images.) [Do this for all templates]

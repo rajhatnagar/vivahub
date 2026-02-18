@@ -12,7 +12,7 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        $query = User::query();
+        $query = User::with('partnerDetails');
 
         if ($request->has('role') && $request->role !== 'all') {
             $query->where('role', $request->role);
@@ -30,13 +30,13 @@ class UserController extends Controller
             'role' => 'required|in:user,partner',
         ]);
 
-        $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => 'password', // Default password
-            'role' => $validated['role'],
-            'email_verified_at' => now(),
-        ]);
+        $user = new User();
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+        $user->password = 'password';
+        $user->role = $validated['role'];
+        $user->email_verified_at = now();
+        $user->save();
 
         if ($validated['role'] === 'partner') {
             \App\Models\PartnerDetail::create([
@@ -65,11 +65,10 @@ class UserController extends Controller
 
         $validated = $request->validate($rules);
 
-        $user->update([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'role' => $validated['role'],
-        ]);
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+        $user->role = $validated['role'];
+        $user->save();
 
         // Update Credits if Partner
         if ($user->role === 'partner' && isset($validated['credits'])) {
@@ -180,5 +179,31 @@ class UserController extends Controller
         $user->save();
         
         return back()->with('success', 'Partner credentials updated.');
+    }
+    public function toggleStatus($id)
+    {
+        $user = User::findOrFail($id);
+        if ($user->role === 'admin') {
+            return back()->with('error', 'Cannot change admin status.');
+        }
+        
+        $user->status = $user->status === 'active' ? 'suspended' : 'active';
+        $user->save();
+        
+        $message = $user->status === 'active' ? 'User activated successfully.' : 'User suspended successfully.';
+        return back()->with('success', $message);
+    }
+
+    public function history($id)
+    {
+        $user = User::with('partnerDetails')->findOrFail($id);
+        
+        if (!$user->isPartner()) {
+            return back()->with('error', 'History is only available for partners.');
+        }
+
+        $logs = $user->partnerDetails->creditLogs()->latest()->paginate(20);
+
+        return view('admin.users.history', compact('user', 'logs'));
     }
 }

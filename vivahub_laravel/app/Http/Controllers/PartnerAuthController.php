@@ -21,12 +21,12 @@ class PartnerAuthController extends Controller
             'phone' => ['required', 'string', 'max:20'],
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'partner',
-        ]);
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->role = 'partner';
+        $user->save();
 
         PartnerDetail::create([
             'user_id' => $user->id,
@@ -40,5 +40,35 @@ class PartnerAuthController extends Controller
         Auth::login($user);
 
         return redirect()->route('partner.dashboard');
+    }
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            
+            // Check if user is suspended
+            if (Auth::user()->status === 'suspended') {
+                 Auth::logout();
+                 $request->session()->invalidate();
+                 $request->session()->regenerateToken();
+                 return back()->withErrors(['email' => 'Your account has been suspended.']);
+            }
+
+            if (Auth::user()->role === 'partner') {
+                return redirect()->route('partner.dashboard');
+            }
+            
+            Auth::logout();
+            return back()->withErrors(['email' => 'Not a partner account.']);
+        }
+
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
     }
 }

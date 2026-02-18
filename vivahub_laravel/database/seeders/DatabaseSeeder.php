@@ -18,14 +18,7 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         // Create Admin
-        \App\Models\User::firstOrCreate(
-            ['email' => 'admin@vivahub.com'],
-            [
-                'name' => 'System Admin',
-                'password' => \Illuminate\Support\Facades\Hash::make('admin123'),
-                'role' => 'admin',
-            ]
-        );
+        $this->call(AdminUserSeeder::class);
 
         // Create Sample Plans (if model exists)
         if (class_exists(\App\Models\Plan::class)) {

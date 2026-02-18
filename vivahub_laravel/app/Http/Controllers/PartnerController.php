@@ -44,11 +44,19 @@ class PartnerController extends Controller
         });
 
         // Transform History logs
+        // Transform History logs
         $history = $partner->creditLogs()->latest()->take(20)->get()->map(function($log) {
+            // Try to extract client name from description if available
+            $clientName = '-';
+            if (preg_match('/for (.*?) \(/', $log->description, $matches)) {
+                $clientName = $matches[1];
+            }
+
             return (object)[
                 'id' => '#LOG' . str_pad($log->id, 4, '0', STR_PAD_LEFT),
-                'date' => $log->created_at->format('M d'),
+                'date' => $log->created_at->format('M d, Y h:i A'),
                 'desc' => $log->description,
+                'client_name' => $clientName,
                 'amount' => ($log->type === 'credit' ? '+ ' : '- ') . $log->amount . ' Credits',
                 'type' => $log->type
             ];
@@ -138,9 +146,23 @@ class PartnerController extends Controller
             $data = ['isPreview' => true];
             
             if ($request->has('invitation_id') && $request->invitation_id) {
+                $user = \Illuminate\Support\Facades\Auth::user();
+                $partner = $user->partnerDetails;
+                
+                // Allow if owned by partner OR linked to a client
+                $clientInvitationIds = $partner ? $partner->clients()->pluck('invitation_id')->filter()->toArray() : [];
+                
                 $invitation = \App\Models\Invitation::select('id', 'user_id', 'template_id', 'title', 'data', 'status')
+                    ->where(function($q) use ($user, $clientInvitationIds) {
+                        $q->where('user_id', $user->id);
+                        if (!empty($clientInvitationIds)) {
+                            $q->orWhereIn('id', $clientInvitationIds);
+                        }
+                    })
                     ->find($request->invitation_id);
+                    
                 if ($invitation) {
+                    $invitation->data = is_string($invitation->data) ? json_decode($invitation->data, true) : $invitation->data; // Ensure array
                     $data['invitation'] = $invitation;
                 }
             }
@@ -225,20 +247,21 @@ class PartnerController extends Controller
     public function generateCoupon(Request $request)
     {
         $request->validate([
-            'discount_type' => 'required|string',
-            'code' => 'nullable|string|unique:coupons,code|max:20',
+            'name' => 'nullable|string|max:255',
+            'code' => 'required|string|unique:coupons,code|max:20',
         ]);
 
         $partner = Auth::user()->partnerDetails;
         
-        // Custom code or random
-        $code = $request->code ? strtoupper($request->code) : strtoupper(Str::random(8));
+        // Custom code from input
+        $code = strtoupper($request->code);
 
-        // Create Coupon (No credit deduction yet, deducted on usage)
+        // Create Coupon (Credits deducted on redemption by user)
         $coupon = $partner->coupons()->create([
+            'name' => $request->name,
             'code' => $code,
-            'discount_type' => $request->discount_type,
-            'discount_value' => ($request->discount_type === '100% OFF') ? 100 : 0, // Set default value
+            'discount_type' => '100% OFF',
+            'discount_value' => 100,
             'status' => 'active'
         ]);
 
@@ -407,19 +430,23 @@ class PartnerController extends Controller
             
             // Partner Logic: Check credits if publishing
             if($status === 'published') {
-                 // Check if already published (don't deduct again)
-                 $existing = isset($data['id']) ? \App\Models\Invitation::find($data['id']) : null;
+                 // Check if already published (don't deduct again) - Scoped to user to prevent IDOR/Credit Bypass
+                 $existing = isset($data['id']) ? \App\Models\Invitation::where('user_id', $user->id)->find($data['id']) : null;
                  if(!$existing || $existing->status !== 'published') {
                      $partner = $user->partnerDetails;
-                     if($partner->credits < 5) {
-                         return response()->json(['success' => false, 'message' => 'Insufficient credits. You need 5 credits to publish. Please buy more.'], 402);
+                     // Dynamic Cost
+                     $invitationCost = \App\Models\Setting::where('key', 'partner_invitation_cost')->value('value') ?? 5;
+
+                     if($partner->credits < $invitationCost) {
+                         return response()->json(['success' => false, 'message' => "Insufficient credits. You need $invitationCost credits to publish. Please buy more."], 402);
                      }
                      // Deduct Credit
-                     $partner->decrement('credits', 5);
+                     $partner->decrement('credits', $invitationCost);
+                     $description = 'Published Invitation for ' . ($data['groom'] ?? 'Groom') . ' & ' . ($data['bride'] ?? 'Bride') . ' (' . $invitationCost . ' Credits)';
                      $partner->creditLogs()->create([
                          'type' => 'debit',
-                         'amount' => 5,
-                         'description' => 'Published Invitation (5 Credits)'
+                         'amount' => $invitationCost,
+                         'description' => $description
                      ]);
                  }
             }
@@ -478,7 +505,9 @@ class PartnerController extends Controller
 
     public function downloadInvoice($id)
     {
-        $invoice = \App\Models\PartnerInvoice::where('invoice_number', $id)->firstOrFail();
+        $invoice = \App\Models\PartnerInvoice::where('invoice_number', $id)
+            ->where('partner_id', $partner->id)
+            ->firstOrFail();
         $user = Auth::user();
         $partner = $user->partnerDetails;
         

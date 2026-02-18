@@ -105,6 +105,11 @@ class PaymentController extends Controller
                 $meta = ['package_id' => $selectedPackage['id'], 'credits' => $selectedPackage['credits']];
             }
 
+            // Update GST Number if provided
+            if ($request->has('gst_number') && !empty($request->gst_number)) {
+                $partner->update(['gst_number' => $request->gst_number]);
+            }
+
             $api = $this->getRazorpayApi();
             
             // Calculate Tax
@@ -250,7 +255,7 @@ class PaymentController extends Controller
             $totalAmount = $baseAmount + $taxAmount;
 
             // Payment verified - Add credits in transaction
-            DB::transaction(function () use ($partner, $request, $totalAmount, $itemName, $descriptionSuffix, $creditsToAdd) {
+            DB::transaction(function () use ($partner, $request, $totalAmount, $itemName, $descriptionSuffix, $creditsToAdd, $baseAmount) {
                 // 1. Add Credits
                 if($creditsToAdd > 0) {
                     $partner->increment('credits', $creditsToAdd);
@@ -273,6 +278,57 @@ class PaymentController extends Controller
                     'description' => 'Purchased ' . $itemName . ' (Invoice: ' . $invoice->invoice_number . ')',
                     'type' => 'credit'
                 ]);
+
+                // 4. Log Coupon Usage (Partners)
+                if ($request->has('coupon_code') && $request->coupon_code) {
+                     $coupon = \App\Models\Coupon::where('code', $request->coupon_code)->first();
+                     if ($coupon) {
+                         // Recalculate discount for logging
+                         $discountValue = 0;
+                         $isFixed = false;
+                         
+                         if ($coupon->partner_id) {
+                            $discountValue = 100; // Free for partners? Logic might vary, assuming standard percentage here if not 100%
+                         } elseif ($coupon->discount_value > 0) {
+                             $discountValue = $coupon->discount_value;
+                             $dt = strtolower($coupon->discount_type);
+                             if (str_contains($dt, 'fixed') || str_contains($dt, 'flat')) $isFixed = true;
+                         } else {
+                             // Legacy
+                             $dt = $coupon->discount_type;
+                             if (preg_match('/(\d+)/', $dt, $matches)) $discountValue = (float) $matches[1];
+                             if (str_contains(strtolower($dt), 'fixed') || str_contains(strtolower($dt), '₹')) $isFixed = true;
+                         }
+
+                         $discountAmount = 0;
+                         if ($isFixed) {
+                             $discountAmount = $discountValue * 100; // Paise
+                         } else {
+                             $discountAmount = $baseAmount * ($discountValue / 100);
+                         }
+                         if($discountAmount > $baseAmount) $discountAmount = $baseAmount;
+
+
+                         \App\Models\CouponUsage::create([
+                             'coupon_id' => $coupon->id,
+                             'user_id' => $partner->user_id, // Owner
+                             'order_id' => $request->razorpay_order_id,
+                             'original_amount' => $baseAmount / 100,
+                             'discount_amount' => $discountAmount / 100,
+                             'final_amount' => ($baseAmount - $discountAmount) / 100,
+                             'status' => 'completed'
+                         ]);
+
+                         $coupon->update([
+                             'used_at' => now(),
+                             'used_by' => $partner->user_id,
+                         ]);
+                         
+                         if ($coupon->max_uses && $coupon->usages()->count() >= $coupon->max_uses) {
+                             $coupon->update(['status' => 'used']);
+                         }
+                     }
+                }
             });
 
             return response()->json([
@@ -340,12 +396,22 @@ class PaymentController extends Controller
             $promoApplied = false;
 
             // Apply coupon if provided
-        if ($request->coupon_code) {
             $coupon = \App\Models\Coupon::where('code', $request->coupon_code)
                 ->whereIn('status', ['active', 'Active'])
                 ->first();
                 
             if ($coupon) {
+                // Partner Credit Check
+                if ($coupon->partner_id) {
+                     $partner = $coupon->partner->partnerDetails;
+                     if(!$partner || $partner->credits < 5) {
+                          return response()->json([
+                            'success' => false,
+                            'message' => 'This coupon cannot be redeemed at the moment (Agency Limit Reached).'
+                        ], 400);
+                     }
+                }
+
                 // Determine discount type and value
                 $discountValue = 0;
                 $isFixed = false;
@@ -387,7 +453,7 @@ class PaymentController extends Controller
                     'discount_value' => $discountValue
                 ];
             }
-        }    
+
             
             // Apply session promo discount (50% OFF from dashboard button)
             if (!$couponData && session('promo_discount') === '50OFF') {

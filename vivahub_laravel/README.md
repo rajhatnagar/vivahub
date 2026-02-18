@@ -16,7 +16,7 @@ VivaHub is a modern Laravel-based platform for creating and managing wedding inv
 - **Database**: MySQL
 
 ## Setup
-
+the 
 1. Clone the repository.
 2. Run `composer install`.
 3. Copy `.env.example` to `.env` and configure DB.

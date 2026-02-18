@@ -163,7 +163,7 @@
                  
                  <!-- Limit Counter -->
                  <div class="bg-accent-gold/10 text-accent-gold px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-2 border border-accent-gold/20">
-                    <span class="material-symbols-outlined text-sm">inventory_2</span> {{ $partner->credits }} / {{ $stats['used_credits'] ?? 0 }} Credits
+                    <span class="material-symbols-outlined text-sm">inventory_2</span> Total Available Credits: {{ $partner->credits }}
                  </div>
                  
                  <button onclick="app.toggleUpgradeModal(true)" class="hidden sm:flex items-center gap-2 bg-gradient-to-r from-accent-gold to-yellow-600 text-white px-4 py-1.5 rounded-lg text-xs font-bold shadow-lg hover:shadow-accent-gold/40 transition-all">
@@ -282,13 +282,14 @@
             </div>
             <form onsubmit="event.preventDefault(); window.app.createCoupon(this)" class="p-6 space-y-6">
                 @csrf
+                <input type="hidden" name="discount_type" value="100% OFF">
+                
                 <div>
-                    <label class="label-premium">Discount Type</label>
-                    <select name="discount_type" class="input-premium">
-                        <option value="100% OFF">100% OFF</option>
-                        <option value="50% OFF">50% OFF</option>
-                    </select>
+                    <label class="label-premium">Coupon Name <span class="text-red-500">*</span></label>
+                    <input type="text" name="name" class="input-premium" placeholder="e.g. For Amit & Pooja" required>
+                    <p class="text-xs text-text-muted mt-1">Internal name for your reference.</p>
                 </div>
+
                 <div>
                     <label class="label-premium">Custom Code (Optional)</label>
                     <input type="text" name="code" class="input-premium" placeholder="e.g. WEDDING2024" maxlength="20">
@@ -297,12 +298,12 @@
                 
                 <div class="p-4 bg-accent-gold/10 border border-accent-gold/30 rounded-xl flex gap-3 items-start">
                     <div class="bg-accent-gold text-white rounded-full p-1 mt-0.5 shrink-0">
-                        <span class="material-symbols-outlined text-sm">inventory_2</span>
+                        <span class="material-symbols-outlined text-sm">warning</span>
                     </div>
                     <div>
-                        <h4 class="text-sm font-bold text-text-dark dark:text-white mb-1">Credits deducted on redemption</h4>
+                        <h4 class="text-sm font-bold text-text-dark dark:text-white mb-1">Important: Credit Deduction</h4>
                         <p class="text-xs text-text-muted leading-relaxed">
-                            Generating a code is free. <strong>1 Credit</strong> will be deducted only when a client successfully redeems it.
+                            A credit will <strong>ONLY</strong> be deducted when a client successfully <strong>redeems</strong> this code. Generating codes is free.
                         </p>
                     </div>
                 </div>
@@ -314,7 +315,7 @@
 
                 <button type="submit" class="w-full bg-primary hover:bg-primary-dark text-white font-bold py-3.5 rounded-xl shadow-lg transition-colors flex items-center justify-center gap-2">
                     <span class="material-symbols-outlined text-lg">check_circle</span>
-                    Generate & Deduct Credit
+                    Generate Code
                 </button>
             </form>
         </div>
@@ -354,9 +355,9 @@
             </div>
             <div class="p-6 overflow-y-auto max-h-[70vh]">
                 @if(isset($plans) && $plans->count() > 0)
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         @foreach($plans as $plan)
-                        <div class="bg-gray-50 dark:bg-white/5 p-4 rounded-xl border {{ $plan->name === 'Gold Partner' ? 'border-accent-gold/20 relative overflow-hidden ring-1 ring-accent-gold/10' : 'border-gray-200 dark:border-white/10' }} flex flex-col h-full">
+                        <div class="bg-gray-50 dark:bg-white/5 p-4 rounded-xl border {{ $plan->name === 'Gold Partner' ? 'border-accent-gold/20 relative overflow-hidden ring-1 ring-accent-gold/10' : 'border-gray-200 dark:border-white/10' }} flex flex-col h-full hover:scale-[1.02] transition-transform duration-300">
                             @if($plan->name === 'Gold Partner' || $plan->is_popular)
                             <div class="absolute top-0 right-0 bg-accent-gold text-white text-[9px] font-bold px-2 py-0.5 rounded-bl-lg">POPULAR</div>
                             @endif
@@ -372,7 +373,7 @@
                             @if($plan->credits > 0)
                                 <div class="mb-4">
                                     <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-md font-bold flex items-center gap-1 w-fit">
-                                        <span class="material-symbols-outlined text-xs">token</span> {{ $plan->credits }} Credits
+                                        <span class="text-[10px] uppercase font-bold text-green-800">{{ $plan->credits }} Invitations</span>
                                     </span>
                                 </div>
                             @endif
@@ -380,12 +381,11 @@
                              <div class="mt-auto space-y-3">
                                 <button onclick="window.app.buyPlan({{ $plan->id }})" class="w-full bg-primary text-white py-2 rounded-lg font-bold text-sm shadow-md hover:bg-primary-dark transition-all">Select Plan</button>
                                 
-                                <div x-data="{ open: false }" class="border-t border-gray-200 dark:border-white/10 pt-2">
-                                    <button @click="open = !open" class="flex items-center justify-between w-full text-xs font-bold text-text-muted hover:text-primary transition-colors">
+                                <div x-data="{ open: true }" class="border-t border-gray-200 dark:border-white/10 pt-2">
+                                    <button @click="open = !open" class="flex items-center justify-between w-full text-xs font-bold text-text-muted hover:text-primary transition-colors mb-2">
                                         <span>View Benefits</span>
-                                        <span class="material-symbols-outlined text-sm transform transition-transform" :class="open ? 'rotate-180' : ''">expand_more</span>
                                     </button>
-                                    <ul x-show="open" class="mt-2 space-y-1.5 text-[11px] text-text-muted" x-collapse>
+                                    <ul x-show="open" class="space-y-1.5 text-[11px] text-text-muted" x-collapse>
                                         @if(is_array($plan->features))
                                             @foreach($plan->features as $feature)
                                             <li class="flex gap-1.5 items-start">
@@ -408,6 +408,73 @@
                 @endif
             </div>
 
+            <!-- Coupon Section -->
+            <div class="p-6 border-t border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-white/5">
+                <div class="max-w-md mx-auto">
+                    <label class="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 block">Have a Coupon Code?</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="plan-coupon-code" class="flex-1 bg-white dark:bg-white/10 border border-gray-200 dark:border-white/10 rounded-lg px-4 py-2 text-sm font-bold text-text-dark dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="Enter code">
+                        <button onclick="window.app.checkCoupon()" class="bg-text-dark dark:bg-white text-white dark:text-text-dark px-4 py-2 rounded-lg font-bold text-sm shadow-md hover:opacity-90 transition-opacity">Apply</button>
+                    </div>
+                    <p id="coupon-msg" class="text-xs font-bold mt-2 hidden"></p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- BILLING SUMMARY MODAL -->
+    <div id="billing-summary-modal" class="fixed inset-0 z-[80] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="app.toggleBillingModal(false)"></div>
+        <div class="relative bg-white dark:bg-surface-dark w-full max-w-md rounded-2xl shadow-2xl overflow-hidden animate-slide-up">
+            <div class="p-6 bg-gray-50 dark:bg-white/5 border-b border-gray-100 dark:border-white/10 flex justify-between items-center">
+                <h3 class="text-xl font-bold text-text-dark dark:text-white">Billing Summary</h3>
+                <button onclick="app.toggleBillingModal(false)"><span class="material-symbols-outlined text-text-muted hover:text-primary">close</span></button>
+            </div>
+            <div class="p-6 space-y-6">
+                <!-- Plan Details -->
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h4 id="billing-plan-name" class="font-bold text-lg text-text-dark dark:text-white">Gold Partner</h4>
+                        <p class="text-xs text-text-muted">Subscription Plan</p>
+                    </div>
+                    <div class="text-right">
+                        <p id="billing-plan-price" class="font-bold text-lg text-primary">&#8377;4,999</p>
+                        <p class="text-xs text-text-muted">/ Year</p>
+                    </div>
+                </div>
+
+                <!-- GST Section -->
+                <div class="bg-gray-50 dark:bg-white/5 p-4 rounded-xl border border-gray-100 dark:border-white/10 space-y-3">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-text-muted">Subtotal</span>
+                        <span id="billing-subtotal" class="font-bold text-text-dark dark:text-white">&#8377;4,999</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-text-muted">GST (18%)</span>
+                        <span id="billing-gst" class="font-bold text-text-dark dark:text-white">&#8377;900</span>
+                    </div>
+                    <div class="border-t border-dashed border-gray-200 dark:border-white/20 pt-3 flex justify-between items-center">
+                        <span class="font-bold text-lg text-text-dark dark:text-white">Total</span>
+                        <span id="billing-total" class="font-bold text-2xl text-primary">&#8377;5,899</span>
+                    </div>
+                </div>
+
+                <!-- GST Input -->
+                <div>
+                    <label class="label-premium">GST Number (Optional)</label>
+                    <input type="text" id="billing-gst-input" class="input-premium uppercase" placeholder="GSTIN (e.g. 29ABCDE1234F1Z5)" maxlength="15">
+                    <p class="text-xs text-text-muted mt-1">Enter to receive GST Invoice.</p>
+                </div>
+                
+                <!-- Buttons -->
+                <div class="flex gap-3 pt-2">
+                    <button onclick="app.toggleBillingModal(false)" class="flex-1 py-3 rounded-xl font-bold text-text-muted hover:bg-gray-100 dark:hover:bg-white/10 transition-colors">Cancel</button>
+                    <button onclick="window.app.proceedToPayment()" class="flex-[2] bg-primary hover:bg-primary-dark text-white py-3 rounded-xl font-bold shadow-lg transition-colors flex items-center justify-center gap-2">
+                        <span>Pay Securely</span> <span class="material-symbols-outlined text-sm">lock</span>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -418,6 +485,7 @@
                 currentView: 'dashboard',
                 builderStep: 1,
                 previewMode: 'mobile',
+                couponCode: null, // Store active coupon
                 formData: {
                     tagline: "We are getting married",
                     groom: "Amit",
@@ -427,8 +495,124 @@
                     groomBio: "",
                     brideBio: "",
                     events: [{ name: "Sangeet", time: "7:00 PM", venue: "Grand Hotel" }],
-                    rsvpEnabled: true
-                }
+                rsvpEnabled: true
+                },
+                selectedPlan: null // Store selected plan for billing
+            },
+            
+            // ... existing data ...
+
+            toggleBillingModal: function(show) {
+                const el = document.getElementById('billing-summary-modal');
+                show ? el.classList.remove('hidden') : el.classList.add('hidden');
+            },
+
+            buyPlan: function(planId) {
+                // Find plan details
+                const plan = app.data.plans ? app.data.plans.find(p => p.id === planId) : null;
+                if(!plan) return;
+
+                app.state.selectedPlan = plan;
+                
+                // Populate Billing Modal
+                document.getElementById('billing-plan-name').innerText = plan.name;
+                document.getElementById('billing-plan-price').innerHTML = '&#8377;' + new Intl.NumberFormat('en-IN').format(plan.price);
+                document.getElementById('billing-subtotal').innerHTML = '&#8377;' + new Intl.NumberFormat('en-IN').format(plan.price);
+                
+                // Calculate GST (assuming price excludes GST, or if inclusive, adjust logic. Standard practice: Price + 18% GST)
+                const price = parseFloat(plan.price);
+                const gst = Math.round(price * 0.18); 
+                const total = price + gst;
+
+                document.getElementById('billing-gst').innerHTML = '&#8377;' + new Intl.NumberFormat('en-IN').format(gst);
+                document.getElementById('billing-total').innerHTML = '&#8377;' + new Intl.NumberFormat('en-IN').format(total);
+
+                // Close Upgrade Modal & Open Billing Modal
+                app.toggleUpgradeModal(false);
+                app.toggleBillingModal(true);
+            },
+
+            proceedToPayment: function() {
+                const plan = app.state.selectedPlan;
+                if(!plan) return;
+
+                const gstNumber = document.getElementById('billing-gst-input').value;
+                const couponCode = app.state.couponCode;
+
+                // Show loading state
+                const btn = document.querySelector('#billing-summary-modal button:last-child');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> Processing...';
+                btn.disabled = true;
+
+                fetch('{{ route("partner.payment.createOrder") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        plan_id: plan.id,
+                        gst_number: gstNumber,
+                        coupon_code: couponCode
+                    })
+                })
+                .then(r => r.json())
+                .then(data => {
+                    if(data.success) {
+                        const options = {
+                            "key": data.key,
+                            "amount": data.amount,
+                            "currency": data.currency,
+                            "name": data.name,
+                            "description": data.description,
+                            "image": "{{ $partner->logo_url ?? asset('VivaHub-logo.png') }}",
+                            "order_id": data.order_id,
+                            "handler": function (response){
+                                // Verify Payment
+                                fetch('{{ route("partner.payment.verify") }}', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                    },
+                                    body: JSON.stringify({
+                                        razorpay_payment_id: response.razorpay_payment_id,
+                                        razorpay_order_id: response.razorpay_order_id,
+                                        razorpay_signature: response.razorpay_signature,
+                                        plan_id: plan.id
+                                    })
+                                })
+                                .then(r => r.json())
+                                .then(res => {
+                                    if(res.success) {
+                                        alert(res.message);
+                                        location.reload();
+                                    } else {
+                                        alert(res.message);
+                                    }
+                                });
+                            },
+                            "prefill": data.prefill,
+                            "theme": {
+                                "color": "{{ $partner->primary_color ?? '#800020' }}"
+                            }
+                        };
+                        const rzp1 = new Razorpay(options);
+                        rzp1.open();
+                        app.toggleBillingModal(false);
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(e => {
+                    console.error(e);
+                    alert('Payment initialization failed.');
+                })
+                .finally(() => {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                });
             },
             data: {
                 clients: @json($clients ?? []),
@@ -476,6 +660,15 @@
             toggleUpgradeModal: function(show) {
                 const el = document.getElementById('upgrade-modal');
                 show ? el.classList.remove('hidden') : el.classList.add('hidden');
+                
+                // Reset coupon state on close
+                if(!show) {
+                    this.state.couponCode = null;
+                    const inp = document.getElementById('plan-coupon-code');
+                    const msg = document.getElementById('coupon-msg');
+                    if(inp) inp.value = '';
+                    if(msg) { msg.classList.add('hidden'); msg.innerText = ''; msg.className = 'text-xs font-bold mt-2 hidden'; }
+                }
             },
             
             toggleClientModal: function(show) {
@@ -509,6 +702,14 @@
                 document.getElementById('client-btn-text').innerText = "Create & Send Invite";
                 form.action = "{{ route('partner.clients.store') }}";
                 this.toggleClientModal(true);
+            },
+
+            filterHistory: function() {
+                const start = document.getElementById('history-start').value;
+                const end = document.getElementById('history-end').value;
+                // For now, prompt user that feature is coming or reload with params if backend supported
+                alert('Date filtering will be available soon.');
+                // window.location.href = `{{ route('partner.dashboard') }}?view=history&start=${start}&end=${end}`;
             },
 
             createCoupon: function(form) {
@@ -654,6 +855,22 @@
                 }
             },
 
+            checkCoupon: function() {
+                const inp = document.getElementById('plan-coupon-code');
+                const msg = document.getElementById('coupon-msg');
+                const code = inp.value.trim();
+                
+                if(!code) return;
+                
+                // Simple frontend simulation/validation or assume valid to pass to backend
+                // In a real scenario, we might hit an API to validate first. 
+                // For now, we'll store it and show "Applied" to let the backend handle the real validation.
+                this.state.couponCode = code;
+                
+                msg.innerText = "Coupon '" + code + "' applied! Discount will be calculated at checkout.";
+                msg.className = "text-xs font-bold mt-2 text-green-600 block";
+            },
+
             buyPlan: function(planId) {
                 this.buyCredits(null, planId);
             },
@@ -661,6 +878,10 @@
             buyCredits: function(packageId = 'pack_10', planId = null) {
                 // Create order via backend
                 const body = planId ? { plan_id: planId } : { package_id: packageId };
+                
+                if(this.state.couponCode) {
+                    body.coupon_code = this.state.couponCode;
+                }
 
                 fetch('{{ route("partner.payment.createOrder") }}', {
                     method: 'POST',
@@ -949,19 +1170,30 @@
                 history: function() {
                      return `
                         <div class="max-w-4xl mx-auto animate-fade-in">
-                            <h2 class="text-3xl font-serif font-bold text-text-dark dark:text-white mb-6">Usage History</h2>
+                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                                <h2 class="text-3xl font-serif font-bold text-text-dark dark:text-white">Usage History</h2>
+                                
+                                <div class="flex gap-2">
+                                    <input type="date" id="history-start" class="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm text-text-dark dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50">
+                                    <input type="date" id="history-end" class="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm text-text-dark dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50">
+                                    <button onclick="window.app.filterHistory()" class="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg font-bold text-sm shadow-md transition-colors">
+                                        Filter
+                                    </button>
+                                </div>
+                            </div>
                             
                             <!-- Desktop Table -->
                             <div class="hidden md:block bg-white dark:bg-surface-dark rounded-2xl shadow-card overflow-hidden">
                                  <table class="w-full text-left">
                                     <thead class="bg-cream-light dark:bg-white/5 border-b border-gray-100 dark:border-white/10 text-xs font-bold text-text-muted uppercase">
-                                        <tr><th class="px-6 py-4">Transaction</th><th>Date</th><th>Description</th><th class="text-right px-6">Change</th></tr>
+                                        <tr><th class="px-6 py-4">Transaction</th><th class="px-6 py-4">Client</th><th>Date</th><th>Description</th><th class="text-right px-6">Change</th></tr>
                                     </thead>
                                     <tbody class="divide-y divide-gray-50 dark:divide-white/5">
                                         ${window.app.data.history.map(e => `
                                             <tr class="hover:bg-background-light dark:hover:bg-white/5">
                                                 <td class="px-6 py-4 font-mono text-xs text-text-muted">${e.id}</td>
-                                                <td class="px-6 py-4 text-sm">${e.date}</td>
+                                                <td class="px-6 py-4 text-sm font-bold text-text-dark dark:text-white">${e.client_name || '-'}</td>
+                                                <td class="px-6 py-4 text-sm text-text-muted">${e.date}</td>
                                                 <td class="px-6 py-4 text-sm font-medium text-text-dark dark:text-white">${e.desc}</td>
                                                 <td class="px-6 py-4 text-right font-bold ${e.type === 'credit' ? 'text-green-600' : 'text-red-500'}">${e.amount}</td>
                                             </tr>
@@ -975,7 +1207,10 @@
                                 ${window.app.data.history.map(e => `
                                     <div class="bg-white dark:bg-surface-dark p-5 rounded-2xl shadow-card border border-primary/5">
                                         <div class="flex justify-between items-start mb-2">
-                                            <span class="font-mono text-xs text-text-muted bg-gray-100 dark:bg-white/10 px-2 py-1 rounded">${e.id}</span>
+                                            <div class="flex flex-col">
+                                                <span class="font-mono text-xs text-text-muted bg-gray-100 dark:bg-white/10 px-2 py-1 rounded w-fit mb-1">${e.id}</span>
+                                                <span class="text-xs font-bold text-primary">${e.client_name || '-'}</span>
+                                            </div>
                                             <span class="text-sm font-bold ${e.type === 'credit' ? 'text-green-600' : 'text-red-500'}">${e.amount}</span>
                                         </div>
                                         <div class="mb-2">

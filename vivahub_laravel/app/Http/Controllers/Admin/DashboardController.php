@@ -62,6 +62,13 @@ class DashboardController extends Controller
                 'today_revenue' => Transaction::where('status', 'paid')->whereDate('created_at', today())->sum('amount'),
             ];
 
+            // Coupon Analytics
+            $coupon_stats = [
+                'total' => \App\Models\Coupon::count(),
+                'active' => \App\Models\Coupon::where('status', 'active')->count(),
+                'redeemed' => \App\Models\CouponUsage::count(),
+            ];
+
             // Gateway Stats
             $gateway_stats_data = Transaction::select('gateway', DB::raw('count(*) as count'), DB::raw('sum(amount) as total'))
                 ->where('status', 'paid')
@@ -106,7 +113,8 @@ class DashboardController extends Controller
             'payment_stats',
             'themeColor',
             'gateway_stats_data',
-            'revenue_trend'
+            'revenue_trend',
+            'coupon_stats'
         ));
     }
 }

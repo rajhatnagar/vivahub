@@ -21,6 +21,17 @@ class AuthController extends Controller
         if (auth()->attempt($credentials)) {
             $request->session()->regenerate();
 
+            // Check if user is suspended
+            if (auth()->user()->status === 'suspended') {
+                auth()->logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+                
+                return back()->withErrors([
+                    'email' => 'Your account has been suspended. Please contact support.',
+                ])->onlyInput('email');
+            }
+
             if (auth()->user()->role === 'admin') {
                 return redirect()->route('admin.dashboard');
             }
@@ -50,12 +61,12 @@ class AuthController extends Controller
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        $user = \App\Models\User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => $validated['password'],
-            'role' => 'user'
-        ]);
+        $user = new \App\Models\User();
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+        $user->password = $validated['password'];
+        $user->role = 'user';
+        $user->save();
 
         auth()->login($user);
 

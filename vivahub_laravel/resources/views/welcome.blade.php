@@ -64,7 +64,11 @@
         }
     </style>
 </head>
+</head>
 <body class="min-h-screen font-sans text-gray-800 bg-white">
+    @php
+        $isFree = \App\Models\Setting::where('key', 'enable_free_access')->value('value') == '1';
+    @endphp
 
     <!-- === LOGIN MODAL (Hidden by default) === -->
     <div id="login-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 hidden backdrop-blur-sm">
@@ -147,7 +151,7 @@
                     </label>
                     <input type="password" name="password" placeholder="Password" required class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:outline-none focus:border-gold-primary text-sm">
                 </div>
-                <button type="submit" class="w-full bg-gradient-to-r from-gold-light to-gold-primary text-white py-3 rounded-full font-bold shadow-xl hover:shadow-2xl hover:from-gold-primary hover:to-gold-dark transform transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:shadow-md">
+                <button type="submit" class="w-full bg-gradient-to-r from-gold-light to-gold-primary text-white py-3 rounded-full font-bold shadow-xl hover:shadow-2xl hover:from-gold-primary hover:to-gold-dark transform transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:shadow-md btn-color" style="background-color: Black;">
                     Access Partner Dashboard
                 </button>
             </form>
@@ -187,7 +191,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="w-full bg-black text-white py-3 rounded-full font-bold shadow-xl hover:bg-gray-900 transform transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:shadow-md border border-gold-primary/30">
+                <button type="submit" class="w-full bg-black text-white py-3 rounded-full font-bold shadow-xl hover:bg-gray-900 transform transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:shadow-md border border-gold-primary/30" style="background-color: Black;">
                     Register as Partner
                 </button>
             </form>
@@ -235,19 +239,9 @@
           <div class="hidden lg:flex w-full justify-between items-center h-full">
              <div class="w-1/2 flex justify-start items-center pl-10">
                  <div class="relative w-[300px] h-[600px] bg-black rounded-[3rem] border-[8px] border-gray-900 shadow-2xl overflow-hidden ring-1 ring-white/20 transform hover:scale-105 transition-transform duration-500">
-                    <div class="absolute inset-0 bg-[#fff5f0] flex flex-col items-center">
-                       <div class="w-full h-1/2 relative">
-                          <img src="https://images.unsplash.com/photo-1606103920295-97f88c0ce947?auto=format&fit=crop&q=80&w=600" alt="Couple" class="w-full h-full object-cover opacity-90">
-                          <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
-                            <p class="font-serif italic text-gray-800 text-sm drop-shadow-md">We invite you to The Wedding of</p>
-                            <h2 class="font-serif text-3xl text-gray-900 my-2 drop-shadow-md font-bold">Swara & Aarambh</h2>
-                            <button class="px-3 py-1 bg-gold-primary text-white text-[10px] rounded-full mt-2 uppercase tracking-widest shadow-lg">Open Invitation</button>
-                          </div>
-                       </div>
-                       <div class="w-full h-1/2 p-4">
-                          <img src="https://images.unsplash.com/photo-1596395279624-9b8b846f4967?auto=format&fit=crop&q=80&w=600" alt="Couple 2" class="w-full h-full object-cover rounded-xl shadow-inner">
-                       </div>
-                       <div class="absolute top-0 w-32 h-6 bg-black rounded-b-xl left-1/2 transform -translate-x-1/2 z-10"></div>
+                    <div class="absolute inset-0 bg-white overflow-hidden rounded-[2.5rem]">
+                         <iframe src="{{ route('template.preview', ['template' => 'wedding-1']) }}" class="w-full h-full border-0" loading="lazy"></iframe>
+                         <!-- Pointer Events Overlay to allow scrolling but prevent navigation if needed -->
                     </div>
                  </div>
              </div>
@@ -263,15 +257,23 @@
                 
                 <div class="flex flex-row gap-4 mt-2">
                   <a href="{{ route('builder') }}" class="flex items-center justify-center gap-2 bg-[#a67c52] hover:bg-[#8d6a46] text-white px-8 py-3 rounded-full text-lg font-medium transition-all shadow-xl hover:shadow-2xl border border-white/10">
-                    <span>Create Now — Just ₹399</span>
+                    <span>
+                        @if($isFree)
+                            Create Now For Free
+                        @else
+                            Create Now — Just ₹399
+                        @endif
+                    </span>
                     <div class="bg-white rounded-full p-0.5">
                         <i data-lucide="play-circle" class="w-4 h-4 fill-[#a67c52] text-[#a67c52]"></i>
                     </div>
                   </a>
-                  <button class="flex items-center justify-center gap-2 bg-[#a67c52] hover:bg-[#8d6a46] border border-white/20 text-white px-8 py-3 rounded-full text-lg font-medium transition-all shadow-xl hover:shadow-2xl">
-                    <svg viewBox="0 0 24 24" class="w-5 h-5 fill-current"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-                    <span>Ask</span>
-                  </button>
+                  <a href="https://api.whatsapp.com/send?phone=919371892251&text=Hello%2C">
+                    <button class="flex items-center justify-center gap-2 bg-[#a67c52] hover:bg-[#8d6a46] border border-white/20 text-white px-8 py-3 rounded-full text-lg font-medium transition-all shadow-xl hover:shadow-2xl">
+                        <svg viewBox="0 0 24 24" class="w-5 h-5 fill-current"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                        <span>Ask</span>
+                    </button>
+                  </a>
                 </div>
             </div>
           </div>
@@ -291,20 +293,8 @@
                 <!-- Phone -->
                 <div class="w-[55%] flex justify-start pl-2">
                     <div class="relative w-[180px] h-[360px] bg-black rounded-[2rem] border-[4px] border-gray-900 shadow-2xl overflow-hidden ring-1 ring-white/20">
-                        <div class="absolute inset-0 bg-[#fff5f0] flex flex-col items-center">
-                           <div class="w-full h-1/2 relative">
-                              <img src="https://images.unsplash.com/photo-1606103920295-97f88c0ce947?auto=format&fit=crop&q=80&w=400" alt="Couple" class="w-full h-full object-cover opacity-90">
-                              <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-2">
-                                <p class="font-serif italic text-gray-800 text-[8px] drop-shadow-md">We invite you to The Wedding of</p>
-                                <h2 class="font-serif text-lg text-gray-900 my-1 drop-shadow-md font-bold">Swara & Aarambh</h2>
-                                <button class="px-2 py-0.5 bg-gold-primary text-white text-[8px] rounded-full mt-1 uppercase tracking-widest shadow-lg">Open Invitation</button>
-                              </div>
-                           </div>
-                           <div class="w-full h-1/2 p-2">
-                               <!-- UPDATED IMAGE HERE -->
-                               <img src="https://vivahub.in/test/Mobile_Background.png" alt="Couple 2" class="w-full h-full object-cover rounded-lg shadow-inner">
-                           </div>
-                           <div class="absolute top-0 w-20 h-4 bg-black rounded-b-lg left-1/2 transform -translate-x-1/2 z-10"></div>
+                        <div class="absolute inset-0 bg-white overflow-hidden rounded-[1.8rem]">
+                             <iframe src="{{ route('template.preview', ['template' => 'wedding-1']) }}" class="w-full h-full border-0" loading="lazy"></iframe>
                         </div>
                      </div>
                 </div>
@@ -313,7 +303,13 @@
                 <div class="w-[45%] flex flex-col items-start gap-3 pb-8 pl-1 pr-2">
                     <!-- Create Now Button -->
                     <a href="{{ route('builder') }}" class="flex flex-col items-center justify-center bg-[#b8966e] text-white px-2 py-2 rounded-xl shadow-xl border-t border-white/30 w-full relative overflow-hidden group hover:bg-[#a67c52] transition-colors">
-                        <span class="text-[11px] font-bold text-center leading-tight">Create Now <br> Just ₹399</span>
+                        <span class="text-[11px] font-bold text-center leading-tight">
+                            @if($isFree)
+                                Create Now <br> For Free
+                            @else
+                                Create Now <br> Just ₹399
+                            @endif
+                        </span>
                         <div class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-0.5">
                              <i data-lucide="play-circle" class="w-3 h-3 fill-[#a67c52] text-[#a67c52]"></i>
                         </div>
@@ -724,7 +720,30 @@
             featuresContainer.appendChild(div);
         });
         
+        
         lucide.createIcons();
+
+        // --- 7. Iframe Scrollbar Hider ---
+        function hideScrollbar(frame) {
+            if(!frame) return;
+            const injectStyle = () => {
+                try {
+                    const doc = frame.contentDocument || frame.contentWindow.document;
+                    if(!doc) return;
+                    if(!doc.getElementById('scrollbar-hide-style')) {
+                    const style = doc.createElement('style');
+                    style.id = 'scrollbar-hide-style';
+                    style.innerHTML = '::-webkit-scrollbar { display: none; } body { -ms-overflow-style: none; scrollbar-width: none; }';
+                    doc.head.appendChild(style);
+                    }
+                } catch(e) { console.log('Cross-origin restriction or frame not ready'); }
+            };
+            injectStyle(); // Try immediately
+            frame.onload = injectStyle; // And on load
+            // Periodic check for dynamic content
+            setInterval(injectStyle, 1000);
+        }
+        document.querySelectorAll('iframe').forEach(frame => hideScrollbar(frame));
 
     </script>
 </body>

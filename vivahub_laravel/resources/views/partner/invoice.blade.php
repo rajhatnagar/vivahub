@@ -234,15 +234,32 @@
             <div class="total-box">
                 <div class="row">
                     <span>Subtotal</span>
-                    <span>₹{{ number_format($invoice->amount, 2) }}</span>
+                    {{-- Reverse calculate base amount from total (Total = Base * 1.18) --}}
+                    @php
+                        $gstPercentage = 18; // Default or fetch from settings
+                        $totalAmount = $invoice->amount;
+                        $baseAmount = $totalAmount / (1 + ($gstPercentage / 100));
+                        $taxAmount = $totalAmount - $baseAmount;
+                        $cgst = $taxAmount / 2;
+                        $sgst = $taxAmount / 2;
+                    @endphp
+                    <span>₹{{ number_format($baseAmount, 2) }}</span>
+                </div>
+                
+                @if($taxAmount > 0)
+                <div class="row">
+                    <span>CGST ({{ $gstPercentage/2 }}%)</span>
+                    <span>₹{{ number_format($cgst, 2) }}</span>
                 </div>
                 <div class="row">
-                    <span>Tax (0%)</span>
-                    <span>₹0.00</span>
+                    <span>SGST ({{ $gstPercentage/2 }}%)</span>
+                    <span>₹{{ number_format($sgst, 2) }}</span>
                 </div>
+                @endif
+                
                 <div class="row final">
                     <span>Total</span>
-                    <span>₹{{ number_format($invoice->amount, 2) }}</span>
+                    <span>₹{{ number_format($totalAmount, 2) }}</span>
                 </div>
             </div>
         </div>

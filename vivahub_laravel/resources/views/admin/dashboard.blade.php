@@ -170,6 +170,37 @@
         </div>
     </section>
 
+    <!-- Coupon Analytics -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark p-6 rounded-2xl shadow-soft-light flex items-center justify-between">
+            <div>
+                <p class="text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider">Total Coupons</p>
+                <h3 class="text-2xl font-black text-slate-800 dark:text-white mt-1">{{ number_format($coupon_stats['total'] ?? 0) }}</h3>
+            </div>
+            <div class="size-12 rounded-xl bg-purple-50 dark:bg-purple-900/20 text-purple-600 flex items-center justify-center">
+                <span class="material-symbols-outlined text-2xl">confirmation_number</span>
+            </div>
+        </div>
+        <div class="bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark p-6 rounded-2xl shadow-soft-light flex items-center justify-between">
+            <div>
+                <p class="text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider">Active Coupons</p>
+                <h3 class="text-2xl font-black text-slate-800 dark:text-white mt-1">{{ number_format($coupon_stats['active'] ?? 0) }}</h3>
+            </div>
+            <div class="size-12 rounded-xl bg-green-50 dark:bg-green-900/20 text-green-600 flex items-center justify-center">
+                <span class="material-symbols-outlined text-2xl">local_activity</span>
+            </div>
+        </div>
+        <div class="bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark p-6 rounded-2xl shadow-soft-light flex items-center justify-between">
+            <div>
+                <p class="text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider">Total Redemptions</p>
+                <h3 class="text-2xl font-black text-slate-800 dark:text-white mt-1">{{ number_format($coupon_stats['redeemed'] ?? 0) }}</h3>
+            </div>
+            <div class="size-12 rounded-xl bg-blue-50 dark:bg-blue-900/20 text-blue-600 flex items-center justify-center">
+                <span class="material-symbols-outlined text-2xl">redeem</span>
+            </div>
+        </div>
+    </section>
+
     <!-- Activity Teaser -->
     <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Recent Signups -->

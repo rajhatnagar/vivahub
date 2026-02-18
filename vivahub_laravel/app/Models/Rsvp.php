@@ -21,4 +21,9 @@ class Rsvp extends Model
     protected $casts = [
         'attending_events' => 'array',
     ];
+
+    public function invitation()
+    {
+        return $this->belongsTo(Invitation::class);
+    }
 }

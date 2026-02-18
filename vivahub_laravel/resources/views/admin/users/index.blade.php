@@ -59,16 +59,12 @@
                     <tr class="bg-gray-50 dark:bg-[#1a0b0b] border-b border-border-light dark:border-border-dark">
                         <th class="p-4 text-xs font-bold text-gray-500 uppercase">User</th>
                         <th class="p-4 text-xs font-bold text-gray-500 uppercase">Role</th>
+                        <th class="p-4 text-xs font-bold text-gray-500 uppercase">Credits</th>
                         <th class="p-4 text-xs font-bold text-gray-500 uppercase">Email</th>
                         <th class="p-4 text-xs font-bold text-gray-500 uppercase">Status</th>
                         <th class="p-4 text-xs font-bold text-gray-500 uppercase text-right">Actions</th>
                     </tr>
                 </thead>
-                <!-- We will use JS fetch for data or Blade layout. For now, assuming JS loading via controller API or blade injection. 
-                     Since we passed JSON response in controller, let's switch controller to return VIEW with data, or use AlpineJS fetch.
-                     For simplicity and Laravel best practice, the controller should return VIEW. I need to fix Controller later properly. 
-                     But for this step, I'll use AlpineJS to fetch from the API endpoint I created.
-                -->
                 <tbody class="divide-y divide-border-light dark:divide-border-dark">
                     @forelse($users as $user)
                         <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
@@ -77,7 +73,12 @@
                                     <div class="size-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center font-bold text-xs">
                                         {{ substr($user->name, 0, 1) }}
                                     </div>
-                                    <span class="text-slate-800 dark:text-white text-sm font-medium">{{ $user->name }}</span>
+                                    <div>
+                                        <span class="block text-slate-800 dark:text-white text-sm font-medium">{{ $user->name }}</span>
+                                        @if($user->role === 'partner' && $user->partnerDetails)
+                                            <span class="block text-xs text-gray-400">{{ $user->partnerDetails->agency_name }}</span>
+                                        @endif
+                                    </div>
                                 </div>
                             </td>
                             <td class="p-4">
@@ -95,12 +96,32 @@
                                     </span>
                                 @endif
                             </td>
+                            <td class="p-4 text-sm font-mono font-bold text-slate-700 dark:text-gray-300">
+                                @if($user->role === 'partner')
+                                    {{ $user->partnerDetails->credits ?? 0 }}
+                                @else
+                                    <span class="text-gray-300">-</span>
+                                @endif
+                            </td>
                             <td class="p-4 text-gray-600 dark:text-gray-400 text-sm">{{ $user->email }}</td>
                             <td class="p-4">
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">Active</span>
+                                <form action="{{ route('admin.users.toggleStatus', $user->id) }}" method="POST">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold cursor-pointer transition-colors {{ $user->status === 'active' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 hover:bg-red-100 hover:text-red-700' : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 hover:bg-green-100 hover:text-green-700' }}" title="Click to Toggle Status">
+                                        {{ ucfirst($user->status ?? 'active') }}
+                                    </button>
+                                </form>
                             </td>
                             <td class="p-4 text-right">
                                 <div class="flex items-center justify-end gap-2">
+                                    @if($user->role === 'partner')
+                                        <!-- History Button -->
+                                        <a href="{{ route('admin.users.history', $user->id) }}" class="p-1.5 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-colors" title="View Credit History">
+                                            <span class="material-symbols-outlined text-[20px]">history</span>
+                                        </a>
+                                    @endif
+
                                     @if($user->role !== 'admin')
                                     <!-- Impersonate Button -->
                                     <form action="{{ route('admin.users.impersonate', $user->id) }}" method="POST" class="inline">
@@ -131,7 +152,7 @@
                             </td>
                         </tr>
                     @empty
-                        <tr><td colspan="5" class="p-4 text-center text-gray-500">No users found.</td></tr>
+                        <tr><td colspan="6" class="p-4 text-center text-gray-500">No users found.</td></tr>
                     @endforelse
                 </tbody>
             </table>

@@ -25,6 +25,7 @@ Route::controller(PageController::class)->group(function () {
     Route::post('/contact', 'submitContact')->name('contact.submit');
     Route::get('/sitemap', 'sitemap')->name('sitemap');
     Route::get('/privacy', 'privacy')->name('privacy');
+    Route::get('/preview/{template}', 'previewTemplate')->name('template.preview');
 });
 
 use App\Http\Controllers\UserPanelController;
@@ -39,7 +40,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/builder', 'builder')->name('builder');
         Route::post('/builder/save', 'saveDraft')->name('builder.save');
         Route::get('/plans', 'getPlans')->name('plans.get');
-        Route::post('/coupon/validate', 'validateCoupon')->name('coupon.validate');
+    // Limit Coupon Validation to 10 per minute to prevent brute force
+    Route::post('/coupon/validate', 'validateCoupon')->name('coupon.validate')->middleware('throttle:10,1');
         Route::get('/rsvps', 'rsvps')->name('rsvps');
         Route::get('/billing', 'billing')->name('billing');
         Route::get('/settings', 'settings')->name('settings');
@@ -50,8 +52,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
     
     // User Payment Routes (Razorpay)
-    Route::post('/payment/create-order', [App\Http\Controllers\PaymentController::class, 'createUserOrder'])->name('user.payment.createOrder');
-    Route::post('/payment/verify', [App\Http\Controllers\PaymentController::class, 'verifyUserPayment'])->name('user.payment.verify');
+    Route::post('/payment/create-order', [App\Http\Controllers\PaymentController::class, 'createUserOrder'])->name('user.payment.createOrder')->middleware('throttle:10,1');
+    Route::post('/payment/verify', [App\Http\Controllers\PaymentController::class, 'verifyUserPayment'])->name('user.payment.verify')->middleware('throttle:10,1');
     
     // NFC Order
     Route::post('/order/nfc', [App\Http\Controllers\NfcOrderController::class, 'store'])->name('nfc.store');
@@ -64,9 +66,9 @@ Route::middleware(['auth'])->get('/stop-impersonating', [\App\Http\Controllers\A
 // Auth Routes (Guest only)
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'loginForm'])->name('login');
-    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1');
     Route::get('/register', [AuthController::class, 'registerForm'])->name('register');
-    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:10,1');
     
     // Google Auth
     Route::get('auth/google', [App\Http\Controllers\GoogleAuthController::class, 'redirectToGoogle'])->name('google.login');
@@ -74,6 +76,7 @@ Route::middleware('guest')->group(function () {
 
     // Partner Auth
     Route::post('/partner/register', [App\Http\Controllers\PartnerAuthController::class, 'register'])->name('partner.register');
+    Route::post('/partner/login', [App\Http\Controllers\PartnerAuthController::class, 'login'])->name('partner.login');
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -89,6 +92,8 @@ Route::middleware(['auth', 'can:admin'])->prefix('admin')->name('admin.')->group
     Route::put('/users/{id}', [App\Http\Controllers\Admin\UserController::class, 'update'])->name('users.update');
     Route::delete('/users/{id}', [App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('users.destroy');
     Route::post('/users/{id}/impersonate', [App\Http\Controllers\Admin\UserController::class, 'impersonate'])->name('users.impersonate');
+    Route::patch('/users/{id}/toggle-status', [App\Http\Controllers\Admin\UserController::class, 'toggleStatus'])->name('users.toggleStatus');
+    Route::get('/users/{id}/history', [App\Http\Controllers\Admin\UserController::class, 'history'])->name('users.history');
 
     // Plans
     Route::get('/plans', [App\Http\Controllers\Admin\PlanController::class, 'index'])->name('plans.index');
@@ -168,8 +173,8 @@ Route::middleware(['auth', 'verified', 'partner'])->prefix('partner')->name('par
     Route::post('/invitations/{id}/delete', [App\Http\Controllers\PartnerController::class, 'deleteInvitation'])->name('invitations.delete');
     
     // Payment Routes (Razorpay)
-    Route::post('/payment/create-order', [App\Http\Controllers\PaymentController::class, 'createOrder'])->name('payment.createOrder');
-    Route::post('/payment/verify', [App\Http\Controllers\PaymentController::class, 'verifyPayment'])->name('payment.verify');
+    Route::post('/payment/create-order', [App\Http\Controllers\PaymentController::class, 'createOrder'])->name('payment.createOrder')->middleware('throttle:10,1');
+    Route::post('/payment/verify', [App\Http\Controllers\PaymentController::class, 'verifyPayment'])->name('payment.verify')->middleware('throttle:10,1');
     Route::get('/payment/packages', [App\Http\Controllers\PaymentController::class, 'getPackages'])->name('payment.packages');
 });
 

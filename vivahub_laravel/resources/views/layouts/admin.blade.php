@@ -211,6 +211,9 @@
             <div class="flex items-center gap-4">
                 <!-- Mobile Logo -->
                 <div class="md:hidden flex items-center gap-2">
+                     <button onclick="document.getElementById('admin-mobile-sidebar').classList.remove('-translate-x-full'); document.getElementById('admin-mobile-overlay').classList.remove('hidden')" class="p-2 -ml-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5">
+                        <span class="material-symbols-outlined">menu</span>
+                     </button>
                      <img src="{{ asset('VivaHub-logo.png') }}" alt="VivaHub Logo" class="h-8 w-auto">
                 </div>
                 <h2 id="page-title" class="hidden md:block text-lg font-bold tracking-tight text-gray-800 dark:text-white">@yield('title', 'Admin Overview')</h2>
@@ -223,6 +226,12 @@
                 </div>
                 <!-- Actions -->
                 <div class="flex items-center gap-2">
+                     <!-- Visit Site -->
+                    <a href="{{ route('home') }}" target="_blank" class="hidden sm:flex items-center gap-2 text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-primary transition-colors rounded-xl px-3 py-2 hover:bg-gray-100 dark:hover:bg-white/5">
+                        <span class="material-symbols-outlined text-[20px]">public</span>
+                        Site
+                    </a>
+
                      <!-- Day/Night Toggle -->
                     <button onclick="document.documentElement.classList.toggle('dark')" class="text-gray-500 dark:text-gray-400 hover:text-accent-gold transition-colors rounded-xl p-2 hover:bg-gray-100 dark:hover:bg-white/5">
                         <span id="theme-icon" class="material-symbols-outlined text-[20px]">light_mode</span>
@@ -301,6 +310,58 @@
             </div>
         </div>
     </div>
+    
+    <!-- ADMIN MOBILE SIDEBAR OVERLAY -->
+    <div id="admin-mobile-overlay" onclick="document.getElementById('admin-mobile-sidebar').classList.add('-translate-x-full'); document.getElementById('admin-mobile-overlay').classList.add('hidden')" class="fixed inset-0 bg-black/50 z-[90] hidden md:hidden backdrop-blur-sm transition-opacity"></div>
+
+    <!-- ADMIN MOBILE SIDEBAR -->
+    <aside id="admin-mobile-sidebar" class="fixed top-0 left-0 bottom-0 w-72 bg-white dark:bg-[#1a0b0b] z-[100] transform -translate-x-full transition-transform duration-300 md:hidden flex flex-col shadow-2xl">
+        <div class="p-6 border-b border-border-light dark:border-border-dark flex justify-between items-center">
+            <img src="{{ asset('VivaHub-logo.png') }}" alt="VivaHub" class="h-8 w-auto">
+            <button onclick="document.getElementById('admin-mobile-sidebar').classList.add('-translate-x-full'); document.getElementById('admin-mobile-overlay').classList.add('hidden')" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-white/5 text-gray-500">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        
+        <nav class="flex-1 overflow-y-auto p-4 space-y-1">
+            <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium {{ request()->routeIs('admin.dashboard') ? 'bg-primary/10 text-primary' : 'text-gray-600 dark:text-gray-400' }}">
+                <span class="material-symbols-outlined">dashboard</span> Dashboard
+            </a>
+            <a href="{{ route('admin.users.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium {{ request()->routeIs('admin.users.*') ? 'bg-primary/10 text-primary' : 'text-gray-600 dark:text-gray-400' }}">
+                <span class="material-symbols-outlined">group</span> Users & Partners
+            </a>
+            <a href="{{ route('admin.coupons.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium {{ request()->routeIs('admin.coupons.*') ? 'bg-primary/10 text-primary' : 'text-gray-600 dark:text-gray-400' }}">
+                <span class="material-symbols-outlined">confirmation_number</span> Coupons
+            </a>
+            <a href="{{ route('admin.plans.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium {{ request()->routeIs('admin.plans.*') ? 'bg-primary/10 text-primary' : 'text-gray-600 dark:text-gray-400' }}">
+                <span class="material-symbols-outlined">sell</span> Plans
+            </a>
+            <a href="{{ route('admin.transactions.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium {{ request()->routeIs('admin.transactions.*') ? 'bg-primary/10 text-primary' : 'text-gray-600 dark:text-gray-400' }}">
+                <span class="material-symbols-outlined">payments</span> Transactions
+            </a>
+            <a href="{{ route('admin.orders.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium {{ request()->routeIs('admin.orders.*') ? 'bg-primary/10 text-primary' : 'text-gray-600 dark:text-gray-400' }}">
+                <span class="material-symbols-outlined">shopping_cart</span> Orders
+            </a>
+            <a href="{{ route('admin.templates.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium {{ request()->routeIs('admin.templates.*') ? 'bg-primary/10 text-primary' : 'text-gray-600 dark:text-gray-400' }}">
+                <span class="material-symbols-outlined">auto_awesome</span> Templates
+            </a>
+            <a href="{{ route('admin.logs.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium {{ request()->routeIs('admin.logs.*') ? 'bg-primary/10 text-primary' : 'text-gray-600 dark:text-gray-400' }}">
+                <span class="material-symbols-outlined">history</span> Logs
+            </a>
+            <a href="{{ route('admin.settings.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium {{ request()->routeIs('admin.settings.*') ? 'bg-primary/10 text-primary' : 'text-gray-600 dark:text-gray-400' }}">
+                <span class="material-symbols-outlined">settings</span> Settings
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-border-light dark:border-border-dark mb-16">
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-bold text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors">
+                    <span class="material-symbols-outlined">logout</span> Log Out
+                </button>
+            </form>
+        </div>
+    </aside>
 </div>
 
 <!-- BOTTOM NAVIGATION BAR (Mobile Only) -->

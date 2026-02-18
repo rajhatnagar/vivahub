@@ -19,7 +19,7 @@ class SettingController extends Controller
         $input = $request->except('_token');
 
         // 1. Handle Toggles (Checkboxes often don't send '0' when unchecked)
-        $toggles = ['google_login_enabled', 'razorpay_enabled', 'stripe_enabled', 'paypal_enabled'];
+        $toggles = ['google_login_enabled', 'razorpay_enabled', 'stripe_enabled', 'paypal_enabled', 'enable_free_access'];
         foreach ($toggles as $toggle) {
             if (!isset($input[$toggle])) {
                 $input[$toggle] = '0';

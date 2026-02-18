@@ -170,18 +170,21 @@ class UserPanelController extends Controller implements HasMiddleware
                  }
                  $partner = $partnerUser->partnerDetails;
 
-                 if ($partner->credits < 5) {
+                 // Dynamic Cost
+                 $cost = \App\Models\Setting::where('key', 'partner_invitation_cost')->value('value') ?? 5;
+
+                 if ($partner->credits < $cost) {
                      return response()->json(['success' => false, 'message' => 'This code cannot be redeemed at the moment (Agency Limit Reached).'], 400); 
                  }
                  
 
                  
                  // Deduct Credit & Mark Redeemed
-                 DB::transaction(function() use ($partner, $coupon, $user) {
-                     $partner->decrement('credits', 5);
+                 DB::transaction(function() use ($partner, $coupon, $user, $cost) {
+                     $partner->decrement('credits', $cost);
                      $partner->creditLogs()->create([
-                         'amount' => 5,
-                         'description' => 'Coupon Redeemed: ' . $coupon->code,
+                         'amount' => $cost,
+                         'description' => 'Coupon Redeemed: ' . $coupon->code . ' for ' . $user->name . ' (' . $user->email . ')',
                          'type' => 'debit'
                      ]);
 
@@ -298,7 +301,10 @@ class UserPanelController extends Controller implements HasMiddleware
 
     public function rsvps()
     {
-        $guests = \App\Models\Rsvp::latest()->get();
+        $userId = Auth::id();
+        $guests = \App\Models\Rsvp::whereHas('invitation', function($q) use ($userId) {
+            $q->where('user_id', $userId);
+        })->latest()->get();
         return view('user.rsvps', compact('guests'));
     }
 
@@ -443,6 +449,7 @@ class UserPanelController extends Controller implements HasMiddleware
             // Select only needed columns to avoid memory issues
             if ($request->has('invitation_id')) {
                 $invitation = \App\Models\Invitation::select('id', 'user_id', 'template_id', 'title', 'data', 'status')
+                    ->where('user_id', \Illuminate\Support\Facades\Auth::id())
                     ->find($request->invitation_id);
                 if ($invitation) {
                     $data['invitation'] = $invitation;
@@ -594,6 +601,14 @@ class UserPanelController extends Controller implements HasMiddleware
             return response()->json(['success' => false, 'message' => 'This coupon has reached its maximum usage limit.']);
         }
 
+        // Partner Credit Check
+        if ($coupon->partner_id) {
+             $partner = $coupon->partner->partnerDetails;
+             if(!$partner || $partner->credits < 5) {
+                 return response()->json(['success' => false, 'message' => 'This coupon cannot be redeemed at the moment (Agency Limit Reached).']);
+             }
+        }
+
         // Determine discount type and value from stored data
         $discountType = 'percentage'; // Default
         $discountValue = 0;
@@ -638,8 +653,11 @@ class UserPanelController extends Controller implements HasMiddleware
     
     public function exportRsvps()
     {
-        // Fetch ALL RSVPs to match the query used in the 'rsvps' view logic (UserPanelController::rsvps)
-        $guests = \App\Models\Rsvp::latest()->get();
+        // Scope to authenticated user's invitations
+        $userId = Auth::id();
+        $guests = \App\Models\Rsvp::whereHas('invitation', function($q) use ($userId) {
+            $q->where('user_id', $userId);
+        })->latest()->get();
 
         $filename = "rsvps_export_" . date('Y-m-d') . ".csv";
         $headers = [
