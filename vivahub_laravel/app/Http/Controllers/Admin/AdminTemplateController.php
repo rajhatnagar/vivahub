@@ -319,7 +319,7 @@ class AdminTemplateController extends Controller
     {
         // Inject Mock Invitation for Preview if missing
         if (isset($data['isPreview']) && $data['isPreview'] && !isset($data['invitation'])) {
-            $testImgPath = asset('test');
+            $testImgPath = asset('assets/wedding-templates');
             
             $mockData = [
                 'date' => '2026-12-12',

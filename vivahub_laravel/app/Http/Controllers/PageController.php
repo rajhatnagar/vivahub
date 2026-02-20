@@ -77,8 +77,9 @@ class PageController extends Controller
     {
         // Inject Mock Invitation for Preview if missing
         if (isset($data['isPreview']) && $data['isPreview'] && !isset($data['invitation'])) {
-            // Use test folder images for defaults
-            // Use Unsplash images for realistic previews
+            // Use template images for defaults
+            $testImgPath = asset('assets/wedding-templates');
+
             $mockData = [
                 // Common
                 'date' => '2026-12-12',
@@ -91,31 +92,31 @@ class PageController extends Controller
                 'bride_name' => 'Elena', 
                 'groom_name' => 'Julian',
                 'venue_city' => 'Udaipur, India',
-                'hero_image' => 'https://images.unsplash.com/photo-1583934555026-63b5b46e5200?w=800&fit=crop', // Couple
-                'bride_image' => 'https://images.unsplash.com/photo-1596561139434-a1f9457639c0?w=400&fit=crop', // Bride
-                'groom_image' => 'https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=400&fit=crop', // Groom
+                'hero_image' => $testImgPath . '/hero.jpg', // Couple
+                'bride_image' => $testImgPath . '/bride.jpg', // Bride
+                'groom_image' => $testImgPath . '/groom.jpg', // Groom
                 
-                // Legacy/Alternative Themes (2, 4, 5, 10)
+                // Legacy/Alternative Themes
                 'bride' => 'Elena',
                 'groom' => 'Julian',
                 'location' => 'Udaipur, India',
-                'h_img' => 'https://images.unsplash.com/photo-1583934555026-63b5b46e5200?w=800&fit=crop',
-                'hero_bg' => 'https://images.unsplash.com/photo-1583934555026-63b5b46e5200?w=800&fit=crop',
+                'h_img' => $testImgPath . '/hero.jpg',
+                'hero_bg' => $testImgPath . '/hero.jpg',
                 
                 // Galleries
                 'gallery' => [
-                    'https://images.unsplash.com/photo-1519741497674-611481863552?w=800&fit=crop', // Wedding
-                    'https://images.unsplash.com/photo-1511285560982-1356c11d4606?w=800&fit=crop', // Party
-                    'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=800&fit=crop', // Decor
-                    'https://images.unsplash.com/photo-1520854221256-17451cc330e7?w=800&fit=crop', // Rings
-                    'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&fit=crop', // Reception
-                    'https://images.unsplash.com/photo-1511285560982-1356c11d4606?w=800&fit=crop', // Family
+                    $testImgPath . '/gallery1.png',
+                    $testImgPath . '/gallery2.png',
+                    $testImgPath . '/gallery3.png',
+                    $testImgPath . '/gallery4.png',
+                    $testImgPath . '/gallery5.png',
+                    $testImgPath . '/gallery6.png',
                 ],
                 // Individual gallery keys for legacy compatibility
-                'gallery_1' => 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800&fit=crop',
-                'gallery_2' => 'https://images.unsplash.com/photo-1511285560982-1356c11d4606?w=800&fit=crop', 
-                'gallery_3' => 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=800&fit=crop',
-                'gallery_4' => 'https://images.unsplash.com/photo-1520854221256-17451cc330e7?w=800&fit=crop',
+                'gallery_1' => $testImgPath . '/gallery1.png',
+                'gallery_2' => $testImgPath . '/gallery2.png', 
+                'gallery_3' => $testImgPath . '/gallery3.png',
+                'gallery_4' => $testImgPath . '/gallery4.png',
 
                 // Events
                 'events' => [

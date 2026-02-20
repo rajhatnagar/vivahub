@@ -523,8 +523,8 @@ class UserPanelController extends Controller implements HasMiddleware
     {
         // Inject Mock Invitation for Preview if missing
         if (isset($data['isPreview']) && $data['isPreview'] && !isset($data['invitation'])) {
-            // Use test folder images for defaults
-            $testImgPath = asset('test');
+            // Use template images for defaults
+            $testImgPath = asset('assets/wedding-templates');
             
             $mockData = [
                 // Common

@@ -199,7 +199,7 @@ class PartnerController extends Controller
     private function renderTemplateView($templateId, $data = [])
     {
         if (isset($data['isPreview']) && $data['isPreview'] && !isset($data['invitation'])) {
-            $testImgPath = asset('test');
+            $testImgPath = asset('assets/wedding-templates');
             
             $mockData = [
                 'date' => '2026-12-12',
