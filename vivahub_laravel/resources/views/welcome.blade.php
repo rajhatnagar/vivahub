@@ -568,88 +568,44 @@
                   <i data-lucide="chevron-right" class="w-6 h-6"></i>
               </button>
 
-              <!-- Main Container: Mobile=Grid Slider (2 Rows) | Desktop=Grid (1 Row) -->
-              <div id="design-slider" class="grid grid-rows-2 grid-flow-col gap-4 overflow-x-auto pb-8 hide-scrollbar snap-x snap-mandatory scroll-smooth w-full px-1 lg:grid-rows-1 lg:grid-flow-row lg:grid-cols-4 lg:gap-8 lg:overflow-visible lg:pb-0">
+              <!-- Main Container: Mobile=Grid Slider (2 Rows) | Desktop=Grid (Wrapping) -->
+              <div id="design-slider" class="grid grid-rows-2 grid-flow-col gap-4 overflow-x-auto pb-8 hide-scrollbar snap-x snap-mandatory scroll-smooth w-full px-1 lg:grid-flow-row lg:grid-cols-5 lg:gap-6 lg:overflow-visible lg:pb-0">
                   
-                  <!-- DESIGN ITEM 1 -->
+                  @php
+                  $exclusiveDesigns = [
+                      ['id' => 'wedding-1', 'img' => 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=500', 'name' => 'Signature - Alpha'],
+                      ['id' => 'theme_2', 'img' => 'https://images.unsplash.com/photo-1621621667797-e06afc217fb0?auto=format&fit=crop&q=80&w=500', 'name' => 'Signature - Prime'],
+                      ['id' => 'theme_3', 'img' => 'https://vivahub.in/test/Mobile_Background.png', 'name' => 'Signature - Origin'],
+                      ['id' => 'theme_4', 'img' => 'https://vivahub.in/test/Mobile_Background.png', 'name' => 'Signature - Essence'],
+                      ['id' => 'theme_5', 'img' => 'https://vivahub.in/test/Mobile_Background.png', 'name' => 'Signature - Royale'],
+                      ['id' => 'theme_6', 'img' => 'https://vivahub.in/test/Mobile_Background.png', 'name' => 'Modern - Pure'],
+                      ['id' => 'theme_7', 'img' => 'https://vivahub.in/test/Mobile_Background.png', 'name' => 'Modern - Bliss'],
+                      ['id' => 'theme_8', 'img' => 'https://vivahub.in/test/Mobile_Background.png', 'name' => 'Modern - Midnight'],
+                      ['id' => 'theme_9', 'img' => 'https://vivahub.in/test/Mobile_Background.png', 'name' => 'Modern - Velvet'],
+                      ['id' => 'theme_10', 'img' => 'https://vivahub.in/test/Mobile_Background.png', 'name' => 'Modern - Haven'],
+                  ];
+                  @endphp
+
+                  @foreach($exclusiveDesigns as $design)
                   <div class="w-[calc(50vw-24px)] flex-shrink-0 snap-start lg:w-auto bg-white p-2 shadow-lg rounded-sm group/card relative transition-transform hover:-translate-y-1 duration-300">
                       <!-- Rectangular Photo Frame -->
                       <div class="relative aspect-[3/4] overflow-hidden bg-gray-200 rounded-sm">
                           <!-- Image -->
-                          <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-105" alt="Design 1">
+                          <img src="{{ $design['img'] }}" class="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-105" alt="{{ $design['name'] }}">
                           
                           <!-- Overlay with Buttons -->
                           <div class="absolute inset-0 bg-black/30 opacity-0 group-hover/card:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
-                              <a href="{{ url('builder?template=wedding-1') }}" class="bg-white text-gray-800 px-4 py-2 text-[10px] lg:text-xs font-bold uppercase tracking-wider hover:bg-gray-100 shadow-lg w-3/4 flex items-center justify-center">Preview</a>
+                              <a href="{{ url('builder?template=' . $design['id']) }}" class="bg-white text-gray-800 px-4 py-2 text-[10px] lg:text-xs font-bold uppercase tracking-wider hover:bg-gray-100 shadow-lg w-3/4 flex items-center justify-center">Preview</a>
                               <button onclick="toggleLogin()" class="bg-[#333] text-white px-4 py-2 text-[10px] lg:text-xs font-bold uppercase tracking-wider hover:bg-black shadow-lg w-3/4">Select</button>
                           </div>
                       </div>
                       <!-- Label Below -->
                       <div class="p-2 flex justify-between items-center border-t border-gray-100 mt-1">
-                          <span class="font-serif text-gray-700 text-xs lg:text-sm truncate">Signature - Alpha</span>
+                          <span class="font-serif text-gray-700 text-xs lg:text-sm truncate">{{ $design['name'] }}</span>
                           <i data-lucide="heart" class="w-3 h-3 lg:w-4 lg:h-4 text-red-500 fill-current"></i>
                       </div>
                   </div>
-
-                  <!-- DESIGN ITEM 2 -->
-                  <div class="w-[calc(50vw-24px)] flex-shrink-0 snap-start lg:w-auto bg-white p-2 shadow-lg rounded-sm group/card relative transition-transform hover:-translate-y-1 duration-300">
-                      <div class="relative aspect-[3/4] overflow-hidden bg-gray-200 rounded-sm">
-                          <img src="https://images.unsplash.com/photo-1621621667797-e06afc217fb0?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-105" alt="Design 2">
-                          <div class="absolute inset-0 bg-black/30 opacity-0 group-hover/card:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
-                               <a href="{{ url('builder?template=theme_2') }}" class="bg-white text-gray-800 px-4 py-2 text-[10px] lg:text-xs font-bold uppercase tracking-wider hover:bg-gray-100 shadow-lg w-3/4 flex items-center justify-center">Preview</a>
-                              <button onclick="toggleLogin()" class="bg-[#333] text-white px-4 py-2 text-[10px] lg:text-xs font-bold uppercase tracking-wider hover:bg-black shadow-lg w-3/4">Select</button>
-                          </div>
-                      </div>
-                      <div class="p-2 flex justify-between items-center border-t border-gray-100 mt-1">
-                          <span class="font-serif text-gray-700 text-xs lg:text-sm truncate">Signature - Prime</span>
-                          <i data-lucide="heart" class="w-3 h-3 lg:w-4 lg:h-4 text-red-500 fill-current"></i>
-                      </div>
-                  </div>
-
-                  <!-- DESIGN ITEM 3 -->
-                  <div class="w-[calc(50vw-24px)] flex-shrink-0 snap-start lg:w-auto bg-white p-2 shadow-lg rounded-sm group/card relative transition-transform hover:-translate-y-1 duration-300">
-                      <div class="relative aspect-[3/4] overflow-hidden bg-gray-200 rounded-sm">
-                          <img src="https://vivahub.in/test/Mobile_Background.png" class="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-105" alt="Design 3">
-                          <div class="absolute inset-0 bg-black/30 opacity-0 group-hover/card:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
-                               <a href="{{ url('builder?template=theme_3') }}" class="bg-white text-gray-800 px-4 py-2 text-[10px] lg:text-xs font-bold uppercase tracking-wider hover:bg-gray-100 shadow-lg w-3/4 flex items-center justify-center">Preview</a>
-                              <button onclick="toggleLogin()" class="bg-[#333] text-white px-4 py-2 text-[10px] lg:text-xs font-bold uppercase tracking-wider hover:bg-black shadow-lg w-3/4">Select</button>
-                          </div>
-                      </div>
-                      <div class="p-2 flex justify-between items-center border-t border-gray-100 mt-1">
-                          <span class="font-serif text-gray-700 text-xs lg:text-sm truncate">Signature - Origin</span>
-                          <i data-lucide="heart" class="w-3 h-3 lg:w-4 lg:h-4 text-red-500 fill-current"></i>
-                      </div>
-                  </div>
-
-                  <!-- DESIGN ITEM 4 -->
-                  <div class="w-[calc(50vw-24px)] flex-shrink-0 snap-start lg:w-auto bg-white p-2 shadow-lg rounded-sm group/card relative transition-transform hover:-translate-y-1 duration-300">
-                      <div class="relative aspect-[3/4] overflow-hidden bg-gray-200 rounded-sm">
-                          <img src="https://vivahub.in/test/Mobile_Background.png" class="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-105" alt="Design 4">
-                          <div class="absolute inset-0 bg-black/30 opacity-0 group-hover/card:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
-                               <a href="{{ url('builder?template=theme_4') }}" class="bg-white text-gray-800 px-4 py-2 text-[10px] lg:text-xs font-bold uppercase tracking-wider hover:bg-gray-100 shadow-lg w-3/4 flex items-center justify-center">Preview</a>
-                              <button onclick="toggleLogin()" class="bg-[#333] text-white px-4 py-2 text-[10px] lg:text-xs font-bold uppercase tracking-wider hover:bg-black shadow-lg w-3/4">Select</button>
-                          </div>
-                      </div>
-                      <div class="p-2 flex justify-between items-center border-t border-gray-100 mt-1">
-                          <span class="font-serif text-gray-700 text-xs lg:text-sm truncate">Signature - Essence</span>
-                          <i data-lucide="heart" class="w-3 h-3 lg:w-4 lg:h-4 text-red-500 fill-current"></i>
-                      </div>
-                  </div>
-
-                  <!-- DESIGN ITEM 5 -->
-                  <div class="w-[calc(50vw-24px)] flex-shrink-0 snap-start lg:w-auto bg-white p-2 shadow-lg rounded-sm group/card relative transition-transform hover:-translate-y-1 duration-300">
-                      <div class="relative aspect-[3/4] overflow-hidden bg-gray-200 rounded-sm">
-                          <img src="https://vivahub.in/test/Mobile_Background.png" class="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-105" alt="Design 5">
-                          <div class="absolute inset-0 bg-black/30 opacity-0 group-hover/card:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
-                               <a href="{{ url('builder?template=theme_5') }}" class="bg-white text-gray-800 px-4 py-2 text-[10px] lg:text-xs font-bold uppercase tracking-wider hover:bg-gray-100 shadow-lg w-3/4 flex items-center justify-center">Preview</a>
-                              <button onclick="toggleLogin()" class="bg-[#333] text-white px-4 py-2 text-[10px] lg:text-xs font-bold uppercase tracking-wider hover:bg-black shadow-lg w-3/4">Select</button>
-                          </div>
-                      </div>
-                      <div class="p-2 flex justify-between items-center border-t border-gray-100 mt-1">
-                          <span class="font-serif text-gray-700 text-xs lg:text-sm truncate">Signature - Royale</span>
-                          <i data-lucide="heart" class="w-3 h-3 lg:w-4 lg:h-4 text-red-500 fill-current"></i>
-                      </div>
-                  </div>
+                  @endforeach
 
               </div>
           </div>
@@ -671,67 +627,61 @@
     </section>
 
     <!-- --- FOOTER (Matches screenshot exactly) --- -->
-    <footer class="bg-white pt-8 pb-4 border-t border-gray-200">
-        <!-- Links as Buttons (Top Left) -->
-        <div class="max-w-6xl mx-auto px-6 mb-8 flex flex-wrap gap-2">
-            <a href="#" class="bg-[#a67c52] text-white px-3 py-1 text-[10px] rounded hover:bg-[#8d6a46] shadow-sm">Frequently Asked Questions (FAQ)</a>
-            <a href="#" class="bg-[#a67c52] text-white px-3 py-1 text-[10px] rounded hover:bg-[#8d6a46] shadow-sm">Terms & Conditions (T&C)</a>
-            <a href="#" class="bg-[#a67c52] text-white px-3 py-1 text-[10px] rounded hover:bg-[#8d6a46] shadow-sm">Privacy Policy</a>
-        </div>
+    <footer class="bg-white py-12 border-t border-gray-200">
+        <div class="max-w-[1400px] mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8 text-gray-800">
+            
+            <!-- Column 1: Links -->
+            <div class="flex flex-col gap-3 items-start">
+                <a href="#" class="bg-[#bfa78f] text-white px-4 py-1.5 text-xs font-semibold rounded hover:bg-[#a67c52] shadow-sm w-auto">Frequently Asked Questions (FAQ)</a>
+                <a href="#" class="bg-[#bfa78f] text-white px-4 py-1.5 text-xs font-semibold rounded hover:bg-[#a67c52] shadow-sm w-auto">Terms & Conditions (T&C)</a>
+                <a href="#" class="bg-[#bfa78f] text-white px-4 py-1.5 text-xs font-semibold rounded hover:bg-[#a67c52] shadow-sm w-auto">Privacy Policy</a>
+            </div>
 
-        <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-8 text-gray-800">
-            <!-- Left Column: Contact -->
+            <!-- Column 2: Contact Us & Social -->
             <div class="text-left">
-                <h3 class="font-serif text-2xl mb-4 text-gray-900">Contact Us:</h3>
-                <p class="text-sm text-gray-600 mb-4 max-w-sm">
-                    Have questions or need technical assistance? <br>
+                <h4 class="font-serif text-lg font-semibold mb-2 text-black">Contact Us:</h4>
+                <p class="text-[11px] text-gray-600 mb-6 max-w-[250px] leading-relaxed">
+                    Have questions or need technical assistance?<br>
                     Our team is here to help you create the perfect digital invitation.
                 </p>
 
-                <div class="mb-4">
-                    <h4 class="font-serif text-xl flex items-center gap-2 mb-2 text-[#5a4836]">
-                        Instant Support 
-                        <svg viewBox="0 0 24 24" class="w-5 h-5 fill-none stroke-[#a67c52] stroke-2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-                    </h4>
-                    <p class="text-sm text-gray-600">
-                        For the fastest response, chat with us directly on WhatsApp. Whether you have a question about a template or need help with payment, we are just a message away.
-                    </p>
-                </div>
-
-                <div>
-                    <h4 class="font-serif text-xl flex items-center gap-2 mb-2 text-[#5a4836]">
-                        Email Inquiries 
-                        <svg viewBox="0 0 24 24" class="w-5 h-5 fill-none stroke-[#a67c52] stroke-2"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
-                    </h4>
-                    <p class="text-sm text-gray-600">
-                        For formal inquiries, billing issues, or partnership discussions, feel free to drop us an email.
-                    </p>
-                    <p class="text-sm font-semibold mt-2 text-gray-700">General Support: support@vivahub.in</p>
-                    <p class="text-sm font-semibold text-gray-700">Partner Support: business@vivahub.in</p>
-                </div>
-            </div>
-
-            <!-- Right Column: Branding (Left Aligned content inside right column) -->
-            <div class="flex flex-col justify-end items-start mt-8 md:mt-0">
-                <div class="flex items-center justify-start gap-4 mb-4">
-                    <img src="https://vivahub.in/test/SpacEdge_Black.png" alt="SpacEdge" class="h-14 object-contain">
-                    <div class="text-xs text-left leading-tight text-gray-600">
-                        Crafting Royal Memories Digitally — A Legacy of Excellence by <br>
-                        <span class="font-bold text-black text-sm">SpacEdge Advertising and Marketing Pvt. Ltd.</span> <br>
-                        Your Partner In The Digital World For Over 24 Years.
+                <div class="flex items-center gap-2 text-[11px] font-bold text-gray-800 flex-wrap lg:flex-nowrap">
+                    <span class="whitespace-nowrap">Follow Our Journey :</span>
+                    <span class="text-[9px] font-normal text-gray-500 tracking-tight leading-[1]">follow us for the latest themes, trends, and updates.</span>
+                    <div class="flex gap-1">
+                        <a href="https://www.instagram.com/vivahub1/" class="bg-[#a67c52] text-white p-1 rounded-full hover:bg-[#8d6a46]" target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24" class="w-2.5 h-2.5 fill-none stroke-current stroke-[2.5]"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg>
+                        </a>
+                        <a href="https://www.facebook.com/vivahub1/" class="bg-[#a67c52] text-white p-1 rounded-full hover:bg-[#8d6a46]" target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24" class="w-2.5 h-2.5 fill-none stroke-current stroke-[2.5]"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                        </a>
                     </div>
                 </div>
-                
-                <div class="flex items-center gap-3 text-sm font-bold text-gray-800 ml-2">
-                    Follow Our Journey:
-                    <a href="https://www.instagram.com/vivahub1/" class="bg-[#a67c52] text-white p-1.5 rounded-full hover:bg-[#8d6a46]" target="_blank" rel="noopener noreferrer">
-                        <svg viewBox="0 0 24 24" class="w-3 h-3 fill-none stroke-current stroke-2"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg>
-                    </a>
-                    <a href="https://www.facebook.com/vivahub1/" class="bg-[#a67c52] text-white p-1.5 rounded-full hover:bg-[#8d6a46]" target="_blank" rel="noopener noreferrer">
-                        <svg viewBox="0 0 24 24" class="w-3 h-3 fill-none stroke-current stroke-2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
-                    </a>
+            </div>
+
+            <!-- Column 3: Instant Support -->
+            <div>
+                <h4 class="font-serif text-lg font-semibold flex items-center gap-2 mb-2 text-black">
+                    Instant Support 
+                    <svg viewBox="0 0 24 24" class="w-4 h-4 fill-none stroke-[#a67c52] stroke-[2.5]"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                </h4>
+                <p class="text-[11px] text-gray-600 leading-relaxed max-w-[250px]">
+                    For the fastest response, chat with us directly on WhatsApp. Whether you have a question about a template or need help with payment, we are just a message away.
+                </p>
+            </div>
+
+            <!-- Column 4: Email Inquiries -->
+            <div>
+                <h4 class="font-serif text-lg font-semibold mb-2 text-black">Email Inquiries</h4>
+                <p class="text-[11px] text-gray-600 leading-relaxed mb-3 max-w-[250px]">
+                    For formal inquiries, billing issues, or partnership discussions, feel free to drop us an email.
+                </p>
+                <div class="text-[11px] space-y-1 text-gray-700">
+                    <p><strong>General Support:</strong> support@vivahub.in</p>
+                    <p><strong>Partner Support:</strong> business@vivahub.in</p>
                 </div>
             </div>
+            
         </div>
     </footer>
 
