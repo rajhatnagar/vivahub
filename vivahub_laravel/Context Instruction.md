@@ -138,3 +138,6 @@ Frontend:
 
 Templates:(Admin/Partner/User)
 - When user preview any templates load a sample images as i give you before. (Meaning if user click on preview button then load a sample images.) [Do this for all templates]
+
+
+Add a free plan for user if the free acess option if enabled in admin setting. (Meaning if the free access option is enabled then the user should be able to create 1 invitation for free for 7 days(No payment required) and after 7 days he should be redirected to the payment page to buy a plan.)

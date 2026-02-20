@@ -33,14 +33,25 @@ class AuthController extends Controller
             }
 
             if (auth()->user()->role === 'admin') {
-                return redirect()->route('admin.dashboard');
+                $redirect = route('admin.dashboard');
+            } elseif (auth()->user()->role === 'partner') {
+                $redirect = route('partner.dashboard');
+            } else {
+                $redirect = route('dashboard');
+            }
+            
+            if ($request->wantsJson()) {
+                return response()->json(['success' => true, 'redirect' => $redirect]);
             }
 
-            if (auth()->user()->role === 'partner') {
-                return redirect()->route('partner.dashboard');
-            }
+            return redirect($redirect);
+        }
 
-            return redirect()->route('dashboard');
+        if ($request->wantsJson()) {
+            return response()->json([
+                'message' => 'The provided credentials do not match our records.',
+                'errors' => ['email' => ['The provided credentials do not match our records.']]
+            ], 422);
         }
 
         return back()->withErrors([

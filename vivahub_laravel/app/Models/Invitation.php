@@ -15,11 +15,13 @@ class Invitation extends Model
         'content',
         'status',
         'template_id',
-        'data' // JSON data for storing builder state
+        'data', // JSON data for storing builder state
+        'expires_at'
     ];
 
     protected $casts = [
         'data' => 'array',
+        'expires_at' => 'datetime',
     ];
 
     public function user()

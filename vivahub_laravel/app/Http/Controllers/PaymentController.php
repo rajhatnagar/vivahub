@@ -153,7 +153,7 @@ class PaymentController extends Controller
                 'amount' => $totalAmount,
                 'currency' => config('razorpay.currency', 'INR'),
                 'key' => $this->key,
-                'name' => config('app.name', 'VivahHub'),
+                'name' => config('app.name', 'VivaHub'),
                 'description' => $description . ($taxSettings['enabled'] ? ' + GST' : ''),
                 'prefill' => [
                     'name' => $user->name,
@@ -528,7 +528,7 @@ class PaymentController extends Controller
                 'amount' => $totalAmount,
                 'currency' => config('razorpay.currency', 'INR'),
                 'key' => $this->key,
-                'name' => config('app.name', 'VivahHub'),
+                'name' => config('app.name', 'VivaHub'),
                 'description' => $plan->name . ($taxSettings['enabled'] ? ' + GST' : ''),
                 'prefill' => [
                     'name' => $user->name,

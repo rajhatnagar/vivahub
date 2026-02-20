@@ -6,22 +6,7 @@
 <div class="max-w-4xl mx-auto animate-fade-in">
     <h2 class="text-3xl font-bold text-text-dark dark:text-white mb-6">Billing History</h2>
     
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <div class="bg-gradient-to-br from-primary to-primary-dark p-6 rounded-2xl text-white shadow-lg">
-            <p class="text-white/80 text-sm font-bold uppercase tracking-wider mb-1">Current Plan</p>
-            <h3 class="text-3xl font-serif font-bold mb-4">Viva Premium</h3>
-            <p class="text-sm opacity-90 mb-6">Valid until Jan 25, 2025</p>
-            <button class="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors border border-white/30">Upgrade Plan</button>
-        </div>
-        <div class="bg-white dark:bg-surface-dark p-6 rounded-2xl border border-primary/5 dark:border-white/5 shadow-card flex flex-col justify-center">
-             <p class="text-text-muted text-sm font-bold uppercase tracking-wider mb-1">Payment Method</p>
-             <div class="flex items-center gap-3 mb-4">
-                <div class="w-10 h-6 bg-gray-200 rounded flex items-center justify-center text-[10px] font-bold text-gray-600">VISA</div>
-                <span class="font-mono text-text-dark dark:text-white">•••• 4242</span>
-             </div>
-             <button class="text-primary text-sm font-bold hover:underline self-start">Manage Payment Methods</button>
-        </div>
-    </div>
+
 
     <div class="bg-white dark:bg-surface-dark rounded-2xl shadow-card border border-primary/5 dark:border-white/5 overflow-hidden">
         <div class="overflow-x-auto">

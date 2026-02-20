@@ -45,3 +45,5 @@ check_config.php
 # NPM/Yarn
 package-lock.json
 yarn.lock
+
+.env

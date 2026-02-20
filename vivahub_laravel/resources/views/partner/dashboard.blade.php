@@ -291,7 +291,7 @@
                 </div>
 
                 <div>
-                    <label class="label-premium">Custom Code (Optional)</label>
+                    <label class="label-premium">Custom Code</label>
                     <input type="text" name="code" class="input-premium" placeholder="e.g. WEDDING2024" maxlength="20">
                     <p class="text-xs text-text-muted mt-1">Leave empty to auto-generate.</p>
                 </div>
@@ -355,47 +355,61 @@
             </div>
             <div class="p-6 overflow-y-auto max-h-[70vh]">
                 @if(isset($plans) && $plans->count() > 0)
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         @foreach($plans as $plan)
-                        <div class="bg-gray-50 dark:bg-white/5 p-4 rounded-xl border {{ $plan->name === 'Gold Partner' ? 'border-accent-gold/20 relative overflow-hidden ring-1 ring-accent-gold/10' : 'border-gray-200 dark:border-white/10' }} flex flex-col h-full hover:scale-[1.02] transition-transform duration-300">
-                            @if($plan->name === 'Gold Partner' || $plan->is_popular)
-                            <div class="absolute top-0 right-0 bg-accent-gold text-white text-[9px] font-bold px-2 py-0.5 rounded-bl-lg">POPULAR</div>
-                            @endif
+                        @php
+                            $isPopular = $plan->is_popular || $plan->name === 'Gold Partner';
+                            $isElite = str_contains(strtolower($plan->name), 'elite');
+                        @endphp
+                        <div class="relative flex flex-col h-full rounded-2xl transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl
+                            {{ $isPopular ? 'bg-white dark:bg-surface-dark border-2 border-accent-gold shadow-lg scale-105 z-10' : 'bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10' }}">
                             
-                            <div class="mb-3">
-                                <h4 class="font-bold text-base dark:text-white truncate" title="{{ $plan->name }}">{{ $plan->name }}</h4>
-                                <div class="flex items-baseline gap-1 mt-1">
-                                    <span class="text-xl font-bold text-primary">&#8377;{{ number_format($plan->price) }}</span>
-                                    <span class="text-[10px] text-text-muted">/ {{ $plan->validity }}</span>
-                                </div>
+                            @if($isPopular)
+                            <div class="absolute top-0 inset-x-0 -mt-3 flex justify-center">
+                                <span class="bg-accent-gold text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full shadow-md">Most Popular</span>
                             </div>
-
-                            @if($plan->credits > 0)
-                                <div class="mb-4">
-                                    <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-md font-bold flex items-center gap-1 w-fit">
-                                        <span class="text-[10px] uppercase font-bold text-green-800">{{ $plan->credits }} Invitations</span>
-                                    </span>
-                                </div>
                             @endif
 
-                             <div class="mt-auto space-y-3">
-                                <button onclick="window.app.buyPlan({{ $plan->id }})" class="w-full bg-primary text-white py-2 rounded-lg font-bold text-sm shadow-md hover:bg-primary-dark transition-all">Select Plan</button>
-                                
-                                <div x-data="{ open: true }" class="border-t border-gray-200 dark:border-white/10 pt-2">
-                                    <button @click="open = !open" class="flex items-center justify-between w-full text-xs font-bold text-text-muted hover:text-primary transition-colors mb-2">
-                                        <span>View Benefits</span>
-                                    </button>
-                                    <ul x-show="open" class="space-y-1.5 text-[11px] text-text-muted" x-collapse>
-                                        @if(is_array($plan->features))
-                                            @foreach($plan->features as $feature)
-                                            <li class="flex gap-1.5 items-start">
-                                                <span class="material-symbols-outlined text-green-500 text-[14px] shrink-0 mt-0.5">check</span> 
-                                                <span class="leading-tight">{{ $feature }}</span>
-                                            </li>
-                                            @endforeach
-                                        @endif
-                                    </ul>
+                            <div class="p-6 flex-1 flex flex-col">
+                                <h4 class="font-serif text-lg font-bold text-text-dark dark:text-white mb-2">{{ $plan->name }}</h4>
+                                <div class="flex items-baseline gap-1 mb-4">
+                                    <span class="text-3xl font-bold {{ $isPopular ? 'text-accent-gold' : 'text-primary' }}">&#8377;{{ number_format($plan->price) }}</span>
+                                    <span class="text-xs text-text-muted font-bold uppercase">/ {{ $plan->validity }}</span>
                                 </div>
+                                
+                                @if($plan->credits > 0)
+                                <div class="mb-6 p-3 rounded-xl {{ $isPopular ? 'bg-accent-gold/10 border border-accent-gold/20' : 'bg-white dark:bg-white/5 border border-gray-100 dark:border-white/5' }}">
+                                    <div class="flex items-center gap-2">
+                                        <div class="h-8 w-8 rounded-full {{ $isPopular ? 'bg-accent-gold text-white' : 'bg-gray-200 dark:bg-white/10 text-gray-500' }} flex items-center justify-center">
+                                            <span class="material-symbols-outlined text-sm">inventory_2</span>
+                                        </div>
+                                        <div>
+                                            <p class="text-[10px] uppercase font-bold text-text-muted">Includes</p>
+                                            <p class="text-sm font-bold text-text-dark dark:text-white">{{ $plan->credits }} Invitations</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+
+                                <ul class="space-y-3 mb-6 flex-1">
+                                    @if(is_array($plan->features))
+                                        @foreach($plan->features as $feature)
+                                        <li class="flex items-start gap-3 text-sm text-text-dark dark:text-gray-300">
+                                            <span class="material-symbols-outlined text-[16px] {{ $isPopular ? 'text-green-500' : 'text-gray-400' }} shrink-0 mt-0.5">check_circle</span>
+                                            <span class="leading-tight">{{ $feature }}</span>
+                                        </li>
+                                        @endforeach
+                                    @endif
+                                </ul>
+
+                                <button onclick="window.app.buyPlan({{ $plan->id }})" 
+                                    class="w-full py-3.5 rounded-xl font-bold text-sm transition-all shadow-lg flex items-center justify-center gap-2
+                                    {{ $isPopular 
+                                        ? 'bg-gradient-to-r from-accent-gold to-yellow-600 text-white hover:shadow-accent-gold/40' 
+                                        : 'bg-white dark:bg-white/10 text-text-dark dark:text-white border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-white/20' }}">
+                                    <span>Choose {{ $plan->name }}</span>
+                                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                                </button>
                             </div>
                         </div>
                         @endforeach
@@ -1149,8 +1163,7 @@
                                         </div>
                                         ` : ''}
                                         <div class="flex justify-between items-end border-t border-gray-100 dark:border-white/10 pt-4 relative z-50">
-                                            <div><p class="text-xs text-text-muted">Used by</p><p class="font-bold text-text-dark dark:text-white">${c.client_email || 'Not used'}</p></div>
-                                            <div class="flex gap-2 items-center relative z-50">
+                                            <div class="flex gap-2 items-center relative z-50 ml-auto">
                                                 <span class="bg-green-100 text-green-700 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center h-full">${c.status}</span>
                                                 <form action="{{ url('/partner/coupons') }}/${c.id}/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete this coupon?');" class="flex items-center">
                                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">

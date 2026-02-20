@@ -12,8 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('coupons', function (Blueprint $table) {
-            $table->unsignedBigInteger('used_by')->nullable()->after('client_email');
-            $table->timestamp('used_at')->nullable()->after('used_by');
+            if (!Schema::hasColumn('coupons', 'used_by')) {
+                $table->unsignedBigInteger('used_by')->nullable()->after('client_email');
+            }
+            if (!Schema::hasColumn('coupons', 'used_at')) {
+                $table->timestamp('used_at')->nullable()->after('used_by');
+            }
         });
     }
 

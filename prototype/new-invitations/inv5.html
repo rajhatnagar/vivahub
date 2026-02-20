@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Swara & Aarambh - Elegant Rose Theme</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Yeseva+One&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-blush: #FFF5F5; 
+            --primary-rose: #C55A68; /* Exact dark pink/rose from mockups */
+            --card-bg: #FFFFFF; 
+            --text-dark: #333333;
+            --text-light: #555555;
+            
+            --font-script: 'Great Vibes', cursive;
+            --font-bold-serif: 'Yeseva One', serif; 
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Poppins', sans-serif;
+        }
+
+        /* Base & Reset */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: #222;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: var(--font-sans);
+            color: var(--text-dark);
+        }
+
+        /* Desktop Mobile Mockup Wrapper */
+        .mobile-wrapper {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            background-color: var(--bg-blush);
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(0,0,0,0.5);
+        }
+
+        @media (min-width: 500px) {
+            .mobile-wrapper {
+                width: 414px;
+                height: 896px;
+                max-height: 95vh;
+                border-radius: 45px;
+                border: 12px solid #111;
+            }
+            .mobile-wrapper::after {
+                content: ''; position: absolute; top: 0; left: 50%;
+                transform: translateX(-50%); width: 150px; height: 25px;
+                background-color: #111; border-bottom-left-radius: 20px;
+                border-bottom-right-radius: 20px; z-index: 9999;
+            }
+        }
+
+        /* App Container & Full-Width Seamless Background */
+        .app-container {
+            width: 100%; height: 100%;
+            overflow-y: auto; overflow-x: hidden;
+            position: relative; scroll-behavior: smooth;
+            background-color: var(--bg-blush);
+            /* Full Width Repeating Background from Assets */
+            background-image: url('http://vivahub.in/invitation_assets/Invitation-5/Background.png');
+            background-size: 100% auto;
+            background-repeat: repeat-y;
+            background-position: top center;
+            padding-bottom: 90px;
+            z-index: 2; 
+        }
+        .app-container::-webkit-scrollbar { width: 0; display: none; }
+
+        /* Typography */
+        h1, h2, h3, h4 { font-family: var(--font-bold-serif); font-weight: 400; text-align: center; color: var(--primary-rose); }
+        .title-elegant { font-family: var(--font-bold-serif); letter-spacing: 0.5px; color: var(--primary-rose); line-height: 1.3; }
+        .names-script { font-family: var(--font-script); font-size: 3.5rem; text-align: center; margin: 5px 0; color: var(--primary-rose); font-weight: 400; line-height: 1; }
+        p { font-size: 0.8rem; line-height: 1.6; text-align: center; color: var(--text-light); font-weight: 400; }
+        
+        /* Buttons */
+        .btn {
+            background-color: var(--primary-rose);
+            color: white; border: none;
+            padding: 8px 20px; border-radius: 25px; 
+            font-family: var(--font-sans); font-size: 0.75rem; font-weight: 500; 
+            cursor: pointer; text-decoration: none;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            box-shadow: 0 4px 15px rgba(197, 90, 104, 0.3);
+            transition: all 0.2s ease;
+        }
+        .btn:active { transform: scale(0.96); box-shadow: 0 2px 8px rgba(197, 90, 104, 0.2); }
+        .btn-outline {
+            background-color: transparent; border: 1px solid var(--primary-rose); color: var(--primary-rose);
+            box-shadow: none;
+        }
+
+        /* ---------------- PRELOAD SCREEN ---------------- */
+        #preload-screen {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000;
+            background-color: var(--bg-blush); /* Solid color so app background doesn't show during load */
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+            overflow: hidden;
+        }
+        .preload-content { text-align: center; position: relative; z-index: 10; width: 100%; }
+        
+        /* Corner Decor for Preload and Hero */
+        .decor-tl { position: absolute; top: 0; left: 0; width: 140px; z-index: 1; pointer-events: none; display: block; }
+        .decor-tr { position: absolute; top: 0; right: 0; width: 140px; z-index: 1; pointer-events: none; display: block; }
+        .decor-bl { position: absolute; bottom: 0; left: 0; width: 140px; z-index: 1; pointer-events: none; display: block; }
+        .decor-br { position: absolute; bottom: 0; right: 0; width: 140px; z-index: 1; pointer-events: none; display: block; }
+
+        /* ---------------- AUDIO CONTROLS ---------------- */
+        .audio-controls {
+            position: absolute; top: 20px; left: 0; width: 100%;
+            display: flex; justify-content: space-between; padding: 0 20px;
+            z-index: 500; pointer-events: none; opacity: 0; transition: opacity 0.5s;
+        }
+        .audio-btn {
+            pointer-events: auto; background: rgba(255, 255, 255, 0.95);
+            color: var(--primary-rose);
+            width: 38px; height: 38px; border-radius: 50%; display: flex;
+            justify-content: center; align-items: center; cursor: pointer;
+            box-shadow: 0 4px 10px rgba(197, 90, 104, 0.15);
+            border: 1px solid rgba(197, 90, 104, 0.3);
+        }
+
+        /* ---------------- SECTIONS & LAYOUT ---------------- */
+        section { padding: 40px 0; position: relative; z-index: 3; }
+        
+        /* Compact Hero Specifics */
+        #home {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 0;
+            box-sizing: border-box;
+            background-color: var(--bg-blush); /* Covers the repeating pattern for this section only */
+        }
+        
+        /* Image Structures */
+        .circle-frame-wrapper {
+            position: relative; display: inline-block; margin: 10px auto 20px auto; width: 180px; height: 180px;
+        }
+        .circle-img {
+            width: 100%; height: 100%; object-fit: cover;
+            border-radius: 50%; border: 2px solid var(--primary-rose);
+        }
+        .circle-floral {
+            position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%);
+            width: 220px; z-index: 5; pointer-events: none;
+        }
+
+        .oval-img {
+            width: 120px; height: 160px; object-fit: cover; 
+            border-radius: 100px; /* Perfect oval shape */
+            border: 1px solid var(--primary-rose);
+            box-shadow: 0 6px 15px rgba(197, 90, 104, 0.15);
+            margin-bottom: 5px;
+        }
+
+        /* White Cards for Events/RSVP */
+        .theme-card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px 20px;
+            margin: 0 auto 25px auto;
+            width: 86%; 
+            position: relative;
+            border: 1px solid rgba(197, 90, 104, 0.3); 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.04);
+        }
+
+        /* Grid Images (No Card Wrapper) */
+        .grid-2x2 { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin: 20px auto; width: 86%; }
+        .grid-img { width: 100%; height: 160px; object-fit: cover; border-radius: 5px; }
+
+        /* Forms */
+        .form-input {
+            width: 100%; padding: 12px 15px; margin-bottom: 12px;
+            border: 1px solid rgba(197, 90, 104, 0.3);
+            border-radius: 8px; background: #fff;
+            font-family: var(--font-sans); font-size: 0.8rem; outline: none;
+        }
+        .form-textarea {
+            width: 100%; padding: 12px 15px; border: 1px solid rgba(197, 90, 104, 0.3);
+            border-radius: 8px; background: #fff; font-family: var(--font-sans); font-size: 0.8rem;
+            height: 90px; resize: none; outline: none;
+        }
+
+        /* Footer & Misc */
+        .yt-box { background: #fff; width: 100%; height: 140px; display: flex; justify-content: center; align-items: center; border-radius: 12px; border: 1px solid rgba(197, 90, 104, 0.2); margin: 15px 0; color: #d32f2f; font-size: 3rem; }
+        .contact-icons { display: flex; justify-content: center; gap: 15px; margin-top: 15px; font-size: 1.1rem; color: var(--primary-rose); }
+        .footer { text-align: center; padding: 10px 20px 40px 20px; color: var(--text-light); font-size: 0.75rem; }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(197, 90, 104, 0.15);
+            display: flex; justify-content: space-around; padding: 12px 0 20px 0;
+            z-index: 500;
+        }
+        .nav-item { color: #aaa; text-decoration: none; display: flex; flex-direction: column; align-items: center; font-size: 0.65rem; font-weight: 500; transition: 0.3s; }
+        .nav-item i { font-size: 1.2rem; margin-bottom: 4px; }
+        .nav-item.active, .nav-item:hover { color: var(--primary-rose); }
+
+        /* Animations */
+        .animate-up { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .animate-up.show { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-wrapper">
+
+        <!-- 0. PRELOAD SCREEN (Matches 0 Preload.jpg exactly) -->
+        <div id="preload-screen">
+            <!-- Exact Assets for Corners (Flush to edges without floating gaps) -->
+            <img src="http://vivahub.in/invitation_assets/Invitation-5/Flower%202.png" class="decor-tl" alt="Flower">
+            <img src="http://vivahub.in/invitation_assets/Invitation-5/Flower%202.png" class="decor-tr" style="transform: scaleX(-1);" alt="Flower">
+            <img src="http://vivahub.in/invitation_assets/Invitation-5/Flower%203.png" class="decor-bl" alt="Flower">
+            <img src="http://vivahub.in/invitation_assets/Invitation-5/Flower%204.png" class="decor-br" alt="Flower">
+
+            <div class="preload-content animate-up" style="opacity: 1; transform: translateY(0);">
+                <h1 class="names-script" style="font-size: 4rem; line-height: 0.9; margin-bottom: 20px;">Save<br><span style="font-size: 2rem; margin-left: 40px;">the</span> Date</h1>
+                
+                <img src="http://vivahub.in/invitation_assets/Invitation-5/Picture%206.png" style="width: 75%; max-width: 260px; height: 200px; object-fit: cover; border: 1px solid var(--primary-rose); border-radius: 5px; box-shadow: 0 10px 25px rgba(178,64,88,0.15); margin: 0 auto;" alt="Couple">
+                
+                <h3 class="title-elegant" style="font-size: 1.2rem; margin: 25px 0 20px 0; color: #333;">30<sup>th</sup> & 31<sup>st</sup> Dec. 2026</h3>
+                
+                <button class="btn" id="open-invitation" style="padding: 10px 30px; font-size: 0.9rem;">Open Invitation <i class="fas fa-play-circle" style="margin-left: 5px;"></i></button>
+            </div>
+        </div>
+
+        <!-- Audio Controls -->
+        <div class="audio-controls" id="audio-controls">
+            <button class="audio-btn" id="voice-btn"><i class="fas fa-microphone"></i></button>
+            <button class="audio-btn" id="music-btn"><i class="fas fa-music"></i></button>
+        </div>
+
+        <!-- Audio Elements -->
+        <audio id="voice-audio" src="https://assets.mixkit.co/active_storage/sfx/212/212-preview.mp3"></audio> 
+        <audio id="bgm-audio" src="https://assets.mixkit.co/active_storage/sfx/135/135-preview.mp3" loop></audio>
+
+        <!-- Main Content -->
+        <div class="app-container" id="main-content">
+
+            <!-- 1. COMPACT HERO SECTION (Matches 1.jpg exactly) -->
+            <section id="home">
+                <img src="http://vivahub.in/invitation_assets/Invitation-5/Flower%202.png" class="decor-tl" alt="Flower">
+                <img src="http://vivahub.in/invitation_assets/Invitation-5/Flower%202.png" class="decor-tr" style="transform: scaleX(-1);" alt="Flower">
+                <img src="http://vivahub.in/invitation_assets/Invitation-5/Flower%203.png" class="decor-bl" alt="Flower">
+                <img src="http://vivahub.in/invitation_assets/Invitation-5/Flower%204.png" class="decor-br" alt="Flower">
+
+                <div class="animate-up" style="text-align: center; width: 100%; z-index: 5;">
+                    
+                    <div class="circle-frame-wrapper">
+                        <img src="http://vivahub.in/invitation_assets/Invitation-5/Picture%203.png" class="circle-img" alt="Couple">
+                        <img src="http://vivahub.in/invitation_assets/Invitation-5/Flower%201.png" class="circle-floral" alt="Floral Garland">
+                    </div>
+
+                    <p style="font-size: 0.6rem; color: #555; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; font-weight: 600;">You are cordially invited to<br>celebrate the marriage of</p>
+                    
+                    <h2 class="title-elegant" style="font-size: 2.2rem; margin: 0;">Aarambh</h2>
+                    <div style="font-family: var(--font-script); font-size: 1.8rem; color: var(--primary-rose); margin: -5px 0;">&</div>
+                    <h2 class="title-elegant" style="font-size: 2.2rem; margin: 0;">Swara</h2>
+                    
+                    <h3 style="font-size: 1.1rem; margin: 12px 0 20px 0; color: var(--text-dark); letter-spacing: 2px;">31 . 12 . 26</h3>
+                    
+                    <button class="btn" style="padding: 10px 30px;">Open Invitation</button>
+                </div>
+            </section>
+
+            <!-- 2. BRIDE & GROOM SECTION (No cards, floating on background like 2.jpg) -->
+            <section id="couple" style="padding-top: 10px;">
+                <div class="animate-up" style="text-align: center; padding: 0 20px;">
+                    <p style="font-size: 0.75rem; line-height: 1.4; margin-bottom: 15px; color: var(--text-light);">As we begin a new journey<br>together, we humbly invite you<br>and your family to be part of<br>our Wedding Ceremony</p>
+                    
+                    <h2 class="title-elegant" style="margin-bottom: 20px; font-size: 1.6rem;">Bride & Groom</h2>
+                    
+                    <!-- Groom -->
+                    <img src="http://vivahub.in/invitation_assets/Invitation-5/Picture%201.png" class="oval-img" alt="Groom">
+                    <h3 class="title-elegant" style="font-size: 1.2rem; margin-top: 5px;">Aarambh Sharma</h3>
+                    <p style="margin-top: 3px; font-size: 0.65rem; line-height: 1.3;">Son of Mrs. Sayli &<br>Mr. Rajesh Sanjay Sharma</p>
+                    <a href="#" style="color: var(--primary-rose); font-size: 0.8rem; text-decoration: none; margin-top: 5px; display: inline-block;"><i class="fab fa-instagram"></i></a>
+
+                    <div class="names-script" style="font-size: 2rem; margin: 5px 0 10px 0;">&</div>
+
+                    <!-- Bride -->
+                    <img src="http://vivahub.in/invitation_assets/Invitation-5/Picture%202.png" class="oval-img" alt="Bride">
+                    <h3 class="title-elegant" style="font-size: 1.2rem; margin-top: 5px;">Swara Verma</h3>
+                    <p style="margin-top: 3px; font-size: 0.65rem; line-height: 1.3;">Daughter of Mrs. Anita<br>& Mr. Suresh Rakesh Verma</p>
+                    <a href="#" style="color: var(--primary-rose); font-size: 0.8rem; text-decoration: none; margin-top: 5px; display: inline-block;"><i class="fab fa-instagram"></i></a>
+                </div>
+            </section>
+
+            <!-- 3. EVENTS TIMELINE SECTION (White Cards like 3.jpg) -->
+            <section id="events">
+                <!-- Engagement Card -->
+                <div class="theme-card animate-up" style="text-align: center;">
+                    <h2 class="title-elegant" style="margin-bottom: 15px; font-size: 1.8rem;">Engagement<br>Ceremony</h2>
+                    <p class="event-details" style="font-size: 0.85rem; font-weight: 600; margin-bottom: 5px;">30 December 2026</p>
+                    <div id="countdown" style="display: flex; justify-content: space-around; font-family: var(--font-bold-serif); font-size: 1.4rem; color: #333; margin: 15px 0;">
+                        <div><span id="days">00</span><br><small style="font-family: var(--font-sans); font-size: 0.55rem; color: #888; font-weight: 500; text-transform: uppercase;">Days</small></div>
+                        <div><span id="hours">00</span><br><small style="font-family: var(--font-sans); font-size: 0.55rem; color: #888; font-weight: 500; text-transform: uppercase;">Hours</small></div>
+                        <div><span id="mins">00</span><br><small style="font-family: var(--font-sans); font-size: 0.55rem; color: #888; font-weight: 500; text-transform: uppercase;">Mins</small></div>
+                        <div><span id="secs">00</span><br><small style="font-family: var(--font-sans); font-size: 0.55rem; color: #888; font-weight: 500; text-transform: uppercase;">Sec</small></div>
+                    </div>
+                    <p class="event-details" style="margin-bottom: 20px;">07:30 pm @ Main Hall,<br>Hotel Sunrise, Mumbai</p>
+                    <div style="display: flex; justify-content: center; gap: 10px;">
+                        <button class="btn"><i class="fas fa-map-marker-alt"></i> View Location</button>
+                        <button class="btn"><i class="far fa-calendar-alt"></i> Add to Calendar</button>
+                    </div>
+                </div>
+
+                <!-- Wedding Card -->
+                <div class="theme-card animate-up" style="text-align: center;">
+                    <h2 class="title-elegant" style="margin-bottom: 15px; font-size: 1.8rem;">Wedding<br>Ceremony</h2>
+                    <p class="event-details" style="font-size: 0.85rem; font-weight: 600; margin-bottom: 5px;">31 December 2026</p>
+                    <p class="event-details" style="margin-bottom: 20px;"><br>07:30 pm @ Aathvan Lawns,<br>Tapovan, Nashik.</p>
+                    <div style="display: flex; justify-content: center; gap: 10px;">
+                        <button class="btn"><i class="fas fa-map-marker-alt"></i> View Location</button>
+                        <button class="btn"><i class="far fa-calendar-alt"></i> Add to Calendar</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. GALLERY & FORMS SECTION (Mix of floating grid and cards) -->
+            <section id="gallery">
+                <!-- Pre-Wedding Photos Grid (Floating directly on background) -->
+                <div class="animate-up" style="text-align: center; padding: 0 10px; margin-bottom: 40px;">
+                    <h2 class="title-elegant" style="font-size: 1.6rem; margin-bottom: 15px;">Pre-Wedding Photos</h2>
+                    <div class="grid-2x2">
+                        <img src="http://vivahub.in/invitation_assets/Invitation-5/Picture%201.png" class="grid-img" alt="Photo">
+                        <img src="http://vivahub.in/invitation_assets/Invitation-5/Picture%202.png" class="grid-img" alt="Photo">
+                        <img src="http://vivahub.in/invitation_assets/Invitation-5/Picture%204.png" class="grid-img" alt="Photo">
+                        <img src="http://vivahub.in/invitation_assets/Invitation-5/Picture%205.png" class="grid-img" alt="Photo">
+                    </div>
+                </div>
+
+                <!-- RSVP Card -->
+                <div class="theme-card animate-up">
+                    <h2 class="title-elegant" style="text-align: center; margin-bottom: 20px; font-size: 1.6rem;">RSVP</h2>
+                    <input type="text" class="form-input" placeholder="Name">
+                    <input type="tel" class="form-input" placeholder="Phone Number">
+                    <input type="number" class="form-input" placeholder="Number of Guest">
+                    <div style="display: flex; gap: 20px; font-size: 0.75rem; color: #666; justify-content: center; margin: 15px 0;">
+                        <label style="cursor: pointer;"><input type="checkbox" style="accent-color: var(--primary-rose);"> Wedding</label>
+                        <label style="cursor: pointer;"><input type="checkbox" style="accent-color: var(--primary-rose);"> Reception</label>
+                    </div>
+                    <div style="text-align: center;">
+                        <button class="btn" style="padding: 8px 30px;">Send</button>
+                    </div>
+                </div>
+
+                <!-- Wishes Card -->
+                <div class="theme-card animate-up">
+                    <h2 class="title-elegant" style="text-align: center; margin-bottom: 20px; font-size: 1.6rem;">Wishes</h2>
+                    <input type="text" class="form-input" placeholder="Name">
+                    <input type="text" class="form-input" placeholder="Address">
+                    <textarea class="form-textarea" placeholder="Write your wishes..."></textarea>
+                    <div style="text-align: right; font-size: 0.65rem; color: #999; margin-bottom: 15px;">Character Left: 300</div>
+                    <div style="text-align: center; margin-bottom: 25px;">
+                        <button class="btn" style="padding: 8px 30px;">Send</button>
+                    </div>
+
+                    <!-- Wishes List -->
+                    <div style="border: 1px solid rgba(197, 90, 104, 0.2); padding: 12px; border-radius: 8px; margin-bottom: 10px;">
+                        <p style="text-align: left; font-size: 0.75rem; margin: 0; color: #333;">Happy Wedding!</p>
+                        <p style="text-align: right; font-size: 0.6rem; color: var(--primary-rose); margin: 5px 0 0 0; font-weight: 500;">- Shreerang Patel</p>
+                    </div>
+                    <div style="border: 1px solid rgba(197, 90, 104, 0.2); padding: 12px; border-radius: 8px;">
+                        <p style="text-align: left; font-size: 0.75rem; margin: 0; color: #333;">Congratulations both of you</p>
+                        <p style="text-align: right; font-size: 0.6rem; color: var(--primary-rose); margin: 5px 0 0 0; font-weight: 500;">- Swara Kondalkar</p>
+                    </div>
+                </div>
+
+                <!-- Regards Card -->
+                <div class="theme-card animate-up" style="text-align: center; padding: 30px 20px; margin-top: 40px;">
+                    <h2 class="title-elegant" style="font-size: 1.3rem; margin-bottom: 15px;">- Regards -</h2>
+                    <h3 class="title-elegant" style="font-size: 1.1rem; line-height: 1.6; color: #333;">Mrs. Sayli & <br>Mr. Rajesh Sanjay Sharma <br>& Sharma Family</h3>
+                    <div class="contact-icons">
+                        <i class="fas fa-phone-alt"></i>
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                </div>
+
+                <!-- Footer (Floating) -->
+                <footer class="footer animate-up">
+                    <p style="font-weight: 500; font-size: 0.7rem; color: #777;">Designed by <br> <span style="color: var(--primary-rose); font-weight: 600;">Aarambh Photography <i class="fab fa-instagram"></i></span></p>
+                    <div style="margin: 20px 0;">
+                        <p style="font-weight: 500; font-size: 0.6rem; color: #888;">Powered by</p>
+                        <h2 class="names-script" style="font-size: 2.5rem; margin: 5px 0;">VivaHub</h2>
+                        <div class="contact-icons" style="font-size: 1rem; margin-top: 10px; color: var(--primary-rose);">
+                            <i class="fab fa-whatsapp"></i> <i class="fab fa-instagram"></i> <i class="fas fa-globe"></i>
+                        </div>
+                    </div>
+                </footer>
+            </section>
+            
+        </div> <!-- End App Container -->
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="#home" class="nav-item active"><i class="fas fa-home"></i>Home</a>
+            <a href="#couple" class="nav-item"><i class="fas fa-heart"></i>Couple</a>
+            <a href="#events" class="nav-item"><i class="far fa-calendar-alt"></i>Events</a>
+            <a href="#gallery" class="nav-item"><i class="far fa-images"></i>Gallery</a>
+        </nav>
+
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            // --- Preload & Audio Logic ---
+            const openBtn = document.getElementById('open-invitation');
+            const preloadScreen = document.getElementById('preload-screen');
+            const audioControls = document.getElementById('audio-controls');
+            const voiceAudio = document.getElementById('voice-audio');
+            const bgmAudio = document.getElementById('bgm-audio');
+            const voiceBtn = document.getElementById('voice-btn');
+            const musicBtn = document.getElementById('music-btn');
+            
+            let isVoicePlaying = false;
+            let isBgmPlaying = false;
+
+            openBtn.addEventListener('click', () => {
+                preloadScreen.style.transform = 'translateY(-100%)';
+                preloadScreen.style.opacity = '0';
+                setTimeout(() => preloadScreen.style.display = 'none', 1000);
+                setTimeout(() => audioControls.style.opacity = '1', 800);
+
+                bgmAudio.volume = 0;
+                bgmAudio.play().then(() => {
+                    bgmAudio.pause();
+                    bgmAudio.volume = 1;
+                    bgmAudio.currentTime = 0;
+                }).catch(e => console.warn("Audio unlock prevented:", e));
+
+                voiceAudio.play().then(() => {
+                    isVoicePlaying = true;
+                    voiceBtn.style.color = '#fff';
+                    voiceBtn.style.backgroundColor = 'var(--primary-rose)';
+                }).catch(e => console.warn("Voice play prevented:", e));
+            });
+
+            voiceAudio.addEventListener('ended', () => {
+                isVoicePlaying = false;
+                voiceBtn.style.color = 'var(--primary-rose)';
+                voiceBtn.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+                
+                bgmAudio.play().then(() => {
+                    isBgmPlaying = true;
+                    musicBtn.style.color = '#fff';
+                    musicBtn.style.backgroundColor = 'var(--primary-rose)';
+                }).catch(e => console.warn("BGM play prevented:", e));
+            });
+
+            voiceBtn.addEventListener('click', () => {
+                if(isVoicePlaying) {
+                    voiceAudio.pause();
+                    isVoicePlaying = false;
+                    voiceBtn.style.color = 'var(--primary-rose)';
+                    voiceBtn.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+                } else {
+                    bgmAudio.pause(); 
+                    isBgmPlaying = false;
+                    musicBtn.style.color = 'var(--primary-rose)';
+                    musicBtn.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+                    
+                    voiceAudio.currentTime = 0;
+                    voiceAudio.play().then(() => {
+                        isVoicePlaying = true;
+                        voiceBtn.style.color = '#fff';
+                        voiceBtn.style.backgroundColor = 'var(--primary-rose)';
+                    }).catch(e => console.warn("Voice play prevented:", e));
+                }
+            });
+
+            musicBtn.addEventListener('click', () => {
+                if(isBgmPlaying) {
+                    bgmAudio.pause();
+                    isBgmPlaying = false;
+                    musicBtn.style.color = 'var(--primary-rose)';
+                    musicBtn.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+                } else {
+                    voiceAudio.pause(); 
+                    isVoicePlaying = false;
+                    voiceBtn.style.color = 'var(--primary-rose)';
+                    voiceBtn.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+
+                    bgmAudio.play().then(() => {
+                        isBgmPlaying = true;
+                        musicBtn.style.color = '#fff';
+                        musicBtn.style.backgroundColor = 'var(--primary-rose)';
+                    }).catch(e => console.warn("BGM play prevented:", e));
+                }
+            });
+
+            // --- Scroll Animations ---
+            const observerOptions = { threshold: 0.1, root: document.getElementById('main-content') };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.animate-up').forEach(el => observer.observe(el));
+
+            // --- Countdown Timer Logic ---
+            const weddingDate = new Date('Dec 30, 2026 19:30:00').getTime();
+            
+            const timer = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = weddingDate - now;
+
+                if (distance < 0) {
+                    clearInterval(timer);
+                    document.getElementById("countdown").innerHTML = "<h3 class='title-elegant' style='grid-column: span 4; font-size: 1.2rem;'>Happily Married!</h3>";
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const mins = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const secs = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById("days").innerText = days < 10 ? '0'+days : days;
+                document.getElementById("hours").innerText = hours < 10 ? '0'+hours : hours;
+                document.getElementById("mins").innerText = mins < 10 ? '0'+mins : mins;
+                document.getElementById("secs").innerText = secs < 10 ? '0'+secs : secs;
+            }, 1000);
+
+            // --- Bottom Nav Active State ---
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    navItems.forEach(n => n.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

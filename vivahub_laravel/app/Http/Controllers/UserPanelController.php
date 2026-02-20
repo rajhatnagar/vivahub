@@ -156,8 +156,41 @@ class UserPanelController extends Controller implements HasMiddleware
             $status = $data['status'] ?? 'draft';
             $couponCode = $data['coupon_code'] ?? null;
 
-            // Handle Publishing Logic (Payment/Coupon)
-            if ($status === 'published' && $couponCode) {
+            // Handle Publishing Logic (Payment/Coupon or Free Access)
+            $freeAccessEnabled = \App\Models\Setting::where('key', 'enable_free_access')->value('value') == '1';
+
+            // If Free Access is NOT enabled, we must validate coupon or payment (assumed handled by frontend for payment gateway callback)
+            // But if generic save, we process coupon here.
+            $expiresAt = null;
+
+            if ($status === 'published') {
+                 if ($freeAccessEnabled && !$couponCode && !isset($data['payment_id']) && !isset($data['transaction_id'])) {
+                     // Free Access Check: Limit 1
+                     $existingCount = Invitation::where('user_id', $user->id)
+                         ->where('status', 'published')
+                         ->where('template_id', '!=', $templateId) // Exclude current if editing
+                         ->count();
+                     
+                     if ($existingCount >= 1) {
+                         return response()->json(['success' => false, 'message' => 'Free Access Limit Reached (1 Invitation). Please upgrade to publish more.'], 402);
+                     }
+                     // Set 7 Days Expiry
+                     $expiresAt = Carbon::now()->addDays(7);
+                 } elseif (!$freeAccessEnabled) {
+                     // Strict Payment Check
+                     if ($couponCode) {
+                         // ... process coupon ...
+                         // Just verify existence here, processing happens below
+                     } elseif (!isset($data['payment_id']) && !isset($data['transaction_id'])) {
+                         $existing = Invitation::where('user_id', $user->id)->where('template_id', $templateId)->first();
+                         if (!$existing || $existing->status !== 'published') {
+                             return response()->json(['success' => false, 'message' => 'Payment or Valid Coupon Required to Publish.'], 402);
+                         }
+                     }
+                 }
+            }
+
+            if ($status === 'published' && !$freeAccessEnabled && $couponCode) {
                  $coupon = Coupon::where('code', $couponCode)->where('status', 'active')->first();
                  
                  if (!$coupon) {
@@ -227,17 +260,30 @@ class UserPanelController extends Controller implements HasMiddleware
                  });
             }
 
+            // If not setting expiry (e.g. paid), we might want to clear it or keep it?
+            // For now, if $expiresAt is set, we use it. If not, we don't touch it unless it's a new paid plan (which should handle it elsewhere).
+            
+            $updateData = [
+                'title' => ($data['groom'] ?? 'Groom') . ' & ' . ($data['bride'] ?? 'Bride'),
+                'content' => 'Wedding Invitation',
+                'status' => $status,
+                'data' => $data
+            ];
+            
+            if ($expiresAt) {
+                // Log expiry for debug
+                \Illuminate\Support\Facades\Log::info("Setting expiry for user {$user->id}: " . $expiresAt);
+                $updateData['expires_at'] = $expiresAt;
+            } else {
+                 \Illuminate\Support\Facades\Log::info("No expiry set for user {$user->id}");
+            }
+
             $invitation = \App\Models\Invitation::updateOrCreate(
                 [
                     'user_id' => $user->id, 
                     'template_id' => $templateId
                 ],
-                [
-                    'title' => ($data['groom'] ?? 'Groom') . ' & ' . ($data['bride'] ?? 'Bride'),
-                    'content' => 'Wedding Invitation',
-                    'status' => $status,
-                    'data' => $data
-                ]
+                $updateData
             );
 
             return response()->json(['success' => true, 'id' => $invitation->id]);
@@ -406,8 +452,18 @@ class UserPanelController extends Controller implements HasMiddleware
     {
         try {
             // Select only needed columns to avoid memory issues with large JSON data
-            $invitation = \App\Models\Invitation::select('id', 'user_id', 'template_id', 'title', 'data', 'status')
+            $invitation = \App\Models\Invitation::select('id', 'user_id', 'template_id', 'title', 'data', 'status', 'expires_at')
                 ->findOrFail($id);
+
+            // Check Expiration
+            if ($invitation->expires_at && \Carbon\Carbon::now()->greaterThan($invitation->expires_at)) {
+                // If owner, redirect to billing to renew/upgrade
+                if (auth()->check() && auth()->id() === $invitation->user_id) {
+                    return redirect()->route('user.billing')->with('error', 'Your invitation free trial has expired. Please upgrade to continue.');
+                }
+                // If visitor, show expired message
+                return response()->view('errors.custom', ['code' => 402, 'message' => 'This invitation has expired.'], 402);
+            }
 
             // Partner Branding Logic
             $partnerBranding = null;

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     
     <!-- SEO Meta Tags -->
     <title>VivaHub - Premium Digital Invitations | Create Wedding Invites Online</title>
@@ -83,7 +84,13 @@
                  <p class="text-xs text-gray-500 mt-2">Create the perfect invitation for your special day.</p>
             </div>
 
-            <form method="POST" action="{{ route('login') }}" class="space-y-4">
+            <!-- Error Message Content -->
+            <div id="login-errors" class="hidden mb-4 p-3 bg-red-50 border border-red-100 rounded-xl flex items-start gap-2">
+                <i data-lucide="alert-circle" class="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0"></i>
+                <div class="text-xs text-red-600 font-bold" id="login-error-text"></div>
+            </div>
+
+            <form id="user-login-form" onsubmit="handleUserLogin(event)" class="space-y-4">
                 @csrf
                 <div>
                     <label class="block text-xs font-bold text-gray-700 mb-1">Email Address</label>
@@ -97,10 +104,57 @@
                     <input type="password" name="password" placeholder="Enter your password" required class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:outline-none focus:border-[#a67c52] text-sm">
                 </div>
 
-                <button type="submit" class="w-full bg-gradient-to-r from-[#b8966e] to-[#a67c52] text-white py-3 rounded-full font-bold shadow-xl hover:shadow-2xl hover:from-[#a67c52] hover:to-[#8d6a46] transform transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:shadow-md">
-                    Sign In
+                <button type="submit" id="login-btn" class="w-full bg-gradient-to-r from-[#b8966e] to-[#a67c52] text-white py-3 rounded-full font-bold shadow-xl hover:shadow-2xl hover:from-[#a67c52] hover:to-[#8d6a46] transform transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:shadow-md flex items-center justify-center gap-2">
+                    <span>Sign In</span>
                 </button>
             </form>
+
+            <script>
+                function handleUserLogin(e) {
+                    e.preventDefault();
+                    const form = document.getElementById('user-login-form');
+                    const btn = document.getElementById('login-btn');
+                    const errorBox = document.getElementById('login-errors');
+                    const errorText = document.getElementById('login-error-text');
+                    
+                    // Reset UI
+                    btn.disabled = true;
+                    btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Signing In...';
+                    lucide.createIcons();
+                    errorBox.classList.add('hidden');
+
+                    const formData = new FormData(form);
+
+                    fetch("{{ route('login') }}", {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]') ? document.querySelector('meta[name="csrf-token"]').content : '{{ csrf_token() }}',
+                            'Accept': 'application/json'
+                        },
+                        body: formData
+                    })
+                    .then(response => {
+                        return response.json().then(data => {
+                            if (response.ok) {
+                                // Success -> Redirect if backend sends URL, else reload
+                                if (data.redirect) {
+                                    window.location.href = data.redirect;
+                                } else {
+                                    window.location.reload();
+                                }
+                                return;
+                            }
+                            throw new Error(data.message || 'Login failed.');
+                        });
+                    })
+                    .catch(error => {
+                        errorText.innerText = error.message;
+                        errorBox.classList.remove('hidden');
+                        btn.disabled = false;
+                        btn.innerHTML = 'Sign In';
+                    });
+                }
+            </script>
 
             <div class="relative py-2">
                 <div class="absolute inset-0 flex items-center"><span class="w-full border-t border-gray-200"></span></div>
@@ -137,8 +191,14 @@
                 <button onclick="switchPartnerTab('register')" id="tab-partner-register" class="px-6 py-2 text-sm font-bold text-gray-400 hover:text-gray-600 transition-colors">Register Agency</button>
             </div>
 
+            <!-- Partner Login Error Message -->
+            <div id="partner-login-errors" class="hidden mb-4 p-3 bg-red-50 border border-red-100 rounded-xl flex items-start gap-2">
+                <i data-lucide="alert-circle" class="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0"></i>
+                <div class="text-xs text-red-600 font-bold" id="partner-login-error-text"></div>
+            </div>
+
             <!-- Login Form -->
-            <form id="form-partner-login" method="POST" action="{{ route('login') }}" class="space-y-4">
+            <form id="form-partner-login" onsubmit="handlePartnerLogin(event)" class="space-y-4">
                 @csrf
                 <div>
                     <label class="block text-xs font-bold text-gray-700 mb-1">Email Address</label>
@@ -151,10 +211,57 @@
                     </label>
                     <input type="password" name="password" placeholder="Password" required class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:outline-none focus:border-gold-primary text-sm">
                 </div>
-                <button type="submit" class="w-full bg-gradient-to-r from-gold-light to-gold-primary text-white py-3 rounded-full font-bold shadow-xl hover:shadow-2xl hover:from-gold-primary hover:to-gold-dark transform transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:shadow-md btn-color" style="background-color: Black;">
+                <button type="submit" id="partner-login-btn" class="w-full bg-gradient-to-r from-gold-light to-gold-primary text-white py-3 rounded-full font-bold shadow-xl hover:shadow-2xl hover:from-gold-primary hover:to-gold-dark transform transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:shadow-md btn-color" style="background-color: Black;">
                     Access Partner Dashboard
                 </button>
             </form>
+
+            <script>
+                function handlePartnerLogin(e) {
+                    e.preventDefault();
+                    const form = document.getElementById('form-partner-login');
+                    const btn = document.getElementById('partner-login-btn');
+                    const errorBox = document.getElementById('partner-login-errors');
+                    const errorText = document.getElementById('partner-login-error-text');
+                    
+                    // Reset UI
+                    btn.disabled = true;
+                    btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin inline-block mr-2"></i> Signing In...';
+                    lucide.createIcons();
+                    errorBox.classList.add('hidden');
+
+                    const formData = new FormData(form);
+
+                    fetch("{{ route('login') }}", {  // Using standard login route which handles role redirection
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]') ? document.querySelector('meta[name="csrf-token"]').content : '{{ csrf_token() }}',
+                            'Accept': 'application/json'
+                        },
+                        body: formData
+                    })
+                    .then(response => {
+                        return response.json().then(data => {
+                            if (response.ok) {
+                                // Success -> Redirect to partner dashboard
+                                if (data.redirect) {
+                                    window.location.href = data.redirect;
+                                } else {
+                                    window.location.href = '{{ route("partner.dashboard") }}';
+                                }
+                                return;
+                            }
+                            throw new Error(data.message || (data.errors ? Object.values(data.errors).flat().join(', ') : 'Login failed.'));
+                        });
+                    })
+                    .catch(error => {
+                        errorText.innerText = error.message;
+                        errorBox.classList.remove('hidden');
+                        btn.disabled = false;
+                        btn.innerHTML = 'Access Partner Dashboard';
+                    });
+                }
+            </script>
 
             <!-- Register Form (Hidden) -->
             <form id="form-partner-register" method="POST" action="{{ route('partner.register') }}" class="space-y-4 hidden">
@@ -238,12 +345,24 @@
           <!-- === DESKTOP LAYOUT (Phone Left, Text Right) === -->
           <div class="hidden lg:flex w-full justify-between items-center h-full">
              <div class="w-1/2 flex justify-start items-center pl-10">
-                 <div class="relative w-[300px] h-[600px] bg-black rounded-[3rem] border-[8px] border-gray-900 shadow-2xl overflow-hidden ring-1 ring-white/20 transform hover:scale-105 transition-transform duration-500">
-                    <div class="absolute inset-0 bg-white overflow-hidden rounded-[2.5rem]">
-                         <iframe src="{{ route('template.preview', ['template' => 'wedding-1']) }}" class="w-full h-full border-0" loading="lazy"></iframe>
-                         <!-- Pointer Events Overlay to allow scrolling but prevent navigation if needed -->
+                    <div class="relative w-[300px] h-[600px] bg-black rounded-[3rem] border-[8px] border-gray-900 shadow-2xl overflow-hidden ring-1 ring-white/20 transform hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-[#fff5f0] flex flex-col items-center">
+                            <!-- Top Half: Text -->
+                            <div class="w-full h-1/2 relative flex flex-col items-center justify-center text-center p-4">
+                                <p class="font-serif italic text-gray-800 text-sm drop-shadow-md">We invite you to The Wedding of</p>
+                                <h2 class="font-serif text-3xl text-gray-900 my-2 drop-shadow-md font-bold">Swara & Aarambh</h2>
+                                <button class="px-4 py-2 bg-[#a67c52] text-white text-[10px] font-bold rounded-full mt-2 uppercase tracking-widest shadow-lg hover:bg-[#8d6a46] transition-colors">
+                                    Open Invitation
+                                </button>
+                            </div>
+                            <!-- Bottom Half: Image -->
+                            <div class="w-full h-1/2 p-4">
+                                <img src="https://vivahub.in/test/Mobile_Background.png" alt="Couple" class="w-full h-full object-cover rounded-2xl shadow-inner">
+                            </div>
+                            <!-- Notch -->
+                            <div class="absolute top-0 w-32 h-7 bg-black rounded-b-2xl left-1/2 transform -translate-x-1/2 z-20"></div>
+                        </div>
                     </div>
-                 </div>
              </div>
 
              <div class="w-1/2 flex flex-col items-start text-left space-y-8 pl-10">
@@ -293,10 +412,23 @@
                 <!-- Phone -->
                 <div class="w-[55%] flex justify-start pl-2">
                     <div class="relative w-[180px] h-[360px] bg-black rounded-[2rem] border-[4px] border-gray-900 shadow-2xl overflow-hidden ring-1 ring-white/20">
-                        <div class="absolute inset-0 bg-white overflow-hidden rounded-[1.8rem]">
-                             <iframe src="{{ route('template.preview', ['template' => 'wedding-1']) }}" class="w-full h-full border-0" loading="lazy"></iframe>
+                        <div class="absolute inset-0 bg-[#fff5f0] flex flex-col items-center">
+                            <!-- Top Half: Text -->
+                            <div class="w-full h-1/2 relative flex flex-col items-center justify-center text-center p-2">
+                                <p class="font-serif italic text-gray-800 text-[9px] drop-shadow-md">We invite you to The Wedding of</p>
+                                <h2 class="font-serif text-xl text-gray-900 my-1 drop-shadow-md font-bold">Swara & Aarambh</h2>
+                                <button class="px-2 py-1 bg-[#a67c52] text-white text-[8px] font-bold rounded-full mt-1 uppercase tracking-widest shadow-md">
+                                    Open Invitation
+                                </button>
+                            </div>
+                            <!-- Bottom Half: Image -->
+                            <div class="w-full h-1/2 p-2">
+                                <img src="https://vivahub.in/test/Mobile_Background.png" alt="Couple" class="w-full h-full object-cover rounded-xl shadow-inner">
+                            </div>
+                            <!-- Notch -->
+                            <div class="absolute top-0 w-20 h-4 bg-black rounded-b-lg left-1/2 transform -translate-x-1/2 z-20"></div>
                         </div>
-                     </div>
+                    </div>
                 </div>
 
                 <!-- Buttons (Updated Styling) -->
