@@ -181,7 +181,7 @@
             </button>
             
             <div class="text-center mb-6">
-                 <h2 class="font-serif text-3xl text-gold-dark">Partner Portal</h2>
+                 <h2 class="font-serif text-3xl text-gold-dark">Partner Login</h2>
                  <p class="text-xs text-gray-500 mt-2">Manage your agency and create stunning invites for clients.</p>
             </div>
 
@@ -236,26 +236,41 @@
                         method: 'POST',
                         headers: {
                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]') ? document.querySelector('meta[name="csrf-token"]').content : '{{ csrf_token() }}',
-                            'Accept': 'application/json'
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
                         },
                         body: formData
                     })
-                    .then(response => {
-                        return response.json().then(data => {
-                            if (response.ok) {
-                                // Success -> Redirect to partner dashboard
-                                if (data.redirect) {
-                                    window.location.href = data.redirect;
-                                } else {
-                                    window.location.href = '{{ route("partner.dashboard") }}';
-                                }
-                                return;
+                    .then(async response => {
+                        const contentType = response.headers.get('content-type') || '';
+
+                        // If server returned HTML (redirect was followed), just go to the final URL
+                        if (response.redirected || !contentType.includes('application/json')) {
+                            // Login likely succeeded but server returned HTML instead of JSON
+                            // Redirect to partner dashboard directly
+                            window.location.href = '{{ route("partner.dashboard") }}';
+                            return;
+                        }
+                        
+                        const data = await response.json();
+                        if (response.ok) {
+                            // Success -> Redirect to partner dashboard
+                            if (data.redirect) {
+                                window.location.href = data.redirect;
+                            } else {
+                                window.location.href = '{{ route("partner.dashboard") }}';
                             }
-                            throw new Error(data.message || (data.errors ? Object.values(data.errors).flat().join(', ') : 'Login failed.'));
-                        });
+                            return;
+                        }
+                        throw new Error(data.message || (data.errors ? Object.values(data.errors).flat().join(', ') : 'Login failed. Please check your credentials.'));
                     })
                     .catch(error => {
-                        errorText.innerText = error.message;
+                        // Don't show raw JSON parse errors to user
+                        let userMessage = error.message;
+                        if (userMessage.includes('Unexpected token') || userMessage.includes('JSON')) {
+                            userMessage = 'Login failed. Please check your credentials and try again.';
+                        }
+                        errorText.innerText = userMessage;
                         errorBox.classList.remove('hidden');
                         btn.disabled = false;
                         btn.innerHTML = 'Access Partner Dashboard';

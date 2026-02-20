@@ -13,6 +13,9 @@ class AuthController extends Controller
 
     public function login(\Illuminate\Http\Request $request)
     {
+        // Detect if this is an AJAX/JSON request (from modals, fetch API, etc.)
+        $isAjax = $request->wantsJson() || $request->ajax() || $request->expectsJson();
+
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
@@ -27,6 +30,13 @@ class AuthController extends Controller
                 $request->session()->invalidate();
                 $request->session()->regenerateToken();
                 
+                if ($isAjax) {
+                    return response()->json([
+                        'message' => 'Your account has been suspended. Please contact support.',
+                        'errors' => ['email' => ['Your account has been suspended. Please contact support.']]
+                    ], 403);
+                }
+
                 return back()->withErrors([
                     'email' => 'Your account has been suspended. Please contact support.',
                 ])->onlyInput('email');
@@ -40,14 +50,14 @@ class AuthController extends Controller
                 $redirect = route('dashboard');
             }
             
-            if ($request->wantsJson()) {
+            if ($isAjax) {
                 return response()->json(['success' => true, 'redirect' => $redirect]);
             }
 
             return redirect($redirect);
         }
 
-        if ($request->wantsJson()) {
+        if ($isAjax) {
             return response()->json([
                 'message' => 'The provided credentials do not match our records.',
                 'errors' => ['email' => ['The provided credentials do not match our records.']]
