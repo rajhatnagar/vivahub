@@ -279,6 +279,13 @@ class PaymentController extends Controller
                     'type' => 'credit'
                 ]);
 
+                \App\Models\Log::create([
+                    'user_id' => $user->id,
+                    'action' => 'Credit Purchase',
+                    'details' => 'Purchased ' . $itemName,
+                    'ip_address' => request()->ip(),
+                ]);
+
                 // 4. Log Coupon Usage (Partners)
                 if ($request->has('coupon_code') && $request->coupon_code) {
                      $coupon = \App\Models\Coupon::where('code', $request->coupon_code)->first();
@@ -560,6 +567,10 @@ class PaymentController extends Controller
                 'razorpay_signature' => 'required|string',
                 'plan_id' => 'required|exists:plans,id',
                 'coupon_code' => 'nullable|string',
+                'has_gst' => 'nullable|boolean',
+                'billing_gst' => 'nullable|string|max:50',
+                'billing_company' => 'nullable|string|max:255',
+                'billing_address' => 'nullable|string|max:1000',
             ]);
 
             if (!$this->isRazorpayEnabled()) {
@@ -675,8 +686,20 @@ class PaymentController extends Controller
                 'gateway' => 'razorpay',
                 'status' => 'success',
                 'transaction_id' => $request->razorpay_payment_id,
+                'tax_amount' => $taxAmount,
+                'has_gst' => $request->boolean('has_gst', false),
+                'billing_gst' => $request->billing_gst,
+                'billing_company' => $request->billing_company,
+                'billing_address' => $request->billing_address,
             ]);
             
+            \App\Models\Log::create([
+                'user_id' => $user->id,
+                'action' => 'Plan Purchase / Invitation Published',
+                'details' => 'Purchased Plan: ' . $plan->name . ' for Invitation',
+                'ip_address' => request()->ip(),
+            ]);
+
             // Payment verified
             return response()->json([
                 'success' => true,

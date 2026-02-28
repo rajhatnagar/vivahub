@@ -25,6 +25,9 @@
                     </label>
                     <p class="text-xs text-text-muted mt-2">JPG, GIF or PNG. Max size 800K</p>
                     <p id="photo-error" class="text-xs text-red-500 mt-1 hidden"></p>
+                    @error('profile_photo')
+                        <p class="text-xs text-red-500 font-bold mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
 

@@ -125,9 +125,16 @@
                         <div class="w-8 h-8 rounded-full border-2 border-white dark:border-surface-dark bg-gray-300"></div>
                         <div class="w-8 h-8 rounded-full border-2 border-white dark:border-surface-dark bg-primary text-white flex items-center justify-center text-[10px] font-bold">+{{ $invitation['rsvps'] }}</div>
                     </div>
-                    <a href="{{ route('builder', ['invitation_id' => $invitation['id']]) }}" class="p-4 -m-2 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 text-text-muted hover:text-primary transition-colors relative z-20">
-                        <span class="material-symbols-outlined">edit</span>
-                    </a>
+                    <div class="flex items-center gap-1">
+                        @if($invitation['status'] === 'Live')
+                        <button onclick="navigator.clipboard.writeText('{{ route('invitation.show', $invitation['id']) }}'); alert('Invitation Link Copied!')" class="p-3 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 text-text-muted hover:text-green-600 transition-colors relative z-20 tooltip" title="Copy Link">
+                            <span class="material-symbols-outlined text-[20px]">content_copy</span>
+                        </button>
+                        @endif
+                        <a href="{{ route('builder', ['invitation_id' => $invitation['id']]) }}" class="p-3 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 text-text-muted hover:text-primary transition-colors relative z-20">
+                            <span class="material-symbols-outlined text-[20px]">edit</span>
+                        </a>
+                    </div>
                 </div>
         </div>
     </div>

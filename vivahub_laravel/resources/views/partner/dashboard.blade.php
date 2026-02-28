@@ -93,7 +93,7 @@
     <aside class="w-72 shrink-0 h-full glass-panel flex flex-col z-50 hidden lg:flex transition-all duration-300 border-r border-gray-200 dark:border-white/10">
         <div class="p-8 pb-6 border-b border-gray-100 dark:border-white/5">
             <div class="flex flex-col items-center gap-3 mb-6">
-                 <img src="{{ $partner->logo_url ?? asset('VivaHub-logo.png') }}" alt="VivaHub" class="h-10 w-auto object-contain">
+                 <img src="{{ $partner->logo_url ? (str_starts_with($partner->logo_url, 'http') ? $partner->logo_url : asset($partner->logo_url)) : asset('VivaHub-logo.png') }}" alt="VivaHub" class="h-10 w-auto object-contain">
                  <span class="text-[10px] uppercase tracking-[0.2em] text-accent-gold font-bold bg-accent-gold/10 px-2 py-1 rounded">Partner Agency</span>
             </div>
             <button onclick="app.toggleClientModal(true)" class="w-full bg-gradient-to-r from-primary to-primary-dark hover:shadow-lg hover:shadow-primary/30 text-white font-bold py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 group transition-all duration-300 transform hover:-translate-y-0.5">
@@ -150,7 +150,7 @@
         <!-- Header -->
         <header class="flex items-center justify-between px-4 lg:px-8 py-4 bg-white/60 dark:bg-black/20 backdrop-blur-md border-b border-gray-100 dark:border-white/5 sticky top-0 z-30">
             <div class="flex items-center gap-3 lg:hidden">
-                 <img src="{{ $partner->logo_url ?? asset('VivaHub-logo.png') }}" alt="Logo" class="h-8 w-auto">
+                 <img src="{{ $partner->logo_url ? (str_starts_with($partner->logo_url, 'http') ? $partner->logo_url : asset($partner->logo_url)) : asset('VivaHub-logo.png') }}" alt="Logo" class="h-8 w-auto">
             </div>
             
             <!-- Search Removed -->
@@ -178,7 +178,7 @@
         </header>
 
         <!-- DYNAMIC VIEW AREA -->
-        <div id="app-content" class="flex-1 overflow-y-auto p-4 lg:p-8 pb-24 lg:pb-8 scroll-smooth relative">
+        <div id="app-content" class="flex-1 overflow-y-auto p-4 lg:p-8 pb-28 lg:pb-8 scroll-smooth relative">
             <!-- Content Injected via JS -->
             @if(session('success'))
                 <div class="mb-4 p-4 bg-green-100 text-green-700 rounded-xl font-bold border border-green-200">
@@ -221,7 +221,7 @@
         <aside class="absolute top-0 right-0 h-full w-72 bg-white dark:bg-surface-dark shadow-2xl flex flex-col transform transition-transform duration-300">
             <!-- Header -->
             <div class="p-6 border-b border-gray-100 dark:border-white/10 flex items-center justify-between">
-                <img src="{{ $partner->logo_url ?? asset('VivaHub-logo.png') }}" alt="Logo" class="h-8 w-auto">
+                <img src="{{ $partner->logo_url ? (str_starts_with($partner->logo_url, 'http') ? $partner->logo_url : asset($partner->logo_url)) : asset('VivaHub-logo.png') }}" alt="Logo" class="h-8 w-auto">
                 <button onclick="app.toggleMobileMenu(false)" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-white/10">
                     <span class="material-symbols-outlined text-gray-500">close</span>
                 </button>
@@ -402,6 +402,12 @@
                                     @endif
                                 </ul>
 
+                                @if($plan->featured_image)
+                                <div class="mb-4 flex justify-center">
+                                    <img src="{{ asset('storage/' . $plan->featured_image) }}" alt="Featured Image for {{ $plan->name }}" class="max-h-32 w-auto object-contain rounded-lg shadow-sm">
+                                </div>
+                                @endif
+
                                 <button onclick="window.app.buyPlan({{ $plan->id }})" 
                                     class="w-full py-3.5 rounded-xl font-bold text-sm transition-all shadow-lg flex items-center justify-center gap-2
                                     {{ $isPopular 
@@ -580,7 +586,7 @@
                             "currency": data.currency,
                             "name": data.name,
                             "description": data.description,
-                            "image": "{{ $partner->logo_url ?? asset('VivaHub-logo.png') }}",
+                            "image": "{{ $partner->logo_url ? (str_starts_with($partner->logo_url, 'http') ? $partner->logo_url : asset($partner->logo_url)) : asset('VivaHub-logo.png') }}",
                             "order_id": data.order_id,
                             "handler": function (response){
                                 // Verify Payment
@@ -1031,28 +1037,32 @@
                             <!-- Year Selector Removed -->
                         </div>
                         
-                        <div class="flex overflow-x-auto gap-4 mb-8 pb-4 no-scrollbar snap-x lg:grid lg:grid-cols-3 lg:gap-6 lg:overflow-visible">
-                            <div class="bg-white/60 dark:bg-surface-dark p-6 rounded-2xl border border-primary/10 shadow-card min-w-[280px] snap-center">
-                                <p class="text-text-muted dark:text-gray-400 text-sm mb-1 font-medium">Active Clients</p>
-                                <h3 class="text-3xl font-bold text-text-dark dark:text-white">${window.app.data.stats.total_clients}</h3>
+                        <div class="grid grid-cols-2 gap-3 mb-8 lg:grid-cols-3 lg:gap-6">
+                            <div class="bg-white/60 dark:bg-surface-dark p-4 lg:p-6 rounded-2xl border border-primary/10 shadow-card">
+                                <p class="text-text-muted dark:text-gray-400 text-xs lg:text-sm mb-1 font-medium">Active Clients</p>
+                                <h3 class="text-2xl lg:text-3xl font-bold text-text-dark dark:text-white">${window.app.data.stats.total_clients}</h3>
                             </div>
-                            <div class="bg-white/60 dark:bg-surface-dark p-6 rounded-2xl border border-primary/10 shadow-card min-w-[280px] snap-center">
-                                <p class="text-text-muted dark:text-gray-400 text-sm mb-1 font-medium">Coupons Active</p>
-                                <h3 class="text-3xl font-bold text-primary">${window.app.data.stats.active_coupons}</h3>
+                            <div class="bg-white/60 dark:bg-surface-dark p-4 lg:p-6 rounded-2xl border border-primary/10 shadow-card">
+                                <p class="text-text-muted dark:text-gray-400 text-xs lg:text-sm mb-1 font-medium">Coupons Active</p>
+                                <h3 class="text-2xl lg:text-3xl font-bold text-primary">${window.app.data.stats.active_coupons}</h3>
                             </div>
-<div class="bg-gradient-to-br from-primary to-primary-dark p-6 rounded-2xl shadow-lg text-white min-w-[280px] snap-center relative overflow-hidden group">
+<div class="col-span-2 lg:col-span-1 bg-gradient-to-br from-primary to-primary-dark p-4 lg:p-6 rounded-2xl shadow-lg text-white relative overflow-hidden group">
                                 <div class="absolute -right-6 -top-6 w-24 h-24 bg-white/10 rounded-full blur-xl group-hover:bg-white/20 transition-all"></div>
-                                <p class="text-white/80 text-sm mb-1 font-medium">Plan Usage</p>
-                                <div class="flex items-baseline gap-1">
-                                    <h3 class="text-3xl font-bold">{{ $partner->credits }}</h3>
-                                    <span class="text-sm opacity-80">Credits</span>
+                                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between lg:block gap-4 sm:gap-0">
+                                    <div>
+                                        <p class="text-white/80 text-xs lg:text-sm mb-1 font-medium">Plan Usage</p>
+                                        <div class="flex items-baseline gap-1">
+                                            <h3 class="text-2xl lg:text-3xl font-bold">{{ $partner->credits }}</h3>
+                                            <span class="text-sm opacity-80">Credits</span>
+                                        </div>
+                                    </div>
+                                    <button onclick="window.app.toggleUpgradeModal(true)" class="w-full sm:w-auto lg:w-full py-2 px-4 lg:px-0 bg-white text-primary text-xs font-bold rounded-lg hover:bg-cream-light shadow-md transition-all flex items-center justify-center gap-1 lg:mt-4">
+                                        <span class="material-symbols-outlined text-sm">add_circle</span> Buy Credits
+                                    </button>
                                 </div>
-                                <div class="w-full bg-white/20 rounded-full h-1.5 mt-4 mb-4">
+                                <div class="w-full bg-white/20 rounded-full h-1.5 mt-3 hidden lg:block">
                                     <div class="bg-white h-1.5 rounded-full" style="width: 20%"></div>
                                 </div>
-                                <button onclick="window.app.toggleUpgradeModal(true)" class="w-full py-2 bg-white text-primary text-xs font-bold rounded-lg hover:bg-cream-light shadow-md transition-all flex items-center justify-center gap-1">
-                                    <span class="material-symbols-outlined text-sm">add_circle</span> Buy Credits
-                                </button>
                             </div>
                         </div>
                         
@@ -1165,13 +1175,12 @@
                                         <div class="flex justify-between items-end border-t border-gray-100 dark:border-white/10 pt-4 relative z-50">
                                             <div class="flex gap-2 items-center relative z-50 ml-auto">
                                                 <span class="bg-green-100 text-green-700 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center h-full">${c.status}</span>
-                                                <form action="{{ url('/partner/coupons') }}/${c.id}/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete this coupon?');" class="flex items-center">
-                                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                <button type="button" onclick="event.preventDefault(); window.app.deleteCoupon(${c.id})" class="flex items-center">
                                                     <div class="bg-red-50 hover:bg-red-100 text-red-600 px-3 py-1.5 rounded-lg transition-colors cursor-pointer flex items-center gap-1 group/btn">
                                                         <span class="material-symbols-outlined text-lg pointer-events-none">delete</span>
-                                                        <input type="submit" value="Delete" class="bg-transparent border-0 text-red-600/90 text-xs font-bold cursor-pointer p-0 focus:outline-none uppercase" title="Delete Code">
+                                                        <span class="bg-transparent border-0 text-red-600/90 text-xs font-bold p-0 uppercase" title="Delete Code">Delete</span>
                                                     </div>
-                                                </form>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -1310,7 +1319,7 @@
                                     <div class="flex items-center gap-6 mb-6">
                                         <label for="logo_file" class="relative group cursor-pointer">
                                             <div class="w-24 h-24 rounded-2xl bg-gray-50 dark:bg-white/5 flex items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-600 overflow-hidden">
-                                                <img id="logo-preview" src="{{ $partner->logo_url ?? asset('VivaHub-logo.png') }}" class="w-16 h-auto transition-opacity object-contain">
+                                                <img id="logo-preview" src="{{ $partner->logo_url ? (str_starts_with($partner->logo_url, 'http') ? $partner->logo_url : asset($partner->logo_url)) : asset('VivaHub-logo.png') }}" class="w-16 h-auto transition-opacity object-contain">
                                             </div>
                                             <div class="absolute -bottom-2 -right-2 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform">
                                                 <span class="material-symbols-outlined text-sm">edit</span>
@@ -1319,13 +1328,16 @@
                                         </label>
                                         <div>
                                             <p class="text-sm font-bold text-text-dark dark:text-white">Agency Logo</p>
-                                            <p class="text-xs text-text-muted mt-1">Recommended: 400x400px, PNG</p>
+                                            <p class="text-xs text-text-muted mt-1">Recommended: 400x400px, PNG. Max 2MB.</p>
+                                            @error('logo_file')
+                                                <p class="text-xs text-red-500 font-bold mt-1">{{ $message }}</p>
+                                            @enderror
                                         </div>
                                     </div>
 
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                                         <div><label class="label-premium">Agency Name</label><input type="text" name="agency_name" value="{{ $partner->agency_name }}" class="input-premium"></div>
-                                        <div><label class="label-premium">Contact Person</label><input type="text" name="contact_person" value="{{ Auth::user()->name }}" class="input-premium"></div>
+                                        <div><label class="label-premium">Contact Person</label><input type="text" name="contact_person" value="{{ $partner->contact_person ?? Auth::user()->name }}" class="input-premium"></div>
                                         <div><label class="label-premium">Email Address</label><input type="email" value="{{ Auth::user()->email }}" class="input-premium" disabled></div>
                                         <div><label class="label-premium">Phone Number</label><input type="tel" name="phone" value="{{ $partner->phone ?? '' }}" class="input-premium"></div>
                                     </div>
@@ -1504,7 +1516,7 @@
                                             <img src="${t.img}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                                             <!-- Overlay: visible on hover -->
                                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-end pb-6 gap-2 backdrop-blur-[2px]">
-                                                <button onclick="event.stopPropagation(); window.open('/vivahub/vivahub_laravel/public/invitation/preview/${t.id}', '_blank')" class="bg-white/90 text-text-dark px-5 py-2 rounded-full font-bold text-xs shadow-lg hover:bg-white transition-colors flex items-center gap-1">
+                                                <button onclick="event.stopPropagation(); window.open('{{ url('') }}/invitation/preview/${t.id}', '_blank')" class="bg-white/90 text-text-dark px-5 py-2 rounded-full font-bold text-xs shadow-lg hover:bg-white transition-colors flex items-center gap-1">
                                                     <span class="material-symbols-outlined text-sm">visibility</span> View Demo
                                                 </button>
                                                 <button onclick="window.location.href='{{ route('partner.builder') }}?template=${t.id}'" class="bg-primary text-white px-5 py-2 rounded-full font-bold text-xs shadow-lg hover:bg-primary-dark transition-colors flex items-center gap-1">
@@ -1594,13 +1606,27 @@
         document.addEventListener('DOMContentLoaded', () => {
              window.app.initTheme();
              
+             // Check session-based view redirect (e.g., after settings save)
+             const sessionView = '{{ session('active_view', '') }}';
+             
              // Check URL hash for navigation
              const hash = window.location.hash.replace('#', '');
-             if(['dashboard', 'clients', 'coupons', 'history', 'billing', 'settings', 'templates'].includes(hash)) {
+             if(sessionView && ['dashboard', 'clients', 'coupons', 'history', 'billing', 'settings', 'templates'].includes(sessionView)) {
+                 window.app.navigateTo(sessionView);
+             } else if(['dashboard', 'clients', 'coupons', 'history', 'billing', 'settings', 'templates'].includes(hash)) {
                  window.app.navigateTo(hash);
              } else {
                  window.app.navigateTo('dashboard');
              }
+
+             @if(session('success'))
+             // Show success toast
+             const toast = document.createElement('div');
+             toast.className = 'fixed top-4 right-4 z-[200] bg-green-500 text-white px-5 py-3 rounded-xl shadow-xl text-sm font-bold flex items-center gap-2 animate-slide-up';
+             toast.innerHTML = '<span class="material-symbols-outlined text-lg">check_circle</span> {{ session('success') }}';
+             document.body.appendChild(toast);
+             setTimeout(() => toast.remove(), 3000);
+             @endif
         });
     </script>
     

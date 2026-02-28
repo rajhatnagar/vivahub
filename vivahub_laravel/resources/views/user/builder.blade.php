@@ -2,11 +2,25 @@
 
 @section('title', 'Invitation Builder')
 
+@section('hideLayoutNav', true)
+
 @section('content')
-<div class="flex flex-col lg:flex-row h-auto lg:h-[calc(100vh-80px)] overflow-visible lg:overflow-hidden bg-white dark:bg-[#1a0b0b] rounded-2xl shadow-card border border-primary/5 dark:border-white/5">
+<style>
+    @media (min-width: 1024px) {
+        .custom-builder-layout { display: block !important; position: relative !important; }
+        .custom-builder-left { position: absolute !important; left: 0 !important; top: 0 !important; bottom: 0 !important; width: 45% !important; border-right: 1px solid rgba(255,255,255,0.05); z-index: 10 !important; }
+        .custom-builder-right { position: absolute !important; right: 0 !important; top: 0 !important; bottom: 0 !important; width: 55% !important; display: flex !important; align-items: center; justify-content: center; z-index: 10 !important; flex-direction: column !important; }
+    }
+    @media (max-width: 1023px) {
+        .custom-builder-layout { display: flex !important; flex-direction: column !important; }
+        .custom-builder-left { flex: 0 0 100% !important; max-width: 100% !important; position: relative !important; }
+        .custom-builder-right { display: none !important; }
+    }
+</style>
+<div class="custom-builder-layout h-[85vh] min-h-[700px] bg-white dark:bg-[#1a0b0b] rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none border border-primary/5 dark:border-white/5 overflow-hidden">
     
     <!-- Left: Form -->
-    <div class="flex-1 flex flex-col h-auto lg:h-full border-r border-gray-100 dark:border-white/5 relative z-10 bg-white dark:bg-[#1a0b0b]">
+    <div class="custom-builder-left flex flex-col h-full bg-white dark:bg-[#1a0b0b]">
         <!-- Form Header -->
         <div class="sticky top-0 z-40 bg-white dark:bg-[#1a0b0b]/95 backdrop-blur-sm p-4 lg:p-5 border-b border-gray-100 dark:border-white/5">
             <div class="flex justify-between items-center mb-3">
@@ -17,7 +31,7 @@
         </div>
 
         <!-- Form Content -->
-        <div class="flex-1 lg:overflow-y-auto p-4 lg:p-6 space-y-8 pb-24 lg:pb-6" id="builder-form-container">
+        <div class="flex-1 overflow-y-auto p-4 lg:p-6 space-y-8 pb-32 lg:pb-8" id="builder-form-container">
             
             <!-- Step 1: Basics & Hero -->
             <div id="step-1" class="space-y-6 animate-fade-in">
@@ -244,6 +258,29 @@
                         </div>
                     </div>
                  </div>
+
+                 <!-- Downloadable File Attachment -->
+                 <div>
+                    <div class="flex items-center gap-2 mb-3 pt-4 border-t border-gray-100 dark:border-white/10">
+                         <span class="material-symbols-outlined text-primary">cloud_upload</span>
+                         <label class="text-sm font-bold uppercase tracking-wider text-text-dark dark:text-white">Download Invitation (Optional)</label>
+                    </div>
+                    
+                    <div class="bg-gray-50 dark:bg-white/5 p-5 rounded-2xl border border-gray-100 dark:border-white/5 hover:border-primary/30 transition-colors">
+                        <p class="text-xs text-text-muted mb-3 font-medium">Upload a PDF or Image of your invitation that guests can download directly from the link.</p>
+                        
+                        <div class="relative group">
+                            <input type="file" accept=".pdf,image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" id="download-file-upload" onchange="handleDownloadFileUpload(this)">
+                            <div class="flex items-center gap-3 p-3 rounded-xl border border-dashed border-gray-300 dark:border-white/20 bg-white dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors">
+                                <div class="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center text-green-600"><span class="material-symbols-outlined">attach_file</span></div>
+                                <div class="text-sm flex-1">
+                                    <p class="font-bold text-text-dark dark:text-white" id="download-file-name">Click to Attach File</p>
+                                    <p class="text-xs text-text-muted" id="download-file-status">PDF, JPG, PNG (Max 5MB)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
             </div>
 
             <!-- Step 6: Finish -->
@@ -259,8 +296,10 @@
                      </div>
                      <h3 class="text-2xl font-bold text-text-dark dark:text-white mb-2">Ready to Publish!</h3>
                      <p class="text-text-muted">Your invitation looks amazing. Click publish to go live.</p>
-                     
-                     {{-- NFC Card Section - Hidden
+                 </div>
+
+            </div>
+                     {{-- 
                      <div class="mt-8 p-6 bg-gradient-to-br from-gray-900 to-black rounded-2xl text-white relative overflow-hidden group">
                         <div class="absolute top-0 right-0 p-3 opacity-10">
                             <span class="material-symbols-outlined text-9xl">contactless</span>
@@ -283,29 +322,40 @@
         </div>
 
         <!-- Form Footer -->
-        <div class="sticky bottom-0 z-40 p-4 lg:p-5 border-t border-gray-100 dark:border-white/5 flex gap-4 bg-white dark:bg-[#1a0b0b] shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] lg:shadow-none">
-             <button onclick="changeStep(-1)" id="btn-back" class="hidden flex-1 px-6 py-3 rounded-xl border border-gray-200 font-bold text-text-dark dark:text-white dark:border-white/20 hover:bg-gray-50 transition-colors">Back</button>
+        <div class="z-40 p-4 lg:p-5 border-t border-gray-100 dark:border-white/5 flex items-center justify-between bg-white dark:bg-[#1a0b0b] shrink-0" style="margin-top: auto;">
+             <div class="flex items-center gap-2">
+                 <!-- Mobile Preview Button -->
+                 <button onclick="openMobilePreview()" class="lg:hidden w-12 h-12 flex items-center justify-center rounded-xl bg-gray-100 text-text-dark hover:bg-gray-200 dark:bg-white/10 dark:text-white transition-colors p-0"><span class="material-symbols-outlined text-[20px] m-0">visibility</span></button>
+                 
+                 <button onclick="changeStep(-1)" id="btn-back" class="hidden px-5 lg:px-6 h-12 rounded-xl border border-gray-200 font-bold text-sm lg:text-base text-text-dark dark:text-white dark:border-white/20 hover:bg-gray-50 transition-colors btn-action">Back</button>
+             </div>
              
-             <!-- Mobile Preview Button -->
-             <button onclick="openMobilePreview()" class="lg:hidden px-4 py-3 rounded-xl bg-gray-100 text-text-dark font-bold hover:bg-gray-200 dark:bg-white/10 dark:text-white"><span class="material-symbols-outlined align-middle">visibility</span></button>
-             
-             <button onclick="changeStep(1)" id="btn-next" class="flex-1 bg-primary text-white font-bold py-3 rounded-xl hover:bg-primary-dark shadow-lg transition-colors">Next Step</button>
-             <button onclick="saveDraft()" id="btn-draft" class="hidden flex-1 bg-gray-100 text-text-dark font-bold py-3 rounded-xl hover:bg-gray-200 dark:bg-white/10 dark:text-white dark:hover:bg-white/20 transition-colors">Save Draft</button>
-             <button onclick="showCheckout()" id="btn-publish" class="hidden flex-1 bg-accent-gold text-white font-bold py-3 rounded-xl hover:bg-yellow-600 shadow-lg animate-pulse">Publish Now</button>
+             <div class="flex items-center gap-2 flex-1 justify-end">
+                 <button onclick="saveDraft()" id="btn-draft" class="hidden px-5 lg:px-6 h-12 bg-gray-100 text-text-dark font-bold rounded-xl hover:bg-gray-200 dark:bg-white/10 dark:text-white dark:hover:bg-white/20 transition-colors text-sm lg:text-base whitespace-nowrap btn-action">Save Draft</button>
+                 
+                 <button onclick="changeStep(1)" id="btn-next" class="px-6 lg:px-10 h-12 bg-primary text-white font-bold rounded-xl hover:bg-primary-dark shadow-lg transition-colors text-sm lg:text-base whitespace-nowrap btn-action">Next Step</button>
+                 
+                 <button onclick="showCheckout()" id="btn-publish" class="hidden px-6 lg:px-10 h-12 bg-accent-gold text-white font-bold rounded-xl hover:bg-yellow-600 shadow-lg animate-pulse text-sm lg:text-base whitespace-nowrap btn-action">Publish Now</button>
+             </div>
         </div>
     </div>
 
     <!-- Right: Preview -->
-    <div class="hidden lg:flex flex-[1.2] bg-gray-50 dark:bg-black items-center justify-center p-8 relative overflow-hidden">
+    <div class="custom-builder-right bg-gray-50 dark:bg-black p-4 lg:p-8 overflow-hidden">
         <div class="absolute inset-0 opacity-5" style="background-image: radial-gradient(#C41E3A 1px, transparent 1px); background-size: 20px 20px;"></div>
         
         <!-- Preview Container -->
-        <div id="preview-container" class="mobile-frame w-[375px] h-[720px] mx-auto border-[12px] border-[#1b0d12] dark:border-[#2a2a2a] rounded-[45px] overflow-hidden bg-white shadow-2xl flex flex-col relative z-10 transition-all duration-500">
+        <div id="preview-container" class="mobile-frame w-full max-w-[375px] h-[80vh] min-h-[700px] mx-auto border-8 border-[#1b0d12] dark:border-[#2a2a2a] rounded-3xl overflow-hidden bg-white shadow-2xl flex flex-col relative z-10 transition-all duration-500" style="border-width: 12px; border-radius: 45px; max-width: 375px;">
             <!-- Notch (Only for Mobile) -->
             <div id="preview-notch" class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-[#1b0d12] dark:bg-[#2a2a2a] rounded-b-2xl z-20"></div>
             
             <!-- Iframe Preview -->
-            <iframe id="preview-frame" src="{{ route('builder.preview', ['template' => $templateId, 'invitation_id' => $invitation->id ?? null]) }}" class="w-full h-full bg-white" style="border:none;"></iframe>
+            @php
+                $previewUrl = isset($isPartner) && $isPartner
+                    ? route('partner.templates.preview', ['template' => $templateId])
+                    : route('builder.preview', ['template' => $templateId, 'invitation_id' => $invitation->id ?? null]);
+            @endphp
+            <iframe id="preview-frame" src="{{ $previewUrl }}" class="w-full h-full bg-white" style="border:none;"></iframe>
         </div>
 
         <!-- Preview Toggle -->
@@ -391,76 +441,109 @@
     .group:hover .group-hover\:rotate-y-180 { transform: rotateY(180deg); }
 </style>
 
-<!-- CHECKOUT MODAL -->
-<div id="checkout-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
-    <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="hideCheckout()"></div>
-    <div class="relative bg-white dark:bg-surface-dark w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden animate-slide-up flex flex-col md:flex-row max-h-[90vh]">
-        
-        <!-- Plans Section -->
-        <div class="flex-1 p-6 bg-gray-50 dark:bg-black/20 overflow-y-auto">
-            <h3 class="font-bold text-xl text-text-dark dark:text-white mb-4">Select a Plan</h3>
+<!-- STEP 1: PLAN SELECTION POPUP (All plans visible in one screen) -->
+<div id="plan-select-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-3">
+    <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="hidePlanSelect()"></div>
+    <div class="relative bg-white dark:bg-surface-dark w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-slide-up max-h-[95vh] flex flex-col">
+        <div class="p-5 border-b border-gray-100 dark:border-white/10 flex justify-between items-center bg-gradient-to-r from-primary/5 to-accent-gold/5 dark:from-primary/10 dark:to-accent-gold/10">
+            <div>
+                <h3 class="font-bold text-lg text-text-dark dark:text-white">Choose Your Plan</h3>
+                <p class="text-xs text-text-muted mt-0.5">Select a plan to publish your invitation</p>
+            </div>
+            <button onclick="hidePlanSelect()" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 text-text-muted"><span class="material-symbols-outlined text-[20px]">close</span></button>
+        </div>
+        <div class="p-4 overflow-y-auto flex-1">
             <div id="plans-loader" class="text-center py-10 hidden">
                 <span class="material-symbols-outlined animate-spin text-3xl text-primary">sync</span>
+                <p class="text-sm text-text-muted mt-2">Loading plans...</p>
             </div>
-            <div id="plans-list" class="space-y-4">
+            <div id="plans-list" class="grid grid-cols-1 gap-3">
                 <!-- Plans injected via JS -->
             </div>
         </div>
+    </div>
+</div>
 
-        <!-- Checkout Summary -->
-        <div class="w-full md:w-96 bg-white dark:bg-[#1a0b0b] p-6 flex flex-col border-l border-gray-100 dark:border-white/5">
-            <div class="mb-6">
-                <h3 class="font-bold text-lg text-text-dark dark:text-white mb-1">Order Summary</h3>
-                <p class="text-xs text-text-muted">Review your order before payment.</p>
+<!-- STEP 2: CHECKOUT MODAL (After plan selected) -->
+<div id="checkout-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-3">
+    <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="hideCheckout()"></div>
+    <div class="relative bg-white dark:bg-surface-dark w-full max-w-md rounded-2xl shadow-2xl overflow-hidden animate-slide-up max-h-[95vh] flex flex-col">
+        <div class="p-5 border-b border-gray-100 dark:border-white/10 flex justify-between items-center">
+            <div>
+                <h3 class="font-bold text-lg text-text-dark dark:text-white">Order Summary</h3>
+                <p class="text-xs text-text-muted mt-0.5">Review your order before payment</p>
+            </div>
+            <button onclick="hideCheckout()" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 text-text-muted"><span class="material-symbols-outlined text-[20px]">close</span></button>
+        </div>
+        <div class="p-5 overflow-y-auto flex-1 space-y-5">
+            <!-- Selected Plan Summary -->
+            <div class="flex items-center justify-between p-3 bg-primary/5 dark:bg-primary/10 rounded-xl border border-primary/20">
+                <div>
+                    <p class="text-xs text-text-muted font-medium uppercase">Selected Plan</p>
+                    <p class="font-bold text-text-dark dark:text-white" id="selected-plan-name">—</p>
+                </div>
+                <div class="text-right">
+                    <p class="font-bold text-lg text-primary" id="selected-plan-price">₹0</p>
+                    <button onclick="hideCheckout(); showPlanSelect()" class="text-[10px] text-primary font-bold underline">Change Plan</button>
+                </div>
             </div>
 
-            <!-- Coupon Section (Moved Up) -->
-            <div class="mb-6">
-                <label class="text-xs font-bold text-text-muted uppercase mb-1 block">Have a Coupon?</label>
+            <!-- Coupon -->
+            <div>
+                <label class="text-xs font-bold text-text-muted uppercase mb-1.5 block">Have a Coupon?</label>
                 <div class="flex gap-2">
-                    <input type="text" id="coupon-input" placeholder="Enter code" class="flex-1 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm outline-none focus:border-primary">
-                    <button onclick="applyCoupon()" id="btn-apply-coupon" class="bg-gray-100 dark:bg-white/10 text-text-dark dark:text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-gray-200 dark:hover:bg-white/20">Apply</button>
+                    <input type="text" id="coupon-input" placeholder="Enter code" class="flex-1 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-primary dark:text-white">
+                    <button onclick="applyCoupon()" id="btn-apply-coupon" class="bg-primary/10 text-primary px-4 py-2.5 rounded-lg text-xs font-bold hover:bg-primary/20 transition-colors">Apply</button>
                 </div>
                 <p id="coupon-message" class="text-xs mt-1 hidden"></p>
             </div>
 
-            <div class="flex-1 space-y-4">
-                <div class="flex justify-between text-sm">
-                    <span class="text-text-muted" id="selected-plan-name">Select a Plan</span>
-                    <span class="font-bold text-text-dark dark:text-white" id="selected-plan-price">₹0</span>
+            <!-- GST -->
+            <div class="bg-gray-50 dark:bg-white/5 p-4 rounded-xl border border-gray-200 dark:border-white/10">
+                <div class="flex items-center justify-between mb-3">
+                    <label class="text-xs font-bold text-text-dark dark:text-white uppercase">GST Invoice?</label>
+                    <div class="flex items-center gap-3">
+                        <label class="flex items-center gap-1.5 text-xs cursor-pointer font-medium text-text-dark dark:text-white">
+                            <input type="radio" name="has_gst" value="yes" onchange="toggleGstFields(true)" class="text-primary focus:ring-primary w-3.5 h-3.5"> Yes
+                        </label>
+                        <label class="flex items-center gap-1.5 text-xs cursor-pointer font-medium text-text-dark dark:text-white">
+                            <input type="radio" name="has_gst" value="no" onchange="toggleGstFields(false)" checked class="text-primary focus:ring-primary w-3.5 h-3.5"> No
+                        </label>
+                    </div>
                 </div>
-                
+                <div id="gst-fields" class="space-y-2.5 hidden">
+                    <input type="text" id="billing_gst" placeholder="GST Number" class="w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm outline-none focus:border-primary text-text-dark dark:text-white uppercase">
+                    <input type="text" id="billing_company" placeholder="Business Name" class="w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm outline-none focus:border-primary text-text-dark dark:text-white">
+                    <input type="text" id="billing_address" placeholder="Registered Address" class="w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm outline-none focus:border-primary text-text-dark dark:text-white">
+                </div>
+            </div>
 
-
-                <div class="border-t border-dashed border-gray-200 dark:border-white/10 my-4"></div>
-
+            <!-- Price Breakdown -->
+            <div class="space-y-3">
                 <div class="flex justify-between text-sm">
                     <span class="text-text-muted">Subtotal</span>
                     <span class="font-bold text-text-dark dark:text-white" id="checkout-subtotal">₹0</span>
                 </div>
-                
                 <div class="flex justify-between text-sm hidden text-green-600" id="row-discount">
                     <span class="font-medium">Discount <span id="discount-label" class="text-xs"></span></span>
                     <span class="font-bold" id="checkout-discount">-₹0</span>
                 </div>
-
                 <div class="flex justify-between text-sm">
                     <span class="text-text-muted">GST (18%)</span>
                     <span class="font-bold text-text-dark dark:text-white" id="checkout-tax">₹0</span>
                 </div>
-
-                <div class="flex justify-between items-end border-t border-dashed border-gray-200 dark:border-white/10 pt-4 mt-4">
-                    <span class="text-sm font-bold text-text-dark dark:text-white">Total Amount</span>
+                <div class="flex justify-between items-end border-t border-dashed border-gray-200 dark:border-white/10 pt-3 mt-3">
+                    <span class="text-sm font-bold text-text-dark dark:text-white">Total</span>
                     <span class="text-2xl font-bold text-primary" id="checkout-total">₹0</span>
                 </div>
             </div>
+        </div>
 
-            <div class="mt-8 space-y-3">
-                 <button onclick="finishPayment()" id="btn-pay-now" disabled class="w-full bg-primary text-white font-bold py-3.5 rounded-xl hover:bg-primary-dark shadow-lg shadow-primary/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all">
-                    Pay Now
-                 </button>
-                 <button onclick="hideCheckout()" class="w-full text-text-muted text-sm hover:text-text-dark dark:hover:text-white">Cancel</button>
-            </div>
+        <div class="p-5 border-t border-gray-100 dark:border-white/10 space-y-2">
+             <button onclick="finishPayment()" id="btn-pay-now" disabled class="w-full bg-primary text-white font-bold py-3.5 rounded-xl hover:bg-primary-dark shadow-lg shadow-primary/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined text-lg">lock</span> Pay Now
+             </button>
+             <button onclick="hideCheckout()" class="w-full text-text-muted text-sm hover:text-text-dark dark:hover:text-white py-2">Cancel</button>
         </div>
     </div>
 </div>
@@ -558,6 +641,10 @@
     window.isPartner = @json($isPartner ?? false);
     window.isAdmin = @json($isAdmin ?? false);
     window.credits = {{ $credits ?? 0 }};
+    window.partnerInvitationCost = {{ $partnerInvitationCost ?? 5 }};
+    window.freeAccessEnabled = @json($freeAccessEnabled ?? false);
+    window.hasUsedFreeAccess = @json($hasUsedFreeAccess ?? false);
+    window.currentTransactionId = null;
 
     function initBuilder() {
         try {
@@ -569,32 +656,42 @@
                 const draftBtn = document.getElementById('btn-draft');
                 
                 if(window.isAdmin) {
-                    if(btnPub) btnPub.remove(); 
-                    if(draftBtn) {
-                        draftBtn.innerText = "Save Design";
-                        draftBtn.classList.remove('hidden');
+                    if(btnPub) {
+                        btnPub.innerText = "Publish Immediately";
+                        btnPub.classList.remove('animate-pulse');
+                        btnPub.onclick = function() {
+                            saveInvitation('published').then(success => {
+                                if(success) {
+                                    alert('Invitation Published successfully!');
+                                    document.getElementById('success-modal').classList.remove('hidden');
+                                    updateNFCPreview();
+                                }
+                            });
+                        };
                     }
-                } else if (window.isPartner) {
-                    // Partner: Show Draft AND Publish (Credits)
                     if(draftBtn) {
                         draftBtn.innerText = "Save Draft";
                         draftBtn.classList.remove('hidden');
                     }
+                } else if (window.isPartner) {
+                    // Partner: Setup Draft AND Publish text/onclick — visibility controlled by updateStepUI()
+                    if(draftBtn) {
+                        draftBtn.innerText = "Save Draft";
+                    }
                     if(btnPub) {
-                        btnPub.innerText = `Publish (1 Credit)`;
-                        btnPub.classList.remove('hidden');
+                        btnPub.innerText = `Publish Now (-${window.partnerInvitationCost} Cr.)`;
+                        btnPub.title = `Available: ${window.credits} Credits`;
+                        btnPub.classList.remove('animate-pulse');
                         btnPub.onclick = function() {
-                             if(window.credits < 1) {
-                                 alert('Insufficient credits! You have ' + window.credits + ' credits. Please buy more from dashboard.');
+                             if(window.credits < window.partnerInvitationCost) {
+                                 alert(`Insufficient credits! You need ${window.partnerInvitationCost} credits to publish, but you have ${window.credits} available. Please top-up from dashboard.`);
                                  return;
                              }
-                             if(confirm('This will deduct 1 Credit. Continue?')) {
+                             if(confirm(`This will deduct ${window.partnerInvitationCost} Credits from your balance. Continue?`)) {
                                  saveInvitation('published').then(success => {
                                      if(success) {
-                                         window.credits--; // Optimistic update
-                                         alert('Invitation Published! 1 Credit Deducted.');
-                                         // Show Success Modal
-                                         // We need to manually trigger success modal here because saveInvitation doesn't do it for partners usually
+                                         window.credits -= window.partnerInvitationCost;
+                                         alert(`Invitation Published! ${window.partnerInvitationCost} Credits Deducted.`);
                                           document.getElementById('success-modal').classList.remove('hidden');
                                           updateNFCPreview();
                                      }
@@ -644,6 +741,8 @@
         bg_music: '',
         wishing_audio: ''
     };
+
+    let downloadFileUrl = '';
 
     function populateFields(data) {
 
@@ -736,8 +835,15 @@
              addNewEvent('Haldi', 'Dec 12, 09:00 AM', 'A golden glow.', 'The Courtyard');
         }
 
-        // 5. Update UI for Edit Mode (Bypass Payment)
-        if(invitationData && invitationData.id) {
+        // Download File
+        if(data.download_file) {
+            downloadFileUrl = data.download_file;
+            document.getElementById('download-file-name').innerText = "File Attached";
+            document.getElementById('download-file-status').innerText = "Click to change file";
+        }
+
+        // 5. Update UI for Edit Mode (Bypass Payment ONLY if already published)
+        if(invitationData && invitationData.id && invitationData.status === 'published') {
             const btnPublish = document.getElementById('btn-publish');
             btnPublish.innerText = "Update Invitation";
             btnPublish.classList.remove('bg-accent-gold','animate-pulse'); // Remove gold/pulse
@@ -792,16 +898,12 @@
 
         if(currentStep === totalSteps) {
             btnNext.classList.add('hidden');
-            if(isPartner || isAdmin) {
-                 btnDraft.classList.remove('hidden');
-            } else {
-                 btnPublish.classList.remove('hidden');
-                 if(!isAdmin) btnDraft.classList.remove('hidden'); // Allow draft for users too as secondary
-            }
+            if(btnDraft) btnDraft.classList.remove('hidden');
+            if(btnPublish && !isAdmin) btnPublish.classList.remove('hidden');
         } else {
             btnNext.classList.remove('hidden');
-            btnDraft.classList.add('hidden');
-            btnPublish.classList.add('hidden');
+            if(btnDraft) btnDraft.classList.add('hidden');
+            if(btnPublish) btnPublish.classList.add('hidden');
         }
     }
 
@@ -816,11 +918,11 @@
         }
 
         // Gather Data
-        // Gather Data
         const data = {
-            id: invitationData ? invitationData.id : null, // Include ID if editing
+            id: window.invitationData ? window.invitationData.id : null, // Include ID if editing
             templateId: '{{ $templateId }}',
             status: status,
+            transaction_id: window.currentTransactionId,
             tagline: document.getElementById('input-tagline').value,
             bride_name: document.getElementById('input-bride-name').value,
             groom_name: document.getElementById('input-groom-name').value,
@@ -850,6 +952,9 @@
             bg_music: audioState.bg_music,
             wishing_audio: audioState.wishing_audio,
             family_audio: audioState.wishing_audio, // Templates use this key
+            
+            // Attached File
+            download_file: downloadFileUrl,
             
             // JSON of events
             eventDates: [],
@@ -894,12 +999,10 @@
         .then(res => {
             if(res.success) {
                 // UPDATE LOCAL STATE FOR NEXT SAVE
-                if(!invitationData) {
-                    // Initialize if it was null (new creation)
-                     // global var assignment if defined via let/var, or window
-                     window.invitationData = { id: res.id };
+                if(!window.invitationData) {
+                    window.invitationData = { id: res.id };
                 } else {
-                    invitationData.id = res.id;
+                    window.invitationData.id = res.id;
                 }
 
                 // UPDATE URL WITHOUT RELOAD (So refresh works)
@@ -1301,6 +1404,62 @@
         }
     }
 
+    // --- Download File Upload Logic ---
+    function handleDownloadFileUpload(input) {
+        if (input.files && input.files[0]) {
+            const file = input.files[0];
+            const nameEl = document.getElementById('download-file-name');
+            const statusEl = document.getElementById('download-file-status');
+            
+            nameEl.innerText = 'Uploading...';
+            
+            // Server Side Upload
+            if(window.uploadRoute) {
+                const formData = new FormData();
+                formData.append('file', file);
+                
+                fetch(window.uploadRoute, {
+                    method: 'POST',
+                    headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'},
+                    body: formData
+                })
+                .then(r => r.json())
+                .then(res => {
+                    if(res.url) {
+                        downloadFileUrl = res.url;
+                        nameEl.innerText = file.name;
+                        statusEl.innerText = "File attached successfully.";
+                        nameEl.classList.add('text-green-600');
+                    } else {
+                        nameEl.innerText = "Upload failed";
+                        statusEl.innerText = "Please try again.";
+                    }
+                })
+                .catch(e => {
+                    console.error('File Upload Error', e);
+                    nameEl.innerText = "Upload Error";
+                    statusEl.innerText = "Please try again.";
+                });
+            } else {
+                // Client Side Base64 (User) - Limit to 5MB
+                if(file.size > 5 * 1024 * 1024) {
+                    nameEl.innerText = "File too large";
+                    statusEl.innerText = "Max size is 5MB.";
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                     downloadFileUrl = e.target.result;
+                     nameEl.innerText = file.name;
+                     statusEl.innerText = "File attached locally.";
+                     nameEl.classList.add('text-green-600');
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+    }
+
     // --- Sync Logic (New) ---
     function syncAllToPreview() {
         console.log("Syncing all data to preview...");
@@ -1320,6 +1479,12 @@
         if(imageState.gallery.length > 0) {
              const frame = document.getElementById('preview-frame');
              if(frame.contentWindow.updateGallery) frame.contentWindow.updateGallery(imageState.gallery);
+        }
+        
+        // 4. Download File
+        if(downloadFileUrl) {
+             const frame = document.getElementById('preview-frame');
+             if(frame.contentWindow.updateDownloadFile) frame.contentWindow.updateDownloadFile(downloadFileUrl);
         }
     }
 
@@ -1351,9 +1516,37 @@
     let selectedPlan = null;
     let appliedCoupon = null;
 
+    function toggleGstFields(show) {
+        const fields = document.getElementById('gst-fields');
+        if (show) {
+            fields.classList.remove('hidden');
+        } else {
+            fields.classList.add('hidden');
+            document.getElementById('billing_gst').value = '';
+            document.getElementById('billing_company').value = '';
+            document.getElementById('billing_address').value = '';
+        }
+    }
+
     function showCheckout() {
-        document.getElementById('checkout-modal').classList.remove('hidden');
+        if (!window.isPartner && !window.isAdmin && window.freeAccessEnabled) {
+            if (!window.hasUsedFreeAccess) {
+                if(confirm("🎁 Free Access Enabled! You can publish this invitation for 7 days without any payment. Publish now?")) {
+                    finishPaymentDraft();
+                }
+                return;
+            }
+        }
+        showPlanSelect();
+    }
+
+    function showPlanSelect() {
+        document.getElementById('plan-select-modal').classList.remove('hidden');
         loadPlans();
+    }
+
+    function hidePlanSelect() {
+        document.getElementById('plan-select-modal').classList.add('hidden');
     }
     
     function hideCheckout() {
@@ -1372,20 +1565,27 @@
         .then(data => {
             loader.classList.add('hidden');
             if(data.success && data.plans.length > 0) {
-                data.plans.forEach(plan => {
-                    // Features list
-                    const featuresHtml = plan.features.map(f => `<li class="flex items-center gap-1"><span class="material-symbols-outlined text-xs text-green-500">check</span> ${f}</li>`).join('');
+                data.plans.forEach((plan, index) => {
+                    const featuresHtml = plan.features.slice(0, 4).map(f => `<span class="inline-flex items-center gap-0.5 text-[11px] text-text-muted"><span class="material-symbols-outlined text-green-500" style="font-size:12px">check_circle</span>${f}</span>`).join('');
+                    const extraFeatures = plan.features.slice(4).join(', ');
+                    const moreCount = plan.features.length > 4 ? `<span class="text-[10px] text-primary font-bold cursor-help relative group" title="${extraFeatures}">+${plan.features.length - 4} more</span>` : '';
                     
                     const html = `
-                        <div data-id="${plan.id}" onclick="selectPlan(${plan.id}, '${plan.name}', ${plan.price})" class="plan-card cursor-pointer bg-white dark:bg-white/5 p-4 rounded-xl border-2 transition-all group border-gray-100 dark:border-white/10">
-                            <div class="flex justify-between items-center mb-2">
-                                <h4 class="font-bold text-text-dark dark:text-white">${plan.name}</h4>
-                                <span class="bg-gray-100 dark:bg-white/10 text-xs font-bold px-2 py-1 rounded-md">₹${plan.price}</span>
+                        <div data-plan-id="${plan.id}" class="plan-card cursor-pointer bg-white dark:bg-white/5 p-4 rounded-xl border-2 transition-all hover:border-primary/50 hover:shadow-md ${index === 0 ? 'border-primary bg-primary/5 dark:bg-primary/10 ring-1 ring-primary/20' : 'border-gray-100 dark:border-white/10'}" onclick="selectPlan(${plan.id}, '${plan.name.replace(/'/g, "\\'")}', ${plan.price})">
+                            <div class="flex justify-between items-center">
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <h4 class="font-bold text-sm text-text-dark dark:text-white">${plan.name}</h4>
+                                        ${index === 0 ? '<span class="text-[9px] bg-primary text-white px-1.5 py-0.5 rounded-full font-bold uppercase">Popular</span>' : ''}
+                                    </div>
+                                    <div class="flex flex-wrap gap-x-3 gap-y-0.5">${featuresHtml}${moreCount}</div>
+                                    <div class="text-[10px] text-text-muted mt-1">${plan.validity} Validity</div>
+                                </div>
+                                <div class="text-right ml-3 flex-shrink-0">
+                                    <div class="text-lg font-bold text-primary">₹${plan.price}</div>
+                                    <button class="text-[10px] bg-primary/10 text-primary px-2 py-1 rounded-md font-bold hover:bg-primary hover:text-white transition-colors mt-1">Select</button>
+                                </div>
                             </div>
-                            <ul class="text-xs text-text-muted space-y-1 mb-2">
-                                ${featuresHtml}
-                            </ul>
-                            <div class="text-[10px] text-text-muted uppercase tracking-wider">${plan.validity} Validity</div>
                         </div>
                     `;
                     list.insertAdjacentHTML('beforeend', html);
@@ -1394,35 +1594,38 @@
                 // Auto select first
                 if(!selectedPlan) selectPlan(data.plans[0].id, data.plans[0].name, data.plans[0].price);
             } else {
-                list.innerHTML = '<p class="text-center text-sm text-text-muted">No plans available.</p>';
+                list.innerHTML = '<p class="text-center text-sm text-text-muted py-6">No plans available.</p>';
             }
         })
         .catch(err => {
             console.error(err);
             loader.classList.add('hidden');
-            list.innerHTML = '<p class="text-center text-sm text-red-400">Error loading plans.</p>';
+            list.innerHTML = '<p class="text-center text-sm text-red-400 py-6">Error loading plans. Please try again.</p>';
         });
     }
 
     function selectPlan(id, name, price) {
         selectedPlan = { id, name, price };
-        appliedCoupon = null; // Reset coupon on plan change
+        appliedCoupon = null;
         document.getElementById('coupon-input').value = '';
         document.getElementById('coupon-message').classList.add('hidden');
         
         updateCheckoutSummary();
         
-        // Re-render list to show selection highlight
-        const cards = document.getElementById('plans-list').children;
-        Array.from(cards).forEach(card => {
-             if(card.onclick.toString().includes(id)) {
-                 card.classList.add('border-primary', 'bg-primary/5');
-                 card.classList.remove('border-gray-100', 'dark:border-white/10');
-             } else {
-                 card.classList.remove('border-primary', 'bg-primary/5');
-                 card.classList.add('border-gray-100', 'dark:border-white/10');
-             }
+        // Highlight selected card in plan popup
+        document.querySelectorAll('.plan-card').forEach(card => {
+            if(card.dataset.planId == id) {
+                card.classList.add('border-primary', 'bg-primary/5', 'dark:bg-primary/10');
+                card.classList.remove('border-gray-100', 'dark:border-white/10');
+            } else {
+                card.classList.remove('border-primary', 'bg-primary/5', 'dark:bg-primary/10');
+                card.classList.add('border-gray-100', 'dark:border-white/10');
+            }
         });
+        
+        // Close plan popup and open checkout
+        hidePlanSelect();
+        document.getElementById('checkout-modal').classList.remove('hidden');
     }
     
     function applyCoupon() {
@@ -1549,11 +1752,27 @@
         const btn = document.getElementById('btn-pay-now');
         btn.innerText = 'Processing...';
         btn.disabled = true;
+
+        const hasGst = document.querySelector('input[name="has_gst"]:checked').value === 'yes';
+        const billing_gst = document.getElementById('billing_gst').value;
+        const billing_company = document.getElementById('billing_company').value;
+        const billing_address = document.getElementById('billing_address').value;
+
+        if (hasGst && (!billing_gst || !billing_company || !billing_address)) {
+            alert('Please fill out all GST fields or select "No" for GST.');
+            btn.innerText = 'Pay Now';
+            btn.disabled = false;
+            return;
+        }
         
         // Prepare payment data
         const paymentData = {
             plan_id: selectedPlan.id,
-            coupon_code: appliedCoupon ? appliedCoupon.code : null
+            coupon_code: appliedCoupon ? appliedCoupon.code : null,
+            has_gst: hasGst,
+            billing_gst: hasGst ? billing_gst : null,
+            billing_company: hasGst ? billing_company : null,
+            billing_address: hasGst ? billing_address : null
         };
         
         // Create Razorpay order
@@ -1615,12 +1834,17 @@
                             razorpay_payment_id: response.razorpay_payment_id,
                             razorpay_signature: response.razorpay_signature,
                             plan_id: selectedPlan.id,
-                            coupon_code: appliedCoupon ? appliedCoupon.code : null
+                            coupon_code: appliedCoupon ? appliedCoupon.code : null,
+                            has_gst: hasGst,
+                            billing_gst: hasGst ? billing_gst : null,
+                            billing_company: hasGst ? billing_company : null,
+                            billing_address: hasGst ? billing_address : null
                         })
                     })
                     .then(r => r.json())
                     .then(verifyRes => {
                         if (verifyRes.success) {
+                            window.currentTransactionId = verifyRes.transaction_id;
                             // Payment verified - save invitation as published
                             saveInvitation('published').then(success => {
                                 if (success) {
@@ -1881,4 +2105,5 @@
         };
     }
 </script>
+</style>
 @endpush

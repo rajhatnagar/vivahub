@@ -7,6 +7,13 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>{{ $invitation->data['groom_name'] ?? 'Groom' }} & {{ $invitation->data['bride_name'] ?? 'Bride' }} | Wedding Invitation</title>
 
+  <!-- Open Graph / SEO Meta Tags -->
+  <meta property="og:title" content="{{ $invitation->data['groom_name'] ?? 'Groom' }} & {{ $invitation->data['bride_name'] ?? 'Bride' }} | Wedding Invitation">
+  <meta property="og:description" content="You are invited to celebrate our wedding. {{ $invitation->data['tagline'] ?? 'We are getting married' }}">
+  <meta property="og:image" content="{{ $invitation->data['hero_bg'] ?? $invitation->data['h_img'] ?? asset('assets/hero-background.png') }}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ request()->url() }}">
+
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 

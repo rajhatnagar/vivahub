@@ -202,29 +202,50 @@ class PartnerController extends Controller
             $testImgPath = asset('assets/wedding-templates');
             
             $mockData = [
+                // Common
                 'date' => '2026-12-12',
                 'rsvp_date' => '2026-10-01',
                 'tagline' => 'A celebration of love',
+                'accommodation_details' => 'Luxury suites reserved.',
+                'travel_details' => 'Nearest Airport: UDR',
+
+                // Themes Name & Location
                 'bride_name' => 'Elena', 
                 'groom_name' => 'Julian',
                 'venue_city' => 'Udaipur, India',
                 'hero_image' => $testImgPath . '/hero.jpg',
                 'bride_image' => $testImgPath . '/bride.jpg',
                 'groom_image' => $testImgPath . '/groom.jpg',
+                
+                // Legacy/Alternative Themes
                 'bride' => 'Elena',
                 'groom' => 'Julian',
                 'location' => 'Udaipur, India',
                 'h_img' => $testImgPath . '/hero.jpg',
                 'hero_bg' => $testImgPath . '/hero.jpg',
+                
+                // Galleries - using all test folder images
                 'gallery' => [
                     $testImgPath . '/bride.jpg',
                     $testImgPath . '/groom.jpg',
                     $testImgPath . '/wedding.jpg',
+                    $testImgPath . '/haldi.png',
+                    $testImgPath . '/reception.jpg',
+                    $testImgPath . '/family-photo.jpg',
+                    $testImgPath . '/hero.jpg',
                 ],
+                // Individual gallery keys for legacy compatibility
+                'gallery_1' => $testImgPath . '/wedding.jpg',
+                'gallery_2' => $testImgPath . '/haldi.png', 
+                'gallery_3' => $testImgPath . '/reception.jpg',
+                'gallery_4' => $testImgPath . '/family-photo.jpg',
+
+                // Events
                 'events' => [
-                     ['name' => 'Mehendi', 'date' => 'Dec 11', 'time' => '04:00 PM', 'location' => 'Poolside', 'desc' => 'Henna'],
-                     ['name' => 'Wedding', 'date' => 'Dec 12', 'time' => '09:00 AM', 'location' => 'Mandap', 'desc' => 'Pheras'],
-                ],
+                     ['name' => 'Mehendi Ceremony', 'date' => 'Dec 11', 'time' => '04:00 PM', 'location' => 'Poolside Lawns', 'desc' => 'Henna & Music'],
+                     ['name' => 'Wedding Ceremony', 'date' => 'Dec 12', 'time' => '09:00 AM', 'location' => 'The Mandap', 'desc' => 'Traditional Pheras'],
+                     ['name' => 'Reception', 'date' => 'Dec 12', 'time' => '07:00 PM', 'location' => 'Grand Ballroom', 'desc' => 'Dinner & Drinks']
+                ]
             ];
             
             $invitation = new \stdClass();
@@ -306,11 +327,12 @@ class PartnerController extends Controller
             'social_instagram' => 'nullable|url|max:255',
             'social_whatsapp' => 'nullable|string|max:20',
             'social_website' => 'nullable|url|max:255',
+            'contact_person' => 'nullable|string|max:255',
         ]);
 
         if ($request->hasFile('logo_file')) {
              $path = $request->file('logo_file')->store('partner-logos', 'public');
-             $validated['logo_url'] = asset('storage/' . $path);
+             $validated['logo_url'] = 'storage/' . $path;
         }
         unset($validated['logo_file']);
         
@@ -326,7 +348,7 @@ class PartnerController extends Controller
 
         Auth::user()->partnerDetails()->update($validated);
 
-        return back()->with('success', 'Settings updated.');
+        return redirect()->route('partner.dashboard')->with('success', 'Settings updated.')->with('active_view', 'settings');
     }
 
     public function storeClient(Request $request)
@@ -407,13 +429,15 @@ class PartnerController extends Controller
             $templateId = $invitation->template_id;
         }
 
-        return view('user.builder', compact('templateId', 'saveRoute', 'uploadRoute', 'isPartner', 'credits', 'invitation'));
+        $partnerInvitationCost = \App\Models\Setting::where('key', 'partner_invitation_cost')->value('value') ?? 5;
+
+        return view('user.builder', compact('templateId', 'saveRoute', 'uploadRoute', 'isPartner', 'credits', 'invitation', 'partnerInvitationCost'));
     }
 
     public function uploadMedia(Request $request) 
     {
         $request->validate([
-            'file' => 'required|image|max:5120', // 5MB max
+            'file' => 'required|file|mimes:jpeg,png,jpg,gif,svg,pdf,mp3,wav|max:5120', // 5MB max, strict mimes
         ]);
 
         $path = $request->file('file')->store('uploads/invitations', 'public');
@@ -432,22 +456,31 @@ class PartnerController extends Controller
             if($status === 'published') {
                  // Check if already published (don't deduct again) - Scoped to user to prevent IDOR/Credit Bypass
                  $existing = isset($data['id']) ? \App\Models\Invitation::where('user_id', $user->id)->find($data['id']) : null;
-                 if(!$existing || $existing->status !== 'published') {
-                     $partner = $user->partnerDetails;
-                     // Dynamic Cost
-                     $invitationCost = \App\Models\Setting::where('key', 'partner_invitation_cost')->value('value') ?? 5;
-
-                     if($partner->credits < $invitationCost) {
-                         return response()->json(['success' => false, 'message' => "Insufficient credits. You need $invitationCost credits to publish. Please buy more."], 402);
+                 
+                 // If standard payment used, skip credit deduction
+                 if (isset($data['transaction_id']) && $data['transaction_id']) {
+                     $transaction = \App\Models\Transaction::where('id', $data['transaction_id'])->where('user_id', $user->id)->where('status', 'success')->first();
+                     if (!$transaction && (!$existing || $existing->status !== 'published')) {
+                         return response()->json(['success' => false, 'message' => 'Invalid transaction.'], 402);
                      }
-                     // Deduct Credit
-                     $partner->decrement('credits', $invitationCost);
-                     $description = 'Published Invitation for ' . ($data['groom'] ?? 'Groom') . ' & ' . ($data['bride'] ?? 'Bride') . ' (' . $invitationCost . ' Credits)';
-                     $partner->creditLogs()->create([
-                         'type' => 'debit',
-                         'amount' => $invitationCost,
-                         'description' => $description
-                     ]);
+                 } else {
+                     if(!$existing || $existing->status !== 'published') {
+                         $partner = $user->partnerDetails;
+                         // Dynamic Cost
+                         $invitationCost = \App\Models\Setting::where('key', 'partner_invitation_cost')->value('value') ?? 5;
+
+                         if($partner->credits < $invitationCost) {
+                             return response()->json(['success' => false, 'message' => "Insufficient credits. You need $invitationCost credits to publish. Please buy more."], 402);
+                         }
+                         // Deduct Credit
+                         $partner->decrement('credits', $invitationCost);
+                         $description = 'Published Invitation for ' . ($data['groom'] ?? 'Groom') . ' & ' . ($data['bride'] ?? 'Bride') . ' (' . $invitationCost . ' Credits)';
+                         $partner->creditLogs()->create([
+                             'type' => 'debit',
+                             'amount' => $invitationCost,
+                             'description' => $description
+                         ]);
+                     }
                  }
             }
 
@@ -505,11 +538,12 @@ class PartnerController extends Controller
 
     public function downloadInvoice($id)
     {
+        $user = Auth::user();
+        $partner = $user->partnerDetails;
+
         $invoice = \App\Models\PartnerInvoice::where('invoice_number', $id)
             ->where('partner_id', $partner->id)
             ->firstOrFail();
-        $user = Auth::user();
-        $partner = $user->partnerDetails;
         
         return view('partner.invoice', compact('invoice', 'user', 'partner'));
     }

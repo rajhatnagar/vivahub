@@ -3,10 +3,22 @@
 @section('title', 'Invitation Builder')
 
 @section('content')
-<div class="flex flex-col lg:flex-row h-[calc(100vh-80px)] overflow-hidden bg-white dark:bg-[#1a0b0b] rounded-2xl shadow-card border border-primary/5 dark:border-white/5">
+<style>
+    @media (min-width: 1024px) {
+        .custom-builder-layout { display: block !important; position: relative !important; }
+        .custom-builder-left { position: absolute !important; left: 0 !important; top: 0 !important; bottom: 0 !important; width: 45% !important; border-right: 1px solid rgba(255,255,255,0.05); z-index: 10 !important; }
+        .custom-builder-right { position: absolute !important; right: 0 !important; top: 0 !important; bottom: 0 !important; width: 55% !important; display: flex !important; align-items: center; justify-content: center; z-index: 10 !important; flex-direction: column !important; }
+    }
+    @media (max-width: 1023px) {
+        .custom-builder-layout { display: flex !important; flex-direction: column !important; }
+        .custom-builder-left { flex: 0 0 100% !important; max-width: 100% !important; position: relative !important; }
+        .custom-builder-right { display: none !important; }
+    }
+</style>
+<div class="custom-builder-layout h-[85vh] min-h-[700px] bg-white dark:bg-[#1a0b0b] rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none border border-primary/5 dark:border-white/5 overflow-hidden">
     
     <!-- Left: Form -->
-    <div class="flex-1 flex flex-col h-full border-r border-gray-100 dark:border-white/5 relative z-10 bg-white dark:bg-[#1a0b0b]">
+    <div class="custom-builder-left flex flex-col h-full bg-white dark:bg-[#1a0b0b]">
         <!-- Form Header -->
         <div class="p-5 border-b border-gray-100 dark:border-white/5">
             <div class="flex justify-between items-center mb-3">
@@ -17,7 +29,7 @@
         </div>
 
         <!-- Form Content -->
-        <div class="flex-1 overflow-y-auto p-6 space-y-8" id="builder-form-container">
+        <div class="flex-1 overflow-y-auto p-4 lg:p-6 space-y-8 pb-32 lg:pb-8" id="builder-form-container">
             
             <!-- Step 1: Basics & Hero -->
             <div id="step-1" class="space-y-6 animate-fade-in">
@@ -265,24 +277,30 @@
         </div>
 
         <!-- Form Footer -->
-        <div class="p-5 border-t border-gray-100 dark:border-white/5 flex gap-4 bg-white dark:bg-[#1a0b0b]">
-             <button onclick="changeStep(-1)" id="btn-back" class="hidden flex-1 px-6 py-3 rounded-xl border border-gray-200 font-bold text-text-dark dark:text-white dark:border-white/20 hover:bg-gray-50 transition-colors">Back</button>
+        <div class="z-40 p-4 lg:p-5 border-t border-gray-100 dark:border-white/5 flex items-center justify-between bg-white dark:bg-[#1a0b0b] shrink-0" style="margin-top: auto;">
+             <div class="flex items-center gap-2">
+                 <!-- Mobile Preview Button -->
+                 <button onclick="openMobilePreview()" class="lg:hidden w-12 h-12 flex items-center justify-center rounded-xl bg-gray-100 text-text-dark hover:bg-gray-200 dark:bg-white/10 dark:text-white transition-colors p-0"><span class="material-symbols-outlined text-[20px] m-0">visibility</span></button>
+                 
+                 <button onclick="changeStep(-1)" id="btn-back" class="hidden px-5 lg:px-6 h-12 rounded-xl border border-gray-200 font-bold text-sm lg:text-base text-text-dark dark:text-white dark:border-white/20 hover:bg-gray-50 transition-colors btn-action">Back</button>
+             </div>
              
-             <!-- Mobile Preview Button -->
-             <button onclick="openMobilePreview()" class="lg:hidden px-4 py-3 rounded-xl bg-gray-100 text-text-dark font-bold hover:bg-gray-200 dark:bg-white/10 dark:text-white"><span class="material-symbols-outlined align-middle">visibility</span></button>
-             
-             <button onclick="changeStep(1)" id="btn-next" class="flex-1 bg-primary text-white font-bold py-3 rounded-xl hover:bg-primary-dark shadow-lg transition-colors">Next Step</button>
-             <button onclick="saveDraft()" id="btn-draft" class="hidden flex-1 bg-gray-100 text-text-dark font-bold py-3 rounded-xl hover:bg-gray-200 dark:bg-white/10 dark:text-white dark:hover:bg-white/20 transition-colors">Save Draft</button>
-             <button onclick="showCheckout()" id="btn-publish" class="hidden flex-1 bg-accent-gold text-white font-bold py-3 rounded-xl hover:bg-yellow-600 shadow-lg animate-pulse">Publish Now</button>
+             <div class="flex items-center gap-2 flex-1 justify-end">
+                 <button onclick="saveDraft()" id="btn-draft" class="hidden px-5 lg:px-6 h-12 bg-gray-100 text-text-dark font-bold rounded-xl hover:bg-gray-200 dark:bg-white/10 dark:text-white dark:hover:bg-white/20 transition-colors text-sm lg:text-base whitespace-nowrap btn-action">Save Draft</button>
+                 
+                 <button onclick="changeStep(1)" id="btn-next" class="px-6 lg:px-10 h-12 bg-primary text-white font-bold rounded-xl hover:bg-primary-dark shadow-lg transition-colors text-sm lg:text-base whitespace-nowrap btn-action">Next Step</button>
+                 
+                 <button onclick="showCheckout()" id="btn-publish" class="hidden px-6 lg:px-10 h-12 bg-accent-gold text-white font-bold rounded-xl hover:bg-yellow-600 shadow-lg animate-pulse text-sm lg:text-base whitespace-nowrap btn-action">Publish Now</button>
+             </div>
         </div>
     </div>
 
     <!-- Right: Preview -->
-    <div class="hidden lg:flex flex-[1.2] bg-gray-50 dark:bg-black items-center justify-center p-8 relative overflow-hidden">
+    <div class="custom-builder-right bg-gray-50 dark:bg-black p-4 lg:p-8 overflow-hidden">
         <div class="absolute inset-0 opacity-5" style="background-image: radial-gradient(#C41E3A 1px, transparent 1px); background-size: 20px 20px;"></div>
         
         <!-- Preview Container -->
-        <div id="preview-container" class="mobile-frame w-[375px] h-[720px] mx-auto border-[12px] border-[#1b0d12] dark:border-[#2a2a2a] rounded-[45px] overflow-hidden bg-white shadow-2xl flex flex-col relative z-10 transition-all duration-500">
+        <div id="preview-container" class="mobile-frame w-full max-w-[375px] h-[80vh] min-h-[700px] mx-auto border-8 border-[#1b0d12] dark:border-[#2a2a2a] rounded-3xl overflow-hidden bg-white shadow-2xl flex flex-col relative z-10 transition-all duration-500" style="border-width: 12px; border-radius: 45px; max-width: 375px;">
             <!-- Notch (Only for Mobile) -->
             <div id="preview-notch" class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-[#1b0d12] dark:bg-[#2a2a2a] rounded-b-2xl z-20"></div>
             
@@ -379,7 +397,7 @@
 <div id="success-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 bg-white dark:bg-[#1a0b0b] overflow-y-auto">
     <div class="max-w-4xl w-full mx-auto flex flex-col md:flex-row gap-6 md:gap-10 items-center animate-fade-in relative py-6 md:py-10">
         <!-- Close Button -->
-        <a href="{{ route('dashboard') }}" class="absolute top-2 right-0 md:top-4 md:right-4 p-2 text-text-muted hover:text-primary"><span class="material-symbols-outlined">close</span></a>
+        <a href="{{ route('admin.dashboard') }}" class="absolute top-2 right-0 md:top-4 md:right-4 p-2 text-text-muted hover:text-primary"><span class="material-symbols-outlined">close</span></a>
 
         <!-- Left: Success Message -->
         <div class="flex-1 text-center md:text-left space-y-4 md:space-y-6">
@@ -399,7 +417,7 @@
             </div>
 
             <div class="flex gap-4 justify-center md:justify-start flex-wrap">
-                <a href="{{ route('dashboard') }}" class="px-5 py-2.5 md:px-6 md:py-3 bg-gray-100 dark:bg-white/10 text-text-dark dark:text-white text-sm md:text-base font-bold rounded-xl hover:bg-gray-200 transition-colors">Go via Dashboard</a>
+                <a href="{{ route('admin.dashboard') }}" class="px-5 py-2.5 md:px-6 md:py-3 bg-gray-100 dark:bg-white/10 text-text-dark dark:text-white text-sm md:text-base font-bold rounded-xl hover:bg-gray-200 transition-colors">Go via Dashboard</a>
                 <button onclick="window.open(document.getElementById('share-link').innerText, '_blank')" class="px-5 py-2.5 md:px-6 md:py-3 bg-primary text-white text-sm md:text-base font-bold rounded-xl shadow-lg hover:bg-primary-dark transition-colors">Open Invitation</button>
             </div>
         </div>
@@ -1451,4 +1469,5 @@
         document.getElementById('mobile-preview-modal').classList.add('hidden');
     }
 </script>
+</style>
 @endpush

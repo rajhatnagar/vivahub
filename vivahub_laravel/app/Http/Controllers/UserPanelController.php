@@ -131,7 +131,7 @@ class UserPanelController extends Controller implements HasMiddleware
                  'type' => 'Wedding',
                  'status' => ucfirst($inv->status),
                  'rsvps' => 0,
-                 'img' => data_get($data, 'h_img', "https://csssofttech.com/wedding/assets/hero.png")
+                 'img' => data_get($data, 'h_img') ?: asset('assets/thumbnails/classic_elegant_final.png')
              ];
         });
 
@@ -163,7 +163,9 @@ class UserPanelController extends Controller implements HasMiddleware
             // But if generic save, we process coupon here.
             $expiresAt = null;
 
-            if ($status === 'published') {
+            $isAdmin = $user->role === 'admin';
+
+            if ($status === 'published' && !$isAdmin) {
                  if ($freeAccessEnabled && !$couponCode && !isset($data['payment_id']) && !isset($data['transaction_id'])) {
                      // Free Access Check: Limit 1
                      $existingCount = Invitation::where('user_id', $user->id)
@@ -174,17 +176,46 @@ class UserPanelController extends Controller implements HasMiddleware
                      if ($existingCount >= 1) {
                          return response()->json(['success' => false, 'message' => 'Free Access Limit Reached (1 Invitation). Please upgrade to publish more.'], 402);
                      }
-                     // Set 7 Days Expiry
+                     // Set 7 Days Expiry for standard free trials (fallback)
                      $expiresAt = Carbon::now()->addDays(7);
                  } elseif (!$freeAccessEnabled) {
                      // Strict Payment Check
                      if ($couponCode) {
                          // ... process coupon ...
                          // Just verify existence here, processing happens below
-                     } elseif (!isset($data['payment_id']) && !isset($data['transaction_id'])) {
-                         $existing = Invitation::where('user_id', $user->id)->where('template_id', $templateId)->first();
+                     } elseif (!isset($data['transaction_id']) || empty($data['transaction_id'])) {
+                         $existing = null;
+                         if (isset($data['id']) && !empty($data['id'])) {
+                              $existing = Invitation::where('user_id', $user->id)->where('id', $data['id'])->first();
+                         } else {
+                              $existing = Invitation::where('user_id', $user->id)->where('template_id', $templateId)->first();
+                         }
                          if (!$existing || $existing->status !== 'published') {
                              return response()->json(['success' => false, 'message' => 'Payment or Valid Coupon Required to Publish.'], 402);
+                         }
+                     } elseif (isset($data['transaction_id'])) {
+                         $transaction = \App\Models\Transaction::where('id', $data['transaction_id'])->where('user_id', $user->id)->where('status', 'success')->first();
+                         
+                         $existing = null;
+                         if (isset($data['id']) && !empty($data['id'])) {
+                              $existing = Invitation::where('user_id', $user->id)->where('id', $data['id'])->first();
+                         } else {
+                              $existing = Invitation::where('user_id', $user->id)->where('template_id', $templateId)->first();
+                         }
+                         
+                         if (!$transaction && (!$existing || $existing->status !== 'published')) {
+                             return response()->json(['success' => false, 'message' => 'Invalid transaction.'], 402);
+                         }
+
+                         // Secure the exact Plan Validity associated with this transaction
+                         if ($transaction && $transaction->plan_id) {
+                              $plan = \App\Models\Plan::find($transaction->plan_id);
+                              if ($plan && is_numeric($plan->validity) && $plan->validity > 0) {
+                                   $expiresAt = Carbon::now()->addDays((int) $plan->validity);
+                              } else {
+                                   // Fallback if validity is explicitly a string like "Lifetime" or missing
+                                   $expiresAt = null; // Lifetime/Null expiry
+                              }
                          }
                      }
                  }
@@ -210,6 +241,9 @@ class UserPanelController extends Controller implements HasMiddleware
                      return response()->json(['success' => false, 'message' => 'This code cannot be redeemed at the moment (Agency Limit Reached).'], 400); 
                  }
                  
+                 // Apply Partner Plan Validity (Assume 365 Days / 1 Year for Partner published invitations if no specific plan is passed)
+                 // Or, if there is a 'validity' passed in data, use it. But for safety, give them 365 days.
+                 $expiresAt = Carbon::now()->addDays(365);
 
                  
                  // Deduct Credit & Mark Redeemed
@@ -278,13 +312,20 @@ class UserPanelController extends Controller implements HasMiddleware
                  \Illuminate\Support\Facades\Log::info("No expiry set for user {$user->id}");
             }
 
-            $invitation = \App\Models\Invitation::updateOrCreate(
-                [
-                    'user_id' => $user->id, 
-                    'template_id' => $templateId
-                ],
-                $updateData
-            );
+            $invitation = null;
+            if (isset($data['id']) && !empty($data['id'])) {
+                $invitation = \App\Models\Invitation::where('user_id', $user->id)
+                    ->where('id', $data['id'])
+                    ->first();
+            }
+
+            if ($invitation) {
+                $invitation->update($updateData);
+            } else {
+                $updateData['user_id'] = $user->id;
+                $updateData['template_id'] = $templateId;
+                $invitation = \App\Models\Invitation::create($updateData);
+            }
 
             return response()->json(['success' => true, 'id' => $invitation->id]);
         } catch (\Exception $e) {
@@ -339,7 +380,16 @@ class UserPanelController extends Controller implements HasMiddleware
                 $templateId = $invitation->template_id;
             }
 
-            return view('user.builder', compact('templateId', 'invitation'));
+            $freeAccessEnabled = \App\Models\Setting::where('key', 'enable_free_access')->value('value') == '1';
+            $hasUsedFreeAccess = false;
+            if ($freeAccessEnabled && Auth::check()) {
+                $hasUsedFreeAccess = \App\Models\Invitation::where('user_id', Auth::id())
+                     ->where('status', 'published')
+                     ->where('template_id', '!=', $templateId)
+                     ->count() >= 1;
+            }
+
+            return view('user.builder', compact('templateId', 'invitation', 'freeAccessEnabled', 'hasUsedFreeAccess'));
         } catch (\Exception $e) {
              return response("Builder Error: " . $e->getMessage() . " in " . $e->getFile() . " line " . $e->getLine(), 500);
         }
@@ -777,32 +827,39 @@ class UserPanelController extends Controller implements HasMiddleware
 
     public function invoice($id)
     {
-        // Mock Transactions Matching Billing Page
-        $transactions = collect([
-            ['id' => "INV-24-001", 'date' => "Oct 24, 2023", 'plan' => "Viva Premium", 'amount' => "₹699", 'status' => "Paid"],
-            ['id' => "INV-23-098", 'date' => "Sep 12, 2023", 'plan' => "Aarambh", 'amount' => "₹399", 'status' => "Paid"],
-            ['id' => "INV-23-055", 'date' => "Aug 01, 2023", 'plan' => "Viva Basic", 'amount' => "₹199", 'status' => "Paid"],
-            ['id' => "INV-23-012", 'date' => "Jul 15, 2023", 'plan' => "Custom Domain", 'amount' => "₹499", 'status' => "Paid"]
-        ])->keyBy('id');
-
-        // Extract ID from filename if passed as filename "Invoice_ID.pdf" or just "ID"
-        // The URL params might come in different ways, but assuming typical route param.
-        // Try exact match first
-        $transaction = $transactions->get($id);
+        // $id could be "INV-00001", "INV-24-001" or just "1"
+        $rawId = preg_replace('/[^0-9]/', '', $id);
         
-        // If not found, try to search (lazy match)
-        if (!$transaction) {
-            $transaction = $transactions->first(function($item) use ($id) {
-                return str_contains($id, $item['id']);
-            });
+        if (!$rawId) {
+            return redirect()->route('user.billing')->with('error', 'Invalid Invoice ID');
         }
 
+        $transaction = \App\Models\Transaction::where('id', $rawId)
+            ->where('user_id', Auth::id())
+            ->with('plan')
+            ->first();
+
         if (!$transaction) {
-             // Fallback for Demo
-             $transaction = $transactions->first();
-             $transaction['id'] = $id; 
+            return redirect()->route('user.billing')->with('error', 'Invoice not found');
         }
 
-        return view('user.invoice', compact('transaction'));
+        // Format for the blade
+        $formattedTransaction = [
+            'id' => 'INV-' . str_pad($transaction->id, 5, '0', STR_PAD_LEFT),
+            'date' => $transaction->created_at->format('M d, Y'),
+            'plan' => $transaction->plan ? $transaction->plan->name : 'N/A',
+            'amount' => '₹' . number_format($transaction->amount, 2),
+            'status' => ucfirst($transaction->status),
+            
+            // New GST Info
+            'has_gst' => $transaction->has_gst,
+            'tax_amount' => '₹' . number_format($transaction->tax_amount, 2),
+            'subtotal' => '₹' . number_format($transaction->amount - $transaction->tax_amount, 2),
+            'billing_company' => $transaction->billing_company,
+            'billing_gst' => $transaction->billing_gst,
+            'billing_address' => $transaction->billing_address,
+        ];
+
+        return view('user.invoice', ['transaction' => $formattedTransaction]);
     }
 }
