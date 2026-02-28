@@ -1047,8 +1047,8 @@
                                 <h3 class="text-2xl lg:text-3xl font-bold text-primary">${window.app.data.stats.active_coupons}</h3>
                             </div>
 <div class="col-span-2 lg:col-span-1 bg-gradient-to-br from-primary to-primary-dark p-4 lg:p-6 rounded-2xl shadow-lg text-white relative overflow-hidden group">
-                                <div class="absolute -right-6 -top-6 w-24 h-24 bg-white/10 rounded-full blur-xl group-hover:bg-white/20 transition-all"></div>
-                                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between lg:block gap-4 sm:gap-0">
+                                <div class="absolute -right-6 -top-6 w-24 h-24 bg-white/10 rounded-full blur-xl group-hover:bg-white/20 transition-all z-0"></div>
+                                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between lg:block gap-4 sm:gap-0 relative z-10">
                                     <div>
                                         <p class="text-white/80 text-xs lg:text-sm mb-1 font-medium">Plan Usage</p>
                                         <div class="flex items-baseline gap-1">
