@@ -5,7 +5,7 @@
 @section('content')
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-3xl font-bold text-text-dark dark:text-white">My<br>Invitations</h2>
-        <a href="{{ route('builder') }}" class="relative overflow-hidden bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-bold py-3 px-5 rounded-xl flex items-center gap-2 transition-all shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transform hover:-translate-y-0.5">
+        <a href="{{ route('dashboard.templates') }}" class="relative overflow-hidden bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-bold py-3 px-5 rounded-xl flex items-center gap-2 transition-all shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transform hover:-translate-y-0.5">
             <span class="material-symbols-outlined text-sm">add</span>
             <span class="text-sm font-extrabold uppercase tracking-wide">New Invitation</span>
         </a>
@@ -48,7 +48,7 @@
             <span class="material-symbols-outlined text-4xl text-gray-300 mb-4">mail</span>
             <h3 class="text-lg font-bold text-gray-600 dark:text-gray-300">No Invitations Yet</h3>
             <p class="text-gray-400 text-sm mb-6">Create your first wedding invitation now!</p>
-            <a href="{{ route('builder') }}" class="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-6 rounded-xl inline-flex items-center gap-2 transition-colors shadow-lg">
+            <a href="{{ route('dashboard.templates') }}" class="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-6 rounded-xl inline-flex items-center gap-2 transition-colors shadow-lg">
                 Start Creating
             </a>
         </div>

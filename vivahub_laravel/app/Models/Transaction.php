@@ -13,6 +13,11 @@ class Transaction extends Model
         'gateway',
         'status',
         'transaction_id',
+        'tax_amount',
+        'has_gst',
+        'billing_gst',
+        'billing_company',
+        'billing_address',
     ];
 
     protected $casts = [

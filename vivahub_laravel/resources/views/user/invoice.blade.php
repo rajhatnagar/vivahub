@@ -41,9 +41,16 @@
             <div>
                 <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Billed To</p>
                 <div class="text-sm font-medium text-gray-800">
-                    <p class="font-bold text-lg text-gray-900 mb-1">{{ Auth::user()->name }}</p>
-                    <p>{{ Auth::user()->email }}</p>
-                    <p>India</p>
+                    @if(isset($transaction['has_gst']) && $transaction['has_gst'])
+                        <p class="font-bold text-lg text-gray-900 mb-1">{{ $transaction['billing_company'] }}</p>
+                        <p>GSTIN: {{ $transaction['billing_gst'] }}</p>
+                        <p class="whitespace-pre-line mb-2">{{ $transaction['billing_address'] }}</p>
+                        <p class="text-gray-500 border-t pt-2 mt-2">Attn: {{ Auth::user()->name }} ({{ Auth::user()->email }})</p>
+                    @else
+                        <p class="font-bold text-lg text-gray-900 mb-1">{{ Auth::user()->name }}</p>
+                        <p>{{ Auth::user()->email }}</p>
+                        <p>India</p>
+                    @endif
                 </div>
             </div>
             <div class="text-right">
@@ -91,11 +98,11 @@
             <div class="w-1/3">
                 <div class="flex justify-between py-2 border-b border-gray-100 text-sm">
                     <span class="text-gray-500">Subtotal</span>
-                    <span class="font-medium">{{ $transaction['amount'] }}</span>
+                    <span class="font-medium">{{ $transaction['subtotal'] ?? $transaction['amount'] }}</span>
                 </div>
                 <div class="flex justify-between py-2 border-b border-gray-100 text-sm">
-                    <span class="text-gray-500">Tax (0%)</span>
-                    <span class="font-medium">₹0</span>
+                    <span class="text-gray-500">Tax @if(isset($transaction['tax_amount']) && $transaction['tax_amount'] !== '₹0.00') (18%) @else (0%) @endif</span>
+                    <span class="font-medium">{{ $transaction['tax_amount'] ?? '₹0.00' }}</span>
                 </div>
                 <div class="flex justify-between py-4 text-lg font-bold text-gray-900">
                     <span>Total</span>

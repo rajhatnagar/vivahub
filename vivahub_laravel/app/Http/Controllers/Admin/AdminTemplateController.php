@@ -401,18 +401,27 @@ class AdminTemplateController extends Controller
             $templateId = $data['templateId'] ?? 'wedding-1';
             $status = $data['status'] ?? 'draft';
 
-            $invitation = Invitation::updateOrCreate(
-                [
-                    'user_id' => $user->id, 
-                    'template_id' => $templateId
-                ],
-                [
-                    'title' => ($data['groom'] ?? 'Groom') . ' & ' . ($data['bride'] ?? 'Bride'),
-                    'content' => 'Wedding Invitation',
-                    'status' => $status,
-                    'data' => $data
-                ]
-            );
+            $updateData = [
+                'title' => ($data['groom'] ?? 'Groom') . ' & ' . ($data['bride'] ?? 'Bride'),
+                'content' => 'Wedding Invitation',
+                'status' => $status,
+                'data' => $data
+            ];
+
+            $invitation = null;
+            if (isset($data['id']) && !empty($data['id'])) {
+                $invitation = Invitation::where('user_id', $user->id)
+                    ->where('id', $data['id'])
+                    ->first();
+            }
+
+            if ($invitation) {
+                $invitation->update($updateData);
+            } else {
+                $updateData['user_id'] = $user->id;
+                $updateData['template_id'] = $templateId;
+                $invitation = Invitation::create($updateData);
+            }
 
             return response()->json(['success' => true, 'id' => $invitation->id]);
         } catch (\Exception $e) {

@@ -8,10 +8,58 @@ use App\Models\Transaction;
 
 class TransactionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $status = $request->query('status');
+
+        if ($request->query('export') === 'csv') {
+            $query = Transaction::with(['user', 'plan'])->latest();
+            if ($status) {
+                $query->where('status', $status);
+            }
+            $transactions = $query->get();
+
+            $filename = "transactions_export_" . date('Y-m-d') . ".csv";
+            $headers = [
+                "Content-Type" => "text/csv; charset=UTF-8",
+                "Content-Disposition" => "attachment; filename=\"$filename\"",
+                "Pragma" => "no-cache",
+                "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+                "Expires" => "0"
+            ];
+
+            $columns = ['ID', 'User Name', 'User Email', 'Plan', 'Amount', 'Payment ID', 'Gateway', 'Status', 'Date'];
+
+            $callback = function() use($transactions, $columns) {
+                $file = fopen('php://output', 'w');
+                fputs($file, "\xEF\xBB\xBF");
+                fputcsv($file, $columns);
+
+                foreach ($transactions as $t) {
+                    fputcsv($file, [
+                        $t->id,
+                        $t->user->name ?? 'Unknown',
+                        $t->user->email ?? '-',
+                        $t->plan->name ?? 'N/A',
+                        $t->amount,
+                        $t->transaction_id ?? '-',
+                        $t->gateway,
+                        ucfirst($t->status),
+                        $t->created_at->format('Y-m-d H:i:s')
+                    ]);
+                }
+                fclose($file);
+            };
+
+            return response()->stream($callback, 200, $headers);
+        }
+
         // Get transactions with user details
-        $transactions = Transaction::with(['user', 'plan'])->latest()->paginate(20);
+        $query = Transaction::with(['user', 'plan'])->latest();
+        if ($status) {
+            $query->where('status', $status);
+        }
+        $transactions = $query->paginate(20);
         
         // Payment Statistics
         $stats = [

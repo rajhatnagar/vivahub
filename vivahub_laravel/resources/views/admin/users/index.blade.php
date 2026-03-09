@@ -53,7 +53,8 @@
     </div>
 
     <div class="bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-2xl overflow-hidden shadow-soft-light">
-        <div class="overflow-x-auto">
+        <!-- DESKTOP TABLE (hidden on mobile) -->
+        <div class="hidden lg:block overflow-x-auto">
             <table class="w-full text-left border-collapse">
                 <thead>
                     <tr class="bg-gray-50 dark:bg-[#1a0b0b] border-b border-border-light dark:border-border-dark">
@@ -154,12 +155,73 @@
                     @empty
                         <tr><td colspan="6" class="p-4 text-center text-gray-500">No users found.</td></tr>
                     @endforelse
-                </tbody>
             </table>
-            <div class="p-4">
-                {{ $users->links() }}
-            </div>
-            </table>
+        </div>
+
+        <!-- MOBILE CARD LIST (visible on mobile only) -->
+        <div class="lg:hidden divide-y divide-border-light dark:divide-border-dark">
+            @forelse($users as $user)
+                <div class="p-4 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                    <div class="flex items-center gap-3 mb-2.5">
+                        <div class="size-9 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center font-bold text-sm flex-shrink-0">
+                            {{ substr($user->name, 0, 1) }}
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="text-slate-800 dark:text-white text-sm font-semibold truncate max-w-[150px]">{{ $user->name }}</span>
+                                @if($user->role === 'admin')
+                                    <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300 flex-shrink-0"><span class="material-symbols-outlined" style="font-size:11px">shield</span>Admin</span>
+                                @elseif($user->role === 'partner')
+                                    <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300 flex-shrink-0"><span class="material-symbols-outlined" style="font-size:11px">storefront</span>Partner</span>
+                                @else
+                                    <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-300 flex-shrink-0"><span class="material-symbols-outlined" style="font-size:11px">person</span>User</span>
+                                @endif
+                            </div>
+                            @if($user->role === 'partner' && $user->partnerDetails)
+                                <span class="block text-[11px] text-gray-400 truncate">{{ $user->partnerDetails->agency_name }}</span>
+                            @endif
+                            <span class="block text-xs text-gray-400 truncate">{{ $user->email }}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between pl-12">
+                        <div class="flex items-center gap-2.5">
+                            <form action="{{ route('admin.users.toggleStatus', $user->id) }}" method="POST">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold cursor-pointer transition-colors {{ $user->status === 'active' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' }}">
+                                    {{ ucfirst($user->status ?? 'active') }}
+                                </button>
+                            </form>
+                            @if($user->role === 'partner')
+                                <span class="text-xs font-mono font-bold text-slate-600 dark:text-gray-300">{{ $user->partnerDetails->credits ?? 0 }} <span class="text-[10px] text-gray-400 font-sans">cr</span></span>
+                            @endif
+                        </div>
+                        <div class="flex items-center gap-0.5">
+                            @if($user->role === 'partner')
+                                <a href="{{ route('admin.users.history', $user->id) }}" class="p-1 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-50"><span class="material-symbols-outlined text-[18px]">history</span></a>
+                            @endif
+                            @if($user->role !== 'admin')
+                            <form action="{{ route('admin.users.impersonate', $user->id) }}" method="POST" class="inline">
+                                @csrf
+                                <button type="submit" class="p-1 rounded-lg text-gray-400 hover:text-purple-600 hover:bg-purple-50"><span class="material-symbols-outlined text-[18px]">login</span></button>
+                            </form>
+                            @endif
+                            <form id="del-m-{{ $user->id }}" action="{{ route('admin.users.destroy', $user->id) }}" method="POST" class="inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" @click="$dispatch('confirm-action', { title: 'Delete User?', message: 'This will permanently remove the user.', formId: 'del-m-{{ $user->id }}' })" class="p-1 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+                            </form>
+                            <button @click="$dispatch('open-edit-modal', {id: {{ $user->id }}, name: '{{ $user->name }}', email: '{{ $user->email }}', role: '{{ $user->role }}', credits: {{ $user->partnerDetails->credits ?? 0 }} })" class="p-1 text-gray-400 hover:text-slate-800 dark:hover:text-white"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div class="p-6 text-center text-gray-500 text-sm">No users found.</div>
+            @endforelse
+        </div>
+
+        <div class="p-4">
+            {{ $users->links() }}
         </div>
     </div>
 

@@ -75,7 +75,7 @@
                      <div>
                          <label class="block text-gray-500 dark:text-gray-400 text-xs font-bold uppercase mb-2">Partner Invitation Cost (Credits)</label>
                          <div class="relative max-w-sm">
-                            <input type="number" name="partner_invitation_cost" value="{{ $settings['partner_invitation_cost'] ?? '1' }}" min="0" class="w-full bg-gray-50 dark:bg-[#1a0b0b] border border-border-light dark:border-border-dark rounded-xl text-slate-800 dark:text-white p-3 pl-10 focus:ring-primary focus:border-primary font-mono font-bold text-lg">
+                            <input type="number" name="partner_invitation_cost" value="{{ $settings['partner_invitation_cost'] ?? '5' }}" min="0" class="w-full bg-gray-50 dark:bg-[#1a0b0b] border border-border-light dark:border-border-dark rounded-xl text-slate-800 dark:text-white p-3 pl-10 focus:ring-primary focus:border-primary font-mono font-bold text-lg">
                             <span class="material-symbols-outlined absolute left-3 top-3.5 text-gray-400">token</span>
                         </div>
                         <p class="text-xs text-gray-400 mt-2 flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">info</span> Credits deducted when a partner creates an invitation.</p>

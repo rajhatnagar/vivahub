@@ -18,6 +18,7 @@ class Plan extends Model
         'is_active',
         'is_popular',
         'css_class',
+        'featured_image',
     ];
 
     protected $casts = [

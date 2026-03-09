@@ -50,6 +50,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/rsvps/add', 'addGuest')->name('rsvps.add');
         Route::get('/invoice/{id}', 'invoice')->name('invoice.show');
     });
+
+    // Premium Store Routes (NFC, Logos, Boards)
+    Route::controller(App\Http\Controllers\User\StoreController::class)->group(function () {
+        Route::get('/store', 'index')->name('user.store.index');
+        Route::post('/store/order', 'store')->name('user.store.process');
+    });
     
     // User Payment Routes (Razorpay)
     Route::post('/payment/create-order', [App\Http\Controllers\PaymentController::class, 'createUserOrder'])->name('user.payment.createOrder')->middleware('throttle:10,1');

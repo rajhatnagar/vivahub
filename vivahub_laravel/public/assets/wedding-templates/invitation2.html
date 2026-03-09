@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dipika & Sagar | Wedding Invitation</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['Playfair Display', 'serif'],
+            script: ['Great Vibes', 'cursive'],
+            sans: ['Lato', 'sans-serif'],
+          },
+          colors: {
+            emerald: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              200: '#a7f3d0',
+              300: '#6ee7b7',
+              400: '#34d399',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+              950: '#022c22',
+            },
+            amber: {
+              300: '#fcd34d',
+              400: '#fbbf24',
+              500: '#f59e0b',
+            }
+          },
+          animation: {
+            'fade-in-up': 'fadeInUp 1s ease-out forwards',
+            'fade-in-down': 'fadeInDown 1s ease-out forwards',
+            'bounce-slow': 'bounce 3s infinite',
+            'spin-slow': 'spin 12s linear infinite',
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          },
+          keyframes: {
+            fadeInUp: {
+              '0%': { opacity: '0', transform: 'translateY(20px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            fadeInDown: {
+              '0%': { opacity: '0', transform: 'translateY(-20px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Styles */
+    body {
+      background-color: #ecfdf5;
+      /* emerald-50 */
+      color: #064e3b;
+      /* emerald-900 */
+    }
+
+    /* Ripple Wave Animation for Audio Button */
+    @keyframes ripple {
+      0% {
+        box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7);
+      }
+      70% {
+        box-shadow: 0 0 0 15px rgba(251, 191, 36, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(251, 191, 36, 0);
+      }
+    }
+    
+    .animate-ripple {
+      animation: ripple 1.5s infinite cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Gold Particle Animation */
+    @keyframes sparkle {
+      0% {
+        transform: translateY(-10vh) rotate(0deg) scale(0.5);
+        opacity: 0;
+      }
+      50% {
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(110vh) rotate(360deg) scale(1);
+        opacity: 0;
+      }
+    }
+
+    .sparkle {
+      position: fixed;
+      top: -10vh;
+      width: 8px;
+      height: 8px;
+      background: #fbbf24; /* amber-400 */
+      border-radius: 50%;
+      box-shadow: 0 0 10px 2px rgba(251, 191, 36, 0.4);
+      animation: sparkle 15s linear infinite;
+      z-index: 50;
+      pointer-events: none;
+    }
+
+    .sparkle:nth-child(even) {
+      background: #fcd34d; /* amber-300 */
+      width: 5px;
+      height: 5px;
+    }
+
+    .sparkle:nth-child(2) { left: 10%; animation-duration: 12s; animation-delay: 0s; }
+    .sparkle:nth-child(3) { left: 30%; animation-duration: 18s; animation-delay: 2s; }
+    .sparkle:nth-child(4) { left: 50%; animation-duration: 14s; animation-delay: 5s; }
+    .sparkle:nth-child(5) { left: 70%; animation-duration: 16s; animation-delay: 1s; }
+    .sparkle:nth-child(6) { left: 90%; animation-duration: 13s; animation-delay: 4s; }
+
+    /* Glassmorphism Class - Emerald Tint */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(167, 243, 208, 0.6); /* emerald-200 */
+      box-shadow: 0 20px 25px -5px rgba(6, 78, 59, 0.1), 0 10px 10px -5px rgba(6, 78, 59, 0.04);
+      transition: all 0.5s ease;
+    }
+
+    .glass-card:hover {
+      border-color: rgba(52, 211, 153, 0.6); /* emerald-400 */
+      transform: translateY(-5px);
+    }
+
+    /* Dark Glass for Events - Deep Emerald */
+    .glass-card-dark {
+      background: rgba(2, 44, 34, 0.7); /* emerald-950/70 */
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.5s ease;
+    }
+
+    .glass-card-dark:hover {
+      background: rgba(2, 44, 34, 0.85);
+      border-color: rgba(251, 191, 36, 0.6); /* amber-400 */
+      transform: scale(1.02);
+    }
+
+    /* Text Gradients */
+    .text-gradient-gold {
+      background: linear-gradient(to right, #d97706, #fbbf24, #d97706); /* amber-600 to 400 */
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Utility for Parallax */
+    .parallax-bg {
+      will-change: transform;
+    }
+  </style>
+</head>
+
+<body class="overflow-x-hidden selection:bg-emerald-500 selection:text-white">
+
+  <!-- Welcome Overlay (Force Interaction for Autoplay) -->
+  <div id="welcome-overlay" class="fixed inset-0 z-[100] bg-emerald-950 flex flex-col items-center justify-center text-center p-4 transition-opacity duration-700">
+    <div class="relative w-full h-full max-w-md mx-auto flex flex-col items-center justify-center">
+        <!-- Decorative Background Elements -->
+        <div class="absolute top-10 left-10 w-20 h-20 border-t-2 border-l-2 border-amber-400/30 rounded-tl-3xl"></div>
+        <div class="absolute bottom-10 right-10 w-20 h-20 border-b-2 border-r-2 border-amber-400/30 rounded-br-3xl"></div>
+        
+        <img src="https://csssofttech.com/wedding/assets/ganesha.png" alt="Ganesha" class="w-24 h-24 mb-8 filter brightness-0 invert opacity-80 animate-pulse-slow">
+        
+        <h1 class="font-script text-5xl md:text-7xl text-amber-200 mb-4 drop-shadow-lg">Dipika & Sagar</h1>
+        <p class="font-serif text-emerald-100/80 text-sm tracking-[0.2em] uppercase mb-10">Invite you to their wedding</p>
+        
+        <button id="enter-btn" class="group relative px-8 py-4 bg-transparent border border-amber-400 text-amber-400 rounded-full overflow-hidden transition-all hover:bg-amber-400 hover:text-emerald-950 hover:scale-105">
+            <span class="relative z-10 font-serif tracking-widest font-bold flex items-center gap-2">
+                OPEN INVITATION <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </span>
+        </button>
+        
+        <p class="mt-6 text-emerald-100/40 text-xs flex items-center gap-2">
+            <i data-lucide="headphones" class="w-3 h-3"></i> Use headphones for best experience
+        </p>
+    </div>
+  </div>
+
+  <!-- Floating Sparkles -->
+  <div class="sparkle"></div>
+  <div class="sparkle"></div>
+  <div class="sparkle"></div>
+  <div class="sparkle"></div>
+  <div class="sparkle"></div>
+
+  <!-- Audio Elements -->
+  <audio id="wedding-audio" loop preload="auto">
+    <source src="https://csssofttech.com/wedding/assets/music.mp3" type="audio/mpeg">
+  </audio>
+  
+  <audio id="family-audio" preload="auto">
+    <!-- Using the same music file as placeholder for now, as requested -->
+    <source src="https://csssofttech.com/wedding/assets/music.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Family Message Button (Top Right) -->
+  <button id="family-msg-toggle"
+    class="fixed top-6 right-6 z-50 bg-amber-100/90 backdrop-blur-md p-3 rounded-full border-2 border-amber-500 text-amber-700 hover:bg-amber-200 transition-all shadow-lg hidden opacity-0 translate-y-[-20px]" style="transition: all 0.5s ease-out;">
+    <div id="family-icon-container">
+       <i data-lucide="play-circle" class="w-6 h-6 fill-current"></i>
+    </div>
+    <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] font-bold bg-black/60 text-white px-2 py-0.5 rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Family Msg</span>
+  </button>
+
+  <!-- Music Toggle Button (Bottom Right) -->
+  <button id="music-toggle"
+    class="fixed bottom-24 md:bottom-6 right-6 z-50 bg-emerald-50/90 backdrop-blur-md p-3 rounded-full border border-emerald-500 text-emerald-800 hover:bg-emerald-100 transition-all shadow-lg hidden opacity-0 translate-y-[20px]" style="transition: all 0.5s ease-out;">
+    <i data-lucide="volume-x" class="w-6 h-6 fill-current"></i>
+  </button>
+
+  <!-- HERO SECTION -->
+  <div class="relative h-[100dvh] w-full overflow-hidden">
+    <!-- Background Image with Parallax -->
+    <div id="hero-bg" class="absolute inset-0 z-0 bg-cover bg-center md:bg-left bg-no-repeat parallax-bg"
+      style="background-image: url('https://csssofttech.com/wedding/assets/hero.png'); filter: brightness(0.9);">
+    </div>
+    <!-- Overlay: Deep Emerald Gradient -->
+    <div
+      class="absolute inset-0 z-1 bg-gradient-to-b from-emerald-950/60 via-emerald-950/20 to-emerald-950/80 mix-blend-multiply pointer-events-none md:hidden">
+    </div>
+    <div
+      class="hidden md:block absolute inset-0 z-1 bg-gradient-to-l from-emerald-950 via-emerald-950/40 to-transparent mix-blend-multiply pointer-events-none">
+    </div>
+    <div class="absolute inset-0 z-1 bg-gradient-to-t from-black/40 via-transparent to-black/20 pointer-events-none">
+    </div>
+
+    <!-- Content Container -->
+    <div
+      class="relative z-10 h-full w-full max-w-7xl mx-auto flex flex-col md:grid md:grid-cols-2 pt-16 pb-8 px-4 md:py-0 md:px-12 items-center">
+
+      <div class="hidden md:block"></div>
+
+      <div class="flex flex-col items-center w-full h-full md:h-auto md:justify-center">
+
+        <!-- Mobile: Top Content -->
+        <div class="flex flex-col items-center justify-end h-[23%] md:h-auto w-full gap-2 md:gap-6 overflow-visible">
+
+          <!-- 1. Ganesha Icon -->
+          <div class="bg-white/20 backdrop-blur-sm p-3 rounded-full border border-amber-300 shadow-lg mb-2 md:mb-6 animate-pulse-slow">
+             <img src="https://csssofttech.com/wedding/assets/ganesha.png" alt="Ganesha"
+            class="w-8 h-8 md:w-24 md:h-24 filter brightness-0 invert drop-shadow-md">
+          </div>
+
+          <!-- 2. Banner -->
+          <div
+            class="inline-block px-4 py-1 mb-1 rounded-full bg-emerald-900/80 backdrop-blur-sm border border-amber-300/30 shadow-lg animate-fade-in-down">
+            <p class="text-amber-100 font-sans text-[8px] md:text-sm tracking-[0.3em] uppercase font-bold text-center">
+              The Wedding Of
+            </p>
+          </div>
+
+          <!-- 3. Names (Script Font) -->
+          <h1
+            class="font-script text-[4rem] md:text-9xl text-amber-200 leading-none text-center mb-0 animate-fade-in-up drop-shadow-lg p-2">
+            Dipika <span class="inline md:inline text-2xl md:text-5xl align-middle text-emerald-200 font-serif">&</span>
+            Sagar
+          </h1>
+
+          <!-- 4. Hashtag -->
+          <p class="text-amber-100/80 tracking-widest uppercase font-sans text-xs md:text-lg mb-4">
+             #DipikaWedsSagar
+          </p>
+
+          <!-- 5. Date & Location Banner -->
+          <div
+            class="inline-flex items-center gap-4 px-5 py-2 rounded-full bg-emerald-950/60 backdrop-blur-md border border-emerald-500/30 shadow-xl mb-0 animate-fade-in-up delay-100">
+            <div class="flex items-center gap-2 border-r border-emerald-500/50 pr-4">
+              <i data-lucide="calendar" class="w-4 h-4 text-amber-300"></i>
+              <span class="text-emerald-50 text-[10px] md:text-sm font-bold tracking-wider">Dec 12, 2026</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <i data-lucide="map-pin" class="w-4 h-4 text-amber-300"></i>
+              <span class="text-emerald-50 text-[10px] md:text-sm font-bold tracking-wider">Udaipur</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="h-[67%] md:hidden w-full"></div>
+
+        <div
+          class="flex flex-col items-center justify-center h-[10%] md:h-auto gap-2 animate-bounce-slow opacity-80 hover:opacity-100 transition-opacity">
+          <span class="text-[10px] text-amber-200 font-sans tracking-[0.3em] uppercase md:hidden">Swipe Up</span>
+          <i data-lucide="chevrons-down" class="w-5 h-5 text-amber-200"></i>
+          <span
+            class="hidden md:block text-[9px] uppercase tracking-widest mt-1 font-bold text-amber-200 text-center opacity-80">Scroll Down</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- COUNTDOWN SECTION (Emerald Style) -->
+  <div class="bg-emerald-900 py-16 border-b-4 border-amber-400/50 relative overflow-hidden">
+    <!-- Texture Overlay: Increased opacity from 10 to 30 for better visibility -->
+    <div class="absolute inset-0 opacity-30 pointer-events-none" style="background-image: url('https://www.transparenttextures.com/patterns/cubes.png');"></div>
+    
+    <div class="max-w-4xl mx-auto px-4 flex flex-col items-center relative z-10">
+      
+      <h2 class="font-serif text-3xl md:text-5xl text-amber-100 font-bold tracking-widest drop-shadow-md mb-10 animate-fade-in-up">
+        Save The Date
+      </h2>
+
+      <div class="flex justify-center gap-3 md:gap-8 mb-10" id="countdown-container">
+        <!-- Countdown items similar to previous... -->
+        <!-- Days -->
+        <div class="relative w-16 h-20 md:w-28 md:h-32 bg-emerald-950/60 backdrop-blur-md border border-amber-500/40 rounded-t-full rounded-b-lg flex flex-col items-center justify-center shadow-2xl group hover:border-amber-400 transition-all">
+          <span id="days" class="font-serif text-2xl md:text-5xl font-bold text-white drop-shadow-md">00</span>
+          <span class="text-[9px] md:text-xs uppercase tracking-widest text-amber-200 font-bold mt-1">Days</span>
+        </div>
+        <!-- Hours -->
+        <div class="relative w-16 h-20 md:w-28 md:h-32 bg-emerald-950/60 backdrop-blur-md border border-amber-500/40 rounded-t-full rounded-b-lg flex flex-col items-center justify-center shadow-2xl group hover:border-amber-400 transition-all">
+          <span id="hours" class="font-serif text-2xl md:text-5xl font-bold text-white drop-shadow-md">00</span>
+          <span class="text-[9px] md:text-xs uppercase tracking-widest text-amber-200 font-bold mt-1">Hours</span>
+        </div>
+        <!-- Minutes -->
+        <div class="relative w-16 h-20 md:w-28 md:h-32 bg-emerald-950/60 backdrop-blur-md border border-amber-500/40 rounded-t-full rounded-b-lg flex flex-col items-center justify-center shadow-2xl group hover:border-amber-400 transition-all">
+          <span id="minutes" class="font-serif text-2xl md:text-5xl font-bold text-white drop-shadow-md">00</span>
+          <span class="text-[9px] md:text-xs uppercase tracking-widest text-amber-200 font-bold mt-1">Mins</span>
+        </div>
+        <!-- Seconds -->
+        <div class="relative w-16 h-20 md:w-28 md:h-32 bg-emerald-950/60 backdrop-blur-md border border-amber-500/40 rounded-t-full rounded-b-lg flex flex-col items-center justify-center shadow-2xl group hover:border-amber-400 transition-all">
+          <span id="seconds" class="font-serif text-2xl md:text-5xl font-bold text-white drop-shadow-md">00</span>
+          <span class="text-[9px] md:text-xs uppercase tracking-widest text-amber-200 font-bold mt-1">Secs</span>
+        </div>
+      </div>
+
+      <div class="flex flex-col items-center gap-6 animate-fade-in-up delay-100">
+        <p class="font-serif text-xl md:text-3xl text-emerald-100 font-medium tracking-wide border-b border-amber-500/50 pb-2">
+          10th December 2026
+        </p>
+        
+        <button onclick="addToCalendar()" 
+          class="group inline-flex items-center gap-3 px-8 py-3 bg-amber-500 text-emerald-950 rounded-full shadow-[0_0_15px_rgba(245,158,11,0.5)] hover:bg-white hover:text-emerald-800 transition-all duration-300 font-bold">
+           <i data-lucide="calendar-heart" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+           <span class="font-sans text-sm tracking-widest uppercase">Add to Calendar</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- COUPLE SECTION -->
+  <section id="couple" class="py-20 md:py-28 px-4 bg-emerald-50">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <h3 class="font-script text-5xl md:text-7xl text-emerald-800 mb-2 drop-shadow-sm">The Happy Couple</h3>
+        <p class="text-emerald-600 uppercase tracking-[0.3em] text-xs md:text-sm font-bold">A Match Made In Heaven</p>
+        <div class="w-24 h-1 bg-amber-400 mx-auto mt-6 rounded-full"></div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+        <!-- Bride Card -->
+        <div class="relative group">
+          <div class="absolute inset-0 bg-amber-200/50 rounded-full transform translate-x-4 translate-y-4 rounded-tl-[100px] rounded-br-[100px] transition-transform group-hover:translate-x-2 group-hover:translate-y-2"></div>
+          <div class="relative overflow-hidden rounded-tl-[100px] rounded-br-[100px] shadow-2xl h-[400px] md:h-[500px] bg-white border-4 border-white">
+            <img src="https://csssofttech.com/wedding/assets/bride.png" loading="lazy" alt="Bride"
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 filter sepia-[.2] group-hover:sepia-0">
+            
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-emerald-900 via-emerald-900/80 to-transparent p-8 text-white translate-y-4 group-hover:translate-y-0 transition-transform">
+              <h3 class="font-serif text-3xl mb-1 text-amber-200">Dipika</h3>
+              <p class="text-sm font-light text-emerald-100 opacity-90 italic">Architect & Dreamer</p>
+              <div class="flex gap-4 mt-3">
+                 <a href="#" class="p-2 bg-white/20 rounded-full hover:bg-amber-400 hover:text-emerald-900 transition-colors"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Groom Card -->
+        <div class="relative group">
+          <div class="absolute inset-0 bg-emerald-200/50 rounded-full transform -translate-x-4 translate-y-4 rounded-tr-[100px] rounded-bl-[100px] transition-transform group-hover:-translate-x-2 group-hover:translate-y-2"></div>
+          <div class="relative overflow-hidden rounded-tr-[100px] rounded-bl-[100px] shadow-2xl h-[400px] md:h-[500px] bg-white border-4 border-white">
+            <img src="https://csssofttech.com/wedding/assets/groom.png" loading="lazy" alt="Groom"
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 filter sepia-[.2] group-hover:sepia-0">
+            
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-emerald-900 via-emerald-900/80 to-transparent p-8 text-white translate-y-4 group-hover:translate-y-0 transition-transform">
+              <h3 class="font-serif text-3xl mb-1 text-amber-200">Sagar</h3>
+              <p class="text-sm font-light text-emerald-100 opacity-90 italic">Entrepreneur & Traveler</p>
+              <div class="flex gap-4 mt-3">
+                 <a href="#" class="p-2 bg-white/20 rounded-full hover:bg-amber-400 hover:text-emerald-900 transition-colors"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVENTS TIMELINE -->
+  <section id="events" class="py-20 md:py-28 px-4 bg-emerald-900 text-white relative overflow-hidden">
+    <!-- Overlay Pattern: Royal Gold Diamond Mesh -->
+    <div class="absolute inset-0 opacity-20" 
+         style="background-image: linear-gradient(45deg, rgba(251, 191, 36, 0.3) 1px, transparent 1px), linear-gradient(-45deg, rgba(251, 191, 36, 0.3) 1px, transparent 1px); background-size: 40px 40px;">
+    </div>
+    <!-- Additional radial glow for depth -->
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-900/50 to-emerald-950/90 pointer-events-none"></div>
+
+    <div class="max-w-6xl mx-auto relative z-10 text-center mb-12">
+      <h3 class="font-serif text-3xl md:text-5xl text-amber-100 mb-4 tracking-wide">The Celebrations</h3>
+      <p class="text-emerald-300 uppercase tracking-widest text-xs font-bold">Join us for the festivities</p>
+    </div>
+
+    <div class="relative max-w-5xl mx-auto px-4">
+      <div class="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-amber-500/30"></div>
+
+      <div class="flex flex-col gap-8" id="timeline-container">
+        <!-- Events... -->
+        <!-- Mehendi -->
+        <div class="flex flex-col md:flex-row gap-6 items-center relative">
+          <div class="absolute left-6 md:left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-amber-400 shadow-[0_0_0_4px_rgba(16,185,129,0.2)] z-10"></div>
+          <div class="hidden md:block w-1/2"></div>
+          <div class="w-full md:w-1/2 pl-12 md:pl-0">
+            <div class="glass-card-dark rounded-tr-3xl rounded-bl-3xl p-5 md:ml-10 hover:border-amber-400/50 transition-all border-l-4 border-l-amber-400">
+              <div class="flex items-center gap-5">
+                <div class="flex-shrink-0 bg-emerald-800/50 p-3 rounded-full">
+                  <img src="https://csssofttech.com/wedding/assets/icon_mehendi.png" class="w-10 h-10 object-contain" loading="lazy" alt="Mehendi">
+                </div>
+                <div class="flex-grow">
+                   <div class="flex justify-between items-baseline mb-1">
+                      <h4 class="font-serif text-xl text-amber-100">Mehendi</h4>
+                      <span class="text-xs font-bold text-emerald-300 bg-emerald-950 px-2 py-1 rounded">Dec 11, 4 PM</span>
+                   </div>
+                   <p class="text-emerald-100/70 text-sm font-light mb-3">Music, Dance & Henna.</p>
+                   <div class="flex justify-between items-center border-t border-white/10 pt-2">
+                     <p class="text-amber-200/80 text-xs font-medium"><i data-lucide="map-pin" class="inline w-3 h-3 mr-1"></i>Poolside Lawns</p>
+                     <a href="https://maps.google.com" target="_blank" class="text-[10px] uppercase font-bold text-white hover:text-amber-400 flex items-center gap-1 transition-colors">Map <i data-lucide="arrow-up-right" class="w-3 h-3"></i></a>
+                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Haldi -->
+        <div class="flex flex-col md:flex-row gap-6 items-center relative md:flex-row-reverse">
+          <div class="absolute left-6 md:left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-amber-400 shadow-[0_0_0_4px_rgba(16,185,129,0.2)] z-10"></div>
+          <div class="hidden md:block w-1/2"></div>
+          <div class="w-full md:w-1/2 pl-12 md:pl-0">
+            <div class="glass-card-dark rounded-tl-3xl rounded-br-3xl p-5 md:mr-10 hover:border-amber-400/50 transition-all border-r-4 border-r-amber-400">
+              <div class="flex items-center gap-5">
+                <div class="flex-shrink-0 bg-emerald-800/50 p-3 rounded-full">
+                  <img src="https://csssofttech.com/wedding/assets/icon_haldi.png" class="w-10 h-10 object-contain" loading="lazy" alt="Haldi">
+                </div>
+                <div class="flex-grow">
+                   <div class="flex justify-between items-baseline mb-1">
+                      <h4 class="font-serif text-xl text-amber-100">Haldi</h4>
+                      <span class="text-xs font-bold text-emerald-300 bg-emerald-950 px-2 py-1 rounded">Dec 12, 9 AM</span>
+                   </div>
+                   <p class="text-emerald-100/70 text-sm font-light mb-3">A golden glow.</p>
+                   <div class="flex justify-between items-center border-t border-white/10 pt-2">
+                     <p class="text-amber-200/80 text-xs font-medium"><i data-lucide="map-pin" class="inline w-3 h-3 mr-1"></i>The Courtyard</p>
+                     <a href="https://maps.google.com" target="_blank" class="text-[10px] uppercase font-bold text-white hover:text-amber-400 flex items-center gap-1 transition-colors">Map <i data-lucide="arrow-up-right" class="w-3 h-3"></i></a>
+                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wedding -->
+        <div class="flex flex-col md:flex-row gap-6 items-center relative">
+          <div class="absolute left-6 md:left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-amber-400 shadow-[0_0_0_4px_rgba(16,185,129,0.2)] z-10"></div>
+          <div class="hidden md:block w-1/2"></div>
+          <div class="w-full md:w-1/2 pl-12 md:pl-0">
+            <div class="glass-card-dark rounded-tr-3xl rounded-bl-3xl p-5 md:ml-10 hover:border-amber-400/50 transition-all border-l-4 border-l-amber-400">
+              <div class="flex items-center gap-5">
+                <div class="flex-shrink-0 bg-emerald-800/50 p-3 rounded-full">
+                  <img src="https://csssofttech.com/wedding/assets/icon_wedding.png" class="w-10 h-10 object-contain" loading="lazy" alt="Wedding">
+                </div>
+                <div class="flex-grow">
+                   <div class="flex justify-between items-baseline mb-1">
+                      <h4 class="font-serif text-xl text-amber-100">Wedding</h4>
+                      <span class="text-xs font-bold text-emerald-300 bg-emerald-950 px-2 py-1 rounded">Dec 12, 11 AM</span>
+                   </div>
+                   <p class="text-emerald-100/70 text-sm font-light mb-3">Muhurat & Pheras.</p>
+                   <div class="flex justify-between items-center border-t border-white/10 pt-2">
+                     <p class="text-amber-200/80 text-xs font-medium"><i data-lucide="map-pin" class="inline w-3 h-3 mr-1"></i>Royal Mandap</p>
+                     <a href="https://maps.google.com" target="_blank" class="text-[10px] uppercase font-bold text-white hover:text-amber-400 flex items-center gap-1 transition-colors">Map <i data-lucide="arrow-up-right" class="w-3 h-3"></i></a>
+                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reception -->
+        <div class="flex flex-col md:flex-row gap-6 items-center relative md:flex-row-reverse">
+          <div class="absolute left-6 md:left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-amber-400 shadow-[0_0_0_4px_rgba(16,185,129,0.2)] z-10"></div>
+          <div class="hidden md:block w-1/2"></div>
+          <div class="w-full md:w-1/2 pl-12 md:pl-0">
+            <div class="glass-card-dark rounded-tl-3xl rounded-br-3xl p-5 md:mr-10 hover:border-amber-400/50 transition-all border-r-4 border-r-amber-400">
+              <div class="flex items-center gap-5">
+                <div class="flex-shrink-0 bg-emerald-800/50 p-3 rounded-full">
+                  <img src="https://csssofttech.com/wedding/assets/icon_reception.png" class="w-10 h-10 object-contain" loading="lazy" alt="Reception">
+                </div>
+                <div class="flex-grow">
+                   <div class="flex justify-between items-baseline mb-1">
+                      <h4 class="font-serif text-xl text-amber-100">Reception</h4>
+                      <span class="text-xs font-bold text-emerald-300 bg-emerald-950 px-2 py-1 rounded">Dec 12, 7 PM</span>
+                   </div>
+                   <p class="text-emerald-100/70 text-sm font-light mb-3">Dinner & Cocktails.</p>
+                   <div class="flex justify-between items-center border-t border-white/10 pt-2">
+                     <p class="text-amber-200/80 text-xs font-medium"><i data-lucide="map-pin" class="inline w-3 h-3 mr-1"></i>Grand Ballroom</p>
+                     <a href="https://maps.google.com" target="_blank" class="text-[10px] uppercase font-bold text-white hover:text-amber-400 flex items-center gap-1 transition-colors">Map <i data-lucide="arrow-up-right" class="w-3 h-3"></i></a>
+                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- VIDEO & GALLERY -->
+  <section id="gallery" class="py-20 md:py-28 px-4 bg-emerald-50">
+    <div class="max-w-6xl mx-auto mb-16 text-center">
+      <h3 class="font-serif text-3xl md:text-5xl text-emerald-800 mb-2">Captured Moments</h3>
+      <div class="w-16 h-1 bg-amber-400 mx-auto rounded-full"></div>
+    </div>
+
+    <!-- Video Play Card -->
+    <div class="max-w-4xl mx-auto mb-16">
+        <div class="rounded-2xl overflow-hidden shadow-2xl border-4 border-white relative group cursor-pointer transform hover:scale-[1.01] transition-all">
+            <div class="aspect-video bg-black relative flex items-center justify-center">
+                <img src="https://csssofttech.com/wedding/assets/gallery1.png" alt="Video Thumbnail" class="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-60 transition-opacity duration-500">
+                
+                <button class="relative z-10 w-20 h-20 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center border border-white group-hover:bg-amber-400 group-hover:border-amber-400 transition-all duration-300 shadow-xl">
+                    <i data-lucide="play" class="w-8 h-8 text-white ml-1 fill-white"></i>
+                </button>
+                
+                <div class="absolute bottom-6 left-6 text-left">
+                    <p class="text-white font-serif text-2xl font-medium drop-shadow-md">Our Love Story</p>
+                    <p class="text-emerald-200 text-sm uppercase tracking-wide">Watch Video</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 auto-rows-[200px] md:auto-rows-[300px]">
+      <div class="group relative overflow-hidden rounded-lg shadow-lg">
+        <img src="https://csssofttech.com/wedding/assets/gallery1.png" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+        <div class="absolute inset-0 bg-emerald-900/40 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+      </div>
+      <div class="group relative overflow-hidden rounded-lg shadow-lg">
+        <img src="https://csssofttech.com/wedding/assets/gallery2.png" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+        <div class="absolute inset-0 bg-emerald-900/40 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+      </div>
+      <div class="group relative overflow-hidden rounded-lg shadow-lg">
+        <img src="https://csssofttech.com/wedding/assets/gallery3.png" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+        <div class="absolute inset-0 bg-emerald-900/40 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+      </div>
+      <div class="group relative overflow-hidden rounded-lg shadow-lg">
+        <img src="https://csssofttech.com/wedding/assets/gallery4.png" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+        <div class="absolute inset-0 bg-emerald-900/40 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+      </div>
+      <div class="group relative overflow-hidden rounded-lg shadow-lg">
+        <img src="https://csssofttech.com/wedding/assets/gallery5.png" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+        <div class="absolute inset-0 bg-emerald-900/40 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+      </div>
+      <div class="group relative overflow-hidden rounded-lg shadow-lg">
+        <img src="https://csssofttech.com/wedding/assets/gallery6.png" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+        <div class="absolute inset-0 bg-emerald-900/40 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DETAILS & MAP -->
+  <section class="py-20 px-4 bg-white">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-12">
+        <div class="lg:col-span-2 space-y-8">
+            <h3 class="font-serif text-3xl text-emerald-900">Venue & Stay</h3>
+            
+            <div class="bg-emerald-50 p-6 rounded-xl border border-emerald-100">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="bg-amber-400 p-3 rounded-full text-white"><i data-lucide="bed" class="w-6 h-6"></i></div>
+                    <h4 class="font-bold text-emerald-900">Accommodation</h4>
+                </div>
+                <p class="text-emerald-800 text-sm leading-relaxed mb-4">Comfortable stay arranged at <strong>The Trident Hotel</strong> for outstation guests.</p>
+                <div class="text-xs text-emerald-600 font-medium space-y-2">
+                    <p><i data-lucide="check" class="inline w-3 h-3 mr-1"></i> Check-in: Dec 11, 12 PM</p>
+                    <p><i data-lucide="check" class="inline w-3 h-3 mr-1"></i> Pick-up available</p>
+                </div>
+            </div>
+
+            <div class="bg-emerald-50 p-6 rounded-xl border border-emerald-100">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="bg-emerald-600 p-3 rounded-full text-white"><i data-lucide="shirt" class="w-6 h-6"></i></div>
+                    <h4 class="font-bold text-emerald-900">Dress Code</h4>
+                </div>
+                <div class="space-y-3 text-sm text-emerald-800">
+                    <div class="flex justify-between border-b border-emerald-200 pb-2">
+                        <span>Haldi</span>
+                        <span class="font-bold text-amber-600">Yellow & White</span>
+                    </div>
+                    <div class="flex justify-between border-b border-emerald-200 pb-2">
+                        <span>Wedding</span>
+                        <span class="font-bold text-red-600">Traditional Royal</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Reception</span>
+                        <span class="font-bold text-emerald-800">Indo-Western</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-3 rounded-2xl overflow-hidden shadow-2xl border-4 border-white h-[400px] relative">
+             <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3628.616335359666!2d73.6694663150005!3d24.56763798419266!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3967e56272555555%3A0x6b48c442e3919c62!2sThe%20Oberoi%20Udaivilas%2C%20Udaipur!5e0!3m2!1sen!2sin!4v1625838384848!5m2!1sen!2sin"
+          width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+          class="grayscale hover:grayscale-0 transition-all duration-500"></iframe>
+        </div>
+    </div>
+  </section>
+
+  <!-- RSVP -->
+  <section class="py-20 px-4 bg-emerald-900 relative overflow-hidden">
+    <!-- Background Texture: Added a subtle mandala/floral-like radial pattern -->
+    <div class="absolute inset-0 opacity-20" 
+         style="background-image: radial-gradient(circle at center, #10b981 1px, transparent 1px), radial-gradient(circle at center, #059669 1px, transparent 1px); background-size: 30px 30px; background-position: 0 0, 15px 15px;">
+    </div>
+    <!-- Vignette overlay to focus on the form -->
+    <div class="absolute inset-0 bg-radial-gradient from-transparent to-emerald-950 opacity-80 pointer-events-none"></div>
+
+    <div class="max-w-lg mx-auto bg-white/95 backdrop-blur-xl rounded-2xl p-8 shadow-2xl relative z-10 border border-emerald-100">
+        <div class="text-center mb-8">
+            <h3 class="font-serif text-3xl text-emerald-900 mb-2">R.S.V.P</h3>
+            <p class="text-emerald-600 text-sm uppercase tracking-wide">Kindly respond by Dec 1st</p>
+        </div>
+
+        <form id="rsvp-form" class="space-y-4">
+            <input type="text" placeholder="Full Name" class="w-full bg-emerald-50 border-b-2 border-emerald-200 p-3 outline-none focus:border-amber-400 transition-colors text-emerald-900 placeholder-emerald-400">
+            <div class="grid grid-cols-2 gap-4">
+                <select class="w-full bg-emerald-50 border-b-2 border-emerald-200 p-3 outline-none text-emerald-900">
+                    <option>1 Guest</option>
+                    <option>2 Guests</option>
+                    <option>3 Guests</option>
+                </select>
+                <input type="tel" placeholder="Phone" class="w-full bg-emerald-50 border-b-2 border-emerald-200 p-3 outline-none focus:border-amber-400 transition-colors text-emerald-900 placeholder-emerald-400">
+            </div>
+            
+            <div class="flex gap-4 justify-center py-2 text-sm text-emerald-800">
+                <label class="flex items-center gap-2"><input type="checkbox" checked class="accent-emerald-600"> Wedding</label>
+                <label class="flex items-center gap-2"><input type="checkbox" checked class="accent-emerald-600"> Reception</label>
+            </div>
+
+            <button type="submit" id="rsvp-btn" class="w-full bg-emerald-800 text-white py-4 rounded-lg font-serif tracking-widest hover:bg-emerald-700 transition-colors shadow-lg">CONFIRM PRESENCE</button>
+        </form>
+        <div id="rsvp-success" class="hidden text-center py-4 text-emerald-700 font-bold">Thank you! We can't wait to see you.</div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-emerald-950 text-emerald-300/60 py-12 text-center">
+      <img src="https://csssofttech.com/wedding/assets/VivaHub.png" alt="Logo" class="w-48 mx-auto mb-6 opacity-70">
+      <div class="flex justify-center gap-6 mb-8">
+          <a href="#" class="hover:text-amber-400 transition-colors"><i data-lucide="instagram"></i></a>
+          <a href="#" class="hover:text-amber-400 transition-colors"><i data-lucide="facebook"></i></a>
+      </div>
+      <div class="flex flex-col gap-2 items-center">
+        <p class="text-xs tracking-widest">MADE WITH LOVE FOR DIPIKA & SAGAR</p>
+        <div class="flex items-center gap-2 text-[10px] uppercase tracking-wide text-emerald-500">
+            <i data-lucide="camera" class="w-3 h-3"></i>
+            <span>Captured by <span class="text-amber-400 font-bold ml-1">Lens Magic Photography</span></span>
+        </div>
+      </div>
+  </footer>
+
+  <!-- MOBILE NAV -->
+  <div class="fixed bottom-0 left-0 right-0 z-50 bg-emerald-950 border-t border-emerald-900 px-4 py-3 md:hidden">
+      <div class="grid grid-cols-5 gap-2 text-center">
+          <a href="tel:+" class="flex flex-col items-center gap-1 text-emerald-100 hover:text-amber-400">
+              <i data-lucide="phone" class="w-5 h-5"></i>
+              <span class="text-[10px]">Call</span>
+          </a>
+          <a href="#" class="flex flex-col items-center gap-1 text-emerald-100 hover:text-amber-400">
+              <i data-lucide="message-circle" class="w-5 h-5"></i>
+              <span class="text-[10px]">Chat</span>
+          </a>
+          <button onclick="downloadVCard()" class="flex flex-col items-center gap-1 text-amber-400 hover:text-white">
+              <div class="bg-emerald-800 p-2 rounded-full -mt-6 border-4 border-emerald-950">
+                  <i data-lucide="user-plus" class="w-6 h-6"></i>
+              </div>
+              <span class="text-[10px] font-bold">Save</span>
+          </button>
+          <a href="#" class="flex flex-col items-center gap-1 text-emerald-100 hover:text-amber-400">
+              <i data-lucide="download" class="w-5 h-5"></i>
+              <span class="text-[10px]">Invite</span>
+          </a>
+          <button onclick="shareInvite()" class="flex flex-col items-center gap-1 text-emerald-100 hover:text-amber-400">
+              <i data-lucide="share-2" class="w-5 h-5"></i>
+              <span class="text-[10px]">Share</span>
+          </button>
+      </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    // Logic
+    document.addEventListener('DOMContentLoaded', () => {
+      // Elements
+      const enterBtn = document.getElementById('enter-btn');
+      const welcomeOverlay = document.getElementById('welcome-overlay');
+      const audio = document.getElementById('wedding-audio');
+      const familyAudio = document.getElementById('family-audio');
+      const musicToggle = document.getElementById('music-toggle');
+      const familyBtn = document.getElementById('family-msg-toggle');
+      const familyIconContainer = document.getElementById('family-icon-container');
+      
+      let isMusicPlaying = false;
+      let isFamilyPlaying = false;
+
+      // Audio Config
+      audio.volume = 0.4;
+      familyAudio.volume = 1.0;
+
+      // --- Helper: Play Audio Safely ---
+      function safePlay(element) {
+        if(!element) return;
+        const playPromise = element.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(error => {
+                console.log('Playback prevented:', error);
+            });
+        }
+      }
+
+      // --- Interaction Handler (Unlock Audio) ---
+      enterBtn.addEventListener('click', () => {
+        // 1. Fade out overlay
+        welcomeOverlay.style.opacity = '0';
+        setTimeout(() => {
+            welcomeOverlay.style.display = 'none';
+            // Show Controls
+            musicToggle.classList.remove('hidden', 'opacity-0', 'translate-y-[20px]');
+            familyBtn.classList.remove('hidden', 'opacity-0', 'translate-y-[-20px]');
+        }, 700);
+
+        // 2. Play Family Audio Immediately
+        safePlay(familyAudio);
+        isFamilyPlaying = true;
+        updateFamilyIcon(true);
+      });
+
+      // --- Sequence Logic ---
+      
+      // When Family Audio Ends -> Start Music
+      familyAudio.addEventListener('ended', () => {
+        isFamilyPlaying = false;
+        updateFamilyIcon(false);
+        
+        safePlay(audio);
+        isMusicPlaying = true;
+        updateMusicIcon(true);
+      });
+
+      // --- Toggle Button Logic ---
+
+      musicToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (isMusicPlaying) {
+            audio.pause();
+            isMusicPlaying = false;
+            updateMusicIcon(false);
+        } else {
+            if (isFamilyPlaying) {
+                familyAudio.pause();
+                isFamilyPlaying = false;
+                updateFamilyIcon(false);
+            }
+            safePlay(audio);
+            isMusicPlaying = true;
+            updateMusicIcon(true);
+        }
+      });
+
+      familyBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (isFamilyPlaying) {
+            familyAudio.pause();
+            isFamilyPlaying = false;
+            updateFamilyIcon(false);
+        } else {
+            if (isMusicPlaying) {
+                audio.pause();
+                isMusicPlaying = false;
+                updateMusicIcon(false);
+            }
+            safePlay(familyAudio);
+            isFamilyPlaying = true;
+            updateFamilyIcon(true);
+        }
+      });
+
+      // --- UI Updates ---
+      function updateMusicIcon(playing) {
+        musicToggle.innerHTML = '';
+        const icon = document.createElement('i');
+        icon.className = 'w-6 h-6 fill-current';
+        icon.setAttribute('data-lucide', playing ? 'volume-2' : 'volume-x');
+        musicToggle.appendChild(icon);
+        lucide.createIcons();
+      }
+
+      function updateFamilyIcon(playing) {
+        familyIconContainer.innerHTML = ''; // Clear icon
+        const icon = document.createElement('i');
+        icon.className = 'w-6 h-6 fill-current';
+        
+        if (playing) {
+            icon.setAttribute('data-lucide', 'audio-lines'); // Wave icon
+            familyBtn.classList.add('bg-amber-300', 'animate-ripple');
+        } else {
+            icon.setAttribute('data-lucide', 'play-circle'); // Play icon
+            familyBtn.classList.remove('bg-amber-300', 'animate-ripple');
+        }
+        familyIconContainer.appendChild(icon);
+        lucide.createIcons();
+      }
+
+      // --- Timer Logic ---
+      const weddingDate = new Date("2026-12-10T10:00:00").getTime();
+      const daysEl = document.getElementById('days');
+      const hoursEl = document.getElementById('hours');
+      const minsEl = document.getElementById('minutes');
+      const secsEl = document.getElementById('seconds');
+
+      setInterval(() => {
+        const now = new Date().getTime();
+        const distance = weddingDate - now;
+        if(distance > 0) {
+            daysEl.innerText = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+            hoursEl.innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+            minsEl.innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+            secsEl.innerText = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
+        }
+      }, 1000);
+
+      // --- Parallax ---
+      const heroBg = document.getElementById('hero-bg');
+      window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY;
+        if(heroBg) heroBg.style.transform = `translateY(${scrollY * 0.5}px)`;
+      });
+
+      // --- RSVP ---
+      const rsvpForm = document.getElementById('rsvp-form');
+      const rsvpBtn = document.getElementById('rsvp-btn');
+      const rsvpMsg = document.getElementById('rsvp-success');
+
+      if (rsvpForm) {
+        rsvpForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            rsvpBtn.innerText = 'Sending...';
+            setTimeout(() => {
+                rsvpForm.classList.add('hidden');
+                rsvpMsg.classList.remove('hidden');
+            }, 1500);
+        });
+      }
+    });
+
+    // Global Functions
+    function shareInvite() {
+        if (navigator.share) navigator.share({ title: 'Dipika & Sagar Wedding', url: window.location.href });
+        else alert('Copy link manually!');
+    }
+    
+    function downloadVCard() {
+        const vCardData = `BEGIN:VCARD\nVERSION:3.0\nFN:Dipika & Sagar\nNOTE:Wedding\nURL:${window.location.href}\nEND:VCARD`;
+        const blob = new Blob([vCardData], { type: 'text/vcard' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href = url; a.download = 'wedding.vcf'; a.click();
+    }
+
+    function addToCalendar() {
+      const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=Dipika%20%26%20Sagar%20Wedding&dates=20261210T100000/20261212T230000&location=Udaipur`;
+      window.open(url, '_blank');
+    }
+  </script>
+</body>
+</html>

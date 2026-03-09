@@ -80,6 +80,7 @@
 <body class="bg-background-light dark:bg-background-dark text-text-dark dark:text-gray-100 antialiased h-screen flex overflow-hidden transition-colors duration-300">
 
     <!-- DESKTOP SIDEBAR -->
+    @unless(request()->routeIs('*builder*') || request()->routeIs('*partner.templates.builder*'))
     <aside class="w-72 shrink-0 h-full glass-panel flex flex-col z-50 hidden lg:flex transition-all duration-300">
         <div class="p-8 pb-6 border-b border-gray-100 dark:border-white/5">
             <!-- Brand Logo -->
@@ -103,6 +104,9 @@
                 <a href="{{ route('partner.dashboard') }}" class="nav-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-semibold text-text-muted dark:text-gray-100 hover:bg-white/50 dark:hover:bg-white/10 hover:text-primary dark:hover:text-white transition-all w-full text-left border-l-4 border-transparent">
                     <span class="material-symbols-outlined text-[22px]">arrow_back</span> Back to CRM
                 </a>
+                <a href="{{ route('user.store.index') }}" class="nav-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-semibold text-text-muted dark:text-gray-100 hover:bg-white/50 dark:hover:bg-white/10 hover:text-primary dark:hover:text-white transition-all w-full text-left border-l-4 border-transparent">
+                    <span class="material-symbols-outlined text-[22px]">storefront</span> Premium Store
+                </a>
                 <div class="px-4 py-2 text-xs font-bold text-text-muted uppercase tracking-wider mt-4">Builder Tool</div>
                 <a href="#" class="nav-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-medium bg-primary/10 text-primary border-transparent transition-all w-full text-left border-l-4">
                     <span class="material-symbols-outlined text-[22px]">brush</span> Editor
@@ -120,7 +124,9 @@
                 </a>
                 <a href="{{ route('rsvps') }}" class="nav-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-medium {{ request()->routeIs('rsvps') ? 'bg-primary/10 text-primary border-transparent' : 'text-text-muted dark:text-gray-100 hover:bg-white/50 dark:hover:bg-white/10 hover:text-primary dark:hover:text-white' }} transition-all w-full text-left border-l-4 border-transparent">
                     <span class="material-symbols-outlined text-[22px]">group</span> RSVPs
-                    
+                </a>
+                <a href="{{ route('user.store.index') }}" class="nav-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-medium {{ request()->routeIs('user.store.index') ? 'bg-primary/10 text-primary border-transparent' : 'text-text-muted dark:text-gray-100 hover:bg-white/50 dark:hover:bg-white/10 hover:text-primary dark:hover:text-white' }} transition-all w-full text-left border-l-4 border-transparent">
+                    <span class="material-symbols-outlined text-[22px]">storefront</span> Premium Store
                 </a>
                 <a href="{{ route('billing') }}" class="nav-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-medium {{ request()->routeIs('billing') ? 'bg-primary/10 text-primary border-transparent' : 'text-text-muted dark:text-gray-100 hover:bg-white/50 dark:hover:bg-white/10 hover:text-primary dark:hover:text-white' }} transition-all w-full text-left border-l-4 border-transparent">
                     <span class="material-symbols-outlined text-[22px]">receipt_long</span> Billing
@@ -148,15 +154,19 @@
              </div>
         </div>
     </aside>
+    @endunless
 
     <!-- MAIN CONTENT -->
     <main class="flex-1 flex flex-col h-full relative overflow-hidden transition-colors duration-300">
         <!-- HEADER (Desktop & Mobile) -->
+        @unless(request()->routeIs('*builder*') || request()->routeIs('*partner.templates.builder*'))
         <header class="flex items-center justify-between px-4 lg:px-8 py-4 bg-white/60 dark:bg-black/20 backdrop-blur-md border-b border-gray-100 dark:border-white/5 sticky top-0 z-30">
             <div class="flex items-center gap-3 lg:hidden">
+                  @unless(View::hasSection('hideLayoutNav'))
                   <button onclick="toggleMobileSidebar()" class="p-2 -ml-2 text-text-muted hover:text-primary transition-colors">
                       <span class="material-symbols-outlined">menu</span>
                   </button>
+                  @endunless
                   <img src="{{ asset('VivaHub-logo.png') }}" alt="Logo" class="h-7 w-auto dark:hidden">
                   <img src="{{ asset('VivaHub-white-logo.png') }}" alt="Logo" class="h-7 w-auto hidden dark:block">
             </div>
@@ -180,6 +190,7 @@
                  </button>
             </div>
         </header>
+        @endunless
 
         <!-- MOBILE SIDEBAR OVERLAY -->
         <div id="mobile-sidebar-overlay" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-black/50 z-[90] hidden lg:hidden backdrop-blur-sm transition-opacity opacity-0"></div>
@@ -206,6 +217,9 @@
                  </a>
                  <a href="{{ route('rsvps') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold {{ request()->routeIs('rsvps') ? 'bg-primary/10 text-primary' : 'text-text-muted dark:text-gray-200' }}">
                     <span class="material-symbols-outlined">group</span> RSVPs
+                 </a>
+                 <a href="{{ route('user.store.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold {{ request()->routeIs('user.store.index') ? 'bg-primary/10 text-primary' : 'text-text-muted dark:text-gray-200' }}">
+                    <span class="material-symbols-outlined">storefront</span> Premium Store
                  </a>
                  <a href="{{ route('billing') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold {{ request()->routeIs('billing') ? 'bg-primary/10 text-primary' : 'text-text-muted dark:text-gray-200' }}">
                     <span class="material-symbols-outlined">receipt_long</span> Billing
@@ -236,6 +250,7 @@
     </main>
 
     <!-- MOBILE BOTTOM NAVIGATION -->
+    @unless(View::hasSection('hideLayoutNav'))
     <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-[#120505]/95 backdrop-blur-xl border-t border-gray-100 dark:border-white/5 pb-[env(safe-area-inset-bottom)] shadow-[0_-5px_20px_-5px_rgba(0,0,0,0.1)]">
         <div class="flex justify-around items-center h-16 px-2">
             <a href="{{ route('dashboard') }}" class="flex flex-col items-center gap-1 w-14 {{ request()->routeIs('dashboard') ? 'text-primary' : 'text-text-muted' }} transition-colors">
@@ -264,6 +279,7 @@
             </button>
         </div>
     </nav>
+    @endunless
     
     @if(session('impersonator_id'))
         <a href="{{ route('impersonate.stop') }}" class="fixed bottom-20 right-4 z-[100] bg-gray-900 border-2 border-red-500 text-white px-6 py-3 rounded-full font-bold shadow-[0_0_20px_rgba(236,19,19,0.5)] hover:bg-black transition-all flex items-center gap-2 hover:scale-105">

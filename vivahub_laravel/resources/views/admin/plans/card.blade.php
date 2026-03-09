@@ -18,6 +18,12 @@
         @endif
     </ul>
     
+    @if($plan->featured_image)
+    <div class="mb-6 flex justify-center">
+        <img src="{{ asset('storage/' . $plan->featured_image) }}" alt="Featured Image for {{ $plan->name }}" class="max-h-32 w-auto object-contain rounded-lg border border-border-light dark:border-border-dark shadow-sm">
+    </div>
+    @endif
+    
     <div class="mt-auto pt-4 flex gap-2">
         <button onclick='openEditPlanModal(@json($plan))' 
         class="flex-1 py-2.5 rounded-xl border border-border-light dark:border-border-dark text-slate-700 dark:text-white hover:bg-gray-50 dark:hover:bg-white/5 transition-colors text-sm font-medium">

@@ -57,7 +57,7 @@
                     <button type="button" onclick="closeCreatePlanModal()" class="text-gray-400 hover:text-red-500"><span class="material-symbols-outlined">close</span></button>
                 </div>
                 
-                <form id="planForm" action="{{ route('admin.plans.store') }}" method="POST" class="space-y-4" onsubmit="handlePlanSubmit(event)">
+                <form id="planForm" action="{{ route('admin.plans.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4" onsubmit="handlePlanSubmit(event)">
                     @csrf
                     <input type="hidden" name="_method" id="formMethod" value="POST">
                     <input type="hidden" name="features_list" id="features_list_input">
@@ -91,6 +91,17 @@
                     <div id="creditsField" class="hidden">
                         <label class="block text-gray-500 dark:text-gray-400 text-xs font-bold uppercase mb-1">Credits (Partner Only)</label>
                         <input type="number" name="credits" id="planCredits" placeholder="e.g. 100" class="w-full bg-gray-50 dark:bg-[#1a0b0b] border border-border-light dark:border-border-dark rounded-xl text-slate-800 dark:text-white p-3 focus:ring-primary focus:border-primary">
+                    </div>
+
+                    <!-- Featured Image Field (Partner Only) -->
+                    <div id="featuredImageField" class="hidden">
+                        <label class="block text-gray-500 dark:text-gray-400 text-xs font-bold uppercase mb-1">Featured Image (Partner Only - Optional)</label>
+                        <input type="file" name="featured_image" id="planFeaturedImage" accept="image/*" class="w-full bg-gray-50 dark:bg-[#1a0b0b] border border-border-light dark:border-border-dark rounded-xl text-slate-800 dark:text-white p-2 focus:ring-primary focus:border-primary text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-primary-hover">
+                        
+                        <div id="currentFeaturedImageContainer" class="hidden mt-2">
+                            <p class="text-xs text-gray-500 mb-1">Current Image:</p>
+                            <img id="currentFeaturedImage" src="" alt="Featured Image" class="h-20 w-auto rounded border border-gray-200 object-cover">
+                        </div>
                     </div>
                     
                     <!-- Feature Selection Area -->
@@ -165,13 +176,15 @@
             document.getElementById('submitBtn').innerText = "Create Plan";
             document.querySelectorAll('[id$="-count"]').forEach(el => el.classList.add('hidden'));
             document.getElementById('creditsField').classList.add('hidden'); // Reset visibility
+            document.getElementById('featuredImageField').classList.add('hidden');
+            document.getElementById('currentFeaturedImageContainer').classList.add('hidden');
             document.getElementById('createPlanModal').classList.remove('hidden');
         }
 
         function openEditPlanModal(plan) {
             document.getElementById('planForm').reset();
             document.getElementById('formMethod').value = 'PUT';
-            document.getElementById('planForm').action = `/vivahub/vivahub_laravel/public/admin/plans/${plan.id}`;
+            document.getElementById('planForm').action = `{{ url('admin/plans') }}/${plan.id}`;
             document.getElementById('modal-title').innerText = "Edit Plan";
             document.getElementById('submitBtn').innerText = "Update Plan";
             
@@ -183,11 +196,21 @@
             document.getElementById('planType').value = plan.type;
             document.getElementById('planCredits').value = plan.credits || ''; // Populate credits
             
-            // Show credits field if Partner
+            // Show credits and featured image field if Partner
             if(plan.type === 'Partner') {
                 document.getElementById('creditsField').classList.remove('hidden');
+                document.getElementById('featuredImageField').classList.remove('hidden');
+                
+                if (plan.featured_image) {
+                    document.getElementById('currentFeaturedImageContainer').classList.remove('hidden');
+                    document.getElementById('currentFeaturedImage').src = `{{ asset('storage') }}/${plan.featured_image}`;
+                } else {
+                    document.getElementById('currentFeaturedImageContainer').classList.add('hidden');
+                }
             } else {
                 document.getElementById('creditsField').classList.add('hidden');
+                document.getElementById('featuredImageField').classList.add('hidden');
+                document.getElementById('currentFeaturedImageContainer').classList.add('hidden');
             }
 
             document.getElementById('isPopular').checked = plan.is_popular;
@@ -287,13 +310,17 @@
             return true;
         }
 
-        // Toggle Credits Field based on Type
+        // Toggle Credits and Image Field based on Type
         document.getElementById('planType').addEventListener('change', function() {
             const creditsField = document.getElementById('creditsField');
+            const imageField = document.getElementById('featuredImageField');
+            
             if(this.value === 'Partner') {
                 creditsField.classList.remove('hidden');
+                imageField.classList.remove('hidden');
             } else {
                 creditsField.classList.add('hidden');
+                imageField.classList.add('hidden');
             }
         });
     </script>

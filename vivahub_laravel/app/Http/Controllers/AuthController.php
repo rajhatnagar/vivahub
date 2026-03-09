@@ -8,6 +8,9 @@ class AuthController extends Controller
 {
     public function loginForm()
     {
+        if (auth()->check()) {
+            return $this->redirectByRole();
+        }
         return view('auth.login');
     }
 
@@ -71,6 +74,9 @@ class AuthController extends Controller
 
     public function registerForm()
     {
+        if (auth()->check()) {
+            return $this->redirectByRole();
+        }
         return view('auth.register');
     }
 
@@ -100,5 +106,15 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/');
+    }
+
+    private function redirectByRole()
+    {
+        $role = auth()->user()->role;
+        return match ($role) {
+            'admin' => redirect()->route('admin.dashboard'),
+            'partner' => redirect()->route('partner.dashboard'),
+            default => redirect()->route('dashboard'),
+        };
     }
 }

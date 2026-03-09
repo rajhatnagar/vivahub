@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+    <head>
+        <style>
+            svg {
+                width: 300px;
+                height: 300px;
+                border: 1px solid #ccc;
+                margin-bottom: 20px;
+            }
+            .grid {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+            .card {
+                border: 1px solid black;
+                padding: 10px;
+                width: 320px;
+            }
+            .path-btn {
+                margin: 2px;
+                padding: 2px 5px;
+                cursor: pointer;
+            }
+            .path-btn.hidden-path {
+                background: red;
+                color: white;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>SVG Identifier</h1>
+        <button
+            onclick="generateJSON()"
+            style="padding: 10px; font-size: 16px; margin-bottom: 20px"
+        >
+            Generate JSON
+        </button>
+        <pre id="output"></pre>
+        <div class="grid" id="grid"></div>
+
+        <script>
+            const svgs = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+            const hiddenPaths = {};
+
+            async function loadSVGs() {
+                for (let id of svgs) {
+                    hiddenPaths[id] = [];
+                    const res = await fetch(`assets/store/logos/${id}.svg`);
+                    const text = await res.text();
+
+                    const card = document.createElement("div");
+                    card.className = "card";
+                    card.innerHTML = `<h3>SVG ${id}</h3><div id="svg-${id}">${text}</div><div id="btns-${id}"></div>`;
+                    document.getElementById("grid").appendChild(card);
+
+                    const svgEl = card.querySelector("svg");
+                    svgEl.setAttribute("id", `svg-el-${id}`);
+
+                    const paths = svgEl.querySelectorAll("path");
+                    const btns = card.querySelector(`#btns-${id}`);
+
+                    paths.forEach((p, idx) => {
+                        p.setAttribute("data-idx", idx);
+
+                        const btn = document.createElement("button");
+                        btn.className = "path-btn";
+                        btn.innerText = `Path ${idx}`;
+
+                        // Hover to highlight
+                        btn.onmouseover = () => {
+                            p.style.fill = "red";
+                            p.style.stroke = "red";
+                            p.style.strokeWidth = "50";
+                        };
+                        btn.onmouseout = () => {
+                            p.style.fill = "";
+                            p.style.stroke = "";
+                            p.style.strokeWidth = "";
+                        };
+
+                        // Click to toggle visibility
+                        btn.onclick = () => {
+                            if (p.style.display === "none") {
+                                p.style.display = "";
+                                btn.classList.remove("hidden-path");
+                                hiddenPaths[id] = hiddenPaths[id].filter(
+                                    (x) => x !== idx,
+                                );
+                            } else {
+                                p.style.display = "none";
+                                btn.classList.add("hidden-path");
+                                hiddenPaths[id].push(idx);
+                            }
+                        };
+                        btns.appendChild(btn);
+                    });
+                }
+            }
+
+            function generateJSON() {
+                document.getElementById("output").innerText =
+                    JSON.stringify(hiddenPaths);
+            }
+
+            loadSVGs();
+        </script>
+    </body>
+</html>

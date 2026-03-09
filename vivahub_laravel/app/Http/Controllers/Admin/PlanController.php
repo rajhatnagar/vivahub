@@ -23,11 +23,17 @@ class PlanController extends Controller
             'type' => 'required|string',
             'validity' => 'required|string',
             'credits' => 'nullable|integer|min:0', // Validate credits
+            'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
         $features = $request->features_list 
             ? array_map('trim', explode(',', $request->features_list)) 
             : ['Standard Access'];
+
+        $featuredImagePath = null;
+        if ($request->hasFile('featured_image')) {
+            $featuredImagePath = $request->file('featured_image')->store('plans', 'public');
+        }
 
         Plan::create([
             'name' => $validated['name'],
@@ -37,8 +43,9 @@ class PlanController extends Controller
             'validity' => $validated['validity'],
             'features' => $features,
             'is_active' => true,
-            'credits' => $request->credits, // Add credits column handling
+            'credits' => $request->credits ?? 0, // Add credits column handling
             'description' => $request->description,
+            'featured_image' => $featuredImagePath,
         ]);
 
         return redirect()->back()->with('success', 'Plan created successfully');
@@ -54,11 +61,20 @@ class PlanController extends Controller
             'type' => 'required|string',
             'validity' => 'required|string',
             'credits' => 'nullable|integer|min:0', // Validate credits
+            'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
         $features = $request->features_list 
             ? array_map('trim', explode(',', $request->features_list)) 
             : $plan->features;
+
+        $featuredImagePath = $plan->featured_image;
+        if ($request->hasFile('featured_image')) {
+            if ($featuredImagePath && \Illuminate\Support\Facades\Storage::disk('public')->exists($featuredImagePath)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($featuredImagePath);
+            }
+            $featuredImagePath = $request->file('featured_image')->store('plans', 'public');
+        }
 
         $plan->update([
             'name' => $validated['name'],
@@ -67,8 +83,9 @@ class PlanController extends Controller
             'type' => $validated['type'],
             'validity' => $validated['validity'],
             'features' => $features,
-            'credits' => $request->credits, // Add credits column handling
+            'credits' => $request->credits ?? 0, // Add credits column handling
             'description' => $request->description,
+            'featured_image' => $featuredImagePath,
         ]);
 
         return redirect()->back()->with('success', 'Plan updated successfully');

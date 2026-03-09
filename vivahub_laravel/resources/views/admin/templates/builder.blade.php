@@ -4,21 +4,13 @@
 
 @section('content')
 <style>
-    @media (min-width: 1024px) {
-        .custom-builder-layout { display: block !important; position: relative !important; }
-        .custom-builder-left { position: absolute !important; left: 0 !important; top: 0 !important; bottom: 0 !important; width: 45% !important; border-right: 1px solid rgba(255,255,255,0.05); z-index: 10 !important; }
-        .custom-builder-right { position: absolute !important; right: 0 !important; top: 0 !important; bottom: 0 !important; width: 55% !important; display: flex !important; align-items: center; justify-content: center; z-index: 10 !important; flex-direction: column !important; }
-    }
-    @media (max-width: 1023px) {
-        .custom-builder-layout { display: flex !important; flex-direction: column !important; }
-        .custom-builder-left { flex: 0 0 100% !important; max-width: 100% !important; position: relative !important; }
-        .custom-builder-right { display: none !important; }
-    }
+    /* Builder grid layout overrides */
+    .mobile-frame { transition: transform 0.3s ease; }
 </style>
-<div class="custom-builder-layout h-[85vh] min-h-[700px] bg-white dark:bg-[#1a0b0b] rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none border border-primary/5 dark:border-white/5 overflow-hidden">
+<div class="flex flex-col lg:flex-row w-full h-full bg-white dark:bg-[#1a0b0b] overflow-hidden">
     
     <!-- Left: Form -->
-    <div class="custom-builder-left flex flex-col h-full bg-white dark:bg-[#1a0b0b]">
+    <div class="flex flex-col h-full lg:w-[45%] lg:border-r lg:border-gray-100 lg:dark:border-white/5 bg-white dark:bg-[#1a0b0b] relative z-10 w-full min-h-0">
         <!-- Form Header -->
         <div class="p-5 border-b border-gray-100 dark:border-white/5">
             <div class="flex justify-between items-center mb-3">
@@ -296,7 +288,7 @@
     </div>
 
     <!-- Right: Preview -->
-    <div class="custom-builder-right bg-gray-50 dark:bg-black p-4 lg:p-8 overflow-hidden">
+    <div class="hidden lg:flex flex-col items-center justify-center relative lg:w-[55%] h-full bg-gray-50 dark:bg-black p-4 lg:p-8 overflow-hidden z-10">
         <div class="absolute inset-0 opacity-5" style="background-image: radial-gradient(#C41E3A 1px, transparent 1px); background-size: 20px 20px;"></div>
         
         <!-- Preview Container -->

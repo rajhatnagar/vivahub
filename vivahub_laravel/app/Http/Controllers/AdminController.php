@@ -23,7 +23,7 @@ class AdminController extends Controller
         });
 
         $users_count = $dbUsers->count();
-        $revenue = 12450; 
+        $revenue = \App\Models\Transaction::where('status', 'success')->sum('amount');
         $active_users = $dbUsers->where('role', 'user')->count();
         $pending_requests = 12;
 

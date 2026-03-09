@@ -16,7 +16,9 @@ VivaHub is a modern Laravel-based platform for creating and managing wedding inv
 - **Database**: MySQL
 
 ## Setup
-the 
+
+the
+
 1. Clone the repository.
 2. Run `composer install`.
 3. Copy `.env.example` to `.env` and configure DB.
@@ -27,13 +29,13 @@ the
 - **Google Login**: Enabled via Socialite.
 - **Email/Password**: Standard Laravel Auth.
 
-
 URL: https://vivahub.in/beta/
+
 ## Test Credentials
 
 | Role        | Email                 | Password   |
 | ----------- | --------------------- | ---------- |
-| **Admin**   | `admin@vivahub.com`   | `admin123` |
+| **Admin**   | `admin@vivahub.com`   | `password` |
 | **User**    | `user@vivahub.com`    | `password` |
 | **Partner** | `partner@vivahub.com` | `password` |
 

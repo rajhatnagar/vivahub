@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="dark" lang="en">
+<html lang="en">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
@@ -10,6 +10,14 @@
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <!-- Theme Script (Synchronous to prevent flash) -->
+    <script>
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script src="//unpkg.com/alpinejs" defer></script>
@@ -122,6 +130,7 @@
 
 <div class="flex h-screen w-full relative z-10">
     <!-- Desktop Sidebar -->
+    @unless(View::hasSection('hideLayoutNav'))
     <aside id="sidebar" class="hidden md:flex flex-col w-64 h-full bg-surface-light dark:bg-[#1a0b0b] border-r border-border-light dark:border-border-dark transition-all duration-300 z-50">
         <div class="flex flex-col h-full">
             <!-- Brand Centered -->
@@ -150,8 +159,8 @@
                     Transactions
                 </a>
                 <a href="{{ route('admin.orders.index') }}" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl transition-all group w-full text-left text-sm font-medium {{ request()->routeIs('admin.orders.*') ? 'bg-primary text-white shadow-md shadow-primary/30' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5' }}">
-                    <span class="material-symbols-outlined text-[22px]">shopping_cart</span>
-                    NFC Orders
+                    <span class="material-symbols-outlined text-[22px]">storefront</span>
+                    Store
                 </a>
 
                 <p class="px-4 text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2 mt-4">Create</p>
@@ -203,10 +212,12 @@
             </div>
         </div>
     </aside>
+    @endunless
 
     <!-- Main Content -->
     <main class="flex-1 flex flex-col h-full overflow-hidden relative">
         <!-- Top Navbar (Desktop + Mobile) -->
+        @unless(View::hasSection('hideLayoutNav'))
         <header class="flex items-center justify-between px-6 py-4 glass-panel border-b border-border-light dark:border-border-dark sticky top-0 z-30">
             <div class="flex items-center gap-4">
                 <!-- Mobile Logo -->
@@ -233,7 +244,7 @@
                     </a>
 
                      <!-- Day/Night Toggle -->
-                    <button onclick="document.documentElement.classList.toggle('dark')" class="text-gray-500 dark:text-gray-400 hover:text-accent-gold transition-colors rounded-xl p-2 hover:bg-gray-100 dark:hover:bg-white/5">
+                    <button onclick="toggleDarkMode()" class="text-gray-500 dark:text-gray-400 hover:text-accent-gold transition-colors rounded-xl p-2 hover:bg-gray-100 dark:hover:bg-white/5">
                         <span id="theme-icon" class="material-symbols-outlined text-[20px]">light_mode</span>
                     </button>
                     
@@ -244,6 +255,7 @@
                 </div>
             </div>
         </header>
+        @endunless
 
         <!-- Toast Notifications -->
         @if(session('success') || session('error'))
@@ -260,7 +272,7 @@
         @endif
 
         <!-- Dynamic View Container -->
-        <div id="view-container" class="flex-1 overflow-y-auto p-4 md:p-8 scroll-smooth pb-24 md:pb-8">
+        <div id="view-container" class="flex-1 overflow-y-auto scroll-smooth pb-24 md:pb-8 {{ View::hasSection('hideLayoutNav') ? '!p-0 h-screen' : 'p-4 md:p-8' }}">
             @yield('content')
         </div>
     </main>
@@ -397,8 +409,24 @@
 
 <!-- Scripts for shared modal logic etc. can go here -->
 <script>
+    // Set initial icon immediately based on html class
+    document.addEventListener("DOMContentLoaded", function() {
+        const icon = document.getElementById('theme-icon');
+        if (icon) {
+            icon.innerText = document.documentElement.classList.contains('dark') ? 'light_mode' : 'dark_mode';
+        }
+    });
+
     function toggleDarkMode() {
-        document.documentElement.classList.toggle('dark');
+        if (document.documentElement.classList.contains('dark')) {
+            document.documentElement.classList.remove('dark');
+            localStorage.theme = 'light';
+            document.getElementById('theme-icon').innerText = 'dark_mode';
+        } else {
+            document.documentElement.classList.add('dark');
+            localStorage.theme = 'dark';
+            document.getElementById('theme-icon').innerText = 'light_mode';
+        }
     }
 </script>
 @stack('scripts')
