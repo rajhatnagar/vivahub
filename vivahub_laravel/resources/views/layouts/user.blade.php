@@ -244,7 +244,7 @@
         </div>
 
         <!-- DYNAMIC VIEW AREA -->
-        <div class="flex-1 overflow-y-auto p-4 lg:p-8 pb-24 lg:pb-8 scroll-smooth relative">
+        <div class="flex-1 overflow-y-auto scroll-smooth pb-24 lg:pb-8 relative {{ View::hasSection('hideLayoutNav') ? 'h-screen !p-0' : 'p-4 lg:p-8' }}">
             @yield('content')
         </div>
     </main>

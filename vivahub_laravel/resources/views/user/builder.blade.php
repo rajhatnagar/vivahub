@@ -9,12 +9,12 @@
     /* Builder grid layout overrides */
     .mobile-frame { transition: transform 0.3s ease; }
 </style>
-<div class="flex flex-col lg:flex-row w-full h-[85vh] min-h-[700px] bg-white dark:bg-[#1a0b0b] rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none border border-primary/5 dark:border-white/5 overflow-hidden">
+<div class="flex flex-col lg:flex-row w-full h-full bg-white dark:bg-[#1a0b0b] overflow-hidden">
     
     <!-- Left: Form -->
-    <div class="flex flex-col h-full lg:w-[45%] lg:border-r lg:border-gray-100 lg:dark:border-white/5 bg-white dark:bg-[#1a0b0b] relative z-10 w-full">
+    <div class="flex flex-col h-full lg:w-[45%] lg:border-r lg:border-gray-100 lg:dark:border-white/5 bg-white dark:bg-[#1a0b0b] relative z-10 w-full min-h-0">
         <!-- Form Header -->
-        <div class="sticky top-0 z-40 bg-white dark:bg-[#1a0b0b]/95 backdrop-blur-sm p-4 lg:p-5 border-b border-gray-100 dark:border-white/5">
+        <div class="p-5 border-b border-gray-100 dark:border-white/5">
             <div class="flex justify-between items-center mb-3">
                 <a href="{{ route('dashboard.templates') }}" class="text-sm text-text-muted hover:text-primary flex gap-1 font-bold"><span class="material-symbols-outlined text-sm">arrow_back</span> Back</a>
                 <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold" id="step-indicator">Step 1/7</span>
