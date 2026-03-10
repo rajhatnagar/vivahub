@@ -272,7 +272,7 @@
         @endif
 
         <!-- Dynamic View Container -->
-        <div id="view-container" class="flex-1 overflow-y-auto scroll-smooth pb-24 md:pb-8 {{ View::hasSection('hideLayoutNav') ? '!p-0 h-screen' : 'p-4 md:p-8' }}">
+        <div id="view-container" class="flex-1 relative w-full {{ View::hasSection('hideLayoutNav') ? 'h-screen flex flex-col overflow-hidden !p-0' : 'overflow-y-auto scroll-smooth pb-24 md:pb-8 p-4 md:p-8' }}">
             @yield('content')
         </div>
     </main>
