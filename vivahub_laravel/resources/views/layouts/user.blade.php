@@ -80,7 +80,6 @@
 <body class="bg-background-light dark:bg-background-dark text-text-dark dark:text-gray-100 antialiased h-screen flex overflow-hidden transition-colors duration-300">
 
     <!-- DESKTOP SIDEBAR -->
-    @unless(request()->routeIs('*builder*') || request()->routeIs('*partner.templates.builder*'))
     <aside class="w-72 shrink-0 h-full glass-panel flex flex-col z-50 hidden lg:flex transition-all duration-300">
         <div class="p-8 pb-6 border-b border-gray-100 dark:border-white/5">
             <!-- Brand Logo -->
@@ -154,19 +153,15 @@
              </div>
         </div>
     </aside>
-    @endunless
 
     <!-- MAIN CONTENT -->
     <main class="flex-1 flex flex-col h-full relative overflow-hidden transition-colors duration-300">
         <!-- HEADER (Desktop & Mobile) -->
-        @unless(request()->routeIs('*builder*') || request()->routeIs('*partner.templates.builder*'))
         <header class="flex items-center justify-between px-4 lg:px-8 py-4 bg-white/60 dark:bg-black/20 backdrop-blur-md border-b border-gray-100 dark:border-white/5 sticky top-0 z-30">
             <div class="flex items-center gap-3 lg:hidden">
-                  @unless(View::hasSection('hideLayoutNav'))
                   <button onclick="toggleMobileSidebar()" class="p-2 -ml-2 text-text-muted hover:text-primary transition-colors">
                       <span class="material-symbols-outlined">menu</span>
                   </button>
-                  @endunless
                   <img src="{{ asset('VivaHub-logo.png') }}" alt="Logo" class="h-7 w-auto dark:hidden">
                   <img src="{{ asset('VivaHub-white-logo.png') }}" alt="Logo" class="h-7 w-auto hidden dark:block">
             </div>
@@ -190,7 +185,6 @@
                  </button>
             </div>
         </header>
-        @endunless
 
         <!-- MOBILE SIDEBAR OVERLAY -->
         <div id="mobile-sidebar-overlay" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-black/50 z-[90] hidden lg:hidden backdrop-blur-sm transition-opacity opacity-0"></div>
@@ -244,7 +238,7 @@
         </div>
 
         <!-- DYNAMIC VIEW AREA -->
-        <div class="flex-1 relative w-full {{ View::hasSection('hideLayoutNav') ? 'h-screen flex flex-col overflow-hidden !p-0' : 'overflow-y-auto scroll-smooth pb-24 lg:pb-8 p-4 lg:p-8' }}">
+        <div class="flex-1 relative w-full {{ View::hasSection('hideLayoutNav') ? 'h-full flex flex-col overflow-hidden !p-0' : 'overflow-y-auto scroll-smooth pb-24 lg:pb-8 p-4 lg:p-8' }}">
             @yield('content')
         </div>
     </main>
